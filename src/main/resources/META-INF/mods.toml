@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[31,)" 
+issueTrackerURL="https://www.servg.red/"
+logoFile="logo.png" 
+[[mods]]
+modId="otyacraftengine"
+version="${file.jarVersion}" 
+displayName="Otyacraft Engine"
+updateJSONURL="https://www.servg.red/" 
+displayURL="https://www.servg.red/" 
+credits="TeamFelNull"
+authors="MORIMORI0317" 
+description="Thank you for downloading!\nThis mod is my mod integration library."
