@@ -4,17 +4,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import red.felnull.otyacraftengine.proxy.ClientProxy;
+import red.felnull.otyacraftengine.proxy.CommonProxy;
 
 @Mod(OtyacraftEngine.MODID)
 public class OtyacraftEngine {
 	public static final String MODID = "otyacraftengine";
 	public static final Logger LOGGER = LogManager.getLogger();
+
+	@SuppressWarnings("deprecation")
+	public static final CommonProxy proxy = DistExecutor
+			.runForDist(() -> () -> new ClientProxy(), () -> () -> new CommonProxy());
 
 	public OtyacraftEngine() {
 
@@ -29,19 +36,21 @@ public class OtyacraftEngine {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	public void setup(final FMLCommonSetupEvent event) {
+	private void setup(final FMLCommonSetupEvent event) {
+		proxy.preInit();
+	}
+
+	private void doClientStuff(final FMLClientSetupEvent event) {
+		ClientProxy.clientInit();
 
 	}
 
-	public void doClientStuff(final FMLClientSetupEvent event) {
-
+	private void enqueueIMC(final InterModEnqueueEvent event) {
+		proxy.init();
 	}
 
-	public void enqueueIMC(final InterModEnqueueEvent event) {
-
+	private void processIMC(final InterModProcessEvent event) {
+		proxy.posInit();
 	}
 
-	public void processIMC(final InterModProcessEvent event) {
-
-	}
 }
