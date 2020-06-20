@@ -164,8 +164,38 @@ public class GorokuUtil {
     private static String ango(String st) {
         return StringHelper.getIntsToString(IkisugiMath.getStringIntArry(st));
     }
-
+/*
     public static String get() {
         return ango("");
     }
+    	public static void main(String[] args) {
+
+		System.out.println(getIntArryString(getStringInts("test")));
+
+	}
+
+	public static String getIntArryString(int[] ints) {
+		String ou = "";
+		for (int i = 0; i < ints.length; i++) {
+			ou += ints[i];
+
+			if (i != ints.length - 1) {
+				ou += ":";
+			}
+		}
+
+		return ou;
+	}
+
+	public static int[] getStringInts(String st) {
+
+		int[] ints = new int[st.toCharArray().length];
+
+		for (int i = 0; i < st.toCharArray().length; i++) {
+			ints[i] = st.toCharArray()[i];
+		}
+
+		return ints;
+	}
+ */
 }

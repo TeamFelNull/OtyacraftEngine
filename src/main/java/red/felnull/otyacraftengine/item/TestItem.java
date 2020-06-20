@@ -25,7 +25,7 @@ public class TestItem extends Item implements IColorbleItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
         ItemStack item = playerIn.getHeldItem(hand);
-        playerIn.sendMessage(new StringTextComponent(GorokuUtil.getKurashikiMukaiyamaRoshutsuZukiAll()));
+       
         return ActionResult.func_226248_a_(item);
     }
 
