@@ -3,16 +3,17 @@ package red.felnull.otyacraftengine.client.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.network.NetworkEvent;
+import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.packet.ClientTileEntitySyncMessage;
 import red.felnull.otyacraftengine.tileentity.IClientSyncbleTileEntity;
 
 import java.util.function.Supplier;
 
 public class ClientTileEntitySyncMessageHandler {
-    private static Minecraft mc = Minecraft.getInstance();
 
     public static void reversiveMessage(ClientTileEntitySyncMessage message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().setPacketHandled(true);
+        Minecraft mc = OtyacraftEngine.proxy.getMinecraft();
         if (mc.world.dimension.getType().getId() != message.dim)
             return;
 
