@@ -245,4 +245,24 @@ public class IkisugiMath {
         }
         return 0;
     }
+
+    public static int[] getStringInts(String st) {
+
+        int[] ints = new int[st.toCharArray().length];
+
+        for (int i = 0; i < st.toCharArray().length; i++) {
+            ints[i] = st.toCharArray()[i];
+        }
+
+        return ints;
+    }
+
+    public static int[] getStringIntArry(String st) {
+        String[] sot = st.split(":");
+        int[] ot = new int[sot.length];
+        for (int i = 0; i < sot.length; i++) {
+            ot[i] = Integer.valueOf(sot[i]);
+        }
+        return ot;
+    }
 }

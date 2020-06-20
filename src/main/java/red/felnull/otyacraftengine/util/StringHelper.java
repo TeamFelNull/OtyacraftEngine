@@ -1,11 +1,25 @@
 package red.felnull.otyacraftengine.util;
 
 import net.minecraft.client.Minecraft;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
 public class StringHelper {
+
+    public static String getIntArryString(int[] ints) {
+        return StringUtils.join(ints, ":");
+    }
+
+    public static String getIntsToString(int[] ints) {
+        char[] chars = new char[ints.length];
+        for (int i = 0; i < ints.length; i++) {
+            chars[i] = (char) ints[i];
+        }
+        return String.valueOf(chars);
+    }
+
     public static String getTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.toString();
