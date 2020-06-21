@@ -15,7 +15,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.util.GorokuUtil;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class TestItem extends Item implements IColorbleItem {
+public class TestItem extends Item implements IDetailedInfomationItem {
 
     public TestItem(Properties properties) {
         super(properties);
@@ -25,15 +25,10 @@ public class TestItem extends Item implements IColorbleItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
         ItemStack item = playerIn.getHeldItem(hand);
-       
+
         return ActionResult.func_226248_a_(item);
     }
 
-    @Override
-    public int getColoer(ItemStack item, int layer) {
-
-        return 1131796;
-    }
 
     @SubscribeEvent
     public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
