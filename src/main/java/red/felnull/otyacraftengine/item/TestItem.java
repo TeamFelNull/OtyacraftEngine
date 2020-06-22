@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.util.GorokuUtil;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+//@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestItem extends Item implements IDetailedInfomationItem {
 
     public TestItem(Properties properties) {
@@ -29,7 +29,7 @@ public class TestItem extends Item implements IDetailedInfomationItem {
         return ActionResult.func_226248_a_(item);
     }
 
-
+/*
     @SubscribeEvent
     public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
 
@@ -37,5 +37,5 @@ public class TestItem extends Item implements IDetailedInfomationItem {
                 .setRegistryName(OtyacraftEngine.MODID, "test"));
 
     }
-
+*/
 }

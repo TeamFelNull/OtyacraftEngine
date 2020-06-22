@@ -65,9 +65,9 @@ public class ClientHandler {
             return;
 
         if (!InputMappings.isKeyDown(Minecraft.getInstance().func_228018_at_().getHandle(),
-                mc.gameSettings.keyBindPlayerList.getKeyBinding().getKey().getKeyCode())) {
+                mc.gameSettings.keyBindSprint.getKeyBinding().getKey().getKeyCode())) {
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press",
-                    mc.gameSettings.keyBindPlayerList.getLocalizedName())
+                    mc.gameSettings.keyBindSprint.getLocalizedName())
                     .setStyle(new Style().setColor(TextFormatting.WHITE)));
             return;
         }

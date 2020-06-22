@@ -17,7 +17,7 @@ import red.felnull.otyacraftengine.item.IColorbleItem;
 
 import javax.annotation.Nullable;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+
 public class RenderHandler {
 
     @SubscribeEvent
