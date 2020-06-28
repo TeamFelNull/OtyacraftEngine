@@ -5,12 +5,12 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 
 public class ClientTileEntitySyncMessage {
-    public int dim;
+    public String dim;
     public BlockPos pos;
     public String tileName;
     public CompoundNBT syncedData;
 
-    public ClientTileEntitySyncMessage(int dim, BlockPos pos, String tileName, CompoundNBT data) {
+    public ClientTileEntitySyncMessage(String dim, BlockPos pos, String tileName, CompoundNBT data) {
         this.dim = dim;
         this.pos = pos;
         this.tileName = tileName;
@@ -18,11 +18,11 @@ public class ClientTileEntitySyncMessage {
     }
 
     public static ClientTileEntitySyncMessage decodeMessege(PacketBuffer buffer) {
-        return new ClientTileEntitySyncMessage(buffer.readInt(), buffer.readBlockPos(), buffer.readString(32767), buffer.readCompoundTag());
+        return new ClientTileEntitySyncMessage(buffer.readString(32767), buffer.readBlockPos(), buffer.readString(32767), buffer.readCompoundTag());
     }
 
     public static void encodeMessege(ClientTileEntitySyncMessage messegeIn, PacketBuffer buffer) {
-        buffer.writeInt(messegeIn.dim);
+        buffer.writeString(messegeIn.dim);
         buffer.writeBlockPos(messegeIn.pos);
         buffer.writeString(messegeIn.tileName);
         buffer.writeCompoundTag(messegeIn.syncedData);

@@ -1,50 +1,60 @@
 package red.felnull.otyacraftengine.client.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class RenderHelper {
     private static Minecraft mc = Minecraft.getInstance();
 
-    public static void drawPlayerFase(String name, int x, int y) {
-        RenderSystem.pushMatrix();
+    public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
+        matrixPush(matx);
         ResourceLocation plskin = TextureHelper.getPlayerSkinTexture(name);
-        mc.getTextureManager().bindTexture(plskin);
-        AbstractGui.blit(x, y, 8, 8, 8, 8, 64, 64);
-        mc.getTextureManager().bindTexture(plskin);
-        AbstractGui.blit(x, y, 40, 8, 8, 8, 64, 64);
-        RenderSystem.popMatrix();
+        guiBindAndBlit(plskin, matx, x, y, 8, 8, 8, 8, 64, 64);
+        guiBindAndBlit(plskin, matx, x, y, 40, 8, 8, 8, 64, 64);
+        matrixPop(matx);
+    }
+
+    public static void guiBindAndBlit(ResourceLocation location, MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
+        mc.getTextureManager().bindTexture(location);
+        guiBlit(matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
+    }
+
+    public static void guiBlit(MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
+        AbstractGui.func_238463_a_(matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
     }
 
     public static void matrixTranslatef(MatrixStack ms, float x, float y, float z) {
-        ms.func_227861_a_(x, y, z);
+        ms.translate(x, y, z);
+    }
+
+    public static void matrixScalf(MatrixStack ms, float all) {
+        matrixScalf(ms, all, all, all);
     }
 
     public static void matrixScalf(MatrixStack ms, float x, float y, float z) {
-        ms.func_227862_a_(x, y, z);
+        ms.scale(x, y, z);
     }
 
     public static void matrixPush(MatrixStack ms) {
-        ms.func_227860_a_();
+        ms.push();
     }
 
     public static void matrixPop(MatrixStack ms) {
-        ms.func_227865_b_();
+        ms.pop();
     }
 
     public static void matrixRotateDegreefX(MatrixStack ms, float x) {
-        ms.func_227863_a_(new Vector3f(1, 0, 0).func_229187_a_(x));
+        ms.rotate(new Vector3f(1, 0, 0).rotationDegrees(x));
     }
 
     public static void matrixRotateDegreefY(MatrixStack ms, float y) {
-        ms.func_227863_a_(new Vector3f(0, 1, 0).func_229187_a_(y));
+        ms.rotate(new Vector3f(0, 1, 0).rotationDegrees(y));
     }
 
     public static void matrixRotateDegreefZ(MatrixStack ms, float z) {
-        ms.func_227863_a_(new Vector3f(0, 0, 1).func_229187_a_(z));
+        ms.rotate(new Vector3f(0, 0, 1).rotationDegrees(z));
     }
 }

@@ -4,11 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.RenderHandler;
 
 public class ClientProxy extends CommonProxy {
+    public static void clientInit() {
+
+    }
+
     @Override
     public void preInit() {
         super.preInit();
@@ -16,10 +19,6 @@ public class ClientProxy extends CommonProxy {
                 new ClientHandler()::onToolTip);
         MinecraftForge.EVENT_BUS.register(ClientHandler.class);
         MinecraftForge.EVENT_BUS.register(RenderHandler.class);
-
-    }
-
-    public static void clientInit() {
 
     }
 

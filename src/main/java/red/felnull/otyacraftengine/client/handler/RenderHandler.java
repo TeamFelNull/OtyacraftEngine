@@ -7,10 +7,9 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ILightReader;
+import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import red.felnull.otyacraftengine.block.IColorbleBlock;
 import red.felnull.otyacraftengine.item.IColorbleItem;
@@ -40,8 +39,8 @@ public class RenderHandler {
         ForgeRegistries.BLOCKS.getEntries().stream().filter(n -> n.getValue() instanceof IColorbleBlock).forEach(n -> {
             c.register(new IBlockColor() {
                 @Override
-                public int getColor(BlockState state, @Nullable ILightReader ligh, @Nullable BlockPos pos, int layer) {
-                    return ((IColorbleBlock) n.getValue()).getColoer(state, ligh, pos, layer);
+                public int getColor(BlockState state, @Nullable IBlockDisplayReader iBlockDisplayReader, @Nullable BlockPos pos, int layer) {
+                    return ((IColorbleBlock) n.getValue()).getColoer(state, iBlockDisplayReader, pos, layer);
                 }
             });
 

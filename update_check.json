@@ -1,0 +1,11 @@
+{
+
+  "homepage": "https://www.servg.red/",
+  "1.16.1": {
+    "1.0": "The Frist Release."
+  },
+  "promos": {
+    "1.16.1-latest": "1.0",
+    "1.16.1-recommended": "1.0"
+  }
+}

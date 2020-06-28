@@ -1,12 +1,12 @@
 package red.felnull.otyacraftengine.client.handler;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -21,33 +21,15 @@ import java.util.Objects;
 public class ClientHandler {
     private static Minecraft mc = Minecraft.getInstance();
 
-    @SubscribeEvent
-    public void onToolTip(ItemTooltipEvent e) {
-
-        if (ClientConfig.ToolTipDetailedInformation.get())
-            addDetailedInformation(e);
-
-        if (ClientConfig.ToolTipTag.get())
-            addTagList(e);
-
-        if (ClientConfig.ToolTipModName.get())
-            addModName(e);
-    }
-
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
 
-            if (!InputMappings.isKeyDown(Minecraft.getInstance().func_228018_at_().getHandle(),
-                    mc.gameSettings.field_228046_af_.getKeyBinding().getKey().getKeyCode())) {
-                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press",
-                        mc.gameSettings.field_228046_af_.getLocalizedName())
-                        .setStyle(new Style().setColor(TextFormatting.WHITE)));
+            if (!InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), mc.gameSettings.keyBindSneak.getKeyBinding().getKey().getKeyCode())) {
+                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press", mc.gameSettings.keyBindSneak.func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
                 return;
             }
-
-            e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation")
-                    .setStyle(new Style().setColor(TextFormatting.YELLOW)));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation").func_240699_a_(TextFormatting.YELLOW));
             ((IDetailedInfomationItem) stack.getItem()).addDetailedInformation(e);
         }
 
@@ -64,43 +46,41 @@ public class ClientHandler {
         if (!(itemtagflag || blocktagflag || entitytagflag))
             return;
 
-        if (!InputMappings.isKeyDown(Minecraft.getInstance().func_228018_at_().getHandle(),
-                mc.gameSettings.keyBindSprint.getKeyBinding().getKey().getKeyCode())) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press",
-                    mc.gameSettings.keyBindSprint.getLocalizedName())
-                    .setStyle(new Style().setColor(TextFormatting.WHITE)));
+        if (!InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), mc.gameSettings.keyBindSprint.getKeyBinding().getKey().getKeyCode())) {
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", mc.gameSettings.keyBindSprint.func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
             return;
         }
 
         if (itemtagflag) {
 
-            e.getToolTip()
-                    .add(new TranslationTextComponent("tooltip.tag.item")
-                            .setStyle(new Style().setColor(TextFormatting.AQUA)));
-            TagHelper.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString())
-                    .setStyle(new Style().setColor(TextFormatting.GRAY))));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").func_240699_a_(TextFormatting.AQUA));
+            TagHelper.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (blocktagflag) {
-            e.getToolTip().add(
-                    new TranslationTextComponent("tooltip.tag.block")
-                            .setStyle(new Style().setColor(TextFormatting.AQUA)));
-            TagHelper.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString())
-                    .setStyle(new Style().setColor(TextFormatting.GRAY))));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").func_240699_a_(TextFormatting.AQUA));
+            TagHelper.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (entitytagflag) {
-            e.getToolTip().add(
-                    new TranslationTextComponent("tooltip.tag.entitytype")
-                            .setStyle(new Style().setColor(TextFormatting.AQUA)));
-            Objects.requireNonNull(TagHelper.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString())
-                    .setStyle(new Style().setColor(TextFormatting.GRAY))));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").func_240699_a_(TextFormatting.AQUA));
+            Objects.requireNonNull(TagHelper.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
 
     }
 
     private static void addModName(ItemTooltipEvent e) {
-        e.getToolTip()
-                .add(new StringTextComponent(
-                        ModUtil.getModName(ModUtil.getModID(e.getItemStack())) + " " + ModUtil.getModVersion(ModUtil.getModID(e.getItemStack())))
-                        .setStyle(new Style().setColor(ModUtil.getModColor(ModUtil.getModID(e.getItemStack())))));
+        e.getToolTip().add(new StringTextComponent(ModUtil.getModName(ModUtil.getModID(e.getItemStack())) + " " + ModUtil.getModVersion(ModUtil.getModID(e.getItemStack()))).func_240699_a_(ModUtil.getModColor(ModUtil.getModID(e.getItemStack()))));
+    }
+
+    @SubscribeEvent
+    public void onToolTip(ItemTooltipEvent e) {
+
+        if (ClientConfig.ToolTipDetailedInformation.get())
+            addDetailedInformation(e);
+
+        if (ClientConfig.ToolTipTag.get())
+            addTagList(e);
+
+        if (ClientConfig.ToolTipModName.get())
+            addModName(e);
     }
 }

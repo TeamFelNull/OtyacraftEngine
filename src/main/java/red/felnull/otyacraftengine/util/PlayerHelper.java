@@ -17,6 +17,7 @@ public class PlayerHelper {
 
     public static String FAKE_UUID = "11451419-1981-0364-364931-000000000000";
     public static String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
+    protected static Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<String, GameProfile>();
 
     public static String getUserName(PlayerEntity pl) {
         return pl.getName().getString();
@@ -29,8 +30,6 @@ public class PlayerHelper {
     public static String getUUID(PlayerEntity pl) {
         return PlayerEntity.getUUID(pl.getGameProfile()).toString();
     }
-
-    protected static Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<String, GameProfile>();
 
     public static GameProfile getPlayerTextuerProfile(String name) {
         if (PLAYERGAMEPROFILES.containsKey(name))
