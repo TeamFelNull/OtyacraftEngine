@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
-import red.felnull.otyacraftengine.registries.OERegistries;
+import red.felnull.otyacraftengine.api.registries.OERegistries;
 
 import java.util.Random;
 

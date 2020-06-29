@@ -1,7 +1,6 @@
 package red.felnull.otyacraftengine.client.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -83,4 +82,6 @@ public class ClientHandler {
         if (ClientConfig.ToolTipModName.get())
             addModName(e);
     }
+
+
 }

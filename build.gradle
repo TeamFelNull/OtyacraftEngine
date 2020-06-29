@@ -97,7 +97,23 @@ jar {
         ])
     }
 }
-
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    from sourceSets.main.allJava
+    classifier = 'dev'
+    manifest {
+        attributes(["Specification-Title": "${mod_id}",
+                    "Specification-Vendor": "MORIMORI0317",
+                    "Specification-Version": "1", 
+                    "Implementation-Title": "${mod_name}",
+                    "Implementation-Version": "${version}",
+                    "Implementation-Vendor" :"TeamFelNull",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+    }
+}
+artifacts {
+    archives devJar
+}
 
 jar.finalizedBy('reobfJar') 
 

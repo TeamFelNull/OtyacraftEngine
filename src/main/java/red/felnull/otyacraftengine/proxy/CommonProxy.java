@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.packet.PacketHandler;
-import red.felnull.otyacraftengine.registries.OERegistries;
+import red.felnull.otyacraftengine.api.registries.OERegistries;
 
 ;
 
