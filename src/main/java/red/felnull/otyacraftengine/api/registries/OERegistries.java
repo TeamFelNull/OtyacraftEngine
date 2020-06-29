@@ -12,8 +12,7 @@ public class OERegistries {
         registrierModColor("minecraft", 43520);
         registrierModColor("forge", 170);
         registrierModColor(OtyacraftEngine.MODID, 5635925);
-
-
+        
     }
 
     public static void registrierModColor(String modid, int color) {
