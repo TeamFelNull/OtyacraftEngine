@@ -1,15 +1,34 @@
 package red.felnull.otyacraftengine.client.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.BlockModelRenderer;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.IModelTransform;
+import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.IBlockDisplayReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.IModelData;
 
+import java.util.Random;
+
+@OnlyIn(Dist.CLIENT)
 public class RenderHelper {
     private static Minecraft mc = Minecraft.getInstance();
 
-    public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
+    public static void renderPlayerFase(MatrixStack matx, String name, int x, int y) {
         matrixPush(matx);
         ResourceLocation plskin = TextureHelper.getPlayerSkinTexture(name);
         guiBindAndBlit(plskin, matx, x, y, 8, 8, 8, 8, 64, 64);
@@ -56,5 +75,31 @@ public class RenderHelper {
 
     public static void matrixRotateDegreefZ(MatrixStack ms, float z) {
         ms.rotate(new Vector3f(0, 0, 1).rotationDegrees(z));
+    }
+
+    public static IBakedModel getBakedModel(ResourceLocation location) {
+        return getBakedModel(location, ModelRotation.X0_Y0);
+    }
+
+    public static IBakedModel getBakedModel(ResourceLocation location, IModelTransform transformIn) {
+        return getBakedModel(location, transformIn, ModelLoader.instance().getSpriteMap()::getSprite);
+    }
+
+    public static IBakedModel getBakedModel(ResourceLocation location, IModelTransform transformIn, java.util.function.Function<RenderMaterial, net.minecraft.client.renderer.texture.TextureAtlasSprite> textureGetter) {
+        return ModelLoader.instance().getBakedModel(location, transformIn, textureGetter);
+    }
+
+    public static void renderBlockBakedModel(IBakedModel modelIn, MatrixStack matrixIn, IVertexBuilder buffer, int combinedOverlayIn, TileEntity tile) {
+        renderBlockBakedModel(tile.getWorld(), modelIn, tile.getBlockState(), tile.getPos(), matrixIn, buffer, tile.getWorld().rand, combinedOverlayIn);
+    }
+
+    public static void renderBlockBakedModel(IBlockDisplayReader worldIn, IBakedModel modelIn, BlockState stateIn, BlockPos posIn, MatrixStack matrixIn, IVertexBuilder buffer, Random randomIn, int combinedOverlayIn) {
+        renderBlockBakedModel(worldIn, modelIn, stateIn, posIn, matrixIn, buffer, false, randomIn, 0, combinedOverlayIn, EmptyModelData.INSTANCE);
+    }
+
+    public static void renderBlockBakedModel(IBlockDisplayReader worldIn, IBakedModel modelIn, BlockState stateIn, BlockPos posIn, MatrixStack matrixIn, IVertexBuilder buffer, boolean checkSides, Random randomIn, long rand, int combinedOverlayIn, IModelData modelData) {
+        BlockRendererDispatcher brd = mc.getBlockRendererDispatcher();
+        BlockModelRenderer bmr = brd.getBlockModelRenderer();
+        bmr.renderModel(worldIn, modelIn, stateIn, posIn, matrixIn, buffer, checkSides, randomIn, rand, combinedOverlayIn, modelData);
     }
 }

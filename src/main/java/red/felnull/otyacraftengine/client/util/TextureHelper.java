@@ -6,10 +6,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class TextureHelper {
     private static Minecraft mc = Minecraft.getInstance();
 

@@ -1,5 +1,12 @@
 package red.felnull.otyacraftengine.handler;
 
-public class ServerHandler {
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import red.felnull.otyacraftengine.data.ServerDataBuffer;
 
+public class ServerHandler {
+    @SubscribeEvent
+    public static void onServetTick(TickEvent.ServerTickEvent e) {
+        ServerDataBuffer.instance().tick();
+    }
 }
