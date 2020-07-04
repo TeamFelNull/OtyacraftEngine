@@ -51,84 +51,84 @@ public class IkisugiMath {
 
     public static int positiveInt(int n) {
         int r = n;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static float positiveFloat(float n) {
         float r = n;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static long positiveLong(long n) {
         long r = n;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static double positiveDouble(double n) {
         double r = n;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static int negativeInt(int n) {
         int r = n;
-        if (r >= 1)
+        if (r > 0)
             r *= -1;
         return r;
     }
 
     public static float negativeFloat(float n) {
         float r = n;
-        if (r >= 1)
+        if (r > 0)
             r *= -1;
         return r;
     }
 
     public static long negativeLong(long n) {
         long r = n;
-        if (r >= 1)
+        if (r > 0)
             r *= -1;
         return r;
     }
 
     public static double negativeDouble(double n) {
         double r = n;
-        if (r >= 1)
+        if (r > 0)
             r *= -1;
         return r;
     }
 
     public static int differenceInt(int n1, int n2) {
         int r = n1 - n2;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static float differenceFloat(float n1, float n2) {
         float r = n1 - n2;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static long differenceLong(long n1, long n2) {
         long r = n1 - n2;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }
 
     public static double differenceDouble(double n1, double n2) {
         double r = n1 - n2;
-        if (r <= -1)
+        if (r < 0)
             r *= -1;
         return r;
     }

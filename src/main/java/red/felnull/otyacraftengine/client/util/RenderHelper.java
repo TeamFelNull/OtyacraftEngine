@@ -8,9 +8,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.ModelRotation;
-import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -22,10 +20,15 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderHelper {
+
+    private static Map<ResourceLocation, IBakedModel> BAKED_MODELS = new HashMap<ResourceLocation, IBakedModel>();
+
     private static Minecraft mc = Minecraft.getInstance();
 
     public static void renderPlayerFase(MatrixStack matx, String name, int x, int y) {
@@ -78,15 +81,14 @@ public class RenderHelper {
     }
 
     public static IBakedModel getBakedModel(ResourceLocation location) {
-        return getBakedModel(location, ModelRotation.X0_Y0);
-    }
 
-    public static IBakedModel getBakedModel(ResourceLocation location, IModelTransform transformIn) {
-        return getBakedModel(location, transformIn, ModelLoader.instance().getSpriteMap()::getSprite);
-    }
+        if (BAKED_MODELS.containsKey(location))
+            return BAKED_MODELS.get(location);
 
-    public static IBakedModel getBakedModel(ResourceLocation location, IModelTransform transformIn, java.util.function.Function<RenderMaterial, net.minecraft.client.renderer.texture.TextureAtlasSprite> textureGetter) {
-        return ModelLoader.instance().getBakedModel(location, transformIn, textureGetter);
+        IBakedModel model = ModelLoader.instance().bake(location, ModelRotation.X0_Y0);
+        BAKED_MODELS.put(location, model);
+
+        return model;
     }
 
     public static void renderBlockBakedModel(IBakedModel modelIn, MatrixStack matrixIn, IVertexBuilder buffer, int combinedOverlayIn, TileEntity tile) {
