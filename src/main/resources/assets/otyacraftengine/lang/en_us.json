@@ -1,6 +1,12 @@
 {
   "_comment": "Message",
   "message.login.otyacraftengine": "Introduced Otyacraft Engine : version %s",
+
+  "_comment": "Key",
+  "key.categories.otyacraftengine": "Otyacraft Engine",
+
+  "key.otyacraftengine.test": "Test",
+
   "_comment": "ToolTip",
   "tooltip.detailedinformation": "Detailed Information",
   "tooltip.detailedinformation.press": "Press %s for Show Detailed Information",
@@ -8,5 +14,10 @@
   "tooltip.tag.block": "Block Tag List",
   "tooltip.tag.entitytype": "Entity Type Tag List",
   "tooltip.tag.press": "Press %s for Show Tag List",
+
+  "_comment": "Screen",
+  "unimplemented.title": "Unimplemented",
+  "unimplemented.unimscreen": "%s is Unimplemented",
+
   "_comment": "Last"
 }

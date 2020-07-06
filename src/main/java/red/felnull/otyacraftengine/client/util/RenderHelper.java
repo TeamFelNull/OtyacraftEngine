@@ -31,7 +31,7 @@ public class RenderHelper {
 
     private static Minecraft mc = Minecraft.getInstance();
 
-    public static void renderPlayerFase(MatrixStack matx, String name, int x, int y) {
+    public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
         matrixPush(matx);
         ResourceLocation plskin = TextureHelper.getPlayerSkinTexture(name);
         guiBindAndBlit(plskin, matx, x, y, 8, 8, 8, 8, 64, 64);
@@ -87,7 +87,6 @@ public class RenderHelper {
 
         IBakedModel model = ModelLoader.instance().bake(location, ModelRotation.X0_Y0);
         BAKED_MODELS.put(location, model);
-
         return model;
     }
 

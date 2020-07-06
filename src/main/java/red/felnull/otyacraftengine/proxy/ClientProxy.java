@@ -6,10 +6,11 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.RenderHandler;
+import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 
 public class ClientProxy extends CommonProxy {
     public static void clientInit() {
-
+        OEKeyBindings.init();
     }
 
     @Override

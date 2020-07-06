@@ -1,6 +1,12 @@
 {
   "_comment": "Message",
   "message.login.otyacraftengine": "Otyacraft Engineを導入 : バージョン %s",
+
+  "_comment": "Key",
+  "key.categories.otyacraftengine": "Otyacraft Engine",
+
+  "key.otyacraftengine.test": "テスト",
+
   "_comment": "ToolTip",
   "tooltip.detailedinformation": "詳細情報",
   "tooltip.detailedinformation.press": "%s を押して詳細情報を表示",
@@ -8,5 +14,10 @@
   "tooltip.tag.block": "ブロックのタグリスト",
   "tooltip.tag.entitytype": "エンティティタイプのタグリスト",
   "tooltip.tag.press": "%s を押してタグリストを表示",
+
+  "_comment": "Screen",
+  "unimplemented.title": "未実装",
+  "unimplemented.unimscreen": "%s は未実装です",
+
   "_comment": "Last"
 }
