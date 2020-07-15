@@ -89,4 +89,8 @@ public class IkisugiScreen extends Screen {
     public boolean isPauseScreenByIKSG() {
         return super.func_231177_au__();
     }
+
+    public void renderDirtBackgroundByIKSG(int intege) {
+        this.func_231165_f_(intege);
+    }
 }

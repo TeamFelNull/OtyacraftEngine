@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
+import red.felnull.otyacraftengine.client.gui.screen.FileManagerScreen;
 import red.felnull.otyacraftengine.client.gui.screen.UnimplementedScreen;
 import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
@@ -33,7 +34,9 @@ public class ClientHandler {
                 mc.displayGuiScreen(new UnimplementedScreen(new TranslationTextComponent("test(NO_GUI)")));
             }
         }
-
+        if (e.getKey() == OEKeyBindings.IN_GAME_FILE_MANAGER.getKey().getKeyCode()) {
+            mc.displayGuiScreen(new FileManagerScreen(new TranslationTextComponent("test(NO_GUI)")));
+        }
     }
 
     private static void addDetailedInformation(ItemTooltipEvent e) {
