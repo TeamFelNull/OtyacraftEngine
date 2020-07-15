@@ -11,7 +11,7 @@ public class OEKeyBindings {
 
     public static void init() {
         registerKey(TEST);
-        registerKey(IN_GAME_FILE_MANAGER);
+     //   registerKey(IN_GAME_FILE_MANAGER);
     }
 
     private static void registerKey(KeyBinding key) {

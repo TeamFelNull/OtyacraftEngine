@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class ClientHandler {
     private static Minecraft mc = Minecraft.getInstance();
-
+/*
     @SubscribeEvent
     public static void onKey(InputEvent.KeyInputEvent e) {
 
@@ -38,7 +38,7 @@ public class ClientHandler {
             mc.displayGuiScreen(new FileManagerScreen(new TranslationTextComponent("test(NO_GUI)")));
         }
     }
-
+*/
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
