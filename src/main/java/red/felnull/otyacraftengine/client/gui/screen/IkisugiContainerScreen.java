@@ -1,15 +1,28 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.util.text.ITextComponent;
 
-public class IkisugiScreen extends Screen {
-    protected IkisugiScreen(ITextComponent titleIn) {
-        super(titleIn);
+public abstract class IkisugiContainerScreen<T extends Container> extends ContainerScreen<T> {
+    public IkisugiContainerScreen(T screenContainer, PlayerInventory playerInventory, ITextComponent titleIn) {
+        super(screenContainer, playerInventory, titleIn);
     }
 
+
+    //drawGuiContainerBackgroundLayer
+    @Override
+    protected void func_230450_a_(MatrixStack matx, float partTick, int mouseX, int mouseY) {
+        drawGuiContainerBackgroundLayerByIKSG(matx, partTick, mouseX, mouseY);
+    }
+
+    //バッググラウンド描画
+    protected abstract void drawGuiContainerBackgroundLayerByIKSG(MatrixStack matx, float partTick, int mouseX, int mouseY);
+
+    //以下IkisugiScreen
     //init
     @Override
     public void func_231160_c_() {
@@ -44,6 +57,12 @@ public class IkisugiScreen extends Screen {
     @Override
     public void func_231023_e_() {
         this.tickByIKSG();
+    }
+
+    //renderHoveredToolTip
+    @Override
+    protected void func_230459_a_(MatrixStack matrix, int mouseX, int mouseY) {
+        this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
     }
 
     //初期化
@@ -103,6 +122,11 @@ public class IkisugiScreen extends Screen {
     //ティック
     public void tickByIKSG() {
         super.func_231023_e_();
+    }
+
+    //ツールチップ？
+    protected void renderHoveredToolTipByIKSG(MatrixStack matrix, int mouseX, int mouseY) {
+        super.func_230459_a_(matrix, mouseX, mouseY);
     }
 
 }
