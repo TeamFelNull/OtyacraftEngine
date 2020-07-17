@@ -35,10 +35,10 @@ public class ResponseEvent extends Event {
     }
 
     //クライアントからの応答
-    public static class ClientToResponseEvent extends ResponseEvent {
+    public static class Client extends ResponseEvent {
         private final ServerPlayerEntity player;
 
-        public ClientToResponseEvent(ServerPlayerEntity player, ResourceLocation location, int id, String message, CompoundNBT data) {
+        public Client(ServerPlayerEntity player, ResourceLocation location, int id, String message, CompoundNBT data) {
             super(location, id, message, data);
             this.player = player;
         }
@@ -49,8 +49,8 @@ public class ResponseEvent extends Event {
     }
 
     //サーバーからの応答
-    public static class ServerToResponseEvent extends ResponseEvent {
-        public ServerToResponseEvent(ResourceLocation location, int id, String message, CompoundNBT data) {
+    public static class Server extends ResponseEvent {
+        public Server(ResourceLocation location, int id, String message, CompoundNBT data) {
             super(location, id, message, data);
         }
     }

@@ -40,7 +40,6 @@ public class FileLoadHelper {
         createFolder(path.getParent());
         try {
             FileOutputStream stream = new FileOutputStream(path.toFile());
-            nbt.putString("Timestamp", StringHelper.getTimeStamp());
             CompressedStreamTools.writeCompressed(nbt, stream);
         } catch (FileNotFoundException e) {
             OtyacraftEngine.LOGGER.error("Failed to Write the NBT File : " + e.getLocalizedMessage());

@@ -20,7 +20,7 @@ public class PlayerHelper {
     protected static Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<String, GameProfile>();
 
     public static String getUserName(PlayerEntity pl) {
-        return pl.getName().getString();
+        return pl.getGameProfile().getName();
     }
 
     public static String getUUID(MinecraftServer ms, String name) {

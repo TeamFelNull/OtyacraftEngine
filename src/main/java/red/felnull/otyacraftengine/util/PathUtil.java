@@ -7,6 +7,7 @@ import java.nio.file.Path;
 
 public class PathUtil {
     public static Path getWorldSaveDataPath(MinecraftServer ms) {
-        return ms.func_240776_a_(new FolderName("test")).getParent();
+        return ms.func_240776_a_(new FolderName("dummy")).getParent();
     }
+
 }

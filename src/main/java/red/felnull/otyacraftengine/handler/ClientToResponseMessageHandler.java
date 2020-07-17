@@ -9,6 +9,6 @@ import java.util.function.Supplier;
 
 public class ClientToResponseMessageHandler {
     public static void reversiveMessage(ClientToResponseMessage message, Supplier<NetworkEvent.Context> ctx) {
-        MinecraftForge.EVENT_BUS.post(new ResponseEvent.ClientToResponseEvent(ctx.get().getSender(), message.location, message.id, message.message, message.data));
+        MinecraftForge.EVENT_BUS.post(new ResponseEvent.Client(ctx.get().getSender(), message.location, message.id, message.message, message.data));
     }
 }

@@ -4,11 +4,13 @@ public class ByteDataBuffer {
     private byte[] data;
     private boolean isTimeDelete;
     private long remainingTime;
+    protected long maxTime;
     private long lastTime = 0;
 
     public ByteDataBuffer(byte[] data, boolean timedelete, long deletetime) {
         this.data = data;
         this.isTimeDelete = timedelete;
+        this.maxTime = deletetime;
         this.remainingTime = deletetime;
     }
 
