@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -82,5 +83,18 @@ public class VoxelShapeHelper {
         List<VoxelShape> shapes = new ArrayList<VoxelShape>();
         shape.toBoundingBoxList().forEach(n -> shapes.add(VoxelShapes.create(new AxisAlignedBB(n.minZ, n.minY, 1 - n.minX, n.maxZ, n.maxY, 1 - n.maxX))));
         return allOr(shapes.toArray(new VoxelShape[1]));
+    }
+
+    public static VoxelShape rotateDirection(VoxelShape shape, Direction direction) {
+        switch (direction) {
+            case SOUTH:
+                return rotate180(shape);
+            case EAST:
+                return rotate270(shape);
+            case WEST:
+                return rotate90(shape);
+            default:
+                return shape;
+        }
     }
 }
