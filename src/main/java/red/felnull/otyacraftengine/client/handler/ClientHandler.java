@@ -8,13 +8,9 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
-import red.felnull.otyacraftengine.client.gui.screen.FileManagerScreen;
-import red.felnull.otyacraftengine.client.gui.screen.UnimplementedScreen;
-import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.ModUtil;
 import red.felnull.otyacraftengine.util.TagHelper;
@@ -23,22 +19,24 @@ import java.util.Objects;
 
 public class ClientHandler {
     private static Minecraft mc = Minecraft.getInstance();
-/*
-    @SubscribeEvent
-    public static void onKey(InputEvent.KeyInputEvent e) {
 
-        if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
-            if (mc.currentScreen != null && !(mc.currentScreen instanceof UnimplementedScreen)) {
-                mc.displayGuiScreen(new UnimplementedScreen(mc.currentScreen, new TranslationTextComponent("test(GUI)")));
-            } else if (!(mc.currentScreen instanceof UnimplementedScreen)) {
-                mc.displayGuiScreen(new UnimplementedScreen(new TranslationTextComponent("test(NO_GUI)")));
+    /*
+        @SubscribeEvent
+        public static void onKey(InputEvent.KeyInputEvent e) {
+
+            if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+                if (mc.currentScreen != null && !(mc.currentScreen instanceof UnimplementedScreen)) {
+                    mc.displayGuiScreen(new UnimplementedScreen(mc.currentScreen, new TranslationTextComponent("test(GUI)")));
+                } else if (!(mc.currentScreen instanceof UnimplementedScreen)) {
+                    mc.displayGuiScreen(new UnimplementedScreen(new TranslationTextComponent("test(NO_GUI)")));
+                }
+            }
+
+            if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+                mc.displayGuiScreen(new TestScreen());
             }
         }
-        if (e.getKey() == OEKeyBindings.IN_GAME_FILE_MANAGER.getKey().getKeyCode()) {
-            mc.displayGuiScreen(new FileManagerScreen(new TranslationTextComponent("test(NO_GUI)")));
-        }
-    }
-*/
+    */
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {

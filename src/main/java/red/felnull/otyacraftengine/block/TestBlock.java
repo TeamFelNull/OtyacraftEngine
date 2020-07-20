@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.util.VoxelShapeHelper;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+//@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestBlock extends Block {
     public TestBlock(Properties properties) {
         super(properties);
