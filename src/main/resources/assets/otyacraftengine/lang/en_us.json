@@ -16,9 +16,12 @@
   "tooltip.tag.entitytype": "Entity Type Tag List",
   "tooltip.tag.press": "Press %s for Show Tag List",
 
-  "_comment": "Screen",
+  "_comment": "GUI",
   "unimplemented.title": "Unimplemented",
   "unimplemented.unimscreen": "%s is Unimplemented",
+
+  "gui.create": "Create",
+  "gui.training": "Training",
 
   "_comment": "Last"
 }

@@ -3,18 +3,29 @@ package red.felnull.otyacraftengine.client.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.util.PictuerUtil;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 public class TextureHelper {
     private static Minecraft mc = Minecraft.getInstance();
+
+    private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
+    private static Map<BufferedImage, ResourceLocation> PICTUER_BFI_LOCATION = new HashMap<BufferedImage, ResourceLocation>();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
@@ -37,5 +48,37 @@ public class TextureHelper {
         Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().loadSkinFromCache(GP);
         faselocation = map.containsKey(type) ? mc.getSkinManager().loadSkin(map.get(type), type) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(GP));
         return faselocation;
+    }
+
+    public static ResourceLocation getPictureImageTexture(BufferedImage data) {
+        if (PICTUER_BFI_LOCATION.containsKey(data)) {
+            PICTUER_BFI_LOCATION.get(data);
+        }
+        ResourceLocation imagelocation = new ResourceLocation(OtyacraftEngine.MODID, "pictuer/" + UUID.randomUUID().toString());
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(PictuerUtil.geByteImage(data));
+            NativeImage NI = NativeImage.read(bis);
+            Minecraft.getInstance().textureManager.loadTexture(imagelocation, new DynamicTexture(NI));
+            PICTUER_BFI_LOCATION.put(data, imagelocation);
+            return imagelocation;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public static ResourceLocation getPictureImageTexture(byte[] data) {
+        if (PICTUER_BYTE_LOCATION.containsKey(data)) {
+            return PICTUER_BYTE_LOCATION.get(data);
+        }
+        ResourceLocation imagelocation = new ResourceLocation(OtyacraftEngine.MODID, "pictuer/" + UUID.randomUUID().toString());
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(data);
+            NativeImage NI = NativeImage.read(bis);
+            Minecraft.getInstance().textureManager.loadTexture(imagelocation, new DynamicTexture(NI));
+            PICTUER_BYTE_LOCATION.put(data, imagelocation);
+            return imagelocation;
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

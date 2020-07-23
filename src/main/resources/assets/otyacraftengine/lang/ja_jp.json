@@ -16,9 +16,12 @@
   "tooltip.tag.entitytype": "エンティティタイプのタグリスト",
   "tooltip.tag.press": "%s を押してタグリストを表示",
 
-  "_comment": "Screen",
+  "_comment": "GUI",
   "unimplemented.title": "未実装",
   "unimplemented.unimscreen": "%s は未実装です",
+
+  "gui.create": "作成",
+  "gui.training": "調教",
 
   "_comment": "Last"
 }

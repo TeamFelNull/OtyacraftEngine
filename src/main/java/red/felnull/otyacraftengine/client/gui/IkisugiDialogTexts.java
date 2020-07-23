@@ -18,4 +18,6 @@ public class IkisugiDialogTexts {
     public static final ITextComponent BACK = DialogTexts.field_240637_h_;
 
     public static final ITextComponent CRATE = new TranslationTextComponent("gui.create");
+    public static final ITextComponent TRAINING = new TranslationTextComponent("gui.training");
+
 }
