@@ -3,7 +3,6 @@ package red.felnull.otyacraftengine.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.data.ServerDataBuffer;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.handler.WorldDataHandler;
@@ -15,7 +14,6 @@ public class CommonProxy {
     public void preInit() {
         PacketHandler.init();
         OERegistries.init();
-        ServerDataBuffer.init();
         WorldDataManager.init();
         MinecraftForge.EVENT_BUS.register(ServerHandler.class);
         MinecraftForge.EVENT_BUS.register(WorldDataHandler.class);

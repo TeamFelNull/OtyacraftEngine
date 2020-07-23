@@ -5,19 +5,16 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import red.felnull.otyacraftengine.api.event.WorldDataEvent;
-import red.felnull.otyacraftengine.data.ServerDataBuffer;
 import red.felnull.otyacraftengine.data.WorldDataManager;
+import red.felnull.otyacraftengine.util.ServerHelper;
 
 public class ServerHandler {
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
-        ServerDataBuffer.instance().tick();
-        WorldDataManager.instance().sync(LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER));
+        WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
     }
 
     @SubscribeEvent

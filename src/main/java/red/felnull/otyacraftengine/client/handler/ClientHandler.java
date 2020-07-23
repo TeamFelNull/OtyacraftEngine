@@ -8,9 +8,11 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
+import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.ModUtil;
 import red.felnull.otyacraftengine.util.TagHelper;
@@ -84,7 +86,7 @@ public class ClientHandler {
     }
 
     private static void addModName(ItemTooltipEvent e) {
-        e.getToolTip().add(new StringTextComponent(ModUtil.getModName(ModUtil.getModID(e.getItemStack())) + " " + ModUtil.getModVersion(ModUtil.getModID(e.getItemStack()))).func_240699_a_(ModUtil.getModColor(ModUtil.getModID(e.getItemStack()))));
+        e.getToolTip().add(new StringTextComponent(ModUtil.getModName(ModUtil.getModID(e.getItemStack())) + " " + (ModUtil.getModVersion(ModUtil.getModID(e.getItemStack())).equals("Error!!") ? "" : ModUtil.getModVersion(ModUtil.getModID(e.getItemStack())))).func_240699_a_(ModUtil.getModColor(ModUtil.getModID(e.getItemStack()))));
     }
 
     @SubscribeEvent
@@ -100,5 +102,11 @@ public class ClientHandler {
             addModName(e);
     }
 
+    @SubscribeEvent
+    public static void onTick(TickEvent.ClientTickEvent e) {
+        if(mc.player==null){
+            WorldDataManager.instance().unloadClient();
+        }
+    }
 
 }

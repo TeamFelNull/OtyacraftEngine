@@ -4,9 +4,7 @@ import net.minecraft.nbt.CompoundNBT;
 
 import java.nio.file.Path;
 
-public abstract class PlayerWorldData {
-    public abstract boolean isClientSincble();
-
+public abstract class WorldData {
     public abstract Path getSavedFolderPath();
 
     public abstract CompoundNBT getInitialNBT(CompoundNBT tag);

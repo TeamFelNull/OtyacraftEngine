@@ -5,23 +5,16 @@ import net.minecraft.nbt.CompoundNBT;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class TestPlayerWorldData extends PlayerWorldData {
-    @Override
-    public boolean isClientSincble() {
-        return true;
-    }
-
+public class TestWorldData extends WorldData {
     @Override
     public Path getSavedFolderPath() {
-        return Paths.get("otyacraftengine\\testplayerdata");
+        return Paths.get("otyacraftengine\\testdata.dat");
     }
 
     @Override
     public CompoundNBT getInitialNBT(CompoundNBT tag) {
-
         if (!tag.contains("test"))
             tag.putInt("test", 0);
-
         return tag;
     }
 }
