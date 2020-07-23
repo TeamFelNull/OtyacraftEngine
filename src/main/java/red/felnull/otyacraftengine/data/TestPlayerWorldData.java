@@ -19,8 +19,7 @@ public class TestPlayerWorldData extends PlayerWorldData {
     @Override
     public CompoundNBT getInitialNBT(CompoundNBT tag) {
 
-        if (!tag.contains("test"))
-            tag.putInt("test", 0);
+        tag.putInt("test", 114514);
 
         return tag;
     }

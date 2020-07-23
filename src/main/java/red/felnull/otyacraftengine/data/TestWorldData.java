@@ -13,8 +13,7 @@ public class TestWorldData extends WorldData {
 
     @Override
     public CompoundNBT getInitialNBT(CompoundNBT tag) {
-        if (!tag.contains("test"))
-            tag.putInt("test", 0);
+        tag.putInt("test", 810);
         return tag;
     }
 }

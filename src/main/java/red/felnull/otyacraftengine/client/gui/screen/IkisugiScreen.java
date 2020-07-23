@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.text.ITextComponent;
 
-public class IkisugiScreen extends Screen {
+public abstract class IkisugiScreen extends Screen {
     protected IkisugiScreen(ITextComponent titleIn) {
         super(titleIn);
     }
@@ -105,4 +105,8 @@ public class IkisugiScreen extends Screen {
         super.func_231023_e_();
     }
 
+    //タイトル
+    public ITextComponent getTitleByIKSG() {
+        return this.field_230704_d_;
+    }
 }

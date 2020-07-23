@@ -19,8 +19,19 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
         drawGuiContainerBackgroundLayerByIKSG(matx, partTick, mouseX, mouseY);
     }
 
+    //renderHoveredToolTip
+    @Override
+    protected void func_230459_a_(MatrixStack matrix, int mouseX, int mouseY) {
+        this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
+    }
+
     //バッググラウンド描画
     protected abstract void drawGuiContainerBackgroundLayerByIKSG(MatrixStack matx, float partTick, int mouseX, int mouseY);
+
+    //ツールチップ？
+    protected void renderHoveredToolTipByIKSG(MatrixStack matrix, int mouseX, int mouseY) {
+        super.func_230459_a_(matrix, mouseX, mouseY);
+    }
 
     //以下IkisugiScreen
     //init
@@ -57,12 +68,6 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     @Override
     public void func_231023_e_() {
         this.tickByIKSG();
-    }
-
-    //renderHoveredToolTip
-    @Override
-    protected void func_230459_a_(MatrixStack matrix, int mouseX, int mouseY) {
-        this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
     }
 
     //初期化
@@ -124,9 +129,8 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
         super.func_231023_e_();
     }
 
-    //ツールチップ？
-    protected void renderHoveredToolTipByIKSG(MatrixStack matrix, int mouseX, int mouseY) {
-        super.func_230459_a_(matrix, mouseX, mouseY);
+    //タイトル
+    public ITextComponent getTitleByIKSG() {
+        return this.field_230704_d_;
     }
-
 }

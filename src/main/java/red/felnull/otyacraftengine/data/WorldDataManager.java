@@ -55,7 +55,7 @@ public class WorldDataManager {
                 } else {
                     tag = new CompoundNBT();
                 }
-                WORLD_DATA.put(rege.getKey(), rege.getValue().getInitialNBT(tag));
+                WORLD_DATA.put(rege.getKey(), initialNBT(tag, rege.getValue().getInitialNBT(new CompoundNBT())));
             }
         } else {
             OtyacraftEngine.LOGGER.info("loading " + player.getName().getString() + " data");
@@ -69,9 +69,22 @@ public class WorldDataManager {
                 } else {
                     tag = new CompoundNBT();
                 }
-                PLAYER_DATA.get(PlayerHelper.getUUID(player)).put(rege.getKey(), rege.getValue().getInitialNBT(tag));
+                PLAYER_DATA.get(PlayerHelper.getUUID(player)).put(rege.getKey(), initialNBT(tag, rege.getValue().getInitialNBT(new CompoundNBT())));
             }
         }
+    }
+
+    private CompoundNBT initialNBT(CompoundNBT tag, CompoundNBT intedtag) {
+
+        for (String intags : intedtag.keySet()) {
+            if (!tag.contains(intags)) {
+                tag.put(intags, intedtag.get(intags));
+            } else if (tag.contains(intags, 10) && intedtag.contains(intags, 10)) {
+                tag.put(intags, initialNBT(tag.getCompound(intags), intedtag.getCompound(intags)));
+            }
+        }
+
+        return tag;
     }
 
     public void save(MinecraftServer ms, ServerPlayerEntity player) {
