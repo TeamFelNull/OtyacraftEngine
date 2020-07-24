@@ -12,6 +12,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
+import red.felnull.otyacraftengine.client.util.TextureHelper;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.ModUtil;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 public class ClientHandler {
     private static Minecraft mc = Minecraft.getInstance();
+    private static int loadingCont;
 
     /*
         @SubscribeEvent
@@ -103,9 +105,18 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.ClientTickEvent e) {
-        if(mc.player==null){
+    public static void onClientTick(TickEvent.ClientTickEvent e) {
+        if (mc.player == null) {
             WorldDataManager.instance().unloadClient();
+        }
+        loadingCont++;
+        if (loadingCont >= 4) {
+            if (TextureHelper.loadingPaatune >= 3) {
+                TextureHelper.loadingPaatune = 0;
+            } else {
+                TextureHelper.loadingPaatune++;
+            }
+            loadingCont = 0;
         }
     }
 

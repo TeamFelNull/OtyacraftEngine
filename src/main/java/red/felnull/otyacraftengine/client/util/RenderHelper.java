@@ -40,8 +40,10 @@ public class RenderHelper {
     }
 
     public static void guiBindAndBlit(ResourceLocation location, MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
+        matrixPush(matx);
         mc.getTextureManager().bindTexture(location);
         guiBlit(matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
+        matrixPop(matx);
     }
 
     public static void guiBlit(MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
@@ -68,16 +70,22 @@ public class RenderHelper {
         ms.pop();
     }
 
+    public static void matrixRotateDegreef(MatrixStack ms, float x, float y, float z) {
+        matrixRotateDegreefX(ms, x);
+        matrixRotateDegreefY(ms, y);
+        matrixRotateDegreefZ(ms, z);
+    }
+
     public static void matrixRotateDegreefX(MatrixStack ms, float x) {
-        ms.rotate(new Vector3f(1, 0, 0).rotationDegrees(x));
+        ms.rotate(Vector3f.XP.rotationDegrees(x));
     }
 
     public static void matrixRotateDegreefY(MatrixStack ms, float y) {
-        ms.rotate(new Vector3f(0, 1, 0).rotationDegrees(y));
+        ms.rotate(Vector3f.YP.rotationDegrees(y));
     }
 
     public static void matrixRotateDegreefZ(MatrixStack ms, float z) {
-        ms.rotate(new Vector3f(0, 0, 1).rotationDegrees(z));
+        ms.rotate(Vector3f.ZP.rotationDegrees(z));
     }
 
     public static IBakedModel getBakedModel(ResourceLocation location) {

@@ -14,7 +14,7 @@ import red.felnull.otyacraftengine.util.ServerHelper;
 public class ServerHandler {
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
-        WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
+     //   WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
     }
 
     @SubscribeEvent

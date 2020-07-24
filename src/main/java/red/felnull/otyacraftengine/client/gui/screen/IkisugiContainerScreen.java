@@ -1,11 +1,15 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.text.ITextComponent;
+
+import java.nio.file.Path;
+import java.util.List;
 
 public abstract class IkisugiContainerScreen<T extends Container> extends ContainerScreen<T> {
     public IkisugiContainerScreen(T screenContainer, PlayerInventory playerInventory, ITextComponent titleIn) {
@@ -70,6 +74,18 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
         this.tickByIKSG();
     }
 
+    //dropAndDrag
+    @Override
+    public void func_230476_a_(List<Path> dragFiles) {
+        this.dropAndDragByIKSG(dragFiles);
+    }
+
+    //drawString
+    @Override
+    public void func_238476_c_(MatrixStack matx, FontRenderer font, String text, int x, int y, int color) {
+        this.drawStringByIKSG(matx, font, text, x, y, color);
+    }
+
     //初期化
     public void initByIKSG() {
         super.func_231160_c_();
@@ -132,5 +148,15 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     //タイトル
     public ITextComponent getTitleByIKSG() {
         return this.field_230704_d_;
+    }
+
+    //ウィンドウにドロップアンドドラッグされたとき
+    public void dropAndDragByIKSG(List<Path> dragFiles) {
+        super.func_230476_a_(dragFiles);
+    }
+
+    //文字を描画
+    public void drawStringByIKSG(MatrixStack matx, FontRenderer font, String text, int x, int y, int color) {
+        super.func_238476_c_(matx, font, text, x, y, color);
     }
 }

@@ -27,6 +27,13 @@ public class TextureHelper {
     private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
     private static Map<BufferedImage, ResourceLocation> PICTUER_BFI_LOCATION = new HashMap<BufferedImage, ResourceLocation>();
 
+    private static final ResourceLocation LOADING_1 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_1.png");
+    private static final ResourceLocation LOADING_2 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_2.png");
+    private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
+    private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
+
+    public static int loadingPaatune;
+
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
     }
@@ -80,5 +87,18 @@ public class TextureHelper {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public static ResourceLocation getLoadingIconTextuer() {
+        if (loadingPaatune == 0) {
+            return LOADING_1;
+        } else if (loadingPaatune == 1) {
+            return LOADING_2;
+        } else if (loadingPaatune == 2) {
+            return LOADING_3;
+        } else if (loadingPaatune == 3) {
+            return LOADING_4;
+        }
+        return LOADING_1;
     }
 }

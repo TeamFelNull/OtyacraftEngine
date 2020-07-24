@@ -32,7 +32,7 @@ public class WorldDataManager {
     public static void init() {
         INSTANCE = new WorldDataManager();
     }
-
+/*
     public void sync(MinecraftServer ms) {
         for (String pl : ms.getPlayerList().getOnlinePlayerNames()) {
             ServerPlayerEntity spe = ms.getPlayerList().getPlayerByUsername(pl);
@@ -44,7 +44,7 @@ public class WorldDataManager {
             }
         }
     }
-
+*/
     public void load(MinecraftServer ms, ServerPlayerEntity player) {
         if (player == null) {
             OtyacraftEngine.LOGGER.info("loading data");
