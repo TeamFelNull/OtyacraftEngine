@@ -23,5 +23,19 @@
   "gui.create": "作成",
   "gui.training": "調教",
 
+  "_comment": "Log",
+  "rslog.start.success": "%sが正常に開始しました",
+  "rslog.start.failure": "%sの開始に失敗しました: %s",
+  "rslog.exception": "例外: %s",
+  "rslog.sending": "送信",
+  "rslog.receiving": "受信",
+  "rslog.success": "成功",
+  "rslog.failure": "失敗",
+  "rslog.err.excessSimultaneousSending": "同時送信の超過",
+  "rslog.err.nulldata": "送信データがNull",
+  "rslog.finish.success": "%sが正常に終了しました ,経過:%s ,速度:%s",
+  "rslog.finish.failure": "%sの終了に失敗しました ,経過:%s",
+  "rslog.progress": "送信済み:%s 残り:%s 経過:%s 最後の応答からの経過:%s",
+
   "_comment": "Last"
 }

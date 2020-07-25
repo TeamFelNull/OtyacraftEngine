@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class FileLoadHelper {
     public static void createFolder(Path path) {
+        if (path == null)
+            return;
+
         path.toFile().mkdirs();
     }
 
@@ -74,6 +77,18 @@ public class FileLoadHelper {
                 pw.println(maps.getKey() + ":" + maps.getValue());
             });
 
+            pw.close();
+        } catch (IOException e) {
+            OtyacraftEngine.LOGGER.error("Failed to Write the Txt File : " + e.getLocalizedMessage());
+        }
+    }
+
+    public static void txtWriter(String text, Path path) {
+        createFolder(path.getParent());
+        try {
+            FileWriter fw = new FileWriter(path.toString(), false);
+            PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+            pw.println(text);
             pw.close();
         } catch (IOException e) {
             OtyacraftEngine.LOGGER.error("Failed to Write the Txt File : " + e.getLocalizedMessage());

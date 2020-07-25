@@ -23,5 +23,19 @@
   "gui.create": "Create",
   "gui.training": "Training",
 
+  "_comment": "Log",
+  "rslog.start.success": "Successfully start %s",
+  "rslog.start.failure": "Failed start %s: %s",
+  "rslog.exception": "Exception: %s",
+  "rslog.sending": "Sending",
+  "rslog.receiving": "Receiving",
+  "rslog.success": "Success",
+  "rslog.failure": "Failure",
+  "rslog.err.excessSimultaneousSending": "Excess of simultaneous sending",
+  "rslog.err.nulldata": "Null Sender Data",
+  "rslog.finish.success": "The %s was completed successfully ,Elapsed:%s ,Speed:%s",
+  "rslog.finish.failure": "Failed to finish successfully %s ,Elapsed:%s",
+  "rslog.progress": "Sent:%s Remaining:%s Progress:%s LastResponseProgress:%s",
+
   "_comment": "Last"
 }

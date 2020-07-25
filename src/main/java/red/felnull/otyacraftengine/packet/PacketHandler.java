@@ -7,6 +7,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.handler.ClientPlayerDataSyncMessageHandler;
 import red.felnull.otyacraftengine.client.handler.ClientTileEntitySyncMessageHandler;
 import red.felnull.otyacraftengine.client.handler.ServerToResponseMessageHandler;
+import red.felnull.otyacraftengine.handler.ClientDataSendMessageHandler;
 import red.felnull.otyacraftengine.handler.ClientToResponseMessageHandler;
 
 public class PacketHandler {
@@ -28,6 +29,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(next(), ServerToResponseMessage.class, ServerToResponseMessage::encodeMessege, ServerToResponseMessage::decodeMessege, ServerToResponseMessageHandler::reversiveMessage);
         //クライアントプレイヤーデーター同期
         INSTANCE.registerMessage(next(), ClientPlayerDataSyncMessage.class, ClientPlayerDataSyncMessage::encodeMessege, ClientPlayerDataSyncMessage::decodeMessege, ClientPlayerDataSyncMessageHandler::reversiveMessage);
-
+        //クライアントからサーバーへデータ送信
+        INSTANCE.registerMessage(next(), ClientDataSendMessage.class, ClientDataSendMessage::encodeMessege, ClientDataSendMessage::decodeMessege, ClientDataSendMessageHandler::reversiveMessage);
     }
 }

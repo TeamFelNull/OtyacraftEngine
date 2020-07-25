@@ -5,13 +5,17 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
+import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.util.TextureHelper;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
@@ -120,4 +124,14 @@ public class ClientHandler {
         }
     }
 
+    private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
+
+    @SubscribeEvent
+    public static void onServerResponse(ResponseEvent.Server e) {
+        if (e.getLocation().equals(CLIENT_RESPONSE)) {
+            if (e.getId() == 0) {
+                ClientDataSender.response(e.getMessage());
+            }
+        }
+    }
 }

@@ -1,23 +1,24 @@
 package red.felnull.otyacraftengine.item;
 
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.client.data.ClientDataSender;
+import red.felnull.otyacraftengine.util.FileLoadHelper;
 
-//@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+import java.nio.file.Paths;
+import java.util.UUID;
+
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestItem extends Item implements IDetailedInfomationItem {
 
     public TestItem(Properties properties) {
@@ -31,8 +32,7 @@ public class TestItem extends Item implements IDetailedInfomationItem {
         ItemStack item = playerIn.getHeldItem(hand);
 
         if (!worldIn.isRemote) {
-        //    playerIn.sendStatusMessage(new StringTextComponent(X_AXIS_AABB.toString()), false);
-
+            ClientDataSender.sending(UUID.randomUUID().toString(), new ResourceLocation(OtyacraftEngine.MODID, "test"), "ikisugi", FileLoadHelper.fileBytesReader(Paths.get("C:\\dev\\minecraft\\b\\ホラホラ.jpg")));
         }
 
         return ActionResult.func_233538_a_(item, worldIn.isRemote());
