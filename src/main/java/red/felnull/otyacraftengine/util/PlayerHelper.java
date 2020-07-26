@@ -5,7 +5,6 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.SkullTileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -21,10 +20,6 @@ public class PlayerHelper {
 
     public static String getUserName(PlayerEntity pl) {
         return pl.getGameProfile().getName();
-    }
-
-    public static String getUUID(MinecraftServer ms, String name) {
-        return getUUID(ms.getPlayerList().getPlayerByUsername(name));
     }
 
     public static String getUUID(PlayerEntity pl) {

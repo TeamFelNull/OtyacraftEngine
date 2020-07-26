@@ -70,11 +70,8 @@ public class ClientDataSender extends Thread {
                 sentFinish(SendReceiveLogger.Result.FAILURE);
                 return;
             }
-
             this.logger.addStartLogLine();
-
             boolean frist = true;
-
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
             for (int i = 0; i < soundbytelengt; i += sendbyte) {
@@ -99,7 +96,7 @@ public class ClientDataSender extends Thread {
                 while (!response) {
                     if (System.currentTimeMillis() - logTime >= 3000) {
                         logTime = System.currentTimeMillis();
-                        this.logger.addProgress(dataCont, sendingData.length - dataCont, System.currentTimeMillis() - fristTime, System.currentTimeMillis() - lastResponseTime);
+                        this.logger.addProgress(dataCont, sendingData.length - dataCont, System.currentTimeMillis() - fristTime, System.currentTimeMillis() - lastResponseTime, SendReceiveLogger.SndOrRec.SEND);
                     }
 
                     if (mc.player == null) {

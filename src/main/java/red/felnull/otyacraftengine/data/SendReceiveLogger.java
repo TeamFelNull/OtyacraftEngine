@@ -30,8 +30,14 @@ public class SendReceiveLogger {
         addLogLine(new TranslationTextComponent("rslog.exception", ex.toString()));
     }
 
-    public void addProgress(int sent, int remaing, long progress, long last) {
-        addLogLine(new TranslationTextComponent("rslog.progress", sent + "byte", remaing + "byte", progress + "ms", last + "ms"));
+    public void addProgress(int sent, int remaing, long progress, long last, SndOrRec sr) {
+        if (sr == SndOrRec.SEND) {
+            addLogLine(new TranslationTextComponent("rslog.sendProgress", sent + "byte", remaing + "byte", progress + "ms", last + "ms"));
+        } else if (sr == SndOrRec.RECEIVE) {
+            addLogLine(new TranslationTextComponent("rslog.receiveProgress", sent + "byte", remaing + "byte", progress + "ms", last + "ms"));
+        }
+
+
     }
 
     public void addStartFailureLogLine(ITextComponent st) {

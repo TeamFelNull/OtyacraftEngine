@@ -1,20 +1,23 @@
 package red.felnull.otyacraftengine.handler;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.WorldDataEvent;
-import red.felnull.otyacraftengine.data.WorldDataManager;
-import red.felnull.otyacraftengine.util.ServerHelper;
+import red.felnull.otyacraftengine.data.ServerDataSender;
+import red.felnull.otyacraftengine.util.PlayerHelper;
 
 public class ServerHandler {
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
-     //   WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
+        //   WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
     }
 
     @SubscribeEvent
@@ -47,4 +50,14 @@ public class ServerHandler {
         WorldDataEvent.save(e.getWorld().getWorld().getServer(), null, true);
     }
 
+    private static final ResourceLocation SERVER_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "server_response");
+
+    @SubscribeEvent
+    public static void onClientResponse(ResponseEvent.Client e) {
+        if (e.getLocation().equals(SERVER_RESPONSE)) {
+            if (e.getId() == 0) {
+                ServerDataSender.response(PlayerHelper.getUUID(e.getPlayer()), e.getMessage());
+            }
+        }
+    }
 }

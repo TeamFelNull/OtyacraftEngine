@@ -6,11 +6,18 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.data.ServerDataSender;
+import red.felnull.otyacraftengine.util.FileLoadHelper;
+import red.felnull.otyacraftengine.util.PlayerHelper;
+
+import java.nio.file.Paths;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestItem extends Item implements IDetailedInfomationItem {
@@ -25,12 +32,10 @@ public class TestItem extends Item implements IDetailedInfomationItem {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
         ItemStack item = playerIn.getHeldItem(hand);
 
-
         if (!worldIn.isRemote) {
+            ServerDataSender.sending(PlayerHelper.getUUID(playerIn), UUID.randomUUID().toString(), new ResourceLocation(OtyacraftEngine.MODID, "test"), "ikisugi", FileLoadHelper.fileBytesReader(Paths.get("C:\\dev\\minecraft\\b\\ホラホラ.jpg")));
             //   ClientDataSender.sending(UUID.randomUUID().toString(), new ResourceLocation(OtyacraftEngine.MODID, "test"), "ikisugi", FileLoadHelper.fileBytesReader(Paths.get("C:\\dev\\minecraft\\b\\ホラホラ.jpg")));
-            // playerIn.sendStatusMessage(new StringTextComponent(ClientUtil.getFps() + "fps"), false);
         }
-
         return ActionResult.func_233538_a_(item, worldIn.isRemote());
     }
 

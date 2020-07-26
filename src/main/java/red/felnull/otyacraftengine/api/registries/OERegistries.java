@@ -13,6 +13,7 @@ public class OERegistries {
     public static Map<ResourceLocation, PlayerWorldData> PLAYER_WORLD_DATA = new HashMap<ResourceLocation, PlayerWorldData>();
     public static Map<ResourceLocation, WorldData> WORLD_DATA = new HashMap<ResourceLocation, WorldData>();
     public static Map<ResourceLocation, String> SERVER_RECEVED_PATH = new HashMap<ResourceLocation, String>();
+    public static Map<ResourceLocation, String> CLIENT_RECEVED_PATH = new HashMap<ResourceLocation, String>();
 
     public static void init() {
         registrierModColor("minecraft", 43520);
@@ -20,7 +21,7 @@ public class OERegistries {
         registrierModColor(OtyacraftEngine.MODID, 5635925);
         //  registrierPlayerData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestPlayerWorldData());
         // registrierWorldData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestWorldData());
-        registrierServerRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), OtyacraftEngine.MODID + "/testrec");
+        registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), OtyacraftEngine.MODID + "/testrecikuyo");
     }
 
     public static void registrierModColor(String modid, int color) {
@@ -37,5 +38,9 @@ public class OERegistries {
 
     public static void registrierServerRecevedPath(ResourceLocation location, String path) {
         OERegistries.SERVER_RECEVED_PATH.put(location, path);
+    }
+
+    public static void registrierClientRecevedPath(ResourceLocation location, String path) {
+        OERegistries.CLIENT_RECEVED_PATH.put(location, path);
     }
 }

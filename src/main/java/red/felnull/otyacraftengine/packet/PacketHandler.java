@@ -6,6 +6,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.handler.ClientPlayerDataSyncMessageHandler;
 import red.felnull.otyacraftengine.client.handler.ClientTileEntitySyncMessageHandler;
+import red.felnull.otyacraftengine.client.handler.ServerDataSendMessageHandler;
 import red.felnull.otyacraftengine.client.handler.ServerToResponseMessageHandler;
 import red.felnull.otyacraftengine.handler.ClientDataSendMessageHandler;
 import red.felnull.otyacraftengine.handler.ClientToResponseMessageHandler;
@@ -31,5 +32,8 @@ public class PacketHandler {
         INSTANCE.registerMessage(next(), ClientPlayerDataSyncMessage.class, ClientPlayerDataSyncMessage::encodeMessege, ClientPlayerDataSyncMessage::decodeMessege, ClientPlayerDataSyncMessageHandler::reversiveMessage);
         //クライアントからサーバーへデータ送信
         INSTANCE.registerMessage(next(), ClientDataSendMessage.class, ClientDataSendMessage::encodeMessege, ClientDataSendMessage::decodeMessege, ClientDataSendMessageHandler::reversiveMessage);
+        //サーバーからクライアントへデータ送信
+        INSTANCE.registerMessage(next(), ServerDataSendMessage.class, ServerDataSendMessage::encodeMessege, ServerDataSendMessage::decodeMessege, ServerDataSendMessageHandler::reversiveMessage);
+
     }
 }

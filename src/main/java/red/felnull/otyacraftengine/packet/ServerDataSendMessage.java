@@ -24,11 +24,11 @@ public class ServerDataSendMessage {
         this.frist = frist;
     }
 
-    public static ClientDataSendMessage decodeMessege(PacketBuffer buffer) {
-        return new ClientDataSendMessage(buffer.readString(32767), new ResourceLocation(buffer.readString(32767)), buffer.readString(32767), buffer.readByteArray(), buffer.readInt(), buffer.readBoolean());
+    public static ServerDataSendMessage decodeMessege(PacketBuffer buffer) {
+        return new ServerDataSendMessage(buffer.readString(32767), new ResourceLocation(buffer.readString(32767)), buffer.readString(32767), buffer.readByteArray(), buffer.readInt(), buffer.readBoolean());
     }
 
-    public static void encodeMessege(ClientDataSendMessage messege, PacketBuffer buffer) {
+    public static void encodeMessege(ServerDataSendMessage messege, PacketBuffer buffer) {
         buffer.writeString(messege.uuid);
         buffer.writeString(messege.location.toString());
         buffer.writeString(messege.name);

@@ -35,9 +35,10 @@
   "rslog.err.nulldata": "送信データがNull",
   "rslog.finish.success": "%sが正常に終了しました ,経過:%s ,速度:%s",
   "rslog.finish.failure": "%sの終了に失敗しました ,経過:%s",
-  "rslog.progress": "送信済み:%s 残り:%s 経過:%s 最後の応答からの経過:%s",
+  "rslog.sendProgress": "送信済み:%s 残り:%s 経過:%s 最後の応答からの経過:%s",
+  "rslog.receiveProgress": "受信済み:%s 残り:%s 経過:%s 最後の受信からの経過:%s",
   "rslog.err.playerExitedWorld": "プレイヤーがワールドから抜けました",
-  "rslog.err.stop": "ストップしました",
+  "rslog.err.stop": "ストップ",
   "rslog.err.timeout": "タイムアウト",
 
   "_comment": "Last"

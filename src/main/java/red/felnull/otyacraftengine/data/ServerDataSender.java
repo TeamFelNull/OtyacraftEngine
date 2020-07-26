@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.data;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.network.PacketDistributor;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.packet.PacketHandler;
@@ -26,6 +28,7 @@ public class ServerDataSender extends Thread {
     private boolean stop;
     private long lastResponseTime;
     private final long fristTime;
+    private final SendReceiveLogger logger;
 
     public ServerDataSender(String playerUUID, String uuid, ResourceLocation location, String name, byte[] data) {
         this.playerUUID = playerUUID;
@@ -36,6 +39,8 @@ public class ServerDataSender extends Thread {
         this.logTime = System.currentTimeMillis();
         this.lastResponseTime = System.currentTimeMillis();
         this.fristTime = System.currentTimeMillis();
+        String det = "PlayerUUID:" + playerUUID + " UUID:" + uuid + " Location:" + location.toString() + " Name:" + name + " Size:" + (data == null ? "0" : data.length) + "byte";
+        this.logger = new SendReceiveLogger(location.toString(), det, Dist.DEDICATED_SERVER, SendReceiveLogger.SndOrRec.SEND);
     }
 
     public void sendStart() {
@@ -45,6 +50,9 @@ public class ServerDataSender extends Thread {
         if (SENDS.get(playerUUID).size() >= max) {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
             this.sendingData = null;
+            this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.excessSimultaneousSending"));
+            this.logger.addFinishLogLine(SendReceiveLogger.Result.FAILURE, System.currentTimeMillis() - fristTime, (sendingData == null ? 0 : sendingData.length));
+            this.logger.createLog();
             return;
         }
         SENDS.get(playerUUID).put(uuid, this);
@@ -52,16 +60,20 @@ public class ServerDataSender extends Thread {
     }
 
     public void sentFinish(SendReceiveLogger.Result result) {
+        this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, sendingData.length);
         sendingData = null;
         SENDS.get(playerUUID).remove(uuid);
+        this.logger.createLog();
     }
 
     public void run() {
         try {
             if (sendingData == null) {
                 OtyacraftEngine.LOGGER.info("Null Sender Data : " + location.toString() + " : " + this.name);
+                this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.nulldata"));
                 sentFinish(SendReceiveLogger.Result.FAILURE);
             }
+            this.logger.addStartLogLine();
             boolean frist = true;
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
@@ -85,19 +97,23 @@ public class ServerDataSender extends Thread {
                 time = System.currentTimeMillis();
                 while (!response) {
                     if (System.currentTimeMillis() - logTime >= 3000) {
+                        this.logger.addProgress(dataCont, sendingData.length - dataCont, System.currentTimeMillis() - fristTime, System.currentTimeMillis() - lastResponseTime, SendReceiveLogger.SndOrRec.SEND);
                         logTime = System.currentTimeMillis();
                     }
 
                     if (!ServerHelper.isOnlinePlayer(playerUUID)) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
                         sentFinish(SendReceiveLogger.Result.FAILURE);
                         return;
                     }
 
                     if (stop) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
                         sentFinish(SendReceiveLogger.Result.FAILURE);
                         return;
                     }
                     if (System.currentTimeMillis() - time >= 10000) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
                         sentFinish(SendReceiveLogger.Result.FAILURE);
                         return;
                     }
@@ -106,9 +122,8 @@ public class ServerDataSender extends Thread {
                 response = false;
                 lastResponseTime = System.currentTimeMillis();
             }
-
-
         } catch (Exception ex) {
+            this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
             sentFinish(SendReceiveLogger.Result.FAILURE);
         }
@@ -119,5 +134,10 @@ public class ServerDataSender extends Thread {
         if (SENDS.containsKey(playerUUID) && SENDS.get(playerUUID).containsKey(uuid)) {
             SENDS.get(playerUUID).get(uuid).response = true;
         }
+    }
+
+    public static void sending(String playerUUID, String uuid, ResourceLocation location, String name, byte[] data) {
+        ServerDataSender sds = new ServerDataSender(playerUUID, uuid, location, name, data);
+        sds.sendStart();
     }
 }

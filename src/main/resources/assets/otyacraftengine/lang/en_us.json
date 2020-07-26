@@ -35,9 +35,10 @@
   "rslog.err.nulldata": "Null Sender Data",
   "rslog.finish.success": "The %s was completed successfully ,Elapsed:%s ,Speed:%s",
   "rslog.finish.failure": "Failed to finish successfully %s ,Elapsed:%s",
-  "rslog.progress": "Sent:%s Remaining:%s Progress:%s LastResponseProgress:%s",
+  "rslog.sendProgress": "Sent:%s Remaining:%s Progress:%s LastResponseProgress:%s",
+  "rslog.receiveProgress": "Receive:%s Remaining:%s Progress:%s LastReceptionProgress:%s",
   "rslog.err.playerExitedWorld": "Player exited the world",
-  "rslog.err.stop": "Was stopped",
+  "rslog.err.stop": "Stopped",
   "rslog.err.timeout": "Timed out",
 
 
