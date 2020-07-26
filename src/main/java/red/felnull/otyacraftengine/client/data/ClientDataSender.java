@@ -27,6 +27,7 @@ public class ClientDataSender extends Thread {
     private long fristTime;
     private long logTime = System.currentTimeMillis();
     private long lastResponseTime;
+    private long time;
 
     public ClientDataSender(String uuid, ResourceLocation location, String name, byte[] data) {
         this.name = name;
@@ -97,24 +98,32 @@ public class ClientDataSender extends Thread {
                 PacketHandler.INSTANCE.sendToServer(sendpacet);
                 sndingbyte = null;
                 frist = false;
-
+                time = System.currentTimeMillis();
 
                 while (!response) {
                     if (System.currentTimeMillis() - logTime >= 3000) {
                         logTime = System.currentTimeMillis();
                         this.logger.addProgress(dataCont, sendingData.length - dataCont, System.currentTimeMillis() - fristTime, System.currentTimeMillis() - lastResponseTime);
                     }
-               /* if (mc.player == null || stop || System.currentTimeMillis() - time >= 10000) {
-                    sentFinish();
-                    return;
-                }
-                */
 
-                    try {
-                        sleep(1);
-                    } catch (InterruptedException ex) {
-                        this.logger.addExceptionLogLine(ex);
+                    if (mc.player == null) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
+                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        return;
                     }
+
+                    if (stop) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
+                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        return;
+                    }
+
+                    if (System.currentTimeMillis() - time >= 10000) {
+                        this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
+                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        return;
+                    }
+                    sleep(1);
                 }
                 response = false;
                 lastResponseTime = System.currentTimeMillis();

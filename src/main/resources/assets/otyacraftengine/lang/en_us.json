@@ -36,6 +36,10 @@
   "rslog.finish.success": "The %s was completed successfully ,Elapsed:%s ,Speed:%s",
   "rslog.finish.failure": "Failed to finish successfully %s ,Elapsed:%s",
   "rslog.progress": "Sent:%s Remaining:%s Progress:%s LastResponseProgress:%s",
+  "rslog.err.playerExitedWorld": "Player exited the world",
+  "rslog.err.stop": "Was stopped",
+  "rslog.err.timeout": "Timed out",
+
 
   "_comment": "Last"
 }
