@@ -51,7 +51,7 @@ public class TextureHelper {
             return mc.player.getLocationSkin();
         }
         ResourceLocation faselocation;
-        GameProfile GP = PlayerHelper.getPlayerTextuerProfile(name);
+        GameProfile GP = PlayerHelper.getPlayerProfile(name);
         Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().loadSkinFromCache(GP);
         faselocation = map.containsKey(type) ? mc.getSkinManager().loadSkin(map.get(type), type) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(GP));
         return faselocation;

@@ -69,7 +69,7 @@ public class ServerDataReceiver extends Thread {
                     cont = RECEIVS.get(playerUUID).get(uuid).getCont();
                     time = System.currentTimeMillis();
                 }
-                sleep(10);
+                sleep(1);
             }
             FileLoadHelper.fileBytesWriter(RECEIVS.get(playerUUID).get(uuid).getBytes(), PathUtil.getWorldSaveDataPath().resolve(Paths.get(OERegistries.SERVER_RECEVED_PATH.get(location)).resolve(name)));
         } catch (Exception ex) {

@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine;
 
+import cpw.mods.modlauncher.Launcher;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -10,7 +11,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
-import red.felnull.otyacraftengine.client.util.TextureHelper;
 import red.felnull.otyacraftengine.proxy.ClientProxy;
 import red.felnull.otyacraftengine.proxy.CommonProxy;
 
@@ -32,6 +32,7 @@ public class OtyacraftEngine {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+
 
 
         ClientConfig.init();

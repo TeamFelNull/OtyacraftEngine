@@ -31,7 +31,7 @@ public class PlayerHelper {
         return PlayerEntity.getUUID(pl.getGameProfile()).toString();
     }
 
-    public static GameProfile getPlayerTextuerProfile(String name) {
+    public static GameProfile getPlayerProfile(String name) {
         if (PLAYERGAMEPROFILES.containsKey(name))
             return PLAYERGAMEPROFILES.get(name);
 
@@ -42,6 +42,10 @@ public class PlayerHelper {
         GPL.start();
 
         return gp;
+    }
+
+    public static ServerPlayerEntity getPlayerByUUID(String uuid) {
+        return ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(uuid));
     }
 
     public static void grantAdvancement(ResourceLocation rl, ServerPlayerEntity spl) {

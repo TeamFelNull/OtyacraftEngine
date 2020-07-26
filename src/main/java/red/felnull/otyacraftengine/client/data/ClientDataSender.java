@@ -15,17 +15,17 @@ import java.util.Map;
 public class ClientDataSender extends Thread {
     public static int max = 5;
     private static Map<String, ClientDataSender> SENDS = new HashMap<String, ClientDataSender>();
-    private String name;
-    private String uuid;
-    private ResourceLocation location;
+    private final String name;
+    private final String uuid;
+    private final ResourceLocation location;
     private byte[] sendingData;
     public int dataCont;
     public boolean response = false;
     private boolean stop;
     private static Minecraft mc = Minecraft.getInstance();
-    private SendReceiveLogger logger;
-    private long fristTime;
-    private long logTime = System.currentTimeMillis();
+    private final SendReceiveLogger logger;
+    private final long fristTime;
+    private long logTime;
     private long lastResponseTime;
     private long time;
 
@@ -78,10 +78,6 @@ public class ClientDataSender extends Thread {
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
             for (int i = 0; i < soundbytelengt; i += sendbyte) {
-                if (mc.player == null || stop) {
-                    sentFinish(SendReceiveLogger.Result.FAILURE);
-                    return;
-                }
                 byte[] sndingbyte = new byte[soundbytelengt - i >= sendbyte ? sendbyte : soundbytelengt - i];
                 for (int c = 0; c < sendbyte; c++) {
                     if ((i + c) < soundbytelengt) {
