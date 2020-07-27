@@ -5,7 +5,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import red.felnull.otyacraftengine.client.util.ScreenHelper;
+import red.felnull.otyacraftengine.client.util.ScreenUtil;
 
 public class UnimplementedScreen extends IkisugiScreen {
     protected final ITextComponent name;
@@ -42,6 +42,6 @@ public class UnimplementedScreen extends IkisugiScreen {
 
     @Override
     public boolean isPauseScreenByIKSG() {
-        return lastScreen != null ? ScreenHelper.isPauseScreen(lastScreen) : false;
+        return lastScreen != null ? ScreenUtil.isPauseScreen(lastScreen) : false;
     }
 }

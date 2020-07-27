@@ -11,6 +11,7 @@ public class ClientConfig {
     public static ConfigValue<Boolean> ToolTipModName;
     public static ConfigValue<Boolean> ToolTipTag;
     public static ConfigValue<Boolean> ToolTipDetailedInformation;
+    public static ConfigValue<Boolean> DeleteUnnecessaryTextureCash;
 
     public static void init() {
         Pair<ConfigLoder, ForgeConfigSpec> common_config = new ForgeConfigSpec.Builder().configure(ConfigLoder::new);
@@ -21,9 +22,12 @@ public class ClientConfig {
         public ConfigLoder(ForgeConfigSpec.Builder builder) {
             OtyacraftEngine.LOGGER.info("Loading Client Config");
             builder.push("ToolTip");
-            ToolTipModName = builder.define("ModName", true);
-            ToolTipTag = builder.define("Tag", true);
-            ToolTipDetailedInformation = builder.define("DetailedInformation", true);
+            ToolTipModName = builder.define("Show ModName", true);
+            ToolTipTag = builder.define("Show Tag", true);
+            ToolTipDetailedInformation = builder.define("Show DetailedInformation", true);
+            builder.pop();
+            builder.push("Data");
+            DeleteUnnecessaryTextureCash = builder.define("Delete Unnecessary Texture Cash at startup", true);
             builder.pop();
         }
     }

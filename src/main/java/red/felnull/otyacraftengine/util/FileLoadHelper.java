@@ -26,6 +26,10 @@ public class FileLoadHelper {
         }
     }
 
+    public static boolean deleteFile(Path path) {
+        return deleteFile(path.toFile());
+    }
+
     public static void fileBytesWriter(byte[] bytedatas, Path path) {
         createFolder(path.getParent());
         try {
@@ -35,8 +39,8 @@ public class FileLoadHelper {
         }
     }
 
-    public static void deleteFile(File file) {
-        file.delete();
+    public static boolean deleteFile(File file) {
+        return file.delete();
     }
 
     public static void fileNBTWriter(CompoundNBT nbt, Path path) {

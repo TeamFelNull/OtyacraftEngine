@@ -11,6 +11,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.WorldDataEvent;
+import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ServerDataSender;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
@@ -57,6 +58,10 @@ public class ServerHandler {
         if (e.getLocation().equals(SERVER_RESPONSE)) {
             if (e.getId() == 0) {
                 ServerDataSender.response(PlayerHelper.getUUID(e.getPlayer()), e.getMessage());
+            }
+        } else if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
+            if (e.getId() == 0) {
+                ReceiveTextureLoder.instance().requestedTextuerSendServer(e.getData().getString("index"), e.getPlayer(), new ResourceLocation(e.getData().getString("location")), e.getMessage());
             }
         }
     }

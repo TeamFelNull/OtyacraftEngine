@@ -3,6 +3,8 @@ package red.felnull.otyacraftengine.data;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import red.felnull.otyacraftengine.api.event.ReceiverEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.util.FileLoadHelper;
 import red.felnull.otyacraftengine.util.PathUtil;
@@ -11,6 +13,7 @@ import red.felnull.otyacraftengine.util.ServerHelper;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ServerDataReceiver extends Thread {
     private static Map<String, Map<String, DataReceiverBuffer>> RECEIVS = new HashMap<String, Map<String, DataReceiverBuffer>>();
@@ -42,11 +45,14 @@ public class ServerDataReceiver extends Thread {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(playerUUID).get(uuid).getCont());
         RECEIVS.get(playerUUID).remove(uuid);
         this.logger.createLog();
+        MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pos(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
+
     }
 
     public void run() {
         try {
             this.logger.addStartLogLine();
+            MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pre(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
             long time = System.currentTimeMillis();
             while (!RECEIVS.get(playerUUID).get(uuid).isPerfectByte()) {
                 if (System.currentTimeMillis() - logTime >= 3000) {

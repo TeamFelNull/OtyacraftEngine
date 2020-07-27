@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.SenderEvent;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
 import red.felnull.otyacraftengine.packet.ClientDataSendMessage;
 import red.felnull.otyacraftengine.packet.PacketHandler;
@@ -59,6 +61,7 @@ public class ClientDataSender extends Thread {
         sendingData = null;
         SENDS.remove(uuid);
         this.logger.createLog();
+        MinecraftForge.EVENT_BUS.post(new SenderEvent.Client.Pos(uuid, location, name, result));
     }
 
 
@@ -71,6 +74,7 @@ public class ClientDataSender extends Thread {
                 return;
             }
             this.logger.addStartLogLine();
+            MinecraftForge.EVENT_BUS.post(new SenderEvent.Client.Pre(uuid, location, name));
             boolean frist = true;
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;

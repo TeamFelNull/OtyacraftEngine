@@ -3,8 +3,10 @@ package red.felnull.otyacraftengine.data;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.PacketDistributor;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.SenderEvent;
 import red.felnull.otyacraftengine.packet.PacketHandler;
 import red.felnull.otyacraftengine.packet.ServerDataSendMessage;
 import red.felnull.otyacraftengine.util.PlayerHelper;
@@ -12,6 +14,7 @@ import red.felnull.otyacraftengine.util.ServerHelper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ServerDataSender extends Thread {
     public static int max = 5;
@@ -64,6 +67,7 @@ public class ServerDataSender extends Thread {
         sendingData = null;
         SENDS.get(playerUUID).remove(uuid);
         this.logger.createLog();
+        MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pos(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
     }
 
     public void run() {
@@ -74,6 +78,7 @@ public class ServerDataSender extends Thread {
                 sentFinish(SendReceiveLogger.Result.FAILURE);
             }
             this.logger.addStartLogLine();
+            MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pre(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
             boolean frist = true;
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;

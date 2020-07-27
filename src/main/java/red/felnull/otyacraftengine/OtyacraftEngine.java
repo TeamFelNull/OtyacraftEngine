@@ -44,7 +44,6 @@ public class OtyacraftEngine {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         ClientProxy.clientInit();
-
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

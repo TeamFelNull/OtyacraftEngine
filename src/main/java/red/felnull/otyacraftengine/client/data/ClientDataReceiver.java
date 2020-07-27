@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import red.felnull.otyacraftengine.api.event.ReceiverEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.data.DataReceiverBuffer;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
@@ -39,11 +41,13 @@ public class ClientDataReceiver extends Thread {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(uuid).getCont());
         RECEIVS.remove(uuid);
         this.logger.createLog();
+        MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Client.Pos(uuid, location, name, result));
     }
 
     public void run() {
         try {
             this.logger.addStartLogLine();
+            MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Client.Pre(uuid, location, name));
             long time = System.currentTimeMillis();
             while (!RECEIVS.get(uuid).isPerfectByte()) {
                 if (System.currentTimeMillis() - logTime >= 3000) {

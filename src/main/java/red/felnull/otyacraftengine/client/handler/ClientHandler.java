@@ -9,14 +9,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.ReceiverEvent;
 import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
-import red.felnull.otyacraftengine.client.util.TextureHelper;
+import red.felnull.otyacraftengine.client.util.RenderUtil;
+import red.felnull.otyacraftengine.client.util.TextureUtil;
+import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.ModUtil;
@@ -115,10 +119,10 @@ public class ClientHandler {
         }
         loadingCont++;
         if (loadingCont >= 4) {
-            if (TextureHelper.loadingPaatune >= 3) {
-                TextureHelper.loadingPaatune = 0;
+            if (TextureUtil.loadingPaatune >= 3) {
+                TextureUtil.loadingPaatune = 0;
             } else {
-                TextureHelper.loadingPaatune++;
+                TextureUtil.loadingPaatune++;
             }
             loadingCont = 0;
         }
@@ -132,6 +136,25 @@ public class ClientHandler {
             if (e.getId() == 0) {
                 ClientDataSender.response(e.getMessage());
             }
+        } else if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
+            if (e.getId() == 0) {
+                ReceiveTextureLoder.instance().CLIENT_INDEX_UUID.put(e.getMessage(), e.getData().getString("index"));
+            } else if (e.getId() == 1) {
+                ReceiveTextureLoder.instance().updateTextuerClient(new ResourceLocation(e.getMessage()), e.getData().getString("name"));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRender(RenderGameOverlayEvent e) {
+        RenderUtil.guiBindAndBlit(TextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "wa"), e.getMatrixStack(), 0, 0, 0, 0, 256, 256, 256, 256);
+    }
+
+
+    @SubscribeEvent
+    public static void onReceiverData(ReceiverEvent.Client.Pos e) {
+        if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
+            ReceiveTextureLoder.instance().requestedTextuerReceive(e.getUuid(), e.getName());
         }
     }
 }

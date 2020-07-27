@@ -11,26 +11,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.util.PictuerUtil;
+import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.util.FileLoadHelper;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-public class TextureHelper {
+public class TextureUtil {
     private static Minecraft mc = Minecraft.getInstance();
 
     private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
-    private static Map<BufferedImage, ResourceLocation> PICTUER_BFI_LOCATION = new HashMap<BufferedImage, ResourceLocation>();
 
     private static final ResourceLocation LOADING_1 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_1.png");
     private static final ResourceLocation LOADING_2 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_2.png");
     private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
     private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
+
+    private static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
 
     public static int loadingPaatune;
 
@@ -55,22 +56,6 @@ public class TextureHelper {
         Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().loadSkinFromCache(GP);
         faselocation = map.containsKey(type) ? mc.getSkinManager().loadSkin(map.get(type), type) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(GP));
         return faselocation;
-    }
-
-    public static ResourceLocation getPictureImageTexture(BufferedImage data) {
-        if (PICTUER_BFI_LOCATION.containsKey(data)) {
-            PICTUER_BFI_LOCATION.get(data);
-        }
-        ResourceLocation imagelocation = new ResourceLocation(OtyacraftEngine.MODID, "pictuer/" + UUID.randomUUID().toString());
-        try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(PictuerUtil.geByteImage(data));
-            NativeImage NI = NativeImage.read(bis);
-            Minecraft.getInstance().textureManager.loadTexture(imagelocation, new DynamicTexture(NI));
-            PICTUER_BFI_LOCATION.put(data, imagelocation);
-            return imagelocation;
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     public static ResourceLocation getPictureImageTexture(byte[] data) {
@@ -100,5 +85,24 @@ public class TextureHelper {
             return LOADING_4;
         }
         return LOADING_1;
+    }
+
+
+    public static ResourceLocation getReceiveTexture(ResourceLocation location, String name) {
+        String WORLDNAME_AND_PATH = ClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
+
+        if (ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.containsKey(WORLDNAME_AND_PATH)) {
+            return ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.get(WORLDNAME_AND_PATH);
+        }
+
+        String filename = ReceiveTextureLoder.instance().getIndexContainLocation(WORLDNAME_AND_PATH);
+        if (filename != null && ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(filename).toFile().exists()) {
+            ResourceLocation inmap = getPictureImageTexture(FileLoadHelper.fileBytesReader(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(filename)));
+            ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, inmap);
+            return inmap;
+        }
+        ReceiveTextureLoder.instance().requestTextuerSend(WORLDNAME_AND_PATH, location, name);
+        ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, TEXTUER_LOADING);
+        return TEXTUER_LOADING;
     }
 }

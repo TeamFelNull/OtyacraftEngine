@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderHelper {
+public class RenderUtil {
 
     private static Map<ResourceLocation, IBakedModel> BAKED_MODELS = new HashMap<ResourceLocation, IBakedModel>();
 
@@ -33,7 +33,7 @@ public class RenderHelper {
 
     public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
         matrixPush(matx);
-        ResourceLocation plskin = TextureHelper.getPlayerSkinTexture(name);
+        ResourceLocation plskin = TextureUtil.getPlayerSkinTexture(name);
         guiBindAndBlit(plskin, matx, x, y, 8, 8, 8, 8, 64, 64);
         guiBindAndBlit(plskin, matx, x, y, 40, 8, 8, 8, 64, 64);
         matrixPop(matx);

@@ -14,14 +14,21 @@ public class OERegistries {
     public static Map<ResourceLocation, WorldData> WORLD_DATA = new HashMap<ResourceLocation, WorldData>();
     public static Map<ResourceLocation, String> SERVER_RECEVED_PATH = new HashMap<ResourceLocation, String>();
     public static Map<ResourceLocation, String> CLIENT_RECEVED_PATH = new HashMap<ResourceLocation, String>();
+    public static Map<ResourceLocation, String> TEXTUER_SEND_PATH = new HashMap<ResourceLocation, String>();
+
 
     public static void init() {
         registrierModColor("minecraft", 43520);
         registrierModColor("forge", 170);
         registrierModColor(OtyacraftEngine.MODID, 5635925);
+        registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "receivetextures/cash");
+
+        registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test/ikisygi");
+
+
         //  registrierPlayerData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestPlayerWorldData());
         // registrierWorldData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestWorldData());
-        registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), OtyacraftEngine.MODID + "/testrecikuyo");
+        //  registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), OtyacraftEngine.MODID + "/testrecikuyo");
     }
 
     public static void registrierModColor(String modid, int color) {
@@ -42,5 +49,9 @@ public class OERegistries {
 
     public static void registrierClientRecevedPath(ResourceLocation location, String path) {
         OERegistries.CLIENT_RECEVED_PATH.put(location, path);
+    }
+
+    public static void registrierTextuerSendPath(ResourceLocation location, String path) {
+        OERegistries.TEXTUER_SEND_PATH.put(location, path);
     }
 }
