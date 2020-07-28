@@ -79,7 +79,16 @@ public class ReceiveTextureLoder {
             CompoundNBT tag = new CompoundNBT();
             tag.putString("index", indexnaxme);
             ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 0, id, tag);
+        } else {
+            ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 2, indexnaxme, new CompoundNBT());
         }
+    }
+
+    private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
+
+    @OnlyIn(Dist.CLIENT)
+    public void setNotFind(String index) {
+        PICTUER_RECEIVE_LOCATION.put(index, TEXTUER_NOTFINED);
     }
 
     @OnlyIn(Dist.CLIENT)

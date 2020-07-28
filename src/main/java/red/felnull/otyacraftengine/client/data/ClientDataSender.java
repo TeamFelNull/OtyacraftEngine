@@ -10,9 +10,17 @@ import red.felnull.otyacraftengine.api.event.SenderEvent;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
 import red.felnull.otyacraftengine.packet.ClientDataSendMessage;
 import red.felnull.otyacraftengine.packet.PacketHandler;
+import red.felnull.otyacraftengine.util.FileLoadHelper;
+import red.felnull.otyacraftengine.util.StringHelper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 public class ClientDataSender extends Thread {
     public static int max = 5;
@@ -43,8 +51,12 @@ public class ClientDataSender extends Thread {
         this.lastResponseTime = System.currentTimeMillis();
     }
 
+    public static boolean isMaxSending() {
+        return SENDS.size() >= max;
+    }
+
     public void sendStart() {
-        if (SENDS.size() >= max) {
+        if (isMaxSending()) {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
             this.sendingData = null;
             this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.excessSimultaneousSending"));
@@ -142,5 +154,59 @@ public class ClientDataSender extends Thread {
     public static void sending(String uuid, ResourceLocation location, String name, byte[] data) {
         ClientDataSender cds = new ClientDataSender(uuid, location, name, data);
         cds.sendStart();
+    }
+
+    public static void srlogsGziping() {
+
+        File[] files = Paths.get("srlogs").toFile().listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return StringHelper.getExtension(file.getName()).equals("log");
+            }
+        });
+        if (files.length == 0)
+            return;
+
+        File mostold = null;
+        File mostnew = null;
+
+        for (File file : files) {
+
+            if (mostold == null || mostnew == null) {
+                mostold = file;
+                mostnew = file;
+            } else {
+                if (mostold.lastModified() < file.lastModified()) {
+                    mostold = file;
+                }
+                if (mostnew.lastModified() > file.lastModified()) {
+                    mostnew = file;
+                }
+            }
+        }
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            for (File file : files) {
+                byte[] bytes = FileLoadHelper.fileBytesReader(file.toPath());
+                GZIPOutputStream gzip_out = new GZIPOutputStream(out);
+                gzip_out.write(bytes);
+                gzip_out.close();
+            }
+            out.close();
+            byte[] ret = out.toByteArray();
+
+            String name = "";
+            if (mostold == mostnew) {
+                name = mostnew.getName();
+            } else {
+                name = StringHelper.deleteExtension(mostold.getName()) + "~" + StringHelper.deleteExtension(mostnew.getName());
+            }
+            FileLoadHelper.fileBytesWriter(ret, Paths.get("srlogs\\" + name + ".log.gz"));
+        } catch (IOException e) {
+        }
+        for (File file : files) {
+            FileLoadHelper.deleteFile(file);
+        }
     }
 }

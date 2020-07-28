@@ -9,12 +9,17 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.SenderEvent;
 import red.felnull.otyacraftengine.packet.PacketHandler;
 import red.felnull.otyacraftengine.packet.ServerDataSendMessage;
-import red.felnull.otyacraftengine.util.PlayerHelper;
-import red.felnull.otyacraftengine.util.ServerHelper;
+import red.felnull.otyacraftengine.util.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.zip.GZIPOutputStream;
 
 public class ServerDataSender extends Thread {
     public static int max = 5;
@@ -46,11 +51,19 @@ public class ServerDataSender extends Thread {
         this.logger = new SendReceiveLogger(location.toString(), det, Dist.DEDICATED_SERVER, SendReceiveLogger.SndOrRec.SEND);
     }
 
+    public static boolean isMaxSending(String playerUUID) {
+
+        if (!SENDS.containsKey(playerUUID))
+            return false;
+
+        return SENDS.get(playerUUID).size() >= max;
+    }
+
     public void sendStart() {
         if (!SENDS.containsKey(playerUUID)) {
             SENDS.put(playerUUID, new HashMap<String, ServerDataSender>());
         }
-        if (SENDS.get(playerUUID).size() >= max) {
+        if (isMaxSending(playerUUID)) {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
             this.sendingData = null;
             this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.excessSimultaneousSending"));
@@ -144,5 +157,59 @@ public class ServerDataSender extends Thread {
     public static void sending(String playerUUID, String uuid, ResourceLocation location, String name, byte[] data) {
         ServerDataSender sds = new ServerDataSender(playerUUID, uuid, location, name, data);
         sds.sendStart();
+    }
+
+    public static void srlogsGziping() {
+
+        File[] files = PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                return StringHelper.getExtension(file.getName()).equals("log");
+            }
+        });
+        if (files.length == 0)
+            return;
+
+        File mostold = null;
+        File mostnew = null;
+
+        for (File file : files) {
+
+            if (mostold == null || mostnew == null) {
+                mostold = file;
+                mostnew = file;
+            } else {
+                if (mostold.lastModified() < file.lastModified()) {
+                    mostold = file;
+                }
+                if (mostnew.lastModified() > file.lastModified()) {
+                    mostnew = file;
+                }
+            }
+        }
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            for (File file : files) {
+                byte[] bytes = FileLoadHelper.fileBytesReader(file.toPath());
+                GZIPOutputStream gzip_out = new GZIPOutputStream(out);
+                gzip_out.write(bytes);
+                gzip_out.close();
+            }
+            out.close();
+            byte[] ret = out.toByteArray();
+
+            String name = "";
+            if (mostold == mostnew) {
+                name = mostnew.getName();
+            } else {
+                name = StringHelper.deleteExtension(mostold.getName()) + "~" + StringHelper.deleteExtension(mostnew.getName());
+            }
+            FileLoadHelper.fileBytesWriter(ret, PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs\\" + name + ".log.gz")));
+        } catch (IOException e) {
+        }
+        for (File file : files) {
+            FileLoadHelper.deleteFile(file);
+        }
     }
 }

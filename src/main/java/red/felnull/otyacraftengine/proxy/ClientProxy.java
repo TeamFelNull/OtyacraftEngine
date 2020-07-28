@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.RenderHandler;
 import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
@@ -31,6 +32,7 @@ public class ClientProxy extends CommonProxy {
     public void posInit() {
         super.posInit();
         ReceiveTextureLoder.instance().deleteUnnecessaryCash();
+        ClientDataSender.srlogsGziping();
     }
 
     @Override

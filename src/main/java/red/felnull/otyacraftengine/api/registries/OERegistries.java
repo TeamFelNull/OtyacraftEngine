@@ -25,6 +25,8 @@ public class OERegistries {
 
         registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test/ikisygi");
 
+        registrierServerRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "1919810");
+
 
         //  registrierPlayerData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestPlayerWorldData());
         // registrierWorldData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestWorldData());

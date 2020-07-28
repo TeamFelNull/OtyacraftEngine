@@ -17,6 +17,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.ReceiverEvent;
 import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
+import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.util.RenderUtil;
 import red.felnull.otyacraftengine.client.util.TextureUtil;
@@ -126,6 +127,7 @@ public class ClientHandler {
             }
             loadingCont = 0;
         }
+        ClientDataSendReservation.tick();
     }
 
     private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
@@ -141,6 +143,8 @@ public class ClientHandler {
                 ReceiveTextureLoder.instance().CLIENT_INDEX_UUID.put(e.getMessage(), e.getData().getString("index"));
             } else if (e.getId() == 1) {
                 ReceiveTextureLoder.instance().updateTextuerClient(new ResourceLocation(e.getMessage()), e.getData().getString("name"));
+            } else if (e.getId() == 2) {
+                ReceiveTextureLoder.instance().setNotFind(e.getMessage());
             }
         }
     }

@@ -12,6 +12,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.WorldDataEvent;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
@@ -19,11 +20,13 @@ public class ServerHandler {
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
         //   WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
+        ServerDataSendReservation.tick();
     }
 
     @SubscribeEvent
     public static void onServerStarting(FMLServerStartingEvent e) {
         WorldDataEvent.load(e.getServer(), null, false);
+        ServerDataSender.srlogsGziping();
     }
 
     @SubscribeEvent
