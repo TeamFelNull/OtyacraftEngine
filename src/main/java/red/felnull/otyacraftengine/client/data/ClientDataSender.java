@@ -158,6 +158,9 @@ public class ClientDataSender extends Thread {
 
     public static void srlogsGziping() {
 
+        if (!Paths.get("srlogs").toFile().exists())
+            return;
+
         File[] files = Paths.get("srlogs").toFile().listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {

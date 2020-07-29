@@ -161,6 +161,9 @@ public class ServerDataSender extends Thread {
 
     public static void srlogsGziping() {
 
+        if (!PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().exists())
+            return;
+
         File[] files = PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
