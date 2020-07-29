@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+//@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestItem extends Item implements IDetailedInfomationItem {
 
     public TestItem(Properties properties) {

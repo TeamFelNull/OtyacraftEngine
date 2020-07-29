@@ -9,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,7 +18,6 @@ import red.felnull.otyacraftengine.api.event.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
-import red.felnull.otyacraftengine.client.util.RenderUtil;
 import red.felnull.otyacraftengine.client.util.TextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
@@ -149,12 +147,12 @@ public class ClientHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void onRender(RenderGameOverlayEvent e) {
-        RenderUtil.guiBindAndBlit(TextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "wa"), e.getMatrixStack(), 0, 0, 0, 0, 256, 256, 256, 256);
-    }
-
-
+    /*
+        @SubscribeEvent
+        public static void onRender(RenderGameOverlayEvent e) {
+            RenderUtil.guiBindAndBlit(TextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "wa"), e.getMatrixStack(), 0, 0, 0, 0, 256, 256, 256, 256);
+        }
+    */
     @SubscribeEvent
     public static void onReceiverData(ReceiverEvent.Client.Pos e) {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
