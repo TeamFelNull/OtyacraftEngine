@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.api.event;
+package red.felnull.otyacraftengine.api.event.common;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
