@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 
@@ -22,6 +21,13 @@ public class TestItem extends Item implements IDetailedInfomationItem {
 
     }
 
+    @SubscribeEvent
+    public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
+
+        e.getRegistry().register(new TestItem(new Item.Properties().group(ItemGroup.MISC))
+                .setRegistryName(OtyacraftEngine.MODID, "test"));
+
+    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
@@ -34,15 +40,6 @@ public class TestItem extends Item implements IDetailedInfomationItem {
             ReceiveTextureLoder.instance().updateTextuerClient(new ResourceLocation(OtyacraftEngine.MODID, "test"), "wa");
         }
         return ActionResult.func_233538_a_(item, worldIn.isRemote());
-    }
-
-
-    @SubscribeEvent
-    public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
-
-        e.getRegistry().register(new TestItem(new Item.Properties().group(ItemGroup.MISC))
-                .setRegistryName(OtyacraftEngine.MODID, "test"));
-
     }
 
 }

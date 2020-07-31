@@ -15,16 +15,11 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.util.VoxelShapeHelper;
 
 //@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestBlock extends Block {
-    public TestBlock(Properties properties) {
-        super(properties);
-    }
-
     public static final Block TEST = new TestBlock(AbstractBlock.Properties.create(Material.ANVIL).hardnessAndResistance(1f, 1f)).setRegistryName(new ResourceLocation(OtyacraftEngine.MODID, "test_block"));
     private static final VoxelShape PART_BASE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
     private static final VoxelShape PART_LOWER_X = Block.makeCuboidShape(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
@@ -35,6 +30,9 @@ public class TestBlock extends Block {
     private static final VoxelShape PART_UPPER_Z = Block.makeCuboidShape(3.0D, 10.0D, 0.0D, 13.0D, 16.0D, 16.0D);
     private static final VoxelShape X_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_X, PART_MID_X, PART_UPPER_X);
     private static final VoxelShape Z_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_Z, PART_MID_Z, PART_UPPER_Z);
+    public TestBlock(Properties properties) {
+        super(properties);
+    }
 
     @SubscribeEvent
     public static void onBlockRegistry(final RegistryEvent.Register<Block> e) {
@@ -43,13 +41,13 @@ public class TestBlock extends Block {
     }
 
     @SubscribeEvent
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        VoxelShape test = X_AXIS_AABB;
-        return VoxelShapeHelper.rotate90(test);
+    public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
+        e.getRegistry().register(new BlockItem(TEST, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(OtyacraftEngine.MODID, "test_block"));
     }
 
     @SubscribeEvent
-    public static void onItemsRegistry(final RegistryEvent.Register<Item> e) {
-        e.getRegistry().register(new BlockItem(TEST, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(OtyacraftEngine.MODID, "test_block"));
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        VoxelShape test = X_AXIS_AABB;
+        return VoxelShapeHelper.rotate90(test);
     }
 }

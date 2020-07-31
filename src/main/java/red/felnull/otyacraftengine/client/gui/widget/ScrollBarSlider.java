@@ -4,10 +4,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.util.RenderUtil;
+import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.util.IkisugiMath;
 
 public class ScrollBarSlider extends IkisugiWidget {
+    private static ResourceLocation SCROLL = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/scroll_bar.png");
     protected int x;
     protected int y;
     protected int size;
@@ -15,8 +16,6 @@ public class ScrollBarSlider extends IkisugiWidget {
     protected float NValue;
     protected int selectedRange;
     protected boolean showRange;
-
-    private static ResourceLocation SCROLL = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/scroll_bar.png");
 
     public ScrollBarSlider(int x, int y, int size, float maxValue, float defValue, int rang) {
         super(x, y, 9, size, new TranslationTextComponent("scrollbar"));
@@ -43,17 +42,17 @@ public class ScrollBarSlider extends IkisugiWidget {
                 int ysra = ysr - ysrk * 20;
 
                 for (int i = 0; i < xsrk; i++) {
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y, 18, 20, 9, 1, 256, 256);
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y + size - 1, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y + size - 1, 18, 20, 9, 1, 256, 256);
                 }
 
 
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y, 18, 20, xsra, 1, 256, 256);
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y + size - 1, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y + size - 1, 18, 20, xsra, 1, 256, 256);
                 for (int i = 0; i < ysrk; i++) {
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
                 }
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
 
             } else {
                 int xsr = selectedRange;
@@ -64,34 +63,34 @@ public class ScrollBarSlider extends IkisugiWidget {
                 int ysra = ysr - ysrk * 20;
 
                 for (int i = 0; i < xsrk; i++) {
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y, 18, 20, 9, 1, 256, 256);
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y + size - 1, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y + size - 1, 18, 20, 9, 1, 256, 256);
                 }
 
 
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y, 18, 20, xsra, 1, 256, 256);
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y + size - 1, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y + size - 1, 18, 20, xsra, 1, 256, 256);
                 for (int i = 0; i < ysrk; i++) {
-                    RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
                 }
-                RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
             }
         }
 
         int ra = isHoveredRange(mouseX, mouseY) ? 9 : 0;
 
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x, y, ra, 20, 9, 1, 256, 256);
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + size - 1, ra, 41, 9, 1, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y, ra, 20, 9, 1, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + size - 1, ra, 41, 9, 1, 256, 256);
 
         int si = size - 2;
         int sik = si / 20;
 
         for (int i = 0; i < sik; i++) {
-            RenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * i, ra, 21, 9, 20, 256, 256);
+            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * i, ra, 21, 9, 20, 256, 256);
         }
         int sia = si - sik * 20;
 
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * sik, ra, 21, 9, sia, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * sik, ra, 21, 9, sia, 256, 256);
 
         int hsp = 0;
 
@@ -102,17 +101,17 @@ public class ScrollBarSlider extends IkisugiWidget {
 
         int nowPoint = 1 + (int) ((size - getSelectButtonSize()) * getValueProportion());
 
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint, 0 + hsp, 0, 7, 2, 256, 256);
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint + getSelectButtonSize() - 5, 0 + hsp, 17, 7, 3, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint, 0 + hsp, 0, 7, 2, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint + getSelectButtonSize() - 5, 0 + hsp, 17, 7, 3, 256, 256);
 
         int bsi = getSelectButtonSize() - 5;
         int bsik = bsi / 15;
 
         for (int i = 0; i < bsik; i++) {
-            RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * i, 0 + hsp, 2, 7, 15, 256, 256);
+            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * i, 0 + hsp, 2, 7, 15, 256, 256);
         }
         int bsia = bsi - bsik * 15;
-        RenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * bsik, 0 + hsp, 2, 7, bsia, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * bsik, 0 + hsp, 2, 7, bsia, 256, 256);
 
     }
 
@@ -181,35 +180,35 @@ public class ScrollBarSlider extends IkisugiWidget {
         return NValue / MValue;
     }
 
-    public void setValue(float value) {
-        this.NValue = value;
-    }
-
     public float getValue() {
         return this.NValue;
     }
 
-    public void setMaxValue(float value) {
-        this.MValue = value;
+    public void setValue(float value) {
+        this.NValue = value;
     }
 
     public float getMaxValue() {
         return this.MValue;
     }
 
-    public void setSelectedRange(int range) {
-        this.selectedRange = range;
+    public void setMaxValue(float value) {
+        this.MValue = value;
     }
 
     public int getSelectedRange() {
         return this.selectedRange;
     }
 
-    public void setShowRange(boolean show) {
-        this.showRange = show;
+    public void setSelectedRange(int range) {
+        this.selectedRange = range;
     }
 
     public boolean isShowRange() {
         return this.showRange;
+    }
+
+    public void setShowRange(boolean show) {
+        this.showRange = show;
     }
 }

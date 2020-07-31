@@ -3,7 +3,7 @@ package red.felnull.otyacraftengine.handler;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import red.felnull.otyacraftengine.api.event.WorldDataEvent;
+import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 
 public class WorldDataHandler {

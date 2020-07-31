@@ -21,19 +21,15 @@ import java.util.Map;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-public class TextureUtil {
-    private static Minecraft mc = Minecraft.getInstance();
-
-    private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
-
+public class IKSGTextureUtil {
     private static final ResourceLocation LOADING_1 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_1.png");
     private static final ResourceLocation LOADING_2 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_2.png");
     private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
     private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
-
     private static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
-
     public static int loadingPaatune;
+    private static Minecraft mc = Minecraft.getInstance();
+    private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
@@ -89,7 +85,7 @@ public class TextureUtil {
 
 
     public static ResourceLocation getReceiveTexture(ResourceLocation location, String name) {
-        String WORLDNAME_AND_PATH = ClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
+        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
 
         if (ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.containsKey(WORLDNAME_AND_PATH)) {
             return ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.get(WORLDNAME_AND_PATH);

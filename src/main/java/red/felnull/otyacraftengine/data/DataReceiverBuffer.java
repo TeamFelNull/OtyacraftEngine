@@ -4,13 +4,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class DataReceiverBuffer {
 
-    private int cont;
-    public int allcont;
-    private byte[] bytes;
-    public boolean stop;
     public final String dataName;
     public final String dataUuid;
     public final ResourceLocation dataLocation;
+    public int allcont;
+    public boolean stop;
+    private int cont;
+    private byte[] bytes;
 
     public DataReceiverBuffer(int bytecont, String uuid, ResourceLocation location, String name) {
         this.bytes = new byte[bytecont];

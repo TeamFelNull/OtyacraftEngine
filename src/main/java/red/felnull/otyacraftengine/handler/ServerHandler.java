@@ -9,14 +9,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.event.ResponseEvent;
-import red.felnull.otyacraftengine.api.event.WorldDataEvent;
+import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
+import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
 import red.felnull.otyacraftengine.util.PlayerHelper;
 
 public class ServerHandler {
+    private static final ResourceLocation SERVER_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "server_response");
+
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
         //   WorldDataManager.instance().sync(ServerHelper.getMinecraftServer());
@@ -53,8 +55,6 @@ public class ServerHandler {
     public static void onWorldSave(WorldEvent.Save e) {
         WorldDataEvent.save(e.getWorld().getWorld().getServer(), null, true);
     }
-
-    private static final ResourceLocation SERVER_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "server_response");
 
     @SubscribeEvent
     public static void onClientResponse(ResponseEvent.Client e) {

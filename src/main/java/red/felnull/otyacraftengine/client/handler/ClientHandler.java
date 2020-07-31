@@ -13,12 +13,12 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.event.ReceiverEvent;
-import red.felnull.otyacraftengine.api.event.ResponseEvent;
+import red.felnull.otyacraftengine.api.event.common.ReceiverEvent;
+import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
-import red.felnull.otyacraftengine.client.util.TextureUtil;
+import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
@@ -28,6 +28,7 @@ import red.felnull.otyacraftengine.util.TagHelper;
 import java.util.Objects;
 
 public class ClientHandler {
+    private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
     private static Minecraft mc = Minecraft.getInstance();
     private static int loadingCont;
 
@@ -99,36 +100,21 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public void onToolTip(ItemTooltipEvent e) {
-
-        if (ClientConfig.ToolTipDetailedInformation.get())
-            addDetailedInformation(e);
-
-        if (ClientConfig.ToolTipTag.get())
-            addTagList(e);
-
-        if (ClientConfig.ToolTipModName.get())
-            addModName(e);
-    }
-
-    @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent e) {
         if (mc.player == null) {
             WorldDataManager.instance().unloadClient();
         }
         loadingCont++;
         if (loadingCont >= 4) {
-            if (TextureUtil.loadingPaatune >= 3) {
-                TextureUtil.loadingPaatune = 0;
+            if (IKSGTextureUtil.loadingPaatune >= 3) {
+                IKSGTextureUtil.loadingPaatune = 0;
             } else {
-                TextureUtil.loadingPaatune++;
+                IKSGTextureUtil.loadingPaatune++;
             }
             loadingCont = 0;
         }
         ClientDataSendReservation.tick();
     }
-
-    private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
 
     @SubscribeEvent
     public static void onServerResponse(ResponseEvent.Server e) {
@@ -158,5 +144,18 @@ public class ClientHandler {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
             ReceiveTextureLoder.instance().requestedTextuerReceive(e.getUuid(), e.getName());
         }
+    }
+
+    @SubscribeEvent
+    public void onToolTip(ItemTooltipEvent e) {
+
+        if (ClientConfig.ToolTipDetailedInformation.get())
+            addDetailedInformation(e);
+
+        if (ClientConfig.ToolTipTag.get())
+            addTagList(e);
+
+        if (ClientConfig.ToolTipModName.get())
+            addModName(e);
     }
 }

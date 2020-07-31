@@ -5,11 +5,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.PacketDistributor;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.packet.ClientPlayerDataSyncMessage;
-import red.felnull.otyacraftengine.packet.PacketHandler;
 import red.felnull.otyacraftengine.util.FileLoadHelper;
 import red.felnull.otyacraftengine.util.PathUtil;
 import red.felnull.otyacraftengine.util.PlayerHelper;
@@ -32,19 +29,20 @@ public class WorldDataManager {
     public static void init() {
         INSTANCE = new WorldDataManager();
     }
-/*
-    public void sync(MinecraftServer ms) {
-        for (String pl : ms.getPlayerList().getOnlinePlayerNames()) {
-            ServerPlayerEntity spe = ms.getPlayerList().getPlayerByUsername(pl);
-            for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(PlayerHelper.getUUID(spe)).entrySet()) {
-                PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
-                if (data.isClientSincble()) {
-                    PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> spe), new ClientPlayerDataSyncMessage(ent.getKey(), ent.getValue()));
+
+    /*
+        public void sync(MinecraftServer ms) {
+            for (String pl : ms.getPlayerList().getOnlinePlayerNames()) {
+                ServerPlayerEntity spe = ms.getPlayerList().getPlayerByUsername(pl);
+                for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(PlayerHelper.getUUID(spe)).entrySet()) {
+                    PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
+                    if (data.isClientSincble()) {
+                        PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> spe), new ClientPlayerDataSyncMessage(ent.getKey(), ent.getValue()));
+                    }
                 }
             }
         }
-    }
-*/
+    */
     public void load(MinecraftServer ms, ServerPlayerEntity player) {
         if (player == null) {
             OtyacraftEngine.LOGGER.info("loading data");

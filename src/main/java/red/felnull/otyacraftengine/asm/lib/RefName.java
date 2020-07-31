@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.core.lib;
+package red.felnull.otyacraftengine.asm.lib;
 
 import org.apache.commons.lang3.Validate;
 
@@ -11,6 +11,10 @@ public class RefName {
     public RefName(@Nonnull String mcpName, @Nonnull String srgName) {
         this.mcpName = mcpName;
         this.srgName = srgName;
+    }
+
+    public static RefName of(@Nonnull String mcpName, @Nonnull String srgName) {
+        return new RefName(mcpName, srgName);
     }
 
     public @Nonnull
@@ -26,10 +30,6 @@ public class RefName {
     public @Nonnull
     String srgName() {
         return this.srgName;
-    }
-
-    public static RefName of(@Nonnull String mcpName, @Nonnull String srgName) {
-        return new RefName(mcpName, srgName);
     }
 
 }

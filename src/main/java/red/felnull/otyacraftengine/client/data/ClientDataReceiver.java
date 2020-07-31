@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import red.felnull.otyacraftengine.api.event.ReceiverEvent;
+import red.felnull.otyacraftengine.api.event.common.ReceiverEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.data.DataReceiverBuffer;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
@@ -21,9 +21,9 @@ public class ClientDataReceiver extends Thread {
     private final String name;
     private final String uuid;
     private final ResourceLocation location;
+    private final SendReceiveLogger logger;
     private int cont;
     private long fristTime;
-    private final SendReceiveLogger logger;
     private long logTime;
 
     public ClientDataReceiver(String uuid, ResourceLocation location, String name, int datasize) {
@@ -35,6 +35,12 @@ public class ClientDataReceiver extends Thread {
         RECEIVS.put(uuid, new DataReceiverBuffer(datasize, uuid, location, name));
         String det = "UUID:" + uuid + " Location:" + location.toString() + " Name:" + name + " Size:" + datasize + "byte";
         this.logger = new SendReceiveLogger(location.toString(), det, Dist.CLIENT, SendReceiveLogger.SndOrRec.RECEIVE);
+    }
+
+    public static void addBufferBytes(String uuid, byte[] bytes) {
+        if (RECEIVS.containsKey(uuid)) {
+            RECEIVS.get(uuid).addBytes(bytes);
+        }
     }
 
     public void receiveFinish(SendReceiveLogger.Result result) {
@@ -82,11 +88,5 @@ public class ClientDataReceiver extends Thread {
             receiveFinish(SendReceiveLogger.Result.FAILURE);
         }
         receiveFinish(SendReceiveLogger.Result.SUCCESS);
-    }
-
-    public static void addBufferBytes(String uuid, byte[] bytes) {
-        if (RECEIVS.containsKey(uuid)) {
-            RECEIVS.get(uuid).addBytes(bytes);
-        }
     }
 }

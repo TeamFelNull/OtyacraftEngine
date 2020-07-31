@@ -6,7 +6,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
 
 import java.util.List;
-import java.util.UUID;
 
 public class ServerHelper {
     public static MinecraftServer getMinecraftServer() {

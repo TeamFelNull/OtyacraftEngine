@@ -2,7 +2,7 @@ package red.felnull.otyacraftengine.client.handler;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkEvent;
-import red.felnull.otyacraftengine.api.event.ResponseEvent;
+import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.packet.ServerToResponseMessage;
 
 import java.util.function.Supplier;

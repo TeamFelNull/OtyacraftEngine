@@ -1,13 +1,10 @@
 {
   "_comment": "Message",
   "message.login.otyacraftengine": "Introduced Otyacraft Engine : version %s",
-
   "_comment": "Key",
   "key.categories.otyacraftengine": "Otyacraft Engine",
-
   "key.otyacraftengine.test": "Test",
   "key.otyacraftengine.in_game_file_manager": "In Game File Manager",
-
   "_comment": "ToolTip",
   "tooltip.detailedinformation": "Detailed Information",
   "tooltip.detailedinformation.press": "Press %s for Show Detailed Information",
@@ -15,14 +12,11 @@
   "tooltip.tag.block": "Block Tag List",
   "tooltip.tag.entitytype": "Entity Type Tag List",
   "tooltip.tag.press": "Press %s for Show Tag List",
-
   "_comment": "GUI",
   "unimplemented.title": "Unimplemented",
   "unimplemented.unimscreen": "%s is Unimplemented",
-
   "gui.create": "Create",
   "gui.training": "Training",
-
   "_comment": "Log",
   "rslog.start.success": "Successfully start %s",
   "rslog.start.failure": "Failed start %s: %s",
@@ -40,7 +34,5 @@
   "rslog.err.playerExitedWorld": "Player exited the world",
   "rslog.err.stop": "Stopped",
   "rslog.err.timeout": "Timed out",
-
-
   "_comment": "Last"
 }

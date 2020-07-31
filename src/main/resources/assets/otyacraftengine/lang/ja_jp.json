@@ -1,13 +1,10 @@
 {
   "_comment": "Message",
   "message.login.otyacraftengine": "Otyacraft Engineを導入 : バージョン %s",
-
   "_comment": "Key",
   "key.categories.otyacraftengine": "Otyacraft Engine",
-
   "key.otyacraftengine.test": "テスト",
   "key.otyacraftengine.in_game_file_manager": "ゲーム内ファイルマネージャー",
-
   "_comment": "ToolTip",
   "tooltip.detailedinformation": "詳細情報",
   "tooltip.detailedinformation.press": "%s を押して詳細情報を表示",
@@ -15,14 +12,11 @@
   "tooltip.tag.block": "ブロックのタグリスト",
   "tooltip.tag.entitytype": "エンティティタイプのタグリスト",
   "tooltip.tag.press": "%s を押してタグリストを表示",
-
   "_comment": "GUI",
   "unimplemented.title": "未実装",
   "unimplemented.unimscreen": "%s は未実装です",
-
   "gui.create": "作成",
   "gui.training": "調教",
-
   "_comment": "Log",
   "rslog.start.success": "%sが正常に開始しました",
   "rslog.start.failure": "%sの開始に失敗しました: %s",
@@ -40,6 +34,5 @@
   "rslog.err.playerExitedWorld": "プレイヤーがワールドから抜けました",
   "rslog.err.stop": "ストップ",
   "rslog.err.timeout": "タイムアウト",
-
   "_comment": "Last"
 }

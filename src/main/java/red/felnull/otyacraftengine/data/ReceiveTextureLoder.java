@@ -13,8 +13,8 @@ import red.felnull.otyacraftengine.api.DataSendReceiverManager;
 import red.felnull.otyacraftengine.api.ResponseSender;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
-import red.felnull.otyacraftengine.client.util.ClientUtil;
-import red.felnull.otyacraftengine.client.util.TextureUtil;
+import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
+import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.util.FileLoadHelper;
 import red.felnull.otyacraftengine.util.PathUtil;
 import red.felnull.otyacraftengine.util.ServerHelper;
@@ -28,11 +28,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ReceiveTextureLoder {
-    private static ReceiveTextureLoder INSTANCE;
     public static final Path CASH_PATH = Paths.get("receivetextures");
-
+    private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
+    private static ReceiveTextureLoder INSTANCE;
     public Map<String, String> CLIENT_INDEX_UUID = new HashMap<String, String>();
-
     public Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<String, ResourceLocation>();
 
     public static ReceiveTextureLoder instance() {
@@ -84,8 +83,6 @@ public class ReceiveTextureLoder {
         }
     }
 
-    private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
-
     @OnlyIn(Dist.CLIENT)
     public void setNotFind(String index) {
         PICTUER_RECEIVE_LOCATION.put(index, TEXTUER_NOTFINED);
@@ -124,7 +121,7 @@ public class ReceiveTextureLoder {
             } catch (Exception e) {
             }
         }
-        ResourceLocation inmap = TextureUtil.getPictureImageTexture(FileLoadHelper.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
+        ResourceLocation inmap = IKSGTextureUtil.getPictureImageTexture(FileLoadHelper.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
         PICTUER_RECEIVE_LOCATION.put(indexname, inmap);
     }
 
@@ -147,7 +144,7 @@ public class ReceiveTextureLoder {
     @OnlyIn(Dist.CLIENT)
     public void updateTextuerClient(ResourceLocation location, String name) {
 
-        String WORLDNAME_AND_PATH = ClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
+        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
 
         if (!CASH_PATH.resolve("index.json").toFile().exists())
             return;

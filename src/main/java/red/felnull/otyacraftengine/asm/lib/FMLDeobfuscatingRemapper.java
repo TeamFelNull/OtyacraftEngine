@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.core.lib;
+package red.felnull.otyacraftengine.asm.lib;
 
 import cpw.mods.modlauncher.Launcher;
 

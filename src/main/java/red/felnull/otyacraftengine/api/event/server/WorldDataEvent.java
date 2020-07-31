@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.api.event;
+package red.felnull.otyacraftengine.api.event.server;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +14,18 @@ public class WorldDataEvent extends Event {
         this.server = server;
         this.player = player;
         this.isThread = thread;
+    }
+
+    public static void save(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
+        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.Save(ms, player, thread));
+    }
+
+    public static void load(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
+        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.Load(ms, player, thread));
+    }
+
+    public static void unload(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
+        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.UnLoad(ms, player, thread));
     }
 
     public MinecraftServer getServer() {
@@ -45,18 +57,6 @@ public class WorldDataEvent extends Event {
         public UnLoad(MinecraftServer server, ServerPlayerEntity player, boolean thread) {
             super(server, player, thread);
         }
-    }
-
-    public static void save(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
-        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.Save(ms, player, thread));
-    }
-
-    public static void load(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
-        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.Load(ms, player, thread));
-    }
-
-    public static void unload(MinecraftServer ms, ServerPlayerEntity player, boolean thread) {
-        MinecraftForge.EVENT_BUS.post(new WorldDataEvent.UnLoad(ms, player, thread));
     }
 
 }
