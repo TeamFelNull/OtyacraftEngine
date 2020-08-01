@@ -23,11 +23,8 @@ public class OERegistries {
         registrierModColor(OtyacraftEngine.MODID, 5635925);
         registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "receivetextures/cash");
 
-        registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test/ikisygi");
-
-        registrierServerRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "1919810");
-
-
+        //    registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test/ikisygi");
+        //    registrierServerRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "1919810");
         //  registrierPlayerData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestPlayerWorldData());
         // registrierWorldData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestWorldData());
         //  registrierClientRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), OtyacraftEngine.MODID + "/testrecikuyo");
