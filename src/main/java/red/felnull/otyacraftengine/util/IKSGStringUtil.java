@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
-public class StringHelper {
+public class IKSGStringUtil {
 
     public static String getIntArryString(int[] ints) {
         return StringUtils.join(ints, ":");
@@ -115,9 +115,9 @@ public class StringHelper {
         if (bytec < 1024) {
             return bytec + " Byte";
         } else if (bytec < 1024 * 1024) {
-            return deleteLastZero(IkisugiMath.roundDown(bytec / 1024, 2)) + " KB";
+            return deleteLastZero(IKSGMath.roundDown(bytec / 1024, 2)) + " KB";
         } else {
-            return deleteLastZero(IkisugiMath.roundDown((float) bytec / 1024 / 1024, 2)) + " MB";
+            return deleteLastZero(IKSGMath.roundDown((float) bytec / 1024 / 1024, 2)) + " MB";
         }
     }
 

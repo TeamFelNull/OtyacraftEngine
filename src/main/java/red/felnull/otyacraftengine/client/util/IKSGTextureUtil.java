@@ -12,8 +12,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.PlayerHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
@@ -48,7 +48,7 @@ public class IKSGTextureUtil {
             return mc.player.getLocationSkin();
         }
         ResourceLocation faselocation;
-        GameProfile GP = PlayerHelper.getPlayerProfile(name);
+        GameProfile GP = IKSGPlayerUtil.getPlayerProfile(name);
         Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().loadSkinFromCache(GP);
         faselocation = map.containsKey(type) ? mc.getSkinManager().loadSkin(map.get(type), type) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(GP));
         return faselocation;
@@ -93,7 +93,7 @@ public class IKSGTextureUtil {
 
         String filename = ReceiveTextureLoder.instance().getIndexContainLocation(WORLDNAME_AND_PATH);
         if (filename != null && ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(filename).toFile().exists()) {
-            ResourceLocation inmap = getPictureImageTexture(FileLoadHelper.fileBytesReader(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(filename)));
+            ResourceLocation inmap = getPictureImageTexture(IKSGFileLoadUtil.fileBytesReader(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(filename)));
             ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, inmap);
             return inmap;
         }

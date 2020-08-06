@@ -6,9 +6,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.api.event.common.ReceiverEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.PathUtil;
-import red.felnull.otyacraftengine.util.ServerHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGPathUtil;
+import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -51,14 +51,14 @@ public class ServerDataReceiver extends Thread {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(playerUUID).get(uuid).getCont());
         RECEIVS.get(playerUUID).remove(uuid);
         this.logger.createLog();
-        MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pos(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
+        MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pos(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
 
     }
 
     public void run() {
         try {
             this.logger.addStartLogLine();
-            MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pre(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
+            MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Pre(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
             long time = System.currentTimeMillis();
             while (!RECEIVS.get(playerUUID).get(uuid).isPerfectByte()) {
                 if (System.currentTimeMillis() - logTime >= 3000) {
@@ -70,7 +70,7 @@ public class ServerDataReceiver extends Thread {
                     receiveFinish(SendReceiveLogger.Result.FAILURE);
                     return;
                 }
-                if (!ServerHelper.isOnlinePlayer(playerUUID)) {
+                if (!IKSGServerUtil.isOnlinePlayer(playerUUID)) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
                     receiveFinish(SendReceiveLogger.Result.FAILURE);
                     return;
@@ -86,7 +86,7 @@ public class ServerDataReceiver extends Thread {
                 }
                 sleep(1);
             }
-            FileLoadHelper.fileBytesWriter(RECEIVS.get(playerUUID).get(uuid).getBytes(), PathUtil.getWorldSaveDataPath().resolve(Paths.get(OERegistries.SERVER_RECEVED_PATH.get(location)).resolve(name)));
+            IKSGFileLoadUtil.fileBytesWriter(RECEIVS.get(playerUUID).get(uuid).getBytes(), IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get(OERegistries.SERVER_RECEVED_PATH.get(location)).resolve(name)));
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();

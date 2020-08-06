@@ -2,7 +2,7 @@ package red.felnull.otyacraftengine.util;
 
 import net.minecraft.util.math.BlockPos;
 
-public class IkisugiMath {
+public class IKSGMath {
     public static int convertStringToInteger(String name) {
         int n = 0;
         int m = 0;

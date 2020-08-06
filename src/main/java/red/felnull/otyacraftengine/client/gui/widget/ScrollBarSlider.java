@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
-import red.felnull.otyacraftengine.util.IkisugiMath;
+import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class ScrollBarSlider extends IkisugiWidget {
     private static ResourceLocation SCROLL = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/scroll_bar.png");
@@ -34,7 +34,7 @@ public class ScrollBarSlider extends IkisugiWidget {
 
         if (showRange) {
             if (selectedRange < 0) {
-                int xsr = IkisugiMath.positiveInt(selectedRange);
+                int xsr = IKSGMath.positiveInt(selectedRange);
                 int xsrk = xsr / 9;
                 int ysr = size - 2;
                 int ysrk = ysr / 20;

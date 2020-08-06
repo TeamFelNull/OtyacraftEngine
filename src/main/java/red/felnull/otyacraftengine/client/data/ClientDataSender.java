@@ -10,8 +10,8 @@ import red.felnull.otyacraftengine.api.event.common.SenderEvent;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
 import red.felnull.otyacraftengine.packet.ClientDataSendMessage;
 import red.felnull.otyacraftengine.packet.PacketHandler;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.StringHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGStringUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,7 +74,7 @@ public class ClientDataSender extends Thread {
         File[] files = Paths.get("srlogs").toFile().listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                return StringHelper.getExtension(file.getName()).equals("log");
+                return IKSGStringUtil.getExtension(file.getName()).equals("log");
             }
         });
         if (files.length == 0)
@@ -101,7 +101,7 @@ public class ClientDataSender extends Thread {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             for (File file : files) {
-                byte[] bytes = FileLoadHelper.fileBytesReader(file.toPath());
+                byte[] bytes = IKSGFileLoadUtil.fileBytesReader(file.toPath());
                 GZIPOutputStream gzip_out = new GZIPOutputStream(out);
                 gzip_out.write(bytes);
                 gzip_out.close();
@@ -113,13 +113,13 @@ public class ClientDataSender extends Thread {
             if (mostold == mostnew) {
                 name = mostnew.getName();
             } else {
-                name = StringHelper.deleteExtension(mostold.getName()) + "~" + StringHelper.deleteExtension(mostnew.getName());
+                name = IKSGStringUtil.deleteExtension(mostold.getName()) + "~" + IKSGStringUtil.deleteExtension(mostnew.getName());
             }
-            FileLoadHelper.fileBytesWriter(ret, Paths.get("srlogs\\" + name + ".log.gz"));
+            IKSGFileLoadUtil.fileBytesWriter(ret, Paths.get("srlogs\\" + name + ".log.gz"));
         } catch (IOException e) {
         }
         for (File file : files) {
-            FileLoadHelper.deleteFile(file);
+            IKSGFileLoadUtil.deleteFile(file);
         }
     }
 

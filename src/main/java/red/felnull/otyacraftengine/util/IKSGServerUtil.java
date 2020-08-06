@@ -7,7 +7,7 @@ import net.minecraftforge.fml.LogicalSidedProvider;
 
 import java.util.List;
 
-public class ServerHelper {
+public class IKSGServerUtil {
     public static MinecraftServer getMinecraftServer() {
         return LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
     }
@@ -18,7 +18,7 @@ public class ServerHelper {
 
     public static boolean isOnlinePlayer(String uuid) {
         List<ServerPlayerEntity> playes = getOnlinePlayers();
-        return playes.stream().anyMatch(n -> PlayerHelper.getUUID(n).equals(uuid));
+        return playes.stream().anyMatch(n -> IKSGPlayerUtil.getUUID(n).equals(uuid));
     }
 
 

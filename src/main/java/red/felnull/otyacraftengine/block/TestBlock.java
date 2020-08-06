@@ -16,7 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.util.VoxelShapeHelper;
+import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
 //@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestBlock extends Block {
@@ -48,6 +48,6 @@ public class TestBlock extends Block {
     @SubscribeEvent
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         VoxelShape test = X_AXIS_AABB;
-        return VoxelShapeHelper.rotate90(test);
+        return IKSGVoxelShapeUtil.rotate90(test);
     }
 }

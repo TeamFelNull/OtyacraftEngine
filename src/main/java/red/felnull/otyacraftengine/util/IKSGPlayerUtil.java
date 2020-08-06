@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerHelper {
+public class IKSGPlayerUtil {
 
     public static String FAKE_UUID = "11451419-1981-0364-364931-000000000000";
     public static String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
@@ -40,7 +40,7 @@ public class PlayerHelper {
     }
 
     public static ServerPlayerEntity getPlayerByUUID(String uuid) {
-        return ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(uuid));
+        return IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(uuid));
     }
 
     public static void grantAdvancement(ResourceLocation rl, ServerPlayerEntity spl) {
@@ -55,18 +55,17 @@ public class PlayerHelper {
             spl.getAdvancements().grantCriterion(advancement, s);
         }
     }
-}
 
-class GameProfileLoader extends Thread {
-    private String name;
+    private static class GameProfileLoader extends Thread {
+        private String name;
 
-    public GameProfileLoader(String name) {
-        this.name = name;
+        public GameProfileLoader(String name) {
+            this.name = name;
+        }
+
+        public void run() {
+            GameProfile gp = PLAYERGAMEPROFILES.get(name);
+            PLAYERGAMEPROFILES.put(name, SkullTileEntity.updateGameProfile(gp));
+        }
     }
-
-    public void run() {
-        GameProfile gp = PlayerHelper.PLAYERGAMEPROFILES.get(name);
-        PlayerHelper.PLAYERGAMEPROFILES.put(name, SkullTileEntity.updateGameProfile(gp));
-    }
 }
-

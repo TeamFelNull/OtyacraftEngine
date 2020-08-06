@@ -7,9 +7,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.PathUtil;
-import red.felnull.otyacraftengine.util.PlayerHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGPathUtil;
+import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class WorldDataManager {
         public void sync(MinecraftServer ms) {
             for (String pl : ms.getPlayerList().getOnlinePlayerNames()) {
                 ServerPlayerEntity spe = ms.getPlayerList().getPlayerByUsername(pl);
-                for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(PlayerHelper.getUUID(spe)).entrySet()) {
+                for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(IKSGPlayerUtil.getUUID(spe)).entrySet()) {
                     PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
                     if (data.isClientSincble()) {
                         PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> spe), new ClientPlayerDataSyncMessage(ent.getKey(), ent.getValue()));
@@ -48,8 +48,8 @@ public class WorldDataManager {
             OtyacraftEngine.LOGGER.info("loading data");
             for (Map.Entry<ResourceLocation, WorldData> rege : OERegistries.WORLD_DATA.entrySet()) {
                 CompoundNBT tag = null;
-                if (PathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).toFile().exists()) {
-                    tag = FileLoadHelper.fileNBTReader(PathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()));
+                if (IKSGPathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).toFile().exists()) {
+                    tag = IKSGFileLoadUtil.fileNBTReader(IKSGPathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()));
                 } else {
                     tag = new CompoundNBT();
                 }
@@ -57,17 +57,17 @@ public class WorldDataManager {
             }
         } else {
             OtyacraftEngine.LOGGER.info("loading " + player.getName().getString() + " data");
-            if (!PLAYER_DATA.containsKey(PlayerHelper.getUUID(player))) {
-                PLAYER_DATA.put(PlayerHelper.getUUID(player), new HashMap<ResourceLocation, CompoundNBT>());
+            if (!PLAYER_DATA.containsKey(IKSGPlayerUtil.getUUID(player))) {
+                PLAYER_DATA.put(IKSGPlayerUtil.getUUID(player), new HashMap<ResourceLocation, CompoundNBT>());
             }
             for (Map.Entry<ResourceLocation, PlayerWorldData> rege : OERegistries.PLAYER_WORLD_DATA.entrySet()) {
                 CompoundNBT tag = null;
-                if (PathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).resolve(PlayerHelper.getUUID(player) + ".dat").toFile().exists()) {
-                    tag = FileLoadHelper.fileNBTReader(PathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).resolve(PlayerHelper.getUUID(player) + ".dat"));
+                if (IKSGPathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).resolve(IKSGPlayerUtil.getUUID(player) + ".dat").toFile().exists()) {
+                    tag = IKSGFileLoadUtil.fileNBTReader(IKSGPathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).resolve(IKSGPlayerUtil.getUUID(player) + ".dat"));
                 } else {
                     tag = new CompoundNBT();
                 }
-                PLAYER_DATA.get(PlayerHelper.getUUID(player)).put(rege.getKey(), initialNBT(tag, rege.getValue().getInitialNBT(new CompoundNBT())));
+                PLAYER_DATA.get(IKSGPlayerUtil.getUUID(player)).put(rege.getKey(), initialNBT(tag, rege.getValue().getInitialNBT(new CompoundNBT())));
             }
         }
     }
@@ -90,20 +90,20 @@ public class WorldDataManager {
             OtyacraftEngine.LOGGER.info("saveing data");
             for (Map.Entry<ResourceLocation, CompoundNBT> ent : WORLD_DATA.entrySet()) {
                 WorldData data = OERegistries.WORLD_DATA.get(ent.getKey());
-                FileLoadHelper.fileNBTWriter(ent.getValue(), PathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()));
+                IKSGFileLoadUtil.fileNBTWriter(ent.getValue(), IKSGPathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()));
             }
             for (String pl : ms.getPlayerList().getOnlinePlayerNames()) {
                 ServerPlayerEntity spe = ms.getPlayerList().getPlayerByUsername(pl);
-                for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(PlayerHelper.getUUID(spe)).entrySet()) {
+                for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(IKSGPlayerUtil.getUUID(spe)).entrySet()) {
                     PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
-                    FileLoadHelper.fileNBTWriter(ent.getValue(), PathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()).resolve(PlayerHelper.getUUID(spe) + ".dat"));
+                    IKSGFileLoadUtil.fileNBTWriter(ent.getValue(), IKSGPathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()).resolve(IKSGPlayerUtil.getUUID(spe) + ".dat"));
                 }
             }
         } else {
             OtyacraftEngine.LOGGER.info("saveing " + player.getName().getString() + " data");
-            for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(PlayerHelper.getUUID(player)).entrySet()) {
+            for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(IKSGPlayerUtil.getUUID(player)).entrySet()) {
                 PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
-                FileLoadHelper.fileNBTWriter(ent.getValue(), PathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()).resolve(PlayerHelper.getUUID(player) + ".dat"));
+                IKSGFileLoadUtil.fileNBTWriter(ent.getValue(), IKSGPathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()).resolve(IKSGPlayerUtil.getUUID(player) + ".dat"));
             }
         }
     }
@@ -114,9 +114,9 @@ public class WorldDataManager {
             WORLD_DATA.clear();
             PLAYER_DATA.clear();
         } else {
-            OtyacraftEngine.LOGGER.info("unloding " + PlayerHelper.getUserName(player) + " data");
-            if (PLAYER_DATA.containsKey(PlayerHelper.getUUID(player))) {
-                PLAYER_DATA.get(PlayerHelper.getUUID(player)).clear();
+            OtyacraftEngine.LOGGER.info("unloding " + IKSGPlayerUtil.getUserName(player) + " data");
+            if (PLAYER_DATA.containsKey(IKSGPlayerUtil.getUUID(player))) {
+                PLAYER_DATA.get(IKSGPlayerUtil.getUUID(player)).clear();
             }
         }
     }
@@ -126,7 +126,7 @@ public class WorldDataManager {
     }
 
     public CompoundNBT getPlayerWorldData(PlayerEntity player, ResourceLocation location, boolean isClientSide) {
-        return getPlayerData(PlayerHelper.getUUID(player), location, isClientSide);
+        return getPlayerData(IKSGPlayerUtil.getUUID(player), location, isClientSide);
     }
 
     public CompoundNBT getWorldData(ResourceLocation location) {

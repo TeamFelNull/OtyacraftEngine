@@ -5,6 +5,10 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 
 public class RefName {
+
+ //   https://github.com/Team-Fruit/Emojicord/blob/master/shared/src/main/java/net/teamfruit/emojicord/asm/lib/RefName.java ← 参考
+
+
     private final String mcpName;
     private final String srgName;
 

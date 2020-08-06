@@ -72,13 +72,13 @@ public class ServerDataSender extends Thread {
 
     public static void srlogsGziping() {
 
-        if (!PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().exists())
+        if (!IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().exists())
             return;
 
-        File[] files = PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(new FileFilter() {
+        File[] files = IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
-                return StringHelper.getExtension(file.getName()).equals("log");
+                return IKSGStringUtil.getExtension(file.getName()).equals("log");
             }
         });
         if (files.length == 0)
@@ -105,7 +105,7 @@ public class ServerDataSender extends Thread {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             for (File file : files) {
-                byte[] bytes = FileLoadHelper.fileBytesReader(file.toPath());
+                byte[] bytes = IKSGFileLoadUtil.fileBytesReader(file.toPath());
                 GZIPOutputStream gzip_out = new GZIPOutputStream(out);
                 gzip_out.write(bytes);
                 gzip_out.close();
@@ -117,13 +117,13 @@ public class ServerDataSender extends Thread {
             if (mostold == mostnew) {
                 name = mostnew.getName();
             } else {
-                name = StringHelper.deleteExtension(mostold.getName()) + "~" + StringHelper.deleteExtension(mostnew.getName());
+                name = IKSGStringUtil.deleteExtension(mostold.getName()) + "~" + IKSGStringUtil.deleteExtension(mostnew.getName());
             }
-            FileLoadHelper.fileBytesWriter(ret, PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs\\" + name + ".log.gz")));
+            IKSGFileLoadUtil.fileBytesWriter(ret, IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs\\" + name + ".log.gz")));
         } catch (IOException e) {
         }
         for (File file : files) {
-            FileLoadHelper.deleteFile(file);
+            IKSGFileLoadUtil.deleteFile(file);
         }
     }
 
@@ -148,7 +148,7 @@ public class ServerDataSender extends Thread {
         sendingData = null;
         SENDS.get(playerUUID).remove(uuid);
         this.logger.createLog();
-        MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pos(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
+        MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pos(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, result));
     }
 
     public void run() {
@@ -159,7 +159,7 @@ public class ServerDataSender extends Thread {
                 sentFinish(SendReceiveLogger.Result.FAILURE);
             }
             this.logger.addStartLogLine();
-            MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pre(ServerHelper.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
+            MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pre(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
             boolean frist = true;
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
@@ -177,7 +177,7 @@ public class ServerDataSender extends Thread {
                 } else {
                     sendpacet = new ServerDataSendMessage(uuid, sndingbyte);
                 }
-                PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> PlayerHelper.getPlayerByUUID(playerUUID)), sendpacet);
+                PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> IKSGPlayerUtil.getPlayerByUUID(playerUUID)), sendpacet);
                 sndingbyte = null;
                 frist = false;
                 time = System.currentTimeMillis();
@@ -187,7 +187,7 @@ public class ServerDataSender extends Thread {
                         logTime = System.currentTimeMillis();
                     }
 
-                    if (!ServerHelper.isOnlinePlayer(playerUUID)) {
+                    if (!IKSGServerUtil.isOnlinePlayer(playerUUID)) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
                         sentFinish(SendReceiveLogger.Result.FAILURE);
                         return;

@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.api.DataSendReceiverManager;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
@@ -9,6 +10,7 @@ import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.handler.WorldDataHandler;
 import red.felnull.otyacraftengine.packet.PacketHandler;
+import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
 
 ;
 

@@ -3,9 +3,9 @@ package red.felnull.otyacraftengine.data;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.PathUtil;
-import red.felnull.otyacraftengine.util.StringHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGPathUtil;
+import red.felnull.otyacraftengine.util.IKSGStringUtil;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +18,7 @@ public class SendReceiveLogger {
     private SndOrRec sr;
 
     public SendReceiveLogger(String name, String details, Dist side, SndOrRec sr) {
-        this.time = StringHelper.getTimeStamp();
+        this.time = IKSGStringUtil.getTimeStamp();
         this.name = name;
         this.side = side;
         this.log = details + " - " + sr.getName().getString() + " Log \n";
@@ -59,7 +59,7 @@ public class SendReceiveLogger {
     }
 
     public void addLogLine(ITextComponent log) {
-        this.log += StringHelper.getTimeStamp() + "-" + log.getString() + "\n";
+        this.log += IKSGStringUtil.getTimeStamp() + "-" + log.getString() + "\n";
     }
 
     public void createLog() {
@@ -67,9 +67,9 @@ public class SendReceiveLogger {
         if (side.isClient()) {
             savedpath = Paths.get("srlogs");
         } else if (side.isDedicatedServer()) {
-            savedpath = PathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs"));
+            savedpath = IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs"));
         }
-        FileLoadHelper.txtWriter(log, savedpath.resolve(time.replace(":", "-").replace(" ", "-") + "-" + name.replace(":", "-") + "-" + sr.getInitials() + ".log"));
+        IKSGFileLoadUtil.txtWriter(log, savedpath.resolve(time.replace(":", "-").replace(" ", "-") + "-" + name.replace(":", "-") + "-" + sr.getInitials() + ".log"));
     }
 
     public enum SndOrRec {

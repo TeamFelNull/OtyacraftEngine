@@ -8,7 +8,7 @@ import red.felnull.otyacraftengine.api.registries.OERegistries;
 
 import java.util.Random;
 
-public class ModUtil {
+public class IKSGModUtil {
     public static String getModVersion(String modid) {
 
         try {
@@ -32,10 +32,10 @@ public class ModUtil {
 
     public static TextFormatting getModColor(String modid) {
         if (OERegistries.MOD_COLOR.containsKey(modid)) {
-            return ColorUtil.convertTextFormattingFromColorCode(OERegistries.MOD_COLOR.get(modid));
+            return IKSGColorUtil.convertTextFormattingFromColorCode(OERegistries.MOD_COLOR.get(modid));
         } else {
-            Random r = new Random(IkisugiMath.convertStringToInteger(modid));
-            return ColorUtil.convertTextFormattingFromColorCode(r.nextInt(16777215));
+            Random r = new Random(IKSGMath.convertStringToInteger(modid));
+            return IKSGColorUtil.convertTextFormattingFromColorCode(r.nextInt(16777215));
         }
     }
 

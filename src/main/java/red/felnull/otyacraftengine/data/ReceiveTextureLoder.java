@@ -15,9 +15,9 @@ import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
-import red.felnull.otyacraftengine.util.FileLoadHelper;
-import red.felnull.otyacraftengine.util.PathUtil;
-import red.felnull.otyacraftengine.util.ServerHelper;
+import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
+import red.felnull.otyacraftengine.util.IKSGPathUtil;
+import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -70,10 +70,10 @@ public class ReceiveTextureLoder {
     public void requestedTextuerSendServer(String indexnaxme, ServerPlayerEntity player, ResourceLocation location, String name) {
         Path ImagePath = null;
         if (OERegistries.TEXTUER_SEND_PATH.containsKey(location)) {
-            ImagePath = PathUtil.getWorldSaveDataPath().resolve(OERegistries.TEXTUER_SEND_PATH.get(location)).resolve(name);
+            ImagePath = IKSGPathUtil.getWorldSaveDataPath().resolve(OERegistries.TEXTUER_SEND_PATH.get(location)).resolve(name);
         }
         if (ImagePath != null && ImagePath.toFile().exists()) {
-            byte[] data = FileLoadHelper.fileBytesReader(ImagePath);
+            byte[] data = IKSGFileLoadUtil.fileBytesReader(ImagePath);
             String id = DataSendReceiverManager.instance().sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), UUID.randomUUID().toString(), data);
             CompoundNBT tag = new CompoundNBT();
             tag.putString("index", indexnaxme);
@@ -97,7 +97,7 @@ public class ReceiveTextureLoder {
         String indexname = CLIENT_INDEX_UUID.get(uuid);
 
         if (!CASH_PATH.resolve("index.json").toFile().exists()) {
-            FileLoadHelper.createFolder(CASH_PATH);
+            IKSGFileLoadUtil.createFolder(CASH_PATH);
             try (Writer writer = new FileWriter(CASH_PATH.resolve("index.json").toFile())) {
                 Map<String, String> map = new HashMap<String, String>();
                 Gson gsonb = new GsonBuilder().create();
@@ -121,7 +121,7 @@ public class ReceiveTextureLoder {
             } catch (Exception e) {
             }
         }
-        ResourceLocation inmap = IKSGTextureUtil.getPictureImageTexture(FileLoadHelper.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
+        ResourceLocation inmap = IKSGTextureUtil.getPictureImageTexture(IKSGFileLoadUtil.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
         PICTUER_RECEIVE_LOCATION.put(indexname, inmap);
     }
 
@@ -136,7 +136,7 @@ public class ReceiveTextureLoder {
             Map<String, String> map = new HashMap<String, String>();
             map.putAll(gson.fromJson(jsonReader, map.getClass()));
             File[] cfiles = ReceiveTextureLoder.CASH_PATH.resolve("cash").toFile().listFiles();
-            Arrays.stream(cfiles).filter(n -> !map.containsValue(n.getName())).forEach(n -> FileLoadHelper.deleteFile(n));
+            Arrays.stream(cfiles).filter(n -> !map.containsValue(n.getName())).forEach(n -> IKSGFileLoadUtil.deleteFile(n));
         } catch (Exception e) {
         }
     }
@@ -160,7 +160,7 @@ public class ReceiveTextureLoder {
                 PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
                 return;
             }
-            FileLoadHelper.deleteFile(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(map.get(WORLDNAME_AND_PATH)));
+            IKSGFileLoadUtil.deleteFile(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(map.get(WORLDNAME_AND_PATH)));
 
             map.remove(WORLDNAME_AND_PATH);
 
@@ -178,7 +178,7 @@ public class ReceiveTextureLoder {
     }
 
     public void updateTextuerServer(ResourceLocation location, String name) {
-        ServerHelper.getOnlinePlayers().forEach(n -> updateTextuerServer(n, location, name));
+        IKSGServerUtil.getOnlinePlayers().forEach(n -> updateTextuerServer(n, location, name));
     }
 
     public void updateTextuerServer(ServerPlayerEntity player, ResourceLocation location, String name) {

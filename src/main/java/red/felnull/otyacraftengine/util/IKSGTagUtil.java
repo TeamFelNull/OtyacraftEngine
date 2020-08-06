@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.Set;
 
-public class TagHelper {
+public class IKSGTagUtil {
     public static Set<ResourceLocation> getItemTags(Item item) {
         return item.getTags();
     }

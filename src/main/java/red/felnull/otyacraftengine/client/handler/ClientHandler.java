@@ -22,8 +22,8 @@ import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
-import red.felnull.otyacraftengine.util.ModUtil;
-import red.felnull.otyacraftengine.util.TagHelper;
+import red.felnull.otyacraftengine.util.IKSGModUtil;
+import red.felnull.otyacraftengine.util.IKSGTagUtil;
 
 import java.util.Objects;
 
@@ -67,9 +67,9 @@ public class ClientHandler {
 
         ItemStack stack = e.getItemStack();
 
-        boolean itemtagflag = !TagHelper.getItemTags(stack).isEmpty();
-        boolean blocktagflag = (stack.getItem() instanceof BlockItem && !TagHelper.getBlockTags(stack).isEmpty());
-        boolean entitytagflag = (stack.getItem() instanceof SpawnEggItem && !Objects.requireNonNull(TagHelper.getEntityTags(stack)).isEmpty());
+        boolean itemtagflag = !IKSGTagUtil.getItemTags(stack).isEmpty();
+        boolean blocktagflag = (stack.getItem() instanceof BlockItem && !IKSGTagUtil.getBlockTags(stack).isEmpty());
+        boolean entitytagflag = (stack.getItem() instanceof SpawnEggItem && !Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).isEmpty());
 
         if (!(itemtagflag || blocktagflag || entitytagflag))
             return;
@@ -82,21 +82,21 @@ public class ClientHandler {
         if (itemtagflag) {
 
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").func_240699_a_(TextFormatting.AQUA));
-            TagHelper.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (blocktagflag) {
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").func_240699_a_(TextFormatting.AQUA));
-            TagHelper.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (entitytagflag) {
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").func_240699_a_(TextFormatting.AQUA));
-            Objects.requireNonNull(TagHelper.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
 
     }
 
     private static void addModName(ItemTooltipEvent e) {
-        e.getToolTip().add(new StringTextComponent(ModUtil.getModName(ModUtil.getModID(e.getItemStack())) + " " + (ModUtil.getModVersion(ModUtil.getModID(e.getItemStack())).equals("Error!!") ? "" : ModUtil.getModVersion(ModUtil.getModID(e.getItemStack())))).func_240699_a_(ModUtil.getModColor(ModUtil.getModID(e.getItemStack()))));
+        e.getToolTip().add(new StringTextComponent(IKSGModUtil.getModName(IKSGModUtil.getModID(e.getItemStack())) + " " + (IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())).equals("Error!!") ? "" : IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())))).func_240699_a_(IKSGModUtil.getModColor(IKSGModUtil.getModID(e.getItemStack()))));
     }
 
     @SubscribeEvent

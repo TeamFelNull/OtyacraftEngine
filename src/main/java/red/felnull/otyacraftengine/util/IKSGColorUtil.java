@@ -5,7 +5,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorUtil {
+public class IKSGColorUtil {
     public static TextFormatting[] TextFormattingColors = {
             TextFormatting.BLACK,
             TextFormatting.DARK_BLUE,
@@ -67,10 +67,10 @@ public class ColorUtil {
     public static int difference(String color1, String color2) {
         int[] rgb1 = convertRGBFromColorCode(color1);
         int[] rgb2 = convertRGBFromColorCode(color2);
-        int rd = IkisugiMath.differenceInt(rgb1[0], rgb2[0]);
-        int gd = IkisugiMath.differenceInt(rgb1[1], rgb2[1]);
-        int bd = IkisugiMath.differenceInt(rgb1[2], rgb2[2]);
-        return IkisugiMath.averageInt(rd, gd, bd);
+        int rd = IKSGMath.differenceInt(rgb1[0], rgb2[0]);
+        int gd = IKSGMath.differenceInt(rgb1[1], rgb2[1]);
+        int bd = IKSGMath.differenceInt(rgb1[2], rgb2[2]);
+        return IKSGMath.averageInt(rd, gd, bd);
     }
 
     public static int[] convertRGBFromColorCode(int n) {

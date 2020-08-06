@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class PictuerUtil {
+public class IKSGPictuerUtil {
     public static BufferedImage getBffImage(Path path) {
         File picfile = path.toFile();
         if (picfile.exists() && picfile != null) {

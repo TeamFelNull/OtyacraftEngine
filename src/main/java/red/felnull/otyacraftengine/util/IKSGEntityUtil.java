@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
-public class EntityUtil {
+public class IKSGEntityUtil {
     public static ItemEntity createItemEntity(ItemStack item, World worldIn, double x, double y, double z) {
         ItemEntity iteme = new ItemEntity(worldIn, x, y, z);
         iteme.setItem(item);

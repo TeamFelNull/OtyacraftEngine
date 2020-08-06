@@ -6,7 +6,7 @@ import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
-import red.felnull.otyacraftengine.util.PlayerHelper;
+import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.UUID;
 
@@ -33,7 +33,7 @@ public class DataSendReceiverManager {
 
     public String sendToClient(ServerPlayerEntity player, ResourceLocation location, String name, byte[] data) {
         String uuid = UUID.randomUUID().toString();
-        String pluuid = PlayerHelper.getUUID(player);
+        String pluuid = IKSGPlayerUtil.getUUID(player);
         if (ServerDataSender.isMaxSending(pluuid)) {
             ServerDataSendReservation.add(pluuid, uuid, location, name, data);
         } else {

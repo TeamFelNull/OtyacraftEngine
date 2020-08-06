@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class FileLoadHelper {
+public class IKSGFileLoadUtil {
     public static void createFolder(Path path) {
         if (path == null)
             return;

@@ -18,7 +18,7 @@ import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
-import red.felnull.otyacraftengine.util.PlayerHelper;
+import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class ServerHandler {
     public static void onClientResponse(ResponseEvent.Client e) {
         if (e.getLocation().equals(SERVER_RESPONSE)) {
             if (e.getId() == 0) {
-                ServerDataSender.response(PlayerHelper.getUUID(e.getPlayer()), e.getMessage());
+                ServerDataSender.response(IKSGPlayerUtil.getUUID(e.getPlayer()), e.getMessage());
             }
         } else if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
             if (e.getId() == 0) {
