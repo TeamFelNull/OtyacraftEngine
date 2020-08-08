@@ -27,4 +27,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: OtyaRe
-        path: builds/libs # or path/to/artifact
+        path: update_check.json # or path/to/artifact
