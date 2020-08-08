@@ -132,7 +132,7 @@ public class ClientHandler {
             }
         }
     }
-
+//ikisugi
     @SubscribeEvent
     public static void onReceiverData(ReceiverEvent.Client.Pos e) {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
