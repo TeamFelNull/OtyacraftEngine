@@ -132,16 +132,7 @@ public class ClientHandler {
             }
         }
     }
-    /*
-        @SubscribeEvent
-        public static void onRenderItemOverlayIntoGUI(RenderItemOverlayIntoGUIEvent e) {
-            MatrixStack ms = new MatrixStack();
-            IKSGRenderUtil.matrixPush(ms);
-            IKSGRenderUtil.matrixTranslatef(ms, 0, 0, e.getZLevel() + 200.0F);
-            IKSGRenderUtil.guiBindAndBlit(IKSGTextureUtil.getLoadingIconTextuer(), ms, e.getX(), e.getY(), 0, 0, 16, 16, 16, 16);
-            IKSGRenderUtil.matrixPop(ms);
-        }
-    */
+
     @SubscribeEvent
     public static void onReceiverData(ReceiverEvent.Client.Pos e) {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
