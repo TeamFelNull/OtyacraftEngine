@@ -1,11 +1,11 @@
 {
-
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine",
   "1.16.1": {
-    "1.0": "The Frist Release."
+    "1.0": "The Frist Release.",
+    "1.1": "Comp Forge 108 and more"
   },
   "promos": {
-    "1.16.1-latest": "1.0",
-    "1.16.1-recommended": "1.0"
+    "1.16.1-latest": "1.1",
+    "1.16.1-recommended": "1.1"
   }
 }
