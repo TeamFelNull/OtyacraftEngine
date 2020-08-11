@@ -133,18 +133,20 @@ publishing {
         }
     }
 }
-curseforge {
-    apiKey = System.getenv('curesforgeapikey')
-    project {
-        id = "${curesfg_id}"
-        changelog = ''
-        releaseType = 'release'
-        addGameVersion "${mc_version}"
-        mainArtifact(jar) {
-            displayName = "${mod_name}-${mc_version}-${mod_version}"
-        }
-        addArtifact(devJar) {
-            displayName = "${mod_name}-${mc_version}-${mod_version}-dev"
+if (System.getenv('curesforgeapikey') != null) {
+    curseforge {
+        apiKey = System.getenv('curesforgeapikey')
+        project {
+            id = "${curesfg_id}"
+            changelog = ''
+            releaseType = System.getenv('releasetype')
+            addGameVersion "${mc_version}"
+            mainArtifact(jar) {
+                displayName = "${mod_name}-${mc_version}-${mod_version}"
+            }
+            addArtifact(devJar) {
+                displayName = "${mod_name}-${mc_version}-${mod_version}-dev"
+            }
         }
     }
 }
