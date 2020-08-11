@@ -26,7 +26,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
-        name: OE-${{ github.ref }}-Release
+        name: OE-Release
         path: build/libs
     - name: Create Release
       id: create_release
