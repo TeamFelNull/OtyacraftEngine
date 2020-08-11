@@ -9,10 +9,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 
 //@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class TestItem extends Item implements IDetailedInfomationItem {
+public class TestItem extends Item implements IDetailedInfomationItem, IColorbleItem {
 
     public TestItem(Properties properties) {
         super(properties);
@@ -39,4 +40,8 @@ public class TestItem extends Item implements IDetailedInfomationItem {
         return ActionResult.func_233538_a_(item, worldIn.isRemote());
     }
 
+    @Override
+    public int getColoer(ItemStack item, int layer) {
+        return 114514;
+    }
 }
