@@ -55,13 +55,3 @@ jobs:
           asset_path: ./build/libs/release.zip
           asset_name: OtyacraftEngine.zip
           asset_content_type: application/zip
-    - name: Upload To Github Release
-      uses: xresloader/upload-to-github-release@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }} 
-      with:
-          file: "build/libs"
-
-
-      
-      
