@@ -17,7 +17,7 @@ apply plugin: 'maven-publish'
 
 version = "${mod_version}"
 group = "net.morimori.${mod_id}"
-archivesBaseName = "${mod_name}-${mc_version}-" + System.getenv('curesforgeapikey')
+archivesBaseName = "${mod_name}-${mc_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -134,11 +134,17 @@ publishing {
     }
 }
 curseforge {
-    apiKey = 'aaa'
+    apiKey = System.getenv('curesforgeapikey')
     project {
-        id = '400337'
-        changelog = 'Test changes'
+        id = "${curesfg_id}"
+        changelog = ''
         releaseType = 'release'
         addGameVersion "${mc_version}"
+        mainArtifact(jar) {
+            displayName = "${mod_name}-${mc_version}-${mod_version}"
+        }
+        addArtifact(devJar) {
+            displayName = "${mod_name}-${mc_version}-${mod_version}-dev"
+        }
     }
 }
