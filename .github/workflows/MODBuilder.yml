@@ -24,7 +24,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       env:
-        curesforgeapikey: ${{secrets.IKISUGITEST}}
+        curesforgeapikey: ${{secrets.CURESFORGEAPIKEY}}
     - name: Zip create
       run: |
        cd build/libs
