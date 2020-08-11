@@ -23,7 +23,10 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - uses: actions/upload-artifact@v1
+    - name: Test of YJSNPI
+      run: ./echo 114!514!1919!810!
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
       with:
         name: OE-Release
         path: build/libs
@@ -34,9 +37,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }} 
       with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: OtyacraftEngine - ${{ github.ref }}
           body: |
-            TestBody
+            The ${{ github.ref }} Release!
+            Build by ${{ github.actor }}
           draft: false
           prerelease: false
 
