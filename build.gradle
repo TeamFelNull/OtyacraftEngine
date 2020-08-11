@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = "${mod_version}"
-group = "net.morimori.${mod_id}"
+group = "red.felnull.${mod_id}"
 archivesBaseName = "${mod_name}-${mc_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
@@ -138,7 +138,7 @@ if (System.getenv('curesforgeapikey') != null) {
         apiKey = System.getenv('curesforgeapikey')
         project {
             id = "${curesfg_id}"
-            changelog = ''
+            changelog = "${curesfg_changelog}"
             releaseType = System.getenv('releasetype')
             addGameVersion "${mc_version}"
             mainArtifact(jar) {
