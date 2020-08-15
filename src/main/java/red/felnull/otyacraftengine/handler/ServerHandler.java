@@ -19,6 +19,7 @@ import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
+import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class ServerHandler {
 
     @SubscribeEvent
     public static void onWorldSave(WorldEvent.Save e) {
-        WorldDataEvent.save(e.getWorld().getWorld().getServer(), null, true);
+        WorldDataEvent.save(IKSGServerUtil.getMinecraftServer(), null, true);
     }
 
     @SubscribeEvent

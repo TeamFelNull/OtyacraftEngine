@@ -16,12 +16,14 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 version = "${mod_version}"
-group = "red.felnull.${mod_id}"
+group = "${mod_group}"
 archivesBaseName = "${mod_name}-${mc_version}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
+
     mappings channel: 'snapshot', version: '20200514-1.16'
 
     runs {
@@ -30,11 +32,10 @@ minecraft {
 
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 
-
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -48,7 +49,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -61,10 +62,10 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', "otyacraftengine", '--all', '--output', file('src/generated/resources/')
 
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -85,42 +86,32 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
-}
 
+}
+ext.allmanifest = {
+    attributes([
+            "Specification-Title"     : "${mod_id}",
+            "Specification-Vendor"    : "MORIMORI0317",
+            "Specification-Version"   : "1",
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : "${version}",
+            "Implementation-Vendor"   : "TeamFelNull",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+    ])
+}
 jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "${mod_id}",
-                "Specification-Vendor"    : "MORIMORI0317",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : "${mod_name}",
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "TeamFelNull",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+    manifest allmanifest
 }
 task devJar(type: Jar) {
     from sourceSets.main.output
     from sourceSets.main.allJava
     classifier = 'dev'
-    manifest {
-        attributes(["Specification-Title"     : "${mod_id}",
-                    "Specification-Vendor"    : "MORIMORI0317",
-                    "Specification-Version"   : "1",
-                    "Implementation-Title"    : "${mod_name}",
-                    "Implementation-Version"  : "${version}",
-                    "Implementation-Vendor"   : "TeamFelNull",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
-    }
+    manifest allmanifest
 }
 artifacts {
     archives devJar
 }
-
 jar.finalizedBy('reobfJar')
-
-
 publishing {
     publications {
         mavenJava(MavenPublication) {

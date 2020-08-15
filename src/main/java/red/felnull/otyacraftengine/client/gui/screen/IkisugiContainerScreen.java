@@ -80,11 +80,7 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
         this.dropAndDragByIKSG(dragFiles);
     }
 
-    //drawString
-    @Override
-    public void func_238476_c_(MatrixStack matx, FontRenderer font, String text, int x, int y, int color) {
-        this.drawStringByIKSG(matx, font, text, x, y, color);
-    }
+
 
     //初期化
     public void initByIKSG() {
