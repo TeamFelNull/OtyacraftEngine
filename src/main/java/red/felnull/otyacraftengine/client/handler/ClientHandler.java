@@ -31,6 +31,7 @@ public class ClientHandler {
     private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
     private static Minecraft mc = Minecraft.getInstance();
     private static int loadingCont;
+    private static int beaconCont;
 
     /*
         @SubscribeEvent
@@ -113,6 +114,17 @@ public class ClientHandler {
             }
             loadingCont = 0;
         }
+
+        beaconCont++;
+        if (beaconCont >= 60) {
+            if (RenderHandler.beaconCount >= RenderHandler.beaconMaxCount) {
+                RenderHandler.beaconCount = 0;
+            } else {
+                RenderHandler.beaconCount++;
+            }
+            beaconCont = 0;
+        }
+
         ClientDataSendReservation.tick();
     }
 
@@ -132,7 +144,8 @@ public class ClientHandler {
             }
         }
     }
-//ikisugi
+
+    //ikisugi
     @SubscribeEvent
     public static void onReceiverData(ReceiverEvent.Client.Pos e) {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {

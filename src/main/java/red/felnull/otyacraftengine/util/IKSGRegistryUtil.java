@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
+import com.mojang.datafixers.types.Type;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +18,15 @@ import java.lang.reflect.Method;
 import java.util.function.Supplier;
 
 public class IKSGRegistryUtil {
+
+
+    public static <T extends TileEntityType<?>> T craeteTileEntityType(Supplier<? extends TileEntity> factoryIn, ResourceLocation location, Block... blocks) {
+        T tile = (T) TileEntityType.Builder.create(factoryIn, blocks).build((Type) null).setRegistryName(location);
+        return tile;
+    }
+
     public static void registedTileEntityType(IForgeRegistry<TileEntityType<?>> r, Supplier<? extends TileEntity> factoryIn, TileEntityType<?> te, ResourceLocation location, Block... blocks) {
-        te = TileEntityType.Builder.create(factoryIn, blocks).build(null).setRegistryName(location);
+        te = craeteTileEntityType(factoryIn, location, blocks);
         r.register(te);
     }
 

@@ -12,6 +12,7 @@ public class ClientConfig {
     public static ConfigValue<Boolean> ToolTipTag;
     public static ConfigValue<Boolean> ToolTipDetailedInformation;
     public static ConfigValue<Boolean> DeleteUnnecessaryTextureCash;
+    public static ConfigValue<Boolean> BeaconOverlay;
 
     public static void init() {
         Pair<ConfigLoder, ForgeConfigSpec> common_config = new ForgeConfigSpec.Builder().configure(ConfigLoder::new);
@@ -28,6 +29,9 @@ public class ClientConfig {
             builder.pop();
             builder.push("Data");
             DeleteUnnecessaryTextureCash = builder.define("Delete Unnecessary Texture Cash at startup", true);
+            builder.pop();
+            builder.push("GUI");
+            BeaconOverlay = builder.define("Beacon Overlay", true);
             builder.pop();
         }
     }
