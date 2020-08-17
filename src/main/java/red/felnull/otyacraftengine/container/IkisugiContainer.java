@@ -58,16 +58,16 @@ public abstract class IkisugiContainer extends Container {
         super(type, windowId);
     }
 
-    private void addPlayerSlot(int x, int y) {
+    protected void addPlayerSlot(int x, int y) {
         if (playerInventory == null)
             return;
         for (int k = 0; k < 3; ++k) {
             for (int i1 = 0; i1 < 9; ++i1) {
-                this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, 8 + i1 * 18, 84 + k * 18));
+                this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, x + i1 * 18, y + k * 18));
             }
         }
         for (int l = 0; l < 9; ++l) {
-            this.addSlot(new Slot(playerInventory, l, x + l * 18, y));
+            this.addSlot(new Slot(playerInventory, l, x + l * 18, y + 58));
         }
     }
 

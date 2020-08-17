@@ -19,10 +19,12 @@ import java.util.function.Supplier;
 
 public class IKSGRegistryUtil {
 
+    public static <T extends ContainerType<?>> T createContainerType(IContainerFactory<?> factory, ResourceLocation location) {
+        return (T) IForgeContainerType.create(factory).setRegistryName(location);
+    }
 
     public static <T extends TileEntityType<?>> T craeteTileEntityType(Supplier<? extends TileEntity> factoryIn, ResourceLocation location, Block... blocks) {
-        T tile = (T) TileEntityType.Builder.create(factoryIn, blocks).build((Type) null).setRegistryName(location);
-        return tile;
+        return (T) TileEntityType.Builder.create(factoryIn, blocks).build((Type) null).setRegistryName(location);
     }
 
     public static void registedTileEntityType(IForgeRegistry<TileEntityType<?>> r, Supplier<? extends TileEntity> factoryIn, TileEntityType<?> te, ResourceLocation location, Block... blocks) {
