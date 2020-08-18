@@ -21,8 +21,9 @@ public abstract class IkisugiContainer extends Container {
         this.pos = pos;
         this.playerInventory = playerInventory;
         inventory.openInventory(playerInventory.player);
+        setSlot();
         //def 8 142
-        addPlayerSlot(plslotX, plslotY);
+        setPlayerSlot(plslotX, plslotY);
     }
 
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, IInventory inventory, int plslotX, int plslotY) {
@@ -30,23 +31,26 @@ public abstract class IkisugiContainer extends Container {
         this.inventory = inventory;
         this.playerInventory = playerInventory;
         inventory.openInventory(playerInventory.player);
+        setSlot();
         //def 8 142
-        addPlayerSlot(plslotX, plslotY);
+        setPlayerSlot(plslotX, plslotY);
     }
 
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, int plslotX, int plslotY) {
         super(type, windowId);
         this.playerInventory = playerInventory;
+        setSlot();
         //def 8 142
-        addPlayerSlot(plslotX, plslotY);
+        setPlayerSlot(plslotX, plslotY);
     }
 
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, BlockPos pos, int plslotX, int plslotY) {
         super(type, windowId);
         this.pos = pos;
         this.playerInventory = playerInventory;
+        setSlot();
         //def 8 142
-        addPlayerSlot(plslotX, plslotY);
+        setPlayerSlot(plslotX, plslotY);
     }
 
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, BlockPos pos) {
@@ -58,7 +62,11 @@ public abstract class IkisugiContainer extends Container {
         super(type, windowId);
     }
 
-    protected void addPlayerSlot(int x, int y) {
+    protected void setSlot() {
+
+    }
+
+    protected void setPlayerSlot(int x, int y) {
         if (playerInventory == null)
             return;
         for (int k = 0; k < 3; ++k) {

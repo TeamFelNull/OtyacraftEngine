@@ -6,7 +6,10 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.container.IkisugiContainer;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -35,6 +38,15 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     //ツールチップ？
     protected void renderHoveredToolTipByIKSG(MatrixStack matrix, int mouseX, int mouseY) {
         super.func_230459_a_(matrix, mouseX, mouseY);
+    }
+
+    //タイルエンティティ取得
+    public TileEntity getTileEntity() {
+
+        if (getContainer() instanceof IkisugiContainer)
+            return OtyacraftEngine.proxy.getMinecraft().world.getTileEntity(((IkisugiContainer) this.getContainer()).getPos());
+
+        return null;
     }
 
     //以下IkisugiScreen
@@ -79,7 +91,6 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     public void func_230476_a_(List<Path> dragFiles) {
         this.dropAndDragByIKSG(dragFiles);
     }
-
 
 
     //初期化
