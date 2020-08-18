@@ -4,7 +4,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.network.PacketDistributor;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.common.SenderEvent;
 import red.felnull.otyacraftengine.packet.PacketHandler;
@@ -177,7 +176,7 @@ public class ServerDataSender extends Thread {
                 } else {
                     sendpacet = new ServerDataSendMessage(uuid, sndingbyte);
                 }
-                PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> IKSGPlayerUtil.getPlayerByUUID(playerUUID)), sendpacet);
+                PacketHandler.sendPacket(IKSGPlayerUtil.getPlayerByUUID(playerUUID), sendpacet);
                 sndingbyte = null;
                 frist = false;
                 time = System.currentTimeMillis();

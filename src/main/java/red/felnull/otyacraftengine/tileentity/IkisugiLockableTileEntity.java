@@ -2,13 +2,12 @@ package red.felnull.otyacraftengine.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public abstract class IkisugiTileEntity extends TileEntity implements IClientSyncbleTileEntity, IInstructionTileEntity {
-    public IkisugiTileEntity(TileEntityType<?> type) {
-        super(type);
-
+public abstract class IkisugiLockableTileEntity extends LockableTileEntity implements IClientSyncbleTileEntity, IInstructionTileEntity {
+    protected IkisugiLockableTileEntity(TileEntityType<?> typeIn) {
+        super(typeIn);
     }
 
     @Override
@@ -19,5 +18,6 @@ public abstract class IkisugiTileEntity extends TileEntity implements IClientSyn
     public void readByIKSG(BlockState state, CompoundNBT tag) {
         super.func_230337_a_(state, tag);
     }
+
 
 }

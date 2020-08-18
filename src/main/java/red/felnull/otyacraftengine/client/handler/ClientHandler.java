@@ -13,11 +13,13 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.client.ReturnInstructionEvent;
 import red.felnull.otyacraftengine.api.event.common.ReceiverEvent;
 import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
+import red.felnull.otyacraftengine.client.gui.screen.IInstructionContainerScreen;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
@@ -32,6 +34,16 @@ public class ClientHandler {
     private static Minecraft mc = Minecraft.getInstance();
     private static int loadingCont;
     private static int beaconCont;
+
+    @SubscribeEvent
+    public static void onInstructonReturn(ReturnInstructionEvent e) {
+        if (mc.currentScreen instanceof IInstructionContainerScreen) {
+            IInstructionContainerScreen ics = (IInstructionContainerScreen) mc.currentScreen;
+            if (e.getPos().equals(ics.getInstrunctionPos())) {
+                ics.instructionReturn(e.getName(), e.getData());
+            }
+        }
+    }
 
     /*
         @SubscribeEvent

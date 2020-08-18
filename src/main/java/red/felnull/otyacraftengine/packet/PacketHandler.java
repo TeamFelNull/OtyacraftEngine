@@ -1,15 +1,15 @@
 package red.felnull.otyacraftengine.packet;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.handler.ClientPlayerDataSyncMessageHandler;
-import red.felnull.otyacraftengine.client.handler.ClientTileEntitySyncMessageHandler;
-import red.felnull.otyacraftengine.client.handler.ServerDataSendMessageHandler;
-import red.felnull.otyacraftengine.client.handler.ServerToResponseMessageHandler;
+import red.felnull.otyacraftengine.client.handler.*;
 import red.felnull.otyacraftengine.handler.ClientDataSendMessageHandler;
 import red.felnull.otyacraftengine.handler.ClientToResponseMessageHandler;
+import red.felnull.otyacraftengine.handler.TileEntityInstructionMessageHandler;
 
 public class PacketHandler {
     public static final String PROTOCOL_VERSION = "1";
@@ -19,6 +19,10 @@ public class PacketHandler {
     private static int next() {
         integer++;
         return integer;
+    }
+
+    public static <MSG> void sendPacket(ServerPlayerEntity playerEntity, MSG message) {
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> playerEntity), message);
     }
 
     public static void init() {
@@ -34,6 +38,9 @@ public class PacketHandler {
         INSTANCE.registerMessage(next(), ClientDataSendMessage.class, ClientDataSendMessage::encodeMessege, ClientDataSendMessage::decodeMessege, ClientDataSendMessageHandler::reversiveMessage);
         //サーバーからクライアントへデータ送信
         INSTANCE.registerMessage(next(), ServerDataSendMessage.class, ServerDataSendMessage::encodeMessege, ServerDataSendMessage::decodeMessege, ServerDataSendMessageHandler::reversiveMessage);
-
+        //タイルエンティティへクライアントからの指示
+        INSTANCE.registerMessage(next(), TileEntityInstructionMessage.class, TileEntityInstructionMessage::encodeMessege, TileEntityInstructionMessage::decodeMessege, TileEntityInstructionMessageHandler::reversiveMessage);
+        //タイルエンティティへクライアントからの指示の返し
+        INSTANCE.registerMessage(next(), TileEntityInstructionReturnMessage.class, TileEntityInstructionReturnMessage::encodeMessege, TileEntityInstructionReturnMessage::decodeMessege, TileEntityInstructionReturnMessageHandler::reversiveMessage);
     }
 }
