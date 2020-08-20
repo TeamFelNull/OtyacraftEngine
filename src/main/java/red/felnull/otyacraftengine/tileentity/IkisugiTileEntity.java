@@ -20,4 +20,7 @@ public abstract class IkisugiTileEntity extends TileEntity implements IClientSyn
         super.func_230337_a_(state, tag);
     }
 
+    public void setBlockState(BlockState state) {
+        this.getWorld().setBlockState(getPos(), state);
+    }
 }

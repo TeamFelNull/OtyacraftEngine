@@ -24,15 +24,7 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     }
 
     @Override
-    public void instruction(String name, CompoundNBT data) {
-        if (getTileEntity() instanceof IInstructionTileEntity) {
-            InstructionFromClient.instruction(getTileEntity().getPos(), name, data);
-        }
-    }
-
-    @Override
     public BlockPos getInstrunctionPos() {
-
         return getTileEntity().getPos();
     }
 
