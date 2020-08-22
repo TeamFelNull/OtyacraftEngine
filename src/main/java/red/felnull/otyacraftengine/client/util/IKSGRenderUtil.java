@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -13,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -110,5 +112,14 @@ public class IKSGRenderUtil {
         BlockRendererDispatcher brd = mc.getBlockRendererDispatcher();
         BlockModelRenderer bmr = brd.getBlockModelRenderer();
         bmr.renderModel(worldIn, modelIn, stateIn, posIn, matrixIn, buffer, checkSides, randomIn, rand, combinedOverlayIn, modelData);
+    }
+
+    public static void drawString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        fr.func_243248_b(matrix, text, x, y, color);
+    }
+
+    public static void drawCenterString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        int size = fr.func_238414_a_(text);
+        drawString(fr, matrix, text, x - size / 2, y, color);
     }
 }
