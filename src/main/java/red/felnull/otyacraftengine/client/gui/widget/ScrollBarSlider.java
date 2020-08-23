@@ -167,8 +167,8 @@ public class ScrollBarSlider extends IkisugiWidget {
     }
 
     private boolean isHoveredButton(int mouseX, int mouseY) {
-        boolean flag1 = mouseX >= x && mouseY >= y + ((float) size * (float) ((float) NValue / (float) MValue));
-        boolean flag2 = mouseX <= x + 9 && mouseY <= y + getSelectButtonSize() + ((float) size * (float) ((float) NValue / (float) MValue));
+        boolean flag1 = mouseX >= x && mouseY >= y + ((float) (size - getSelectButtonSize()) / MValue * NValue);
+        boolean flag2 = mouseX <= x + 9 && mouseY <= y + ((float) (size - getSelectButtonSize()) / MValue * NValue) + getSelectButtonSize();
         return this.isHoveredByIKSG() && flag1 && flag2;
     }
 

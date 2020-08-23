@@ -45,23 +45,24 @@ public class ClientHandler {
         }
     }
 
-    /*
-        @SubscribeEvent
-        public static void onKey(InputEvent.KeyInputEvent e) {
+/*
+    @SubscribeEvent
+    public static void onKey(InputEvent.KeyInputEvent e) {
 
-            if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
-                if (mc.currentScreen != null && !(mc.currentScreen instanceof UnimplementedScreen)) {
-                    mc.displayGuiScreen(new UnimplementedScreen(mc.currentScreen, new TranslationTextComponent("test(GUI)")));
-                } else if (!(mc.currentScreen instanceof UnimplementedScreen)) {
-                    mc.displayGuiScreen(new UnimplementedScreen(new TranslationTextComponent("test(NO_GUI)")));
-                }
-            }
-
-            if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
-                mc.displayGuiScreen(new TestScreen());
+        if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+            if (mc.currentScreen != null && !(mc.currentScreen instanceof UnimplementedScreen)) {
+                mc.displayGuiScreen(new UnimplementedScreen(mc.currentScreen, new TranslationTextComponent("test(GUI)")));
+            } else if (!(mc.currentScreen instanceof UnimplementedScreen)) {
+                mc.displayGuiScreen(new UnimplementedScreen(new TranslationTextComponent("test(NO_GUI)")));
             }
         }
-    */
+
+        if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+            mc.displayGuiScreen(new TestScreen());
+        }
+    }
+*/
+
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {

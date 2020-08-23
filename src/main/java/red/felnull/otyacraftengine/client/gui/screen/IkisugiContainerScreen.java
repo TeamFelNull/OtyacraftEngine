@@ -6,14 +6,11 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.data.InstructionFromClient;
 import red.felnull.otyacraftengine.container.IkisugiContainer;
-import red.felnull.otyacraftengine.tileentity.IInstructionTileEntity;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -21,6 +18,14 @@ import java.util.List;
 public abstract class IkisugiContainerScreen<T extends Container> extends ContainerScreen<T> implements IInstructionContainerScreen {
     public IkisugiContainerScreen(T screenContainer, PlayerInventory playerInventory, ITextComponent titleIn) {
         super(screenContainer, playerInventory, titleIn);
+    }
+
+    public int getTexturStartX() {
+        return (this.getWidthByIKSG() - this.xSize) / 2;
+    }
+
+    public int getTexturStartY() {
+        return (this.getHeightByIKSG() - this.ySize) / 2;
     }
 
     @Override
