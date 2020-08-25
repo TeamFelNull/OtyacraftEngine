@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine.tileentity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -23,4 +24,13 @@ public abstract class IkisugiLockableTileEntity extends LockableTileEntity imple
         this.getWorld().setBlockState(getPos(), state);
     }
 
+    @Override
+    public CompoundNBT instructionFromClient(ServerPlayerEntity player, String name, CompoundNBT data) {
+        return null;
+    }
+
+    @Override
+    public boolean canInteractWith(ServerPlayerEntity player, String name, CompoundNBT data) {
+        return true;
+    }
 }

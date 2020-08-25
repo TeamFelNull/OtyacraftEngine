@@ -114,6 +114,15 @@ public class IKSGRenderUtil {
         bmr.renderModel(worldIn, modelIn, stateIn, posIn, matrixIn, buffer, checkSides, randomIn, rand, combinedOverlayIn, modelData);
     }
 
+    public static void drawStringShadowble(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        fr.func_238407_a_(matrix, text.func_241878_f(), x, y, color);
+    }
+
+    public static void drawCenterStringShadowble(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        int size = fr.func_238414_a_(text);
+        drawStringShadowble(fr, matrix, text, x - size / 2, y, color);
+    }
+
     public static void drawString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
         fr.func_243248_b(matrix, text, x, y, color);
     }
@@ -121,5 +130,19 @@ public class IKSGRenderUtil {
     public static void drawCenterString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
         int size = fr.func_238414_a_(text);
         drawString(fr, matrix, text, x - size / 2, y, color);
+    }
+
+    public static void drawString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color, boolean shadow) {
+        if (shadow)
+            drawStringShadowble(fr, matrix, text, x, y, color);
+        else
+            drawString(fr, matrix, text, x, y, color);
+    }
+
+    public static void drawCenterString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color, boolean shadow) {
+        if (shadow)
+            drawCenterStringShadowble(fr, matrix, text, x, y, color);
+        else
+            drawCenterString(fr, matrix, text, x, y, color);
     }
 }

@@ -53,4 +53,25 @@ public class IkisugiWidget extends Widget {
     public void onClickByIKSG(double mouseX, double mouseY) {
         super.func_230982_a_(mouseX, mouseY);
     }
+
+    //X
+    public int getX() {
+        return this.field_230690_l_;
+    }
+
+    //y
+    public int getY() {
+        return this.field_230691_m_;
+    }
+
+    //Xサイズ
+    public int getXSize() {
+        return this.field_230688_j_;
+    }
+
+    //Yサイズ
+    public int getYSize() {
+        return this.field_230689_k_;
+    }
+
 }
