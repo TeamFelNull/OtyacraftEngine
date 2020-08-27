@@ -24,7 +24,7 @@ public class ScrollListButton extends IkisugiWidget {
     }
 
     public ScrollListButton(int x, int y, int sizeX, int sizeY, int sizeOne, int count, float defaltscolled, List<ResourceLocation> locations, ScrollListButton.IPressable pressed) {
-        super(x, y, sizeX, sizeY, new TranslationTextComponent("list"));
+        super(x, y, sizeX, sizeY, new TranslationTextComponent("gui.narrate.scrolllistbutton"));
         this.pressed = pressed;
         this.locations = locations;
         this.onesize = sizeOne;

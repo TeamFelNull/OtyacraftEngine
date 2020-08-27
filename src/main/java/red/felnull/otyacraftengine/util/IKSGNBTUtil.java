@@ -19,7 +19,18 @@ public class IKSGNBTUtil {
     }
 
     public static CompoundNBT writeStringMap(CompoundNBT tag, Map<String, String> map) {
-        map.entrySet().forEach(n -> tag.putString(n.getKey(), n.getValue()));
+        map.forEach((n, m) -> tag.putString(n, m));
+        return tag;
+    }
+
+    public static Map<String, CompoundNBT> readNBTMap(CompoundNBT tag) {
+        Map<String, CompoundNBT> map = new HashMap<>();
+        tag.keySet().forEach(n -> map.put(n, tag.getCompound(n)));
+        return map;
+    }
+
+    public static CompoundNBT writeNBTMap(CompoundNBT tag, Map<String, CompoundNBT> map) {
+        map.forEach((n, m) -> tag.put(n, m));
         return tag;
     }
 

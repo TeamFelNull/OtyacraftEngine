@@ -18,7 +18,7 @@ public class ScrollBarSlider extends IkisugiWidget {
     protected boolean showRange;
 
     public ScrollBarSlider(int x, int y, int size, float maxValue, float defValue, int rang) {
-        super(x, y, 9, size, new TranslationTextComponent("scrollbar"));
+        super(x, y, 9, size, new TranslationTextComponent("gui.narrate.scrollbar"));
         this.x = x;
         this.y = y;
         this.size = size;
