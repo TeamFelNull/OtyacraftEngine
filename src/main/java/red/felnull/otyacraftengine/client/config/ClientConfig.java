@@ -11,6 +11,8 @@ public class ClientConfig {
     public static ConfigValue<Boolean> ToolTipModName;
     public static ConfigValue<Boolean> ToolTipTag;
     public static ConfigValue<Boolean> ToolTipDetailedInformation;
+    public static ConfigValue<String> ToolTipTagKey;
+    public static ConfigValue<String> ToolTipDetailedInformationKey;
     public static ConfigValue<Boolean> DeleteUnnecessaryTextureCash;
     public static ConfigValue<Boolean> BeaconOverlay;
 
@@ -25,7 +27,9 @@ public class ClientConfig {
             builder.push("ToolTip");
             ToolTipModName = builder.define("Show ModName", true);
             ToolTipTag = builder.define("Show Tag", true);
+            ToolTipTagKey = builder.define("Show Tag Key", "key.sprint");
             ToolTipDetailedInformation = builder.define("Show DetailedInformation", true);
+            ToolTipDetailedInformationKey = builder.define("Show DetailedInformation Key", "key.sneak");
             builder.pop();
             builder.push("Data");
             DeleteUnnecessaryTextureCash = builder.define("Delete Unnecessary Texture Cash at startup", true);

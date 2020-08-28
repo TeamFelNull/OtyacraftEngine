@@ -1,7 +1,6 @@
 package red.felnull.otyacraftengine.client.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
@@ -20,6 +19,7 @@ import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.gui.screen.IInstructionContainerScreen;
+import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
@@ -57,8 +57,8 @@ public class ClientHandler {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
 
-            if (!InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), mc.gameSettings.keyBindSneak.getKeyBinding().getKey().getKeyCode())) {
-                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press", mc.gameSettings.keyBindSneak.func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
+            if (!IKSGClientUtil.isKeyInput(ClientConfig.ToolTipDetailedInformationKey.get(), true)) {
+                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipDetailedInformationKey.get()).func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
                 return;
             }
             e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation").func_240699_a_(TextFormatting.YELLOW));
@@ -78,23 +78,22 @@ public class ClientHandler {
         if (!(itemtagflag || blocktagflag || entitytagflag))
             return;
 
-        if (!InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), mc.gameSettings.keyBindSprint.getKeyBinding().getKey().getKeyCode())) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", mc.gameSettings.keyBindSprint.func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
+        if (!IKSGClientUtil.isKeyInput(ClientConfig.ToolTipTagKey.get(), true)) {
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipTagKey.get()).func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
             return;
         }
 
         if (itemtagflag) {
-
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").func_240699_a_(TextFormatting.AQUA));
-            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (blocktagflag) {
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").func_240699_a_(TextFormatting.AQUA));
-            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
         if (entitytagflag) {
             e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").func_240699_a_(TextFormatting.AQUA));
-            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent(tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
         }
 
     }
