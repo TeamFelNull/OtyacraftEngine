@@ -16,5 +16,8 @@ public class IKSGScreenUtil {
         widget.field_230694_p_ = visible;
     }
 
+    public static void setActive(Widget widget, boolean active) {
+        widget.field_230693_o_ = active;
+    }
 
 }
