@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 public class IKSGNBTUtil {
+    private static final Gson gson = new GsonBuilder().create();
+
     public static Map<String, String> readStringMap(CompoundNBT tag) {
         Map<String, String> map = new HashMap<>();
         tag.keySet().forEach(n -> map.put(n, tag.getString(n)));
@@ -55,4 +59,25 @@ public class IKSGNBTUtil {
     public static CompoundNBT saveAllItemsByIKSG(CompoundNBT tag, NonNullList<ItemStack> list) {
         return ItemStackHelper.saveAllItems(tag, list);
     }
+
+    public static CompoundNBT writeStringList(CompoundNBT tag, List<String> strs) {
+        for (int i = 0; i < strs.size(); i++) {
+            tag.putString(String.valueOf(i), strs.get(i));
+        }
+        return tag;
+    }
+
+    public static List<String> readStringList(CompoundNBT tag) {
+        List<String> list = new ArrayList();
+        for (int i = 0; i < tag.keySet().size(); i++) {
+            list.add(tag.getString(String.valueOf(i)));
+        }
+        return list;
+    }
+
+    public static CompoundNBT addStringList(CompoundNBT tag, String str) {
+        tag.putString(String.valueOf(tag.keySet().size()), str);
+        return tag;
+    }
+
 }
