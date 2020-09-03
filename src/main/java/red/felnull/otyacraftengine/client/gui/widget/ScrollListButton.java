@@ -46,13 +46,13 @@ public class ScrollListButton extends IkisugiWidget {
 
     @Override
     public void renderBgByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
-        int allsize = onesize * locationCont;
+        int allsize = onesize * getCont();
         int zure = 0;
         if (allsize > this.getYSize()) {
             int zuresize = allsize - getYSize();
             zure = (int) (zuresize * getNowSclooled());
         }
-        for (int i = 0; i < locationCont; i++) {
+        for (int i = 0; i < getCont(); i++) {
             int y = this.getY() + i * onesize - zure;
 
             if (y < this.getY() - onesize || y > this.getY() + this.getYSize())
@@ -69,7 +69,7 @@ public class ScrollListButton extends IkisugiWidget {
     @Override
     public void onClickByIKSG(double mouseX, double mouseY) {
         super.onClickByIKSG(mouseX, mouseY);
-        int allsize = onesize * locationCont;
+        int allsize = onesize * getCont();
         int zure = 0;
         if (allsize > this.getYSize()) {
             int zuresize = allsize - getYSize();
@@ -81,6 +81,9 @@ public class ScrollListButton extends IkisugiWidget {
         this.pressed.onPress(this, sy);
     }
 
+    protected int getCont() {
+        return locationCont;
+    }
 
     @OnlyIn(Dist.CLIENT)
     public interface IPressable {
