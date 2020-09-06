@@ -17,6 +17,7 @@
   "unimplemented.unimscreen": "%s は未実装です",
   "gui.create": "作成",
   "gui.training": "調教",
+  "gui.join": "参加",
   "gui.narrate.scrollbar": "スクロールバー",
   "gui.narrate.scrolllistbutton": "スクロールバーリストボタン",
   "_comment.lo": "Log",

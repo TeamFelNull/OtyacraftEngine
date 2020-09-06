@@ -13,6 +13,7 @@ public class StringImageButton extends ChangeableImageButton {
     private boolean shadwString;
     private boolean sizeAdjustment;
     protected int strColor;
+    private float scale = 1.0f;
 
     public StringImageButton(int xIn, int yIn, int widthIn, int heightIn, int xTexStartIn, int yTexStartIn, int yDiffTextIn, ResourceLocation resourceLocationIn, Button.IPressable onPressIn, ITextComponent p_i232261_12_) {
         this(xIn, yIn, widthIn, heightIn, xTexStartIn, yTexStartIn, yDiffTextIn, resourceLocationIn, 256, 256, onPressIn, p_i232261_12_);
@@ -40,14 +41,25 @@ public class StringImageButton extends ChangeableImageButton {
 
     public void func_230431_b_(MatrixStack matrix, int mouseX, int mouseY, float parTic) {
         super.func_230431_b_(matrix, mouseX, mouseY, parTic);
-            Minecraft minecraft = Minecraft.getInstance();
-            FontRenderer fontrenderer = minecraft.fontRenderer;
-            int j = strColor == -1 ? getFGColor() | MathHelper.ceil(this.field_230695_q_ * 255.0F) << 24 : strColor;
-            IKSGRenderUtil.matrixPush(matrix);
-            int x = this.field_230690_l_ + this.field_230688_j_ / 2;
-            int y = this.field_230691_m_ + (this.field_230689_k_ - 8) / 2;
-            IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.func_230458_i_(), x, y, j, shadwString);
-            IKSGRenderUtil.matrixPop(matrix);
+        Minecraft minecraft = Minecraft.getInstance();
+        FontRenderer fontrenderer = minecraft.fontRenderer;
+        int j = strColor == -1 ? getFGColor() | MathHelper.ceil(this.field_230695_q_ * 255.0F) << 24 : strColor;
+        IKSGRenderUtil.matrixPush(matrix);
+        int x = this.field_230690_l_ + this.field_230688_j_ / 2;
+        int y = this.field_230691_m_ + (this.field_230689_k_ - 8) / 2;
+        float size = getScale();
+        IKSGRenderUtil.matrixPush(matrix);
+        IKSGRenderUtil.matrixScalf(matrix, size);
+        IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.func_230458_i_(), x, y, j, shadwString);
+        IKSGRenderUtil.matrixPop(matrix);
+        IKSGRenderUtil.matrixPop(matrix);
     }
 
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 }
