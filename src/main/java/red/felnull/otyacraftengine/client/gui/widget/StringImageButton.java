@@ -50,7 +50,7 @@ public class StringImageButton extends ChangeableImageButton {
         float size = getScale();
         IKSGRenderUtil.matrixPush(matrix);
         IKSGRenderUtil.matrixScalf(matrix, size);
-        IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.func_230458_i_(), x, y, j, shadwString);
+        IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.func_230458_i_(), (int) (x / size), (int) (y / size), j, shadwString);
         IKSGRenderUtil.matrixPop(matrix);
         IKSGRenderUtil.matrixPop(matrix);
     }
