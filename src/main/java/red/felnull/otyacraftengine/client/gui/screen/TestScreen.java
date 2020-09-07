@@ -1,10 +1,11 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import net.minecraft.util.text.StringTextComponent;
-import red.felnull.otyacraftengine.client.gui.widget.Checkbox;
+import red.felnull.otyacraftengine.client.gui.widget.IkisugiWidget;
+import red.felnull.otyacraftengine.client.gui.widget.ScrollBarSlider;
 
 public class TestScreen extends IkisugiScreen {
-    private Checkbox sc;
+    private ScrollBarSlider sc;
 
     public TestScreen() {
         super(new StringTextComponent("test"));
@@ -12,7 +13,7 @@ public class TestScreen extends IkisugiScreen {
 
     @Override
     public void initByIKSG() {
-        sc = this.addWidgetByIKSG(new Checkbox(200, 10));
+        sc = this.addWidgetByIKSG(new ScrollBarSlider(200, 10, 100, 10, 0, 0, 82, 67, IkisugiWidget.OE_WIDGET));
     }
 
 }

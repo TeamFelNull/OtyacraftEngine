@@ -3,7 +3,6 @@ package red.felnull.otyacraftengine.client.gui.widget;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 
 public class Checkbox extends IkisugiWidget {
@@ -12,22 +11,20 @@ public class Checkbox extends IkisugiWidget {
     private final int texturStartY;
     private final int texturSizeX;
     private final int texturSizeY;
-    private final int dff;
 
     private boolean checked;
 
     public Checkbox(int x, int y) {
-        this(x, y, 10, 10, 0, 0, 256, 256, 10, new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/checkbox.png"));
+        this(x, y, 10, 10, 28, 0, 256, 256, IkisugiWidget.OE_WIDGET);
     }
 
-    public Checkbox(int x, int y, int sizeX, int sizeY, int texStartX, int texStartY, int texSizeX, int texSizeY, int dff, ResourceLocation location) {
+    public Checkbox(int x, int y, int sizeX, int sizeY, int texStartX, int texStartY, int texSizeX, int texSizeY, ResourceLocation location) {
         super(x, y, sizeX, sizeY, new TranslationTextComponent("gui.narrate.checkbox"));
         this.location = location;
         this.texturStartX = texStartX;
         this.texturStartY = texStartY;
         this.texturSizeX = texSizeX;
         this.texturSizeY = texSizeY;
-        this.dff = dff;
     }
 
     public void setCheck(boolean checked) {
@@ -44,11 +41,17 @@ public class Checkbox extends IkisugiWidget {
 
     @Override
     public void renderBgByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
-        if (checked) {
-            IKSGRenderUtil.guiBindAndBlit(getTexturLocation(), matrix, getX(), getY(), texturStartX, texturStartY + 10, texturStartX + getXSize(), texturStartY + getYSize(), texturSizeX, texturSizeY);
-        } else {
-            IKSGRenderUtil.guiBindAndBlit(getTexturLocation(), matrix, getX(), getY(), texturStartX, texturStartY, texturStartX + getXSize(), texturStartY + getYSize(), texturSizeX, texturSizeY);
-        }
+        int tx = this.texturStartX;
+        int ty = this.texturStartY;
+
+        if (isHoveredByIKSG())
+            tx += getXSize();
+
+        if (checked)
+            ty += getYSize();
+
+        IKSGRenderUtil.guiBindAndBlit(getTexturLocation(), matrix, getX(), getY(), tx, ty, getXSize(), getYSize(), texturSizeX, texturSizeY);
+
     }
 
     @Override

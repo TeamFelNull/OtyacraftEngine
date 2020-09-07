@@ -2,9 +2,13 @@ package red.felnull.otyacraftengine.client.gui.widget;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import red.felnull.otyacraftengine.OtyacraftEngine;
 
 public class IkisugiWidget extends Widget {
+    public static final ResourceLocation OE_WIDGET = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/widgets.png");
+
     public IkisugiWidget(int x, int y, int sizeX, int sizeY, ITextComponent text) {
         super(x, y, sizeX, sizeY, text);
     }

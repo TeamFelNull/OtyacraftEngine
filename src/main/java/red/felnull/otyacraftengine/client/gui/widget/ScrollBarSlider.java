@@ -3,12 +3,11 @@ package red.felnull.otyacraftengine.client.gui.widget;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class ScrollBarSlider extends IkisugiWidget {
-    private static ResourceLocation SCROLL = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/scroll_bar.png");
+    private final ResourceLocation location;
     protected int x;
     protected int y;
     protected int size;
@@ -16,8 +15,14 @@ public class ScrollBarSlider extends IkisugiWidget {
     protected float NValue;
     protected int selectedRange;
     protected boolean showRange;
+    private final int texturStartX;
+    private final int texturStartY;
 
     public ScrollBarSlider(int x, int y, int size, float maxValue, float defValue, int rang) {
+        this(x, y, size, maxValue, defValue, rang, 0, 0, IkisugiWidget.OE_WIDGET);
+    }
+
+    public ScrollBarSlider(int x, int y, int size, float maxValue, float defValue, int rang, int texStartX, int texStartY, ResourceLocation location) {
         super(x, y, 9, size, new TranslationTextComponent("gui.narrate.scrollbar"));
         this.x = x;
         this.y = y;
@@ -26,11 +31,15 @@ public class ScrollBarSlider extends IkisugiWidget {
         this.NValue = defValue;
         this.selectedRange = rang;
         this.showRange = false;
+        this.location = location;
+        this.texturStartX = texStartX;
+        this.texturStartY = texStartY;
     }
 
 
     @Override
     public void renderBgByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
+
 
         if (showRange) {
             if (selectedRange < 0) {
@@ -42,17 +51,17 @@ public class ScrollBarSlider extends IkisugiWidget {
                 int ysra = ysr - ysrk * 20;
 
                 for (int i = 0; i < xsrk; i++) {
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y, 18, 20, 9, 1, 256, 256);
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y + size - 1, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y, texturStartX + 18, texturStartY + 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + i * 9 + selectedRange, y + size - 1, texturStartX + 18, texturStartY + 20, 9, 1, 256, 256);
                 }
 
 
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y, 18, 20, xsra, 1, 256, 256);
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y + size - 1, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y, texturStartX + 18, texturStartY + 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + xsrk * 9 + selectedRange, y + size - 1, texturStartX + 18, texturStartY + 20, xsra, 1, 256, 256);
                 for (int i = 0; i < ysrk; i++) {
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * i, texturStartX + 27, texturStartY + 21, 1, 20, 256, 256);
                 }
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + selectedRange, y + 1 + 20 * ysrk, texturStartX + 27, texturStartY + 21, 1, ysra, 256, 256);
 
             } else {
                 int xsr = selectedRange;
@@ -63,34 +72,34 @@ public class ScrollBarSlider extends IkisugiWidget {
                 int ysra = ysr - ysrk * 20;
 
                 for (int i = 0; i < xsrk; i++) {
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y, 18, 20, 9, 1, 256, 256);
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y + size - 1, 18, 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y, texturStartX + 18, texturStartY + 20, 9, 1, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + i * 9, y + size - 1, texturStartX + 18, texturStartY + 20, 9, 1, 256, 256);
                 }
 
 
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y, 18, 20, xsra, 1, 256, 256);
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y + size - 1, 18, 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y, texturStartX + 18, texturStartY + 20, xsra, 1, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + xsrk * 9, y + size - 1, texturStartX + 18, texturStartY + 20, xsra, 1, 256, 256);
                 for (int i = 0; i < ysrk; i++) {
-                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * i, 27, 21, 1, 20, 256, 256);
+                    IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * i, texturStartX + 27, texturStartY + 21, 1, 20, 256, 256);
                 }
-                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * ysrk, 27, 21, 1, ysra, 256, 256);
+                IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 9 + selectedRange - 1, y + 1 + 20 * ysrk, texturStartX + 27, texturStartY + 21, 1, ysra, 256, 256);
             }
         }
 
         int ra = isHoveredRange(mouseX, mouseY) ? 9 : 0;
 
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y, ra, 20, 9, 1, 256, 256);
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + size - 1, ra, 41, 9, 1, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y, texturStartX + ra, texturStartY + 20, 9, 1, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + size - 1, texturStartX + ra, texturStartY + 41, 9, 1, 256, 256);
 
         int si = size - 2;
         int sik = si / 20;
 
         for (int i = 0; i < sik; i++) {
-            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * i, ra, 21, 9, 20, 256, 256);
+            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * i, texturStartX + ra, texturStartY + 21, 9, 20, 256, 256);
         }
         int sia = si - sik * 20;
 
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * sik, ra, 21, 9, sia, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x, y + 1 + 20 * sik, texturStartX + ra, texturStartY + 21, 9, sia, 256, 256);
 
         int hsp = 0;
 
@@ -101,17 +110,17 @@ public class ScrollBarSlider extends IkisugiWidget {
 
         int nowPoint = 1 + (int) ((size - getSelectButtonSize()) * getValueProportion());
 
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint, 0 + hsp, 0, 7, 2, 256, 256);
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint + getSelectButtonSize() - 5, 0 + hsp, 17, 7, 3, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint, texturStartX + hsp, texturStartY + 0, 7, 2, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + nowPoint + getSelectButtonSize() - 5, texturStartX + 0 + hsp, texturStartY + 17, 7, 3, 256, 256);
 
         int bsi = getSelectButtonSize() - 5;
         int bsik = bsi / 15;
 
         for (int i = 0; i < bsik; i++) {
-            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * i, 0 + hsp, 2, 7, 15, 256, 256);
+            IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * i, texturStartX + hsp, texturStartY + 2, 7, 15, 256, 256);
         }
         int bsia = bsi - bsik * 15;
-        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * bsik, 0 + hsp, 2, 7, bsia, 256, 256);
+        IKSGRenderUtil.guiBindAndBlit(getTexture(), matrix, x + 1, y + 2 + nowPoint + 15 * bsik, texturStartX + hsp, texturStartY + 2, 7, bsia, 256, 256);
 
     }
 
@@ -150,7 +159,7 @@ public class ScrollBarSlider extends IkisugiWidget {
     }
 
     protected ResourceLocation getTexture() {
-        return SCROLL;
+        return location;
     }
 
     private boolean isHoveredRange(int mouseX, int mouseY) {
