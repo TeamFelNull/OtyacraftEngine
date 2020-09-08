@@ -43,13 +43,12 @@ public class ChangeableImageButton extends ImageButton {
         this.yDiffText = yDiffTextIn;
     }
 
+    public ResourceLocation getResourceLocation() {
+        return resourceLocation;
+    }
 
     public void setResourceLocation(ResourceLocation resourceLocation) {
         this.resourceLocation = resourceLocation;
-    }
-
-    public ResourceLocation getResourceLocation() {
-        return resourceLocation;
     }
 
     public void func_230431_b_(MatrixStack matrixStack, int p_230431_2_, int p_230431_3_, float p_230431_4_) {

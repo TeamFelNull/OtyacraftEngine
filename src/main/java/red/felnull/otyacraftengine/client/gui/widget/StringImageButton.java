@@ -10,9 +10,9 @@ import net.minecraft.util.text.ITextComponent;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 
 public class StringImageButton extends ChangeableImageButton {
+    protected int strColor;
     private boolean shadwString;
     private boolean sizeAdjustment;
-    protected int strColor;
     private float scale = 1.0f;
 
     public StringImageButton(int xIn, int yIn, int widthIn, int heightIn, int xTexStartIn, int yTexStartIn, int yDiffTextIn, ResourceLocation resourceLocationIn, Button.IPressable onPressIn, ITextComponent p_i232261_12_) {

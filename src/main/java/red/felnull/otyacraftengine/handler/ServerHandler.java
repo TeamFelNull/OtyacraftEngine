@@ -26,6 +26,8 @@ import java.util.Map;
 
 public class ServerHandler {
     private static final ResourceLocation SERVER_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "server_response");
+    public static Map<PlayerEntity, ChunkPos> PLAYER_CPOS = new HashMap<PlayerEntity, ChunkPos>();
+    public static Map<PlayerEntity, ResourceLocation> PLAYER_DIMS = new HashMap<PlayerEntity, ResourceLocation>();
 
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
@@ -76,9 +78,6 @@ public class ServerHandler {
             }
         }
     }
-
-    public static Map<PlayerEntity, ChunkPos> PLAYER_CPOS = new HashMap<PlayerEntity, ChunkPos>();
-    public static Map<PlayerEntity, ResourceLocation> PLAYER_DIMS = new HashMap<PlayerEntity, ResourceLocation>();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent e) {

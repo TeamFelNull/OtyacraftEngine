@@ -10,4 +10,5 @@ public class DeobfNames {
     public static final RefName GameRulesBooleanValue_create = RefName.of("create", "func_223568_b");
     public static final RefName GameRulesIntegerValue_create = RefName.of("create", "func_223559_b");
     public static final RefName ItemColors_colors = RefName.of("colors", "field_186732_a");
+    public static final RefName layerRenderers = RefName.of("layerRenderers", "field_177097_h");
 }

@@ -11,12 +11,11 @@ import java.util.List;
 
 public class ScrollListButton extends IkisugiWidget {
     protected float nowSclooled;
-    private ScrollListButton.IPressable pressed;
     protected List<ResourceLocation> locations;
     protected int onesize;
     protected int locationCont;
-
     protected ScrollBarSlider scrollBar;
+    private ScrollListButton.IPressable pressed;
 
     public ScrollListButton(int x, int y, int sizeX, int sizeY, int sizeOne, int count, ScrollBarSlider scrollBar, List<ResourceLocation> locations, ScrollListButton.IPressable pressed) {
         this(x, y, sizeX, sizeY, sizeOne, count, 0f, locations, pressed);

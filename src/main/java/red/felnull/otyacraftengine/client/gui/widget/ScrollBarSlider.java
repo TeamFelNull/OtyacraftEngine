@@ -8,6 +8,8 @@ import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class ScrollBarSlider extends IkisugiWidget {
     private final ResourceLocation location;
+    private final int texturStartX;
+    private final int texturStartY;
     protected int x;
     protected int y;
     protected int size;
@@ -15,8 +17,6 @@ public class ScrollBarSlider extends IkisugiWidget {
     protected float NValue;
     protected int selectedRange;
     protected boolean showRange;
-    private final int texturStartX;
-    private final int texturStartY;
 
     public ScrollBarSlider(int x, int y, int size, float maxValue, float defValue, int rang) {
         this(x, y, size, maxValue, defValue, rang, 0, 0, IkisugiWidget.OE_WIDGET);

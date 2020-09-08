@@ -27,12 +27,12 @@ public class Checkbox extends IkisugiWidget {
         this.texturSizeY = texSizeY;
     }
 
-    public void setCheck(boolean checked) {
-        this.checked = checked;
-    }
-
     public boolean isCheck() {
         return checked;
+    }
+
+    public void setCheck(boolean checked) {
+        this.checked = checked;
     }
 
     protected ResourceLocation getTexturLocation() {
