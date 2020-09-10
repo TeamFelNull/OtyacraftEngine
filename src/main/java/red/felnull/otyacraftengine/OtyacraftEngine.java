@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.proxy.ClientProxy;
 import red.felnull.otyacraftengine.proxy.CommonProxy;
+import red.felnull.otyacraftengine.util.ClockTimer;
 
 @Mod(OtyacraftEngine.MODID)
 public class OtyacraftEngine {
@@ -28,6 +29,7 @@ public class OtyacraftEngine {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         ClientConfig.init();
+
     }
 
     private void setup(final FMLCommonSetupEvent event) {
