@@ -10,12 +10,11 @@ public class ClockTimer {
 
     private IAllExist allExist;
 
-    public ClockTimer() {
-        TaskThread tt = new TaskThread(this);
-    }
 
     public ClockTimer(IAllExist isExist) {
         this.allExist = isExist;
+        TaskThread tt = new TaskThread(this);
+        tt.start();
     }
 
     public void setTimer(String name) {
@@ -71,11 +70,16 @@ public class ClockTimer {
                     sleep(1);
                 } catch (InterruptedException e) {
                 }
+
                 for (Map.Entry<String, Long> nums : ct.taskTimes.entrySet()) {
-                    ct.taskTimes.put(nums.getKey(), nums.getValue() + 1);
-                    if (ct.taskTimes.get(nums.getKey()) >= ct.tasks.get(nums.getKey()).time(ct)) {
-                        ct.tasks.get(nums.getKey()).run(ct);
-                        ct.taskTimes.put(nums.getKey(), 0l);
+                    if (ct.tasks.get(nums.getKey()).isStop(ct)) {
+                        ct.taskTimes.remove(nums.getKey());
+                    } else {
+                        ct.taskTimes.put(nums.getKey(), nums.getValue() + 1);
+                        if (ct.taskTimes.get(nums.getKey()) >= ct.tasks.get(nums.getKey()).time(ct)) {
+                            ct.tasks.get(nums.getKey()).run(ct);
+                            ct.taskTimes.put(nums.getKey(), 0l);
+                        }
                     }
                 }
             }

@@ -15,7 +15,7 @@ import red.felnull.otyacraftengine.container.IkisugiContainer;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class IkisugiContainerScreen<T extends Container> extends ContainerScreen<T> implements IInstructionContainerScreen {
+public abstract class IkisugiContainerScreen<T extends Container> extends ContainerScreen<T> implements IInstructionContainerScreen, IOpendScreen {
     public IkisugiContainerScreen(T screenContainer, PlayerInventory playerInventory, ITextComponent titleIn) {
         super(screenContainer, playerInventory, titleIn);
     }

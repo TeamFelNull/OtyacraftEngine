@@ -9,7 +9,7 @@ import net.minecraft.util.text.ITextComponent;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class IkisugiScreen extends Screen {
+public abstract class IkisugiScreen extends Screen implements IOpendScreen {
     protected IkisugiScreen(ITextComponent titleIn) {
         super(titleIn);
     }
