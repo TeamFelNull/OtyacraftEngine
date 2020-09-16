@@ -46,6 +46,33 @@ public class ReceiverEvent extends Event {
                 super(uuid, location, name);
                 this.result = result;
             }
+
+            public SendReceiveLogger.Result getReceiveResult() {
+                return result;
+            }
+        }
+
+        public static class Run extends Client {
+            private final int all;
+            private final int now;
+
+            public Run(String uuid, ResourceLocation location, String name, int all, int now) {
+                super(uuid, location, name);
+                this.all = all;
+                this.now = now;
+            }
+
+            public int getAllByte() {
+                return all;
+            }
+
+            public int getNowByte() {
+                return now;
+            }
+
+            public float getParsent() {
+                return (float) now / (float) all;
+            }
         }
     }
 
@@ -73,6 +100,33 @@ public class ReceiverEvent extends Event {
             public Pos(ServerPlayerEntity player, String uuid, ResourceLocation location, String name, SendReceiveLogger.Result result) {
                 super(player, uuid, location, name);
                 this.result = result;
+            }
+
+            public SendReceiveLogger.Result getReceiveResult() {
+                return result;
+            }
+        }
+
+        public static class Run extends Server {
+            private final int all;
+            private final int now;
+
+            public Run(ServerPlayerEntity player, String uuid, ResourceLocation location, String name, int all, int now) {
+                super(player, uuid, location, name);
+                this.all = all;
+                this.now = now;
+            }
+
+            public int getAllByte() {
+                return all;
+            }
+
+            public int getNowByte() {
+                return now;
+            }
+
+            public float getParsent() {
+                return (float) now / (float) all;
             }
         }
     }

@@ -78,6 +78,7 @@ public class ClientDataReceiver extends Thread {
                 if (cont != RECEIVS.get(uuid).getCont()) {
                     cont = RECEIVS.get(uuid).getCont();
                     time = System.currentTimeMillis();
+                    MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Client.Run(uuid, location, name, RECEIVS.get(uuid).allcont, cont));
                 }
                 sleep(1);
             }

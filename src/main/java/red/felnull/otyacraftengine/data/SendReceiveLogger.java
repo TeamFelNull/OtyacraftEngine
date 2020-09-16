@@ -92,7 +92,7 @@ public class SendReceiveLogger {
         }
     }
 
-    public enum Result {
+    public static enum Result {
         SUCCESS(new TranslationTextComponent("rslog.success")),
         FAILURE(new TranslationTextComponent("rslog.failure"));
         private ITextComponent name;

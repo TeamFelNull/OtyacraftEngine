@@ -83,6 +83,7 @@ public class ServerDataReceiver extends Thread {
                 if (cont != RECEIVS.get(playerUUID).get(uuid).getCont()) {
                     cont = RECEIVS.get(playerUUID).get(uuid).getCont();
                     time = System.currentTimeMillis();
+                    MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Server.Run(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, RECEIVS.get(playerUUID).get(uuid).allcont, cont));
                 }
                 sleep(1);
             }

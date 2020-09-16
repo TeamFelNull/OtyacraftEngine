@@ -117,6 +117,6 @@ public class IKSGFileLoadUtil {
         } catch (IOException e) {
             OtyacraftEngine.LOGGER.error("Failed to Read the Txt File : " + e.getLocalizedMessage());
         }
-
     }
+
 }

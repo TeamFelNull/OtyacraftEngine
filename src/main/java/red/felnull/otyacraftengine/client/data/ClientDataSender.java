@@ -172,6 +172,8 @@ public class ClientDataSender extends Thread {
                     sendpacet = new ClientDataSendMessage(uuid, sndingbyte);
                 }
                 PacketHandler.INSTANCE.sendToServer(sendpacet);
+                MinecraftForge.EVENT_BUS.post(new SenderEvent.Client.Run(uuid, location, name, sendingData.length, dataCont));
+
                 sndingbyte = null;
                 frist = false;
                 time = System.currentTimeMillis();

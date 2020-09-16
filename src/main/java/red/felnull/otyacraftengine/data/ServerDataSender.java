@@ -177,6 +177,9 @@ public class ServerDataSender extends Thread {
                     sendpacet = new ServerDataSendMessage(uuid, sndingbyte);
                 }
                 PacketHandler.sendPacket(IKSGPlayerUtil.getPlayerByUUID(playerUUID), sendpacet);
+
+                MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Run(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name, sendingData.length, dataCont));
+
                 sndingbyte = null;
                 frist = false;
                 time = System.currentTimeMillis();
