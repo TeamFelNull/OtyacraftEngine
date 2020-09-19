@@ -5,6 +5,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
@@ -100,5 +101,23 @@ public class IKSGTextureUtil {
         ReceiveTextureLoder.instance().requestTextuerSend(WORLDNAME_AND_PATH, location, name);
         ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, TEXTUER_LOADING);
         return TEXTUER_LOADING;
+    }
+
+    public static int getWidth(ResourceLocation location, int defalt) {
+        Texture tex = mc.textureManager.getTexture(location);
+
+        if (tex instanceof DynamicTexture)
+            return ((DynamicTexture) tex).getTextureData().getWidth();
+
+        return defalt;
+    }
+
+    public static int getHeight(ResourceLocation location, int defalt) {
+        Texture tex = mc.textureManager.getTexture(location);
+
+        if (tex instanceof DynamicTexture)
+            return ((DynamicTexture) tex).getTextureData().getHeight();
+
+        return defalt;
     }
 }
