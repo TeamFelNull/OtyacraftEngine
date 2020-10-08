@@ -18,6 +18,7 @@
   "gui.create": "Create",
   "gui.training": "Training",
   "gui.join": "Join",
+  "gui.next": "Next",
   "gui.narrate.scrollbar": "Scrollbar",
   "gui.narrate.scrolllistbutton": "Scroll List Button",
   "_comment.lo": "Log",

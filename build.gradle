@@ -35,7 +35,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                otyacraftengine {
+                rideon {
                     source sourceSets.main
                 }
             }
@@ -49,7 +49,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                otyacraftengine {
+                rideon {
                     source sourceSets.main
                 }
             }
@@ -62,10 +62,10 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', "otyacraftengine", '--all', '--output', file('src/generated/resources/')
+            args '--mod', "rideon", '--all', '--output', file('src/generated/resources/')
 
             mods {
-                otyacraftengine {
+                rideon {
                     source sourceSets.main
                 }
             }
@@ -97,7 +97,7 @@ ext.allmanifest = {
             "Specification-Version"   : "1",
             "Implementation-Title"    : project.name,
             "Implementation-Version"  : "${version}",
-            "Implementation-Vendor"   : "TeamFelNull",
+            "Implementation-Vendor"   : "MORIMORI0317",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     ])
 }

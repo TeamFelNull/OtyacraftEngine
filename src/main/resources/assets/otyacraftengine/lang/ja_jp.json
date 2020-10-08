@@ -18,6 +18,7 @@
   "gui.create": "作成",
   "gui.training": "調教",
   "gui.join": "参加",
+  "gui.next": "次へ",
   "gui.narrate.scrollbar": "スクロールバー",
   "gui.narrate.scrolllistbutton": "スクロールバーリストボタン",
   "_comment.lo": "Log",
