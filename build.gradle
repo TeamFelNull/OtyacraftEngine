@@ -121,6 +121,7 @@ publishing {
 task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file = new File("changelog.md")
     fromCommit = "3cf6469ada3afdd0e63d6d598a2fabde181d118f"
+    toRef = "HEAD"
     templateContent = file("changelog.mustache").getText("UTF-8")
 }
 if (System.getenv('curesforgeapikey') != null && "${curesfg_id}" != "0") {
