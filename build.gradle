@@ -120,6 +120,8 @@ publishing {
 }
 task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file = new File("changelog.md")
+    gitHubApi = "https://api.github.com/repos/TeamFelnull/OtyacraftEngine";
+    gitHubToken = System.getenv('githubtoken')
     fromCommit = "3cf6469ada3afdd0e63d6d598a2fabde181d118f"
     toRef = "HEAD"
     templateContent = file("changelog.mustache").getText("UTF-8")
