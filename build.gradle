@@ -10,6 +10,7 @@ buildscript {
 }
 plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.64'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
@@ -23,101 +24,92 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-
-    mappings channel: 'snapshot', version: '20200514-1.16'
-
+    mappings channel: 'snapshot', version: "${forge_mapping}"
+//accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
-            workingDirectory project.file('run')
-
+            workingDirectory project.file('run\\client')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
             property 'forge.logging.console.level', 'debug'
-
             mods {
-                rideon {
+                examplemod {
                     source sourceSets.main
                 }
             }
         }
 
         server {
-            workingDirectory project.file('run')
-
+            workingDirectory project.file('run\\server')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
             property 'forge.logging.console.level', 'debug'
-
             mods {
-                rideon {
+                examplemod {
                     source sourceSets.main
                 }
             }
         }
 
         data {
-            workingDirectory project.file('run')
-
+            workingDirectory project.file('run\\data')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
             property 'forge.logging.console.level', 'debug'
-
-            args '--mod', "rideon", '--all', '--output', file('src/generated/resources/')
-
+            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                rideon {
+                examplemod {
                     source sourceSets.main
                 }
             }
         }
     }
 }
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        name = "Jei"
-        url = "https://modmaven.k-4u.nl"
-    }
-    maven { url "https://maven.latmod.com/" }
+    maven { url = "https://dvs1.progwml6.com/files/maven/" }//JEI
+    maven { url = "https://modmaven.k-4u.nl" }//JEI
+    maven { url "https://maven.latmod.com/" }//FGL
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${ftb_gui_library_version}")
-
 }
-ext.allmanifest = {
+ext.themanifest = {
     attributes([
-            "Specification-Title"     : "${mod_id}",
-            "Specification-Vendor"    : "MORIMORI0317",
+            "Specification-Title"     : "${mod_name}",
+            "Specification-Vendor"    : "${mod_vendor}",
             "Specification-Version"   : "1",
             "Implementation-Title"    : project.name,
             "Implementation-Version"  : "${version}",
-            "Implementation-Vendor"   : "MORIMORI0317",
+            "Implementation-Vendor"   : "${mod_vendor}",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     ])
 }
 jar {
-    manifest allmanifest
+    manifest themanifest
 }
+jar.finalizedBy('reobfJar')
 task devJar(type: Jar) {
     from sourceSets.main.output
-    from sourceSets.main.allJava
     classifier = 'dev'
-    manifest allmanifest
+    manifest themanifest
+}
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'source'
+    manifest themanifest
 }
 artifacts {
     archives devJar
+    archives sourceJar
 }
-jar.finalizedBy('reobfJar')
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             artifact jar
+            artifact devJar
+            artifact sourceJar
         }
     }
     repositories {
@@ -126,19 +118,28 @@ publishing {
         }
     }
 }
-if (System.getenv('curesforgeapikey') != null) {
+task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
+    file = new File("changelog.md")
+    fromCommit = "21921d4becb2c99d908cf88ee838aea7ba2468bc"
+    templateContent = file("changelog.mustache").getText("UTF-8")
+}
+if (System.getenv('curesforgeapikey') != null && "${curesfg_id}" != "0") {
     curseforge {
         apiKey = System.getenv('curesforgeapikey')
         project {
             id = "${curesfg_id}"
-            changelog = "${curesfg_changelog}"
-            releaseType = System.getenv('releasetype')
+            changelog = file("changelog.md")
+            changelogType = 'markdown'
+            releaseType = "${releasetype}"
             addGameVersion "${mc_version}"
             mainArtifact(jar) {
                 displayName = "${mod_name}-${mc_version}-${mod_version}"
             }
             addArtifact(devJar) {
                 displayName = "${mod_name}-${mc_version}-${mod_version}-dev"
+            }
+            addArtifact(sourceJar) {
+                displayName = "${mod_name}-${mc_version}-${mod_version}-source"
             }
         }
     }

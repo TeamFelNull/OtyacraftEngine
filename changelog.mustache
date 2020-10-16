@@ -1,0 +1,10 @@
+{{#tags}}
+## {{name}}
+{{#commits}}
+[{{{messageTitle}}}](https://github.com/TeamFelnull/gradle-test/commit/{{hashFull}}) - **{{{authorName}}}**<br>
+{{#messageBodyItems}}
+-{{.}}<br>
+{{/messageBodyItems}}
+{{/commits}}
+
+{{/tags}}
