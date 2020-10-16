@@ -32,7 +32,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -43,7 +43,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -53,9 +53,9 @@ minecraft {
             workingDirectory project.file('run\\data')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'otyacraftengine', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                examplemod {
+                otyacraftengine {
                     source sourceSets.main
                 }
             }
@@ -120,7 +120,7 @@ publishing {
 }
 task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file = new File("changelog.md")
-    fromCommit = "21921d4becb2c99d908cf88ee838aea7ba2468bc"
+    fromCommit = "3cf6469ada3afdd0e63d6d598a2fabde181d118f"
     templateContent = file("changelog.mustache").getText("UTF-8")
 }
 if (System.getenv('curesforgeapikey') != null && "${curesfg_id}" != "0") {
