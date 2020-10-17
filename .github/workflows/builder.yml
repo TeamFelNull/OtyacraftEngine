@@ -19,10 +19,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew generateGitChangelog build curseforge
+      run: ./gradlew build curseforge
       env:
         curesforgeapikey: ${{secrets.CURESFORGEAPIKEY}}
-        githubtoken: ${{ secrets.GITHUBTOKEN }}
     - name: Zip create
       run: |
        cd build/libs

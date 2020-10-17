@@ -10,7 +10,6 @@ buildscript {
 }
 plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.64'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
@@ -117,14 +116,6 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
-}
-task generateGitChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
-    file = new File("changelog.md")
-    gitHubApi = "https://api.github.com/repos/TeamFelnull/OtyacraftEngine";
-    gitHubToken = System.getenv('githubtoken')
-    fromCommit = "3cf6469ada3afdd0e63d6d598a2fabde181d118f"
-    toRef = "HEAD"
-    templateContent = file("changelog.mustache").getText("UTF-8")
 }
 if (System.getenv('curesforgeapikey') != null && "${curesfg_id}" != "0") {
     curseforge {
