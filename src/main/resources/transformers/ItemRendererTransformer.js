@@ -13,10 +13,10 @@ function initializeCoreMod() {
         var methods = classNode.methods;
         for (m in methods) {
           var method = methods[m];
-          var num=0;
-          var name=method.name;
-          if (name == "renderItemOverlayIntoGUI"||name == "func_180453_a") {
-          ASMAPI.log('DEBUG', 'Hook ' + method.name+":"+num);
+          var num = 0;
+          var name = method.name;
+          if (name == "renderItemOverlayIntoGUI" || name == "func_180453_a") {
+            ASMAPI.log('DEBUG', 'Hook ' + method.name + ":" + num);
             var i = method.instructions;
             var fi = i.get(num);
             i.insertBefore(fi, new VarInsnNode(Opcodes.ALOAD, 1));

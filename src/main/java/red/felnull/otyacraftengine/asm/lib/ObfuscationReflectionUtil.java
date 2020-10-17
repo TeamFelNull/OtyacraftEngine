@@ -1,22 +1,22 @@
 package red.felnull.otyacraftengine.asm.lib;
 
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
 
 public class ObfuscationReflectionUtil {
 
     public static <T, E> T getPrivateValue(Class<? super E> classToAccess, E instance, String fieldName) {
-        return ObfuscationReflectionHelper.getPrivateValue(classToAccess, instance, fieldName);
+        return IKSGReflectionUtil.getPrivateField(classToAccess, instance, fieldName);
     }
 
     public static <T, E> T getPrivateValue(Class<? super E> classToAccess, E instance, RefName fieldName) {
-        return getPrivateValue(classToAccess, instance, fieldName.name());
+        return IKSGReflectionUtil.getPrivateField(classToAccess, instance, fieldName);
     }
 
     public static <T, E> T getPrivateValue(Class<? super E> classToAccess, String fieldName) {
-        return getPrivateValue(classToAccess, null, fieldName);
+        return IKSGReflectionUtil.getPrivateField(classToAccess, fieldName);
     }
 
     public static <T, E> T getPrivateValue(Class<? super E> classToAccess, RefName fieldName) {
-        return getPrivateValue(classToAccess, fieldName.name());
+        return IKSGReflectionUtil.getPrivateField(classToAccess, fieldName);
     }
 }

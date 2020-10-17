@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IRegistryDelegate;
 import red.felnull.otyacraftengine.asm.DeobfNames;
-import red.felnull.otyacraftengine.asm.lib.ObfuscationReflectionUtil;
+import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -23,16 +23,16 @@ public class IKSGClientUtil {
     private static Minecraft mc = Minecraft.getInstance();
 
     public static int getFps() {
-        return ObfuscationReflectionUtil.getPrivateValue(Minecraft.class, DeobfNames.debugFPS);
+        return IKSGReflectionUtil.getPrivateField(Minecraft.class, DeobfNames.debugFPS);
     }
 
     public static String getCurrentWorldName() {
-        return mc.isSingleplayer() ? ((SaveFormat.LevelSave) ObfuscationReflectionUtil.getPrivateValue(MinecraftServer.class, mc.getIntegratedServer(), DeobfNames.anvilConverterForAnvilFile)).func_237282_a_() : mc.getCurrentServerData().serverIP;
+        return mc.isSingleplayer() ? ((SaveFormat.LevelSave) IKSGReflectionUtil.getPrivateField(MinecraftServer.class, mc.getIntegratedServer(), DeobfNames.anvilConverterForAnvilFile)).func_237282_a_() : mc.getCurrentServerData().serverIP;
     }
 
     public static Map<IRegistryDelegate<Item>, IItemColor> getItemColorsColor(ItemColors c) {
 
-        return ObfuscationReflectionUtil.getPrivateValue(ItemColors.class, c, DeobfNames.ItemColors_colors);
+        return IKSGReflectionUtil.getPrivateField(ItemColors.class, c, DeobfNames.ItemColors_colors);
     }
 
     public static boolean isKeyInput(String key, boolean nulltrue) {

@@ -18,6 +18,7 @@ import red.felnull.otyacraftengine.client.handler.RenderHandler;
 import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.client.renderer.entity.layers.CustomElytraLayer;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ClientProxy extends CommonProxy {
 
         Minecraft.getInstance().getRenderManager().renderers.forEach((m, n) -> {
             if (n instanceof LivingRenderer) {
-                List<LayerRenderer<LivingEntity, EntityModel<LivingEntity>>> layerRenderers = ObfuscationReflectionUtil.getPrivateValue(LivingRenderer.class, ((LivingRenderer) n), DeobfNames.layerRenderers);
+                List<LayerRenderer<LivingEntity, EntityModel<LivingEntity>>> layerRenderers = IKSGReflectionUtil.getPrivateField(LivingRenderer.class, ((LivingRenderer) n), DeobfNames.layerRenderers);
                 if (layerRenderers.stream().anyMatch(l -> l instanceof ElytraLayer)) {
                     ((LivingRenderer) n).addLayer(new CustomElytraLayer((LivingRenderer) n));
                 }
