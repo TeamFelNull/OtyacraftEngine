@@ -40,14 +40,14 @@ public class SenderEvent extends Event {
         }
 
         public static class Pos extends Client {
-            private final SendReceiveLogger.Result result;
+            private final SendReceiveLogger.SRResult result;
 
-            public Pos(String uuid, ResourceLocation location, String name, SendReceiveLogger.Result result) {
+            public Pos(String uuid, ResourceLocation location, String name, SendReceiveLogger.SRResult result) {
                 super(uuid, location, name);
                 this.result = result;
             }
 
-            public SendReceiveLogger.Result getSendResult() {
+            public SendReceiveLogger.SRResult getSendResult() {
                 return result;
             }
         }
@@ -95,14 +95,14 @@ public class SenderEvent extends Event {
         }
 
         public static class Pos extends Server {
-            private final SendReceiveLogger.Result result;
+            private final SendReceiveLogger.SRResult result;
 
-            public Pos(ServerPlayerEntity player, String uuid, ResourceLocation location, String name, SendReceiveLogger.Result result) {
+            public Pos(ServerPlayerEntity player, String uuid, ResourceLocation location, String name, SendReceiveLogger.SRResult result) {
                 super(player, uuid, location, name);
                 this.result = result;
             }
 
-            public SendReceiveLogger.Result getSendResult() {
+            public SendReceiveLogger.SRResult getSendResult() {
                 return result;
             }
         }

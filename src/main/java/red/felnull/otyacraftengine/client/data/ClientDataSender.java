@@ -128,7 +128,7 @@ public class ClientDataSender extends Thread {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
             this.sendingData = null;
             this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.excessSimultaneousSending"));
-            this.logger.addFinishLogLine(SendReceiveLogger.Result.FAILURE, System.currentTimeMillis() - fristTime, (sendingData == null ? 0 : sendingData.length));
+            this.logger.addFinishLogLine(SendReceiveLogger.SRResult.FAILURE, System.currentTimeMillis() - fristTime, (sendingData == null ? 0 : sendingData.length));
             this.logger.createLog();
             return;
         }
@@ -136,7 +136,7 @@ public class ClientDataSender extends Thread {
         this.start();
     }
 
-    public void sentFinish(SendReceiveLogger.Result result) {
+    public void sentFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, sendingData.length);
         sendingData = null;
         SENDS.remove(uuid);
@@ -149,7 +149,7 @@ public class ClientDataSender extends Thread {
             if (sendingData == null) {
                 OtyacraftEngine.LOGGER.info("Null Sender Data : " + location.toString() + " : " + this.name);
                 this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.nulldata"));
-                sentFinish(SendReceiveLogger.Result.FAILURE);
+                sentFinish(SendReceiveLogger.SRResult.FAILURE);
                 return;
             }
             this.logger.addStartLogLine();
@@ -186,19 +186,19 @@ public class ClientDataSender extends Thread {
 
                     if (mc.player == null) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
 
                     if (stop) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
 
                     if (System.currentTimeMillis() - time >= 10000) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
                     sleep(1);
@@ -209,8 +209,8 @@ public class ClientDataSender extends Thread {
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
-            sentFinish(SendReceiveLogger.Result.FAILURE);
+            sentFinish(SendReceiveLogger.SRResult.FAILURE);
         }
-        sentFinish(SendReceiveLogger.Result.SUCCESS);
+        sentFinish(SendReceiveLogger.SRResult.SUCCESS);
     }
 }

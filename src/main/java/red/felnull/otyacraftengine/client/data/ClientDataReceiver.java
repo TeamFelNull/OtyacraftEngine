@@ -43,7 +43,7 @@ public class ClientDataReceiver extends Thread {
         }
     }
 
-    public void receiveFinish(SendReceiveLogger.Result result) {
+    public void receiveFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(uuid).getCont());
         RECEIVS.remove(uuid);
         this.logger.createLog();
@@ -62,17 +62,17 @@ public class ClientDataReceiver extends Thread {
                 }
                 if (RECEIVS.get(uuid).stop) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if (mc.player == null) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if ((cont == RECEIVS.get(uuid).getCont() && System.currentTimeMillis() - time >= 10000)) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if (cont != RECEIVS.get(uuid).getCont()) {
@@ -86,8 +86,8 @@ public class ClientDataReceiver extends Thread {
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
-            receiveFinish(SendReceiveLogger.Result.FAILURE);
+            receiveFinish(SendReceiveLogger.SRResult.FAILURE);
         }
-        receiveFinish(SendReceiveLogger.Result.SUCCESS);
+        receiveFinish(SendReceiveLogger.SRResult.SUCCESS);
     }
 }

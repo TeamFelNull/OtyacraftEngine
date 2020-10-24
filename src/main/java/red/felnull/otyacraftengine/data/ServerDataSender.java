@@ -134,7 +134,7 @@ public class ServerDataSender extends Thread {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
             this.sendingData = null;
             this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.excessSimultaneousSending"));
-            this.logger.addFinishLogLine(SendReceiveLogger.Result.FAILURE, System.currentTimeMillis() - fristTime, (sendingData == null ? 0 : sendingData.length));
+            this.logger.addFinishLogLine(SendReceiveLogger.SRResult.FAILURE, System.currentTimeMillis() - fristTime, (sendingData == null ? 0 : sendingData.length));
             this.logger.createLog();
             return;
         }
@@ -142,7 +142,7 @@ public class ServerDataSender extends Thread {
         this.start();
     }
 
-    public void sentFinish(SendReceiveLogger.Result result) {
+    public void sentFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, sendingData.length);
         sendingData = null;
         SENDS.get(playerUUID).remove(uuid);
@@ -155,7 +155,7 @@ public class ServerDataSender extends Thread {
             if (sendingData == null) {
                 OtyacraftEngine.LOGGER.info("Null Sender Data : " + location.toString() + " : " + this.name);
                 this.logger.addStartFailureLogLine(new TranslationTextComponent("rslog.err.nulldata"));
-                sentFinish(SendReceiveLogger.Result.FAILURE);
+                sentFinish(SendReceiveLogger.SRResult.FAILURE);
             }
             this.logger.addStartLogLine();
             MinecraftForge.EVENT_BUS.post(new SenderEvent.Server.Pre(IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(playerUUID)), uuid, location, name));
@@ -191,18 +191,18 @@ public class ServerDataSender extends Thread {
 
                     if (!IKSGServerUtil.isOnlinePlayer(playerUUID)) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
 
                     if (stop) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
                     if (System.currentTimeMillis() - time >= 10000) {
                         this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
-                        sentFinish(SendReceiveLogger.Result.FAILURE);
+                        sentFinish(SendReceiveLogger.SRResult.FAILURE);
                         return;
                     }
                     sleep(1);
@@ -213,8 +213,8 @@ public class ServerDataSender extends Thread {
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
-            sentFinish(SendReceiveLogger.Result.FAILURE);
+            sentFinish(SendReceiveLogger.SRResult.FAILURE);
         }
-        sentFinish(SendReceiveLogger.Result.SUCCESS);
+        sentFinish(SendReceiveLogger.SRResult.SUCCESS);
     }
 }

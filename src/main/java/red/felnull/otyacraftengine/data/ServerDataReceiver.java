@@ -47,7 +47,7 @@ public class ServerDataReceiver extends Thread {
         }
     }
 
-    public void receiveFinish(SendReceiveLogger.Result result) {
+    public void receiveFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(playerUUID).get(uuid).getCont());
         RECEIVS.get(playerUUID).remove(uuid);
         this.logger.createLog();
@@ -67,17 +67,17 @@ public class ServerDataReceiver extends Thread {
                 }
                 if (RECEIVS.get(playerUUID).get(uuid).stop) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.stop"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if (!IKSGServerUtil.isOnlinePlayer(playerUUID)) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.playerExitedWorld"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if ((cont == RECEIVS.get(playerUUID).get(uuid).getCont() && System.currentTimeMillis() - time >= 10000)) {
                     this.logger.addLogLine(new TranslationTextComponent("rslog.err.timeout"));
-                    receiveFinish(SendReceiveLogger.Result.FAILURE);
+                    receiveFinish(SendReceiveLogger.SRResult.FAILURE);
                     return;
                 }
                 if (cont != RECEIVS.get(playerUUID).get(uuid).getCont()) {
@@ -91,8 +91,8 @@ public class ServerDataReceiver extends Thread {
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
-            receiveFinish(SendReceiveLogger.Result.FAILURE);
+            receiveFinish(SendReceiveLogger.SRResult.FAILURE);
         }
-        receiveFinish(SendReceiveLogger.Result.SUCCESS);
+        receiveFinish(SendReceiveLogger.SRResult.SUCCESS);
     }
 }

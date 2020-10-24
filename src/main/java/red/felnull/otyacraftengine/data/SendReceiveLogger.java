@@ -44,12 +44,12 @@ public class SendReceiveLogger {
         addLogLine(new TranslationTextComponent("rslog.start.failure", sr.getName(), st));
     }
 
-    public void addFinishLogLine(Result result, long time, int allbyte) {
+    public void addFinishLogLine(SRResult result, long time, int allbyte) {
         String ep = time + "ms";
-        if (result == Result.SUCCESS) {
+        if (result == SRResult.SUCCESS) {
             String speed = allbyte / time + "byte/ms";
             addLogLine(new TranslationTextComponent("rslog.finish.success", sr.getName(), ep, speed));
-        } else if (result == Result.FAILURE) {
+        } else if (result == SRResult.FAILURE) {
             addLogLine(new TranslationTextComponent("rslog.finish.failure", sr.getName(), ep));
         }
     }
@@ -92,12 +92,12 @@ public class SendReceiveLogger {
         }
     }
 
-    public static enum Result {
+    public static enum SRResult {
         SUCCESS(new TranslationTextComponent("rslog.success")),
         FAILURE(new TranslationTextComponent("rslog.failure"));
         private ITextComponent name;
 
-        private Result(ITextComponent name) {
+        private SRResult(ITextComponent name) {
             this.name = name;
         }
 
