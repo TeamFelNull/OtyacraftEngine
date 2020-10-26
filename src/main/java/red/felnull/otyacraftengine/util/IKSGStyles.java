@@ -58,4 +58,12 @@ public class IKSGStyles {
     public static IFormattableTextComponent withStyle(IFormattableTextComponent tftc, Style style) {
         return tftc.func_240703_c_(style);
     }
+
+    public static IFormattableTextComponent withStyle(IFormattableTextComponent tftc, Style... styles) {
+        IFormattableTextComponent textComponent = tftc;
+        for (Style stylef : styles) {
+            textComponent = withStyle(textComponent, stylef);
+        }
+        return textComponent;
+    }
 }
