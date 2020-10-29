@@ -12,16 +12,14 @@ import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.proxy.ClientProxy;
 import red.felnull.otyacraftengine.proxy.CommonProxy;
-import red.felnull.otyacraftengine.util.ClockTimer;
 
 @Mod(OtyacraftEngine.MODID)
 public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
     public static final Logger LOGGER = LogManager.getLogger();
 
-    @SuppressWarnings("deprecation")
-    public static final CommonProxy proxy = DistExecutor
-            .runForDist(() -> () -> new ClientProxy(), () -> () -> new CommonProxy());
+
+    public static final CommonProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public OtyacraftEngine() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);

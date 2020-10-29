@@ -6,8 +6,8 @@ import red.felnull.otyacraftengine.client.gui.widget.ScrollBarSlider;
 import red.felnull.otyacraftengine.util.ClockTimer;
 
 public class TestScreen extends IkisugiScreen {
-    private ScrollBarSlider sc;
     protected ClockTimer timer;
+    private ScrollBarSlider sc;
 
     public TestScreen() {
         super(new StringTextComponent("test"));
