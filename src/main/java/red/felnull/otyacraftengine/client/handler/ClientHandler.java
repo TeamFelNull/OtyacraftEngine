@@ -58,10 +58,10 @@ public class ClientHandler {
         if (stack.getItem() instanceof IDetailedInfomationItem) {
 
             if (!IKSGClientUtil.isKeyInput(ClientConfig.ToolTipDetailedInformationKey.get(), true)) {
-                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipDetailedInformationKey.get()).func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
+                e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipDetailedInformationKey.get()).func_238171_j_()).mergeStyle(TextFormatting.WHITE));
                 return;
             }
-            e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation").func_240699_a_(TextFormatting.YELLOW));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.detailedinformation").mergeStyle(TextFormatting.YELLOW));
             ((IDetailedInfomationItem) stack.getItem()).addDetailedInformation(e);
         }
 
@@ -79,27 +79,27 @@ public class ClientHandler {
             return;
 
         if (!IKSGClientUtil.isKeyInput(ClientConfig.ToolTipTagKey.get(), true)) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipTagKey.get()).func_238171_j_()).func_240699_a_(TextFormatting.WHITE));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipTagKey.get()).func_238171_j_()).mergeStyle(TextFormatting.WHITE));
             return;
         }
 
         if (itemtagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").func_240699_a_(TextFormatting.AQUA));
-            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").mergeStyle(TextFormatting.AQUA));
+            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
         }
         if (blocktagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").func_240699_a_(TextFormatting.AQUA));
-            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").mergeStyle(TextFormatting.AQUA));
+            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
         }
         if (entitytagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").func_240699_a_(TextFormatting.AQUA));
-            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).func_240699_a_(TextFormatting.GRAY)));
+            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").mergeStyle(TextFormatting.AQUA));
+            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
         }
 
     }
 
     private static void addModName(ItemTooltipEvent e) {
-        e.getToolTip().add(new StringTextComponent(IKSGModUtil.getModName(IKSGModUtil.getModID(e.getItemStack())) + " " + (IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())).equals("Error!!") ? "" : IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())))).func_240699_a_(IKSGModUtil.getModColor(IKSGModUtil.getModID(e.getItemStack()))));
+        e.getToolTip().add(new StringTextComponent(IKSGModUtil.getModName(IKSGModUtil.getModID(e.getItemStack())) + " " + (IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())).equals("Error!!") ? "" : IKSGModUtil.getModVersion(IKSGModUtil.getModID(e.getItemStack())))).mergeStyle(IKSGModUtil.getModColor(IKSGModUtil.getModID(e.getItemStack()))));
     }
 
     @SubscribeEvent

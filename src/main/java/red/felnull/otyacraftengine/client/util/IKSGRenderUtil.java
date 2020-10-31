@@ -49,7 +49,7 @@ public class IKSGRenderUtil {
     }
 
     public static void guiBlit(MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
-        AbstractGui.func_238463_a_(matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
+        AbstractGui.blit(matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
     }
 
     public static void matrixTranslatef(MatrixStack ms, float x, float y, float z) {
@@ -119,7 +119,7 @@ public class IKSGRenderUtil {
     }
 
     public static void drawCenterStringShadowble(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
-        int size = fr.func_238414_a_(text);
+        int size = fr.getStringPropertyWidth(text);
         drawStringShadowble(fr, matrix, text, x - size / 2, y, color);
     }
 
@@ -128,7 +128,7 @@ public class IKSGRenderUtil {
     }
 
     public static void drawCenterString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
-        int size = fr.func_238414_a_(text);
+        int size = fr.getStringPropertyWidth(text);
         drawString(fr, matrix, text, x - size / 2, y, color);
     }
 

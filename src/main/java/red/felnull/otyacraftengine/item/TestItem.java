@@ -16,7 +16,7 @@ public class TestItem extends ElytraItem implements IElytraLayerItem {
 
     public TestItem(Properties properties) {
         super(properties.maxStackSize(1).maxDamage(10));
-        ItemModelsProperties.func_239418_a_(this, new ResourceLocation("broken"),
+        ItemModelsProperties.registerProperty(this, new ResourceLocation("broken"),
                 new IItemPropertyGetter() {
 
                     @Override

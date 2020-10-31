@@ -25,9 +25,9 @@ public class RenderHandler {
     @SubscribeEvent
     public void onGuiDraowEvent(GuiScreenEvent.DrawScreenEvent e) {
         if (e.getGui() instanceof BeaconScreen) {
-            if (ClientConfig.BeaconOverlay.get() && ItemTags.field_232908_Z_.func_230236_b_().stream().anyMatch(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.field_234759_km_)) {
+            if (ClientConfig.BeaconOverlay.get() && ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().anyMatch(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT)) {
 
-                int ietmcont = Math.toIntExact(ItemTags.field_232908_Z_.func_230236_b_().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.field_234759_km_).count());
+                int ietmcont = Math.toIntExact(ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT).count());
 
                 beaconMaxCount = ietmcont - 1;
 
@@ -35,11 +35,11 @@ public class RenderHandler {
                     beaconCount = 0;
                 }
 
-                ItemStack st = new ItemStack((IItemProvider) ItemTags.field_232908_Z_.func_230236_b_().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.field_234759_km_).toArray()[beaconCount]);
+                ItemStack st = new ItemStack((IItemProvider) ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT).toArray()[beaconCount]);
 
                 MatrixStack matx = e.getMatrixStack();
-                int i = (e.getGui().field_230708_k_ - ((BeaconScreen) e.getGui()).getXSize()) / 2;
-                int j = (e.getGui().field_230709_l_ - ((BeaconScreen) e.getGui()).getYSize()) / 2;
+                int i = (e.getGui().width - ((BeaconScreen) e.getGui()).getXSize()) / 2;
+                int j = (e.getGui().height - ((BeaconScreen) e.getGui()).getYSize()) / 2;
                 IKSGRenderUtil.guiBindAndBlit(BEACON_OVERLAY_TEXTURES, matx, i - 3, j + 104, 0, 0, 6, 24, 24, 24);
                 IKSGRenderUtil.guiBindAndBlit(BEACON_GUI_TEXTURES, matx, i + 14, j + 108, 36, 108, 5, 18, 256, 256);
                 ItemRenderer ir = OtyacraftEngine.proxy.getMinecraft().getItemRenderer();

@@ -11,17 +11,17 @@ import red.felnull.otyacraftengine.client.gui.screen.IOpendScreen;
 public class IKSGScreenUtil {
     //開いてる時にワールドを進めるかどうか
     public static boolean isPauseScreen(Screen screen) {
-        return screen.func_231177_au__();
+        return screen.isPauseScreen();
     }
 
     //見えるかどうかセット
     public static void setVisible(Widget widget, boolean visible) {
-        widget.field_230694_p_ = visible;
+        widget.visible = visible;
     }
 
     //有効かどうかセット
     public static void setActive(Widget widget, boolean active) {
-        widget.field_230693_o_ = active;
+        widget.active = active;
     }
 
     public static boolean isOpendScreen(Screen screen) {

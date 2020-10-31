@@ -8,14 +8,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class IkisugiDialogTexts {
-    public static final ITextComponent ON = DialogTexts.field_240630_a_;
-    public static final ITextComponent OFF = DialogTexts.field_240631_b_;
-    public static final ITextComponent DONE = DialogTexts.field_240632_c_;
-    public static final ITextComponent CANCEL = DialogTexts.field_240633_d_;
-    public static final ITextComponent YES = DialogTexts.field_240634_e_;
-    public static final ITextComponent NO = DialogTexts.field_240635_f_;
-    public static final ITextComponent PROCEED = DialogTexts.field_240636_g_;
-    public static final ITextComponent BACK = DialogTexts.field_240637_h_;
+    public static final ITextComponent ON = DialogTexts.OPTIONS_ON;
+    public static final ITextComponent OFF = DialogTexts.OPTIONS_OFF;
+    public static final ITextComponent DONE = DialogTexts.GUI_DONE;
+    public static final ITextComponent CANCEL = DialogTexts.GUI_CANCEL;
+    public static final ITextComponent YES = DialogTexts.GUI_YES;
+    public static final ITextComponent NO = DialogTexts.GUI_NO;
+    public static final ITextComponent PROCEED = DialogTexts.GUI_PROCEED;
+    public static final ITextComponent BACK = DialogTexts.GUI_BACK;
 
     public static final ITextComponent CRATE = new TranslationTextComponent("gui.create");
     public static final ITextComponent TRAINING = new TranslationTextComponent("gui.training");

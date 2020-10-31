@@ -13,12 +13,12 @@ public abstract class IkisugiTileEntity extends TileEntity implements IClientSyn
     }
 
     @Override
-    public void func_230337_a_(BlockState state, CompoundNBT tag) {
+    public void read(BlockState state, CompoundNBT tag) {
         this.readByIKSG(state, tag);
     }
 
     public void readByIKSG(BlockState state, CompoundNBT tag) {
-        super.func_230337_a_(state, tag);
+        super.read(state, tag);
     }
 
     public void setBlockState(BlockState state) {

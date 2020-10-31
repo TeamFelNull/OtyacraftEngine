@@ -39,18 +39,19 @@ public class StringImageButton extends ChangeableImageButton {
         this.strColor = strColor;
     }
 
-    public void func_230431_b_(MatrixStack matrix, int mouseX, int mouseY, float parTic) {
-        super.func_230431_b_(matrix, mouseX, mouseY, parTic);
+    @Override
+    public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float parTic) {
+        super.renderButton(matrix, mouseX, mouseY, parTic);
         Minecraft minecraft = Minecraft.getInstance();
         FontRenderer fontrenderer = minecraft.fontRenderer;
-        int j = strColor == -1 ? getFGColor() | MathHelper.ceil(this.field_230695_q_ * 255.0F) << 24 : strColor;
+        int j = strColor == -1 ? getFGColor() | MathHelper.ceil(this.alpha * 255.0F) << 24 : strColor;
         IKSGRenderUtil.matrixPush(matrix);
-        int x = this.field_230690_l_ + this.field_230688_j_ / 2;
-        int y = this.field_230691_m_ + (this.field_230689_k_ - 8) / 2;
+        int x = this.x + this.width / 2;
+        int y = this.y + (this.height - 8) / 2;
         float size = getScale();
         IKSGRenderUtil.matrixPush(matrix);
         IKSGRenderUtil.matrixScalf(matrix, size);
-        IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.func_230458_i_(), (int) (x / size), (int) (y / size), j, shadwString);
+        IKSGRenderUtil.drawCenterString(fontrenderer, matrix, this.getMessage(), (int) (x / size), (int) (y / size), j, shadwString);
         IKSGRenderUtil.matrixPop(matrix);
         IKSGRenderUtil.matrixPop(matrix);
     }

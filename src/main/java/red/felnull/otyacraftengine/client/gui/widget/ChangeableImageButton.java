@@ -22,7 +22,7 @@ public class ChangeableImageButton extends ImageButton {
     }
 
     public ChangeableImageButton(int xIn, int yIn, int widthIn, int heightIn, int xTexStartIn, int yTexStartIn, int yDiffTextIn, ResourceLocation resourceLocationIn, int p_i51135_9_, int p_i51135_10_, Button.IPressable onPressIn) {
-        this(xIn, yIn, widthIn, heightIn, xTexStartIn, yTexStartIn, yDiffTextIn, resourceLocationIn, p_i51135_9_, p_i51135_10_, onPressIn, StringTextComponent.field_240750_d_);
+        this(xIn, yIn, widthIn, heightIn, xTexStartIn, yTexStartIn, yDiffTextIn, resourceLocationIn, p_i51135_9_, p_i51135_10_, onPressIn, StringTextComponent.EMPTY);
     }
 
     public ChangeableImageButton(int xIn, int yIn, int widthIn, int heightIn, int xTexStartIn, int yTexStartIn, int yDiffTextIn, ResourceLocation p_i232261_8_, int p_i232261_9_, int p_i232261_10_, IPressable p_i232261_11_, ITextComponent p_i232261_12_) {
@@ -51,14 +51,15 @@ public class ChangeableImageButton extends ImageButton {
         this.resourceLocation = resourceLocation;
     }
 
-    public void func_230431_b_(MatrixStack matrixStack, int p_230431_2_, int p_230431_3_, float p_230431_4_) {
+    @Override
+    public void renderButton(MatrixStack matrixStack, int p_230431_2_, int p_230431_3_, float p_230431_4_) {
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getTextureManager().bindTexture(this.resourceLocation);
         int i = this.yTexStart;
-        if (this.func_230449_g_()) {
+        if (this.isHovered()) {
             i += this.yDiffText;
         }
         RenderSystem.enableDepthTest();
-        func_238463_a_(matrixStack, this.field_230690_l_, this.field_230691_m_, (float) this.xTexStart, (float) i, this.field_230688_j_, this.field_230689_k_, this.textureWidth, this.textureHeight);
+        blit(matrixStack, this.x, this.y, (float) this.xTexStart, (float) i, this.width, this.height, this.textureWidth, this.textureHeight);
     }
 }

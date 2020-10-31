@@ -27,7 +27,7 @@ public class IKSGClientUtil {
     }
 
     public static String getCurrentWorldName() {
-        return mc.isSingleplayer() ? ((SaveFormat.LevelSave) IKSGReflectionUtil.getPrivateField(MinecraftServer.class, mc.getIntegratedServer(), DeobfNames.anvilConverterForAnvilFile)).func_237282_a_() : mc.getCurrentServerData().serverIP;
+        return mc.isSingleplayer() ? ((SaveFormat.LevelSave) IKSGReflectionUtil.getPrivateField(MinecraftServer.class, mc.getIntegratedServer(), DeobfNames.anvilConverterForAnvilFile)).getSaveName() : mc.getCurrentServerData().serverIP;
     }
 
     public static Map<IRegistryDelegate<Item>, IItemColor> getItemColorsColor(ItemColors c) {

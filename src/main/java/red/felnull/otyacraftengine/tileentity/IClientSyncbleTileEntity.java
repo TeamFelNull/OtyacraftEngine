@@ -15,7 +15,7 @@ public interface IClientSyncbleTileEntity {
 
     //クライアントでサーバーからの情報を同期させる
     default public void receiveToClient(TileEntity tile, CompoundNBT tag) {
-        tile.func_230337_a_(tile.getBlockState(), tag);
+        tile.read(tile.getBlockState(), tag);
     }
 
     //同期を発生させる
@@ -25,7 +25,7 @@ public interface IClientSyncbleTileEntity {
             return;
 
         Chunk ch = (Chunk) tile.getWorld().getChunk(tile.getPos());
-        PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> ch), new ClientTileEntitySyncMessage(tile.getWorld().func_230315_m_().getClass().toString(), tile.getPos(), tile.getClass().toString(), this.sendToClient(tile, new CompoundNBT())));
+        PacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> ch), new ClientTileEntitySyncMessage(tile.getWorld().getDimensionType().getClass().toString(), tile.getPos(), tile.getClass().toString(), this.sendToClient(tile, new CompoundNBT())));
     }
 
 }

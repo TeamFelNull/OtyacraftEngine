@@ -1,7 +1,7 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -35,13 +35,13 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
 
     //drawGuiContainerBackgroundLayer
     @Override
-    protected void func_230450_a_(MatrixStack matx, float partTick, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matx, float partTick, int mouseX, int mouseY) {
         drawGuiContainerBackgroundLayerByIKSG(matx, partTick, mouseX, mouseY);
     }
 
     //renderHoveredToolTip
     @Override
-    protected void func_230459_a_(MatrixStack matrix, int mouseX, int mouseY) {
+    protected void renderHoveredTooltip(MatrixStack matrix, int mouseX, int mouseY) {
         this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
     }
 
@@ -50,7 +50,7 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
 
     //ツールチップ？
     protected void renderHoveredToolTipByIKSG(MatrixStack matrix, int mouseX, int mouseY) {
-        super.func_230459_a_(matrix, mouseX, mouseY);
+        super.renderHoveredTooltip(matrix, mouseX, mouseY);
     }
 
     //タイルエンティティ取得
@@ -65,118 +65,114 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
     //以下IkisugiScreen
     //init
     @Override
-    public void func_231160_c_() {
+    public void init() {
         this.initByIKSG();
     }
 
     //render
     @Override
-    public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
         this.renderByIKSG(matrix, mouseX, mouseY, parTick);
     }
 
     //keyPressed
     @Override
-    public boolean func_231046_a_(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
+    public boolean keyPressed(int p_231046_1_, int p_231046_2_, int p_231046_3_) {
         return keyPressedByIKSG(p_231046_1_, p_231046_2_, p_231046_3_);
     }
 
     //onClose
     @Override
-    public void func_231175_as__() {
+    public void onClose() {
         onCloseByIKSG();
     }
 
     //isPauseScreen
     @Override
-    public boolean func_231177_au__() {
+    public boolean isPauseScreen() {
         return isPauseScreenByIKSG();
     }
 
     //tick
     @Override
-    public void func_231023_e_() {
+    public void tick() {
         this.tickByIKSG();
     }
 
     //dropAndDrag
     @Override
-    public void func_230476_a_(List<Path> dragFiles) {
+    public void addPacks(List<Path> dragFiles) {
         this.dropAndDragByIKSG(dragFiles);
     }
 
 
     //初期化
     public void initByIKSG() {
-        super.func_231160_c_();
+        super.init();
     }
 
     //描画
     public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
-        super.func_230430_a_(matrix, mouseX, mouseY, parTick);
+        super.render(matrix, mouseX, mouseY, parTick);
     }
 
     //キー判定
     public boolean keyPressedByIKSG(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-        return super.func_231046_a_(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+        return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
     }
 
     //文字を中央から描画
     public void drawCenterStringByIKSG(MatrixStack matrix, ITextComponent textComp, int x, int y, int color) {
-        this.func_238472_a_(matrix, this.field_230712_o_, textComp, x, y, color);
+        AbstractGui.drawCenteredString(matrix, this.font, textComp, x, y, color);
     }
 
     //ボタン等のウィジェット追加
     protected <T extends Widget> T addWidgetByIKSG(T widget) {
-        return func_230480_a_(widget);
+        return addButton(widget);
     }
 
     //幅
     public int getWidthByIKSG() {
-        return field_230708_k_;
+        return width;
     }
 
     //高さ
     public int getHeightByIKSG() {
-        return field_230709_l_;
+        return height;
     }
 
     //閉じる
     public void onCloseByIKSG() {
-        super.func_231175_as__();
+        super.onClose();
     }
 
     //バッググラウ描画
     public void renderBackgroundByIKSG(MatrixStack matrix) {
-        this.func_230446_a_(matrix);
+        this.renderBackground(matrix);
     }
 
     //開いてる時にワールドを進めるかどうか
     public boolean isPauseScreenByIKSG() {
-        return super.func_231177_au__();
+        return super.isPauseScreen();
     }
 
     public void renderDirtBackgroundByIKSG(int intege) {
-        this.func_231165_f_(intege);
+        this.renderDirtBackground(intege);
     }
 
     //ティック
     public void tickByIKSG() {
-        super.func_231023_e_();
+        super.tick();
     }
 
     //タイトル
     public ITextComponent getTitleByIKSG() {
-        return this.field_230704_d_;
+        return this.getTitle();
     }
 
     //ウィンドウにドロップアンドドラッグされたとき
     public void dropAndDragByIKSG(List<Path> dragFiles) {
-        super.func_230476_a_(dragFiles);
+        super.addPacks(dragFiles);
     }
 
-    //文字を描画
-    public void drawStringByIKSG(MatrixStack matx, FontRenderer font, String text, int x, int y, int color) {
-        super.func_238476_c_(matx, font, text, x, y, color);
-    }
 }

@@ -9,22 +9,22 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 
 public class IKSGStyles {
-    public static final Style BLANK = Style.field_240709_b_;
+    public static final Style BLANK = Style.EMPTY;
 
     public static Style withColor(Color cl) {
-        return BLANK.func_240718_a_(cl);
+        return BLANK.setColor(cl);
     }
 
     public static Style withColor(TextFormatting tf) {
-        return BLANK.func_240712_a_(tf);
+        return BLANK.setFormatting(tf);
     }
 
     public static Style withBold(Boolean b) {
-        return BLANK.func_240713_a_(b);
+        return BLANK.setBold(b);
     }
 
     public static Style withItalic(Boolean b) {
-        return BLANK.func_240722_b_(b);
+        return BLANK.setItalic(b);
     }
 
     public static Style withUnderlined(Boolean b) {
@@ -40,23 +40,23 @@ public class IKSGStyles {
     }
 
     public static Style withClickEvent(ClickEvent ce) {
-        return BLANK.func_240715_a_(ce);
+        return BLANK.setClickEvent(ce);
     }
 
     public static Style withHoverEvent(HoverEvent he) {
-        return BLANK.func_240716_a_(he);
+        return BLANK.setHoverEvent(he);
     }
 
     public static Style withInsertion(String st) {
-        return BLANK.func_240714_a_(st);
+        return BLANK.setInsertion(st);
     }
 
     public static Style withFont(ResourceLocation rl) {
-        return BLANK.func_240719_a_(rl);
+        return BLANK.setFontId(rl);
     }
 
     public static IFormattableTextComponent withStyle(IFormattableTextComponent tftc, Style style) {
-        return tftc.func_240703_c_(style);
+        return tftc.mergeStyle(style);
     }
 
     public static IFormattableTextComponent withStyle(IFormattableTextComponent tftc, Style... styles) {

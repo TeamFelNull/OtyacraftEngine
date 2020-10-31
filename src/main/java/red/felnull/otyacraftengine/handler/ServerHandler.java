@@ -83,20 +83,20 @@ public class ServerHandler {
     public static void onPlayerTick(TickEvent.PlayerTickEvent e) {
         if (!e.player.world.isRemote) {
             if (!PLAYER_DIMS.containsKey(e.player)) {
-                PLAYER_DIMS.put(e.player, e.player.world.func_234923_W_().func_240901_a_());
+                PLAYER_DIMS.put(e.player, e.player.world.getDimensionKey().getLocation());
             } else {
-                if (!PLAYER_DIMS.get(e.player).equals(e.player.world.func_234923_W_().func_240901_a_())) {
-                    PLAYER_DIMS.put(e.player, e.player.world.func_234923_W_().func_240901_a_());
+                if (!PLAYER_DIMS.get(e.player).equals(e.player.world.getDimensionKey().getLocation())) {
+                    PLAYER_DIMS.put(e.player, e.player.world.getDimensionKey().getLocation());
                     PLAYER_CPOS.remove(e.player);
                 }
             }
             if (!PLAYER_CPOS.containsKey(e.player)) {
-                MinecraftForge.EVENT_BUS.post(new StraddleChunkEvent(e.player, new ChunkPos(e.player.func_233580_cy_()), new ChunkPos(e.player.func_233580_cy_())));
-                PLAYER_CPOS.put(e.player, new ChunkPos(e.player.func_233580_cy_()));
+                MinecraftForge.EVENT_BUS.post(new StraddleChunkEvent(e.player, new ChunkPos(e.player.getPosition()), new ChunkPos(e.player.getPosition())));
+                PLAYER_CPOS.put(e.player, new ChunkPos(e.player.getPosition()));
             } else {
-                if (!PLAYER_CPOS.get(e.player).equals(new ChunkPos(e.player.func_233580_cy_()))) {
-                    MinecraftForge.EVENT_BUS.post(new StraddleChunkEvent(e.player, PLAYER_CPOS.get(e.player), new ChunkPos(e.player.func_233580_cy_())));
-                    PLAYER_CPOS.put(e.player, new ChunkPos(e.player.func_233580_cy_()));
+                if (!PLAYER_CPOS.get(e.player).equals(new ChunkPos(e.player.getPosition()))) {
+                    MinecraftForge.EVENT_BUS.post(new StraddleChunkEvent(e.player, PLAYER_CPOS.get(e.player), new ChunkPos(e.player.getPosition())));
+                    PLAYER_CPOS.put(e.player, new ChunkPos(e.player.getPosition()));
                 }
             }
         }

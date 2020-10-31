@@ -14,7 +14,7 @@ public class ClientTileEntitySyncMessageHandler {
     public static void reversiveMessage(ClientTileEntitySyncMessage message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().setPacketHandled(true);
         Minecraft mc = OtyacraftEngine.proxy.getMinecraft();
-        if (!message.dim.equals(mc.world.func_230315_m_().getClass().toString()))
+        if (!message.dim.equals(mc.world.getDimensionType().getClass().toString()))
             return;
 
         TileEntity tileentity = mc.world.getTileEntity(message.pos);

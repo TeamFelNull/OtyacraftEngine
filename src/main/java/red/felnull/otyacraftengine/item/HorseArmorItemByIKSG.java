@@ -12,7 +12,7 @@ public class HorseArmorItemByIKSG extends HorseArmorItem {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public ResourceLocation func_219976_d() {
+    public ResourceLocation getArmorTexture() {
         return new ResourceLocation(this.getRegistryName().getNamespace(), "textures/models/horse_armor/" + this.getRegistryName().getPath() + ".png");
     }
 

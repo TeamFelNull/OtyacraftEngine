@@ -36,11 +36,11 @@ public class IKSGRegistryUtil {
     }
 
     public static GameRules.RuleKey<GameRules.BooleanValue> registryGameRule(String name, GameRules.Category category, boolean defalt) {
-        return GameRules.func_234903_a_(name, category, GameRules.BooleanValue.create(defalt));
+        return GameRules.register(name, category, GameRules.BooleanValue.create(defalt));
     }
 
     public static GameRules.RuleKey<GameRules.IntegerValue> registryGameRule(String name, GameRules.Category category, int defalt) {
-        return GameRules.func_234903_a_(name, category, GameRules.IntegerValue.create(defalt));
+        return GameRules.register(name, category, GameRules.IntegerValue.create(defalt));
     }
 
     public static void registerCompostable(float cont, IItemProvider item) {

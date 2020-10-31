@@ -213,7 +213,7 @@ public class IKSGDokataUtil {
         }
 
         @Override
-        public String func_176610_l() {
+        public String getString() {
             return goroku;
         }
     }

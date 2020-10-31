@@ -40,28 +40,34 @@ public class ArmorMaterialByIKSG implements IArmorMaterial {
         return this.damageReductionAmountArray[slotIn.getIndex()];
     }
 
+    @Override
     public int getEnchantability() {
         return this.enchantability;
     }
 
+    @Override
     public SoundEvent getSoundEvent() {
         return this.soundEvent;
     }
 
+    @Override
     public Ingredient getRepairMaterial() {
         return this.repairMaterial.getValue();
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public String getName() {
         return this.name;
     }
 
+    @Override
     public float getToughness() {
         return this.toughness;
     }
 
-    public float func_230304_f_() {
+    @Override
+    public float getKnockbackResistance() {
         return this.knockbackResistance;
     }
 }
