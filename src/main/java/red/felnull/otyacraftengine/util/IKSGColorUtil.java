@@ -3,6 +3,8 @@ package red.felnull.otyacraftengine.util;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class IKSGColorUtil {
@@ -40,16 +42,8 @@ public class IKSGColorUtil {
     }
 
     public static TextFormatting convertTextFormattingFromColorCode(String hex) {
-        TextFormatting color = null;
-        int min = 255;
-        for (TextFormatting c : TextFormattingColors) {
-            int minn = difference(convertIntegerFromColorCode(c.getColor()), hex);
-            if (minn <= min) {
-                min = minn;
-                color = c;
-            }
-        }
-        return color;
+        Comparator<TextFormatting> compiler = Comparator.comparingInt(n -> difference(convertIntegerFromColorCode(n.getColor()), hex));
+        return Arrays.stream(TextFormattingColors).min(compiler).get();
     }
 
     public static int[] convertRGBFromColorCode(String hex) {

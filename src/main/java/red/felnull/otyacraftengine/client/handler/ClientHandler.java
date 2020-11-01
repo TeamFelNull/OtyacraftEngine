@@ -1,9 +1,7 @@
 package red.felnull.otyacraftengine.client.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -26,8 +24,6 @@ import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.IKSGModUtil;
 import red.felnull.otyacraftengine.util.IKSGTagUtil;
-
-import java.util.Objects;
 
 public class ClientHandler {
     private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
@@ -68,34 +64,7 @@ public class ClientHandler {
     }
 
     private static void addTagList(ItemTooltipEvent e) {
-
-        ItemStack stack = e.getItemStack();
-
-        boolean itemtagflag = !IKSGTagUtil.getItemTags(stack).isEmpty();
-        boolean blocktagflag = (stack.getItem() instanceof BlockItem && !IKSGTagUtil.getBlockTags(stack).isEmpty());
-        boolean entitytagflag = (stack.getItem() instanceof SpawnEggItem && !Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).isEmpty());
-
-        if (!(itemtagflag || blocktagflag || entitytagflag))
-            return;
-
-        if (!IKSGClientUtil.isKeyInput(ClientConfig.ToolTipTagKey.get(), true)) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.press", IKSGClientUtil.getKeyBind(ClientConfig.ToolTipTagKey.get()).func_238171_j_()).mergeStyle(TextFormatting.WHITE));
-            return;
-        }
-
-        if (itemtagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.item").mergeStyle(TextFormatting.AQUA));
-            IKSGTagUtil.getItemTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
-        }
-        if (blocktagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.block").mergeStyle(TextFormatting.AQUA));
-            IKSGTagUtil.getBlockTags(stack).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
-        }
-        if (entitytagflag) {
-            e.getToolTip().add(new TranslationTextComponent("tooltip.tag.entitytype").mergeStyle(TextFormatting.AQUA));
-            Objects.requireNonNull(IKSGTagUtil.getEntityTags(stack)).forEach(tags -> e.getToolTip().add(new StringTextComponent("- " + tags.toString()).mergeStyle(TextFormatting.GRAY)));
-        }
-
+        IKSGTagUtil.addTagTooltip(e.getItemStack(), e.getToolTip());
     }
 
     private static void addModName(ItemTooltipEvent e) {
