@@ -24,5 +24,11 @@ pipeline {
       }
     }
 
+    stage('Notice') {
+      steps {
+        discordSend(webhookURL: 'https://discordapp.com/api/webhooks/772325029634899968/_x-m33bF38HrhbLoagfwZwmumy7Nqm1tqdd7i4X90ZCQKiX4714RBjPCAB1Vc_sJSxq5', description: 'Jenkins Pipeline Build', link: 'env.BUILD_URL', title: 'JOB_NAME', successful: true)
+      }
+    }
+
   }
 }
