@@ -14,13 +14,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
+import red.felnull.otyacraftengine.util.IKSGStringUtil;
+import red.felnull.otyacraftengine.util.IKSGStyles;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +34,11 @@ import java.util.Random;
 @OnlyIn(Dist.CLIENT)
 public class IKSGRenderUtil {
 
-    private static Map<ResourceLocation, IBakedModel> BAKED_MODELS = new HashMap<ResourceLocation, IBakedModel>();
+    private static final Map<ResourceLocation, IBakedModel> BAKED_MODELS = new HashMap<ResourceLocation, IBakedModel>();
+    private static final Map<String, Integer> MISALIGNEDS = new HashMap<>();
+    private static final Map<String, Long> MISALIGNEDS_LASTTIMES = new HashMap<>();
 
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
         matrixPush(matx);
@@ -114,6 +121,72 @@ public class IKSGRenderUtil {
         bmr.renderModel(worldIn, modelIn, stateIn, posIn, matrixIn, buffer, checkSides, randomIn, rand, combinedOverlayIn, modelData);
     }
 
+    public static void drawHorizontalMovementString(MatrixStack matrix, FontRenderer fontRenderer, String text, String id, int blank, int x, int y, int width, int speed, Style... style) {
+        IFormattableTextComponent textc = IKSGStyles.withStyle(new StringTextComponent(text), style);
+        int textSize = fontRenderer.getStringPropertyWidth(textc);
+        if (width >= textSize) {
+            IKSGRenderUtil.drawString(fontRenderer, matrix, textc, x, y, 0);
+            return;
+        }
+        int allsize = textSize + blank;
+        if (!MISALIGNEDS.containsKey(id)) {
+            MISALIGNEDS.put(id, 0);
+            MISALIGNEDS_LASTTIMES.put(id, System.currentTimeMillis());
+        } else {
+            long conttime = System.currentTimeMillis() - MISALIGNEDS_LASTTIMES.get(id);
+            if (conttime >= 1000 / speed) {
+                int zures = MISALIGNEDS.get(id);
+                if (zures >= allsize)
+                    MISALIGNEDS.put(id, 1);
+                else
+                    MISALIGNEDS.put(id, zures + 1);
+                MISALIGNEDS_LASTTIMES.put(id, System.currentTimeMillis());
+            }
+        }
+        int zure = MISALIGNEDS.get(id);
+
+        if (zure < textSize) {
+            String intext = text;
+            for (int i = 0; i < text.length(); i++) {
+                String cutble = IKSGStringUtil.cutForFront(text, i);
+                int cuttoblesize = fontRenderer.getStringPropertyWidth(IKSGStyles.withStyle(new StringTextComponent(cutble), style));
+                if (textSize - zure > cuttoblesize)
+                    break;
+                intext = cutble;
+            }
+            int backCont = 0;
+            if (textSize - width > zure) {
+                int tobidasizure = textSize - width > zure ? textSize - width - zure : 0;
+                String aintext = text;
+                for (int i = 0; i < text.length(); i++) {
+                    String cutble = IKSGStringUtil.cutForFront(text, text.length() - i);
+                    int cuttoblesize = fontRenderer.getStringPropertyWidth(IKSGStyles.withStyle(new StringTextComponent(cutble), style));
+                    if (tobidasizure <= cuttoblesize)
+                        break;
+                    aintext = cutble;
+                }
+                backCont = aintext.length();
+            }
+
+            int backContZure = fontRenderer.getStringPropertyWidth(IKSGStyles.withStyle(new StringTextComponent(IKSGStringUtil.cutForFront(intext, intext.length() - backCont)), style));
+            intext = IKSGStringUtil.cutForBack(intext, backCont);
+            IFormattableTextComponent inextc = IKSGStyles.withStyle(new StringTextComponent(intext), style);
+            drawBackString(fontRenderer, matrix, inextc, x + textSize - zure - backContZure, y, 0);
+        }
+        if (allsize - zure <= width) {
+            String intext = text;
+            for (int i = 0; i < text.length(); i++) {
+                String cutble = IKSGStringUtil.cutForBack(text, i);
+                int cuttoblesize = fontRenderer.getStringPropertyWidth(IKSGStyles.withStyle(new StringTextComponent(cutble), style));
+                if (-(allsize - zure - width) > cuttoblesize)
+                    break;
+                intext = cutble;
+            }
+            IFormattableTextComponent inextc = IKSGStyles.withStyle(new StringTextComponent(intext), style);
+            IKSGRenderUtil.drawString(fontRenderer, matrix, inextc, x + allsize - zure, y, 0);
+        }
+    }
+
     public static void drawStringShadowble(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
         fr.func_238407_a_(matrix, text.func_241878_f(), x, y, color);
     }
@@ -144,5 +217,22 @@ public class IKSGRenderUtil {
             drawCenterStringShadowble(fr, matrix, text, x, y, color);
         else
             drawCenterString(fr, matrix, text, x, y, color);
+    }
+
+    public static void drawBackString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        int size = fr.getStringPropertyWidth(text);
+        drawString(fr, matrix, text, x - size, y, color);
+    }
+
+    public static void drawBackStringShadowble(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color) {
+        int size = fr.getStringPropertyWidth(text);
+        drawCenterStringShadowble(fr, matrix, text, x - size, y, color);
+    }
+
+    public static void drawBackString(FontRenderer fr, MatrixStack matrix, ITextComponent text, int x, int y, int color, boolean shadow) {
+        if (shadow)
+            drawBackStringShadowble(fr, matrix, text, x, y, color);
+        else
+            drawBackString(fr, matrix, text, x, y, color);
     }
 }

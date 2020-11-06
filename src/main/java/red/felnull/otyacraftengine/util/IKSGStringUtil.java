@@ -172,4 +172,12 @@ public class IKSGStringUtil {
 
         return out;
     }
+
+    public static String cutForBack(String text, int num) {
+        return text.substring(0, text.length() - num);
+    }
+
+    public static String cutForFront(String text, int num) {
+        return text.substring(num);
+    }
 }
