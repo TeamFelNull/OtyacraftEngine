@@ -77,6 +77,9 @@ public class ScrollListButton extends IkisugiWidget {
         int y = (int) mouseY - this.getY() + zure;
         int sy = y / onesize;
 
+        if (sy >= getCont())
+            return;
+
         this.pressed.onPress(this, sy);
     }
 
