@@ -22,10 +22,7 @@ import red.felnull.otyacraftengine.util.IKSGServerUtil;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ReceiveTextureLoder {
     public static final Path CASH_PATH = Paths.get("receivetextures");
@@ -40,6 +37,17 @@ public class ReceiveTextureLoder {
 
     public static void init() {
         INSTANCE = new ReceiveTextureLoder();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void clientInit() {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                instance().hashCheckRegularly();
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 5000);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -185,5 +193,12 @@ public class ReceiveTextureLoder {
         CompoundNBT tag = new CompoundNBT();
         tag.putString("name", name);
         ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 1, location.toString(), tag);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void hashCheckRegularly() {
+        if (OtyacraftEngine.proxy.getMinecraft().player != null) {
+           
+        }
     }
 }
