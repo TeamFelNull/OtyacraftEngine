@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.handler;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,6 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.ResponseSender;
 import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.server.StraddleChunkEvent;
 import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
@@ -28,6 +30,7 @@ public class ServerHandler {
     private static final ResourceLocation SERVER_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "server_response");
     public static Map<PlayerEntity, ChunkPos> PLAYER_CPOS = new HashMap<PlayerEntity, ChunkPos>();
     public static Map<PlayerEntity, ResourceLocation> PLAYER_DIMS = new HashMap<PlayerEntity, ResourceLocation>();
+    public static final ResourceLocation CLIENT_WORLDUUID_SYNC = new ResourceLocation(OtyacraftEngine.MODID, "clientworlduuidsync");
 
     @SubscribeEvent
     public static void onServetTick(TickEvent.ServerTickEvent e) {
@@ -41,10 +44,13 @@ public class ServerHandler {
         ServerDataSender.srlogsGziping();
     }
 
+
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent e) {
-        if (!e.getPlayer().world.isRemote)
+        if (!e.getPlayer().world.isRemote) {
             WorldDataEvent.load(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
+            ResponseSender.sendToClient((ServerPlayerEntity) e.getPlayer(), CLIENT_WORLDUUID_SYNC, 0, IKSGServerUtil.getWorldUUID().toString(), new CompoundNBT());
+        }
     }
 
     @SubscribeEvent
@@ -52,6 +58,7 @@ public class ServerHandler {
         if (!e.getPlayer().world.isRemote) {
             WorldDataEvent.save(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
             WorldDataEvent.unload(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
+            ResponseSender.sendToClient((ServerPlayerEntity) e.getPlayer(), CLIENT_WORLDUUID_SYNC, 1, "", new CompoundNBT());
         }
     }
 

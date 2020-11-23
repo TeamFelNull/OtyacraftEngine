@@ -4,8 +4,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.LogicalSidedProvider;
+import red.felnull.otyacraftengine.api.registries.OERegistries;
+import red.felnull.otyacraftengine.data.WorldDataManager;
 
 import java.util.List;
+import java.util.UUID;
 
 public class IKSGServerUtil {
     /**
@@ -35,6 +38,18 @@ public class IKSGServerUtil {
     public static boolean isOnlinePlayer(String uuid) {
         List<ServerPlayerEntity> playes = getOnlinePlayers();
         return playes.stream().anyMatch(n -> IKSGPlayerUtil.getUUID(n).equals(uuid));
+    }
+
+    /**
+     * @return World UUID
+     */
+    public static UUID getWorldUUID() {
+        String wuuid = WorldDataManager.instance().getWorldData(OERegistries.WORDDEFINITIVEDATA).getString("worduuid");
+
+        if (wuuid.isEmpty())
+            return null;
+
+        return UUID.fromString(wuuid);
     }
 
 

@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,19 +18,25 @@ import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.gui.screen.IInstructionContainerScreen;
+import red.felnull.otyacraftengine.client.gui.screen.TestScreen;
+import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
+import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
 import red.felnull.otyacraftengine.util.IKSGModUtil;
 import red.felnull.otyacraftengine.util.IKSGTagUtil;
+
+import java.util.UUID;
 
 public class ClientHandler {
     private static final ResourceLocation CLIENT_RESPONSE = new ResourceLocation(OtyacraftEngine.MODID, "client_response");
     private static Minecraft mc = Minecraft.getInstance();
     private static int loadingCont;
     private static int beaconCont;
+    public static UUID CURRENTWORLDUUID;
 
     @SubscribeEvent
     public static void onInstructonReturn(ReturnInstructionEvent e) {
@@ -41,14 +48,13 @@ public class ClientHandler {
         }
     }
 
-    /*
-            @SubscribeEvent
-            public static void onKey(InputEvent.KeyInputEvent e) {
-                if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
-                    mc.displayGuiScreen(new TestScreen());
-                }
-            }
-    */
+    @SubscribeEvent
+    public static void onKey(InputEvent.KeyInputEvent e) {
+        if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+            mc.displayGuiScreen(new TestScreen());
+        }
+    }
+
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
@@ -113,10 +119,15 @@ public class ClientHandler {
             } else if (e.getId() == 2) {
                 ReceiveTextureLoder.instance().setNotFind(e.getMessage());
             }
+        } else if (e.getLocation().equals(ServerHandler.CLIENT_WORLDUUID_SYNC)) {
+            if (e.getId() == 0) {
+                CURRENTWORLDUUID = UUID.fromString(e.getMessage());
+            } else if (e.getId() == 1) {
+                CURRENTWORLDUUID = null;
+            }
         }
     }
 
-    //ikisugi
     @SubscribeEvent
     public static void onReceiverData(ReceiverEvent.Client.Pos e) {
         if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {

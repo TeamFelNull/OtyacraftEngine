@@ -86,7 +86,7 @@ public class IKSGTextureUtil {
 
 
     public static ResourceLocation getReceiveTexture(ResourceLocation location, String name) {
-        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
+        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldUUID() + ":" + location.toString() + ":" + name;
 
         if (ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.containsKey(WORLDNAME_AND_PATH)) {
             return ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.get(WORLDNAME_AND_PATH);

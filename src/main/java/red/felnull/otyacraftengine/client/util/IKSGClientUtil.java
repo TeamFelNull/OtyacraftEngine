@@ -12,15 +12,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IRegistryDelegate;
 import red.felnull.otyacraftengine.asm.DeobfNames;
+import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 public class IKSGClientUtil {
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     public static int getFps() {
         return IKSGReflectionUtil.getPrivateField(Minecraft.class, DeobfNames.debugFPS);
@@ -53,6 +55,10 @@ public class IKSGClientUtil {
         Optional<KeyBinding> k = Arrays.asList(binds).stream().filter(n -> n.getKeyDescription().equals(name)).findFirst();
 
         return k.isPresent() ? k.get() : null;
+    }
+
+    public static UUID getCurrentWorldUUID() {
+        return ClientHandler.CURRENTWORLDUUID;
     }
 
 

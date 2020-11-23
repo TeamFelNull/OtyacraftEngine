@@ -1,13 +1,13 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
-import red.felnull.otyacraftengine.client.gui.widget.IkisugiWidget;
-import red.felnull.otyacraftengine.client.gui.widget.ScrollBarSlider;
-import red.felnull.otyacraftengine.util.ClockTimer;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
+import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 
 public class TestScreen extends IkisugiScreen {
-    protected ClockTimer timer;
-    private ScrollBarSlider sc;
 
     public TestScreen() {
         super(new StringTextComponent("test"));
@@ -16,28 +16,17 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void initByIKSG() {
         super.initByIKSG();
-        this.timer = new ClockTimer(m -> isOpend());
-        sc = this.addWidgetByIKSG(new ScrollBarSlider(200, 10, 100, 10, 0, 0, 82, 67, IkisugiWidget.OE_WIDGET));
-        timer.addTask("ikisugi", new ClockTimer.ITask() {
-            @Override
-            public boolean isStop(ClockTimer timer) {
-                return false;
-            }
-
-            @Override
-            public void run(ClockTimer timer) {
-                System.out.println("test");
-            }
-
-            @Override
-            public long time(ClockTimer timer) {
-                return 10;
-            }
-        });
     }
 
     @Override
     public void tickByIKSG() {
 
+    }
+
+    @Override
+    public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
+        super.renderByIKSG(matrix, mouseX, mouseY, parTick);
+        ResourceLocation location = IKSGTextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test");
+        IKSGRenderUtil.guiBindAndBlit(location, matrix, 0, 0, 0, 0, 100, 100, 100, 100);
     }
 }

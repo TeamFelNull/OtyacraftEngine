@@ -3,9 +3,11 @@ package red.felnull.otyacraftengine.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
@@ -152,7 +154,7 @@ public class ReceiveTextureLoder {
     @OnlyIn(Dist.CLIENT)
     public void updateTextuerClient(ResourceLocation location, String name) {
 
-        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldName() + ":" + location.toString() + ":" + name;
+        String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldUUID() + ":" + location.toString() + ":" + name;
 
         if (!CASH_PATH.resolve("index.json").toFile().exists())
             return;
@@ -198,7 +200,9 @@ public class ReceiveTextureLoder {
     @OnlyIn(Dist.CLIENT)
     public void hashCheckRegularly() {
         if (OtyacraftEngine.proxy.getMinecraft().player != null) {
-           
+            PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+                Minecraft.getInstance().player.sendStatusMessage(new StringTextComponent(n.getValue().toString()), false);
+            });
         }
     }
 }
