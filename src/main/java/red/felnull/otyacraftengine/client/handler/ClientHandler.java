@@ -9,6 +9,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.client.ReturnInstructionEvent;
@@ -147,4 +148,12 @@ public class ClientHandler {
         if (ClientConfig.ToolTipModName.get())
             addModName(e);
     }
+
+    @SubscribeEvent
+    public static void onPlayerLogIn(WorldEvent.Load e) {
+        System.out.println(e.getWorld().isRemote());
+        System.out.println("test");
+    }
+
 }
+

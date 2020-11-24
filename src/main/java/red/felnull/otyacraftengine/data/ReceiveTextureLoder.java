@@ -3,11 +3,9 @@ package red.felnull.otyacraftengine.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
@@ -30,8 +28,9 @@ public class ReceiveTextureLoder {
     public static final Path CASH_PATH = Paths.get("receivetextures");
     private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
     private static ReceiveTextureLoder INSTANCE;
-    public Map<String, String> CLIENT_INDEX_UUID = new HashMap<String, String>();
-    public Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<String, ResourceLocation>();
+    public final Map<String, String> CLIENT_INDEX_UUID = new HashMap<>();
+    public final Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<>();
+    public final Map<String, String> CLIENT_INDEX = new HashMap<>();
 
     public static ReceiveTextureLoder instance() {
         return INSTANCE;
@@ -44,12 +43,12 @@ public class ReceiveTextureLoder {
     @OnlyIn(Dist.CLIENT)
     public static void clientInit() {
         Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
+        TimerTask hashCheckRegularly = new TimerTask() {
             public void run() {
                 instance().hashCheckRegularly();
             }
         };
-        timer.scheduleAtFixedRate(task, 0, 5000);
+        timer.scheduleAtFixedRate(hashCheckRegularly, 0, 5 * 1000);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -198,11 +197,39 @@ public class ReceiveTextureLoder {
     }
 
     @OnlyIn(Dist.CLIENT)
+    public void writeClientIndex() {
+        File index = CASH_PATH.resolve("index.json").toFile();
+        IKSGFileLoadUtil.createFolder(CASH_PATH);
+        try (Writer writer = new FileWriter(index)) {
+            Gson gsonb = new GsonBuilder().create();
+            gsonb.toJson(CLIENT_INDEX, writer);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void readClientIndex() {
+        File index = CASH_PATH.resolve("index.json").toFile();
+        if (index.exists()) {
+            try {
+                InputStreamReader reader = new InputStreamReader(new FileInputStream(index));
+                JsonReader jsonReader = new JsonReader(reader);
+                Gson gson = new Gson();
+                CLIENT_INDEX.clear();
+                CLIENT_INDEX.putAll(gson.fromJson(jsonReader, CLIENT_INDEX.getClass()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
     public void hashCheckRegularly() {
         if (OtyacraftEngine.proxy.getMinecraft().player != null) {
-            PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+          /*  PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
                 Minecraft.getInstance().player.sendStatusMessage(new StringTextComponent(n.getValue().toString()), false);
-            });
+            });*/
         }
     }
 }
