@@ -9,6 +9,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.handler.*;
 import red.felnull.otyacraftengine.handler.ClientDataSendMessageHandler;
 import red.felnull.otyacraftengine.handler.ClientToResponseMessageHandler;
+import red.felnull.otyacraftengine.handler.ReceiveTextureHashCheckMessageHandler;
 import red.felnull.otyacraftengine.handler.TileEntityInstructionMessageHandler;
 
 public class PacketHandler {
@@ -42,5 +43,7 @@ public class PacketHandler {
         INSTANCE.registerMessage(next(), TileEntityInstructionMessage.class, TileEntityInstructionMessage::encodeMessege, TileEntityInstructionMessage::decodeMessege, TileEntityInstructionMessageHandler::reversiveMessage);
         //タイルエンティティへクライアントからの指示の返し
         INSTANCE.registerMessage(next(), TileEntityInstructionReturnMessage.class, TileEntityInstructionReturnMessage::encodeMessege, TileEntityInstructionReturnMessage::decodeMessege, TileEntityInstructionReturnMessageHandler::reversiveMessage);
+        //受信したテクスチャのハッシュチェック
+        INSTANCE.registerMessage(next(), ReceiveTextureHashCheckMessage.class, ReceiveTextureHashCheckMessage::encodeMessege, ReceiveTextureHashCheckMessage::decodeMessege, ReceiveTextureHashCheckMessageHandler::reversiveMessage);
     }
 }

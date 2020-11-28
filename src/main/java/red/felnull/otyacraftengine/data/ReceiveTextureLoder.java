@@ -15,6 +15,8 @@ import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
+import red.felnull.otyacraftengine.packet.PacketHandler;
+import red.felnull.otyacraftengine.packet.ReceiveTextureHashCheckMessage;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;
 import red.felnull.otyacraftengine.util.IKSGServerUtil;
@@ -30,7 +32,7 @@ public class ReceiveTextureLoder {
     private static ReceiveTextureLoder INSTANCE;
     public final Map<String, String> CLIENT_INDEX_UUID = new HashMap<>();
     public final Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<>();
-    public final Map<String, String> CLIENT_INDEX = new HashMap<>();
+    private final Map<String, String> CLIENT_INDEX = new HashMap<>();
 
     public static ReceiveTextureLoder instance() {
         return INSTANCE;
@@ -43,29 +45,18 @@ public class ReceiveTextureLoder {
     @OnlyIn(Dist.CLIENT)
     public static void clientInit() {
         Timer timer = new Timer();
-        TimerTask hashCheckRegularly = new TimerTask() {
+        TimerTask hashCheckRegularlyTask = new TimerTask() {
             public void run() {
-                instance().hashCheckRegularly();
+                instance().hashCheckRegularly(false);
             }
         };
-        timer.scheduleAtFixedRate(hashCheckRegularly, 0, 5 * 1000);
+        timer.scheduleAtFixedRate(hashCheckRegularlyTask, 0, 10 * 1000);
     }
 
     @OnlyIn(Dist.CLIENT)
     public String getIndexContainLocation(String string) {
-        try {
-            if (CASH_PATH.resolve("index.json").toFile().exists()) {
-                InputStreamReader reader = new InputStreamReader(new FileInputStream(CASH_PATH.resolve("index.json").toFile()));
-                JsonReader jsonReader = new JsonReader(reader);
-                Gson gson = new Gson();
-                Map<String, String> map = new HashMap<String, String>();
-                map.putAll(gson.fromJson(jsonReader, map.getClass()));
-                if (map.containsKey(string)) {
-                    return map.get(string);
-                }
-            }
-        } catch (FileNotFoundException e) {
-        }
+        if (CLIENT_INDEX.containsKey(string))
+            return CLIENT_INDEX.get(string);
         return null;
     }
 
@@ -76,7 +67,8 @@ public class ReceiveTextureLoder {
         ResponseSender.sendToServer(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 0, name, tag);
     }
 
-    public void requestedTextuerSendServer(String indexnaxme, ServerPlayerEntity player, ResourceLocation location, String name) {
+    public void requestedTextuerSendServer(String indexnaxme, ServerPlayerEntity player, ResourceLocation
+            location, String name) {
         Path ImagePath = null;
         if (OERegistries.TEXTUER_SEND_PATH.containsKey(location)) {
             ImagePath = IKSGPathUtil.getWorldSaveDataPath().resolve(OERegistries.TEXTUER_SEND_PATH.get(location)).resolve(name);
@@ -99,37 +91,10 @@ public class ReceiveTextureLoder {
 
     @OnlyIn(Dist.CLIENT)
     public void requestedTextuerReceive(String uuid, String name) {
-
         if (!CLIENT_INDEX_UUID.containsKey(uuid))
             return;
-
         String indexname = CLIENT_INDEX_UUID.get(uuid);
-
-        if (!CASH_PATH.resolve("index.json").toFile().exists()) {
-            IKSGFileLoadUtil.createFolder(CASH_PATH);
-            try (Writer writer = new FileWriter(CASH_PATH.resolve("index.json").toFile())) {
-                Map<String, String> map = new HashMap<String, String>();
-                Gson gsonb = new GsonBuilder().create();
-                map.put(indexname, name);
-                gsonb.toJson(map, writer);
-            } catch (Exception e) {
-            }
-        } else {
-            try {
-                InputStreamReader reader = new InputStreamReader(new FileInputStream(CASH_PATH.resolve("index.json").toFile()));
-                JsonReader jsonReader = new JsonReader(reader);
-                Gson gson = new Gson();
-                Map<String, String> map = new HashMap<String, String>();
-                map.putAll(gson.fromJson(jsonReader, map.getClass()));
-                map.put(indexname, name);
-                try (Writer writer = new FileWriter(CASH_PATH.resolve("index.json").toFile())) {
-                    Gson gsonb = new GsonBuilder().create();
-                    gsonb.toJson(map, writer);
-                } catch (Exception e) {
-                }
-            } catch (Exception e) {
-            }
-        }
+        CLIENT_INDEX.put(indexname, name);
         ResourceLocation inmap = IKSGTextureUtil.getPictureImageTexture(IKSGFileLoadUtil.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
         PICTUER_RECEIVE_LOCATION.put(indexname, inmap);
     }
@@ -146,44 +111,23 @@ public class ReceiveTextureLoder {
             map.putAll(gson.fromJson(jsonReader, map.getClass()));
             File[] cfiles = ReceiveTextureLoder.CASH_PATH.resolve("cash").toFile().listFiles();
             Arrays.stream(cfiles).filter(n -> !map.containsValue(n.getName())).forEach(n -> IKSGFileLoadUtil.deleteFile(n));
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     public void updateTextuerClient(ResourceLocation location, String name) {
-
         String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldUUID() + ":" + location.toString() + ":" + name;
-
         if (!CASH_PATH.resolve("index.json").toFile().exists())
             return;
-
-        try {
-            InputStreamReader reader = new InputStreamReader(new FileInputStream(CASH_PATH.resolve("index.json").toFile()));
-            JsonReader jsonReader = new JsonReader(reader);
-            Gson gson = new Gson();
-            Map<String, String> map = new HashMap<String, String>();
-            map.putAll(gson.fromJson(jsonReader, map.getClass()));
-
-            if (!map.containsKey(WORLDNAME_AND_PATH) || !ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(map.get(WORLDNAME_AND_PATH)).toFile().exists()) {
-                PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
-                return;
-            }
-            IKSGFileLoadUtil.deleteFile(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(map.get(WORLDNAME_AND_PATH)));
-
-            map.remove(WORLDNAME_AND_PATH);
-
-            try (Writer writer = new FileWriter(CASH_PATH.resolve("index.json").toFile())) {
-                Gson gsonb = new GsonBuilder().create();
-                gsonb.toJson(map, writer);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!CLIENT_INDEX.containsKey(WORLDNAME_AND_PATH) || !ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(WORLDNAME_AND_PATH)).toFile().exists()) {
+            PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
+            return;
         }
+        IKSGFileLoadUtil.deleteFile(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(WORLDNAME_AND_PATH)));
+        CLIENT_INDEX.remove(WORLDNAME_AND_PATH);
         PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
-
     }
 
     public void updateTextuerServer(ResourceLocation location, String name) {
@@ -225,11 +169,29 @@ public class ReceiveTextureLoder {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void hashCheckRegularly() {
+    public void hashCheckRegularly(boolean all) {
         if (OtyacraftEngine.proxy.getMinecraft().player != null) {
-          /*  PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
-                Minecraft.getInstance().player.sendStatusMessage(new StringTextComponent(n.getValue().toString()), false);
-            });*/
+            Map<ResourceLocation, Map<String, Integer>> checkblemap = new HashMap<>();
+            if (!all) {
+                PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+                    String[] str = n.getKey().split(":");
+                    ResourceLocation location = new ResourceLocation(str[1], str[2]);
+                    if (!checkblemap.containsKey(location))
+                        checkblemap.put(location, new HashMap<>());
+                    int sha = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(n.getKey())).toFile().hashCode();
+                    checkblemap.get(location).put(str[3], sha);
+                });
+            } else {
+                CLIENT_INDEX.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+                    String[] str = n.getKey().split(":");
+                    ResourceLocation location = new ResourceLocation(str[1], str[2]);
+                    if (!checkblemap.containsKey(location))
+                        checkblemap.put(location, new HashMap<>());
+                    int sha = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(n.getValue()).toFile().hashCode();
+                    checkblemap.get(location).put(str[3], sha);
+                });
+            }
+            PacketHandler.INSTANCE.sendToServer(new ReceiveTextureHashCheckMessage(checkblemap));
         }
     }
 }

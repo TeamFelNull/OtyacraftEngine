@@ -10,7 +10,6 @@ import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;
 import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -87,7 +86,7 @@ public class ServerDataReceiver extends Thread {
                 }
                 sleep(1);
             }
-            IKSGFileLoadUtil.fileBytesWriter(RECEIVS.get(playerUUID).get(uuid).getBytes(), IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get(OERegistries.SERVER_RECEVED_PATH.get(location)).resolve(name)));
+            IKSGFileLoadUtil.fileBytesWriter(RECEIVS.get(playerUUID).get(uuid).getBytes(), IKSGPathUtil.getWorldSaveDataPath().resolve(OERegistries.SERVER_RECEVED_PATH.get(location).resolve(name)));
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();

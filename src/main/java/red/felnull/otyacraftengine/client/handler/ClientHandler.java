@@ -150,10 +150,18 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public static void onPlayerLogIn(WorldEvent.Load e) {
-        System.out.println(e.getWorld().isRemote());
-        System.out.println("test");
+    public static void onLogIn(WorldEvent.Load e) {
+        if (e.getWorld().isRemote()) {
+            ReceiveTextureLoder.instance().readClientIndex();
+            ReceiveTextureLoder.instance().hashCheckRegularly(true);
+        }
     }
 
+    @SubscribeEvent
+    public static void onLogOut(WorldEvent.Unload e) {
+        if (e.getWorld().isRemote()) {
+            ReceiveTextureLoder.instance().writeClientIndex();
+        }
+    }
 }
 

@@ -11,7 +11,6 @@ import red.felnull.otyacraftengine.data.DataReceiverBuffer;
 import red.felnull.otyacraftengine.data.SendReceiveLogger;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +81,7 @@ public class ClientDataReceiver extends Thread {
                 }
                 sleep(1);
             }
-            IKSGFileLoadUtil.fileBytesWriter(RECEIVS.get(uuid).getBytes(), Paths.get(OERegistries.CLIENT_RECEVED_PATH.get(location)).resolve(name));
+            IKSGFileLoadUtil.fileBytesWriter(RECEIVS.get(uuid).getBytes(), OERegistries.CLIENT_RECEVED_PATH.get(location).resolve(name));
         } catch (Exception ex) {
             this.logger.addExceptionLogLine(ex);
             ex.printStackTrace();
