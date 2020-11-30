@@ -5,8 +5,11 @@ import net.minecraft.nbt.CompressedStreamTools;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class IKSGFileLoadUtil {
@@ -119,4 +122,22 @@ public class IKSGFileLoadUtil {
         }
     }
 
+    public static byte[] getCheckSumByte(File file) throws IOException, NoSuchAlgorithmException {
+        InputStream fis = new FileInputStream(file);
+        byte[] buffer = new byte[1024];
+        MessageDigest complete = MessageDigest.getInstance("MD5");
+        int numRead;
+        do {
+            numRead = fis.read(buffer);
+            if (numRead > 0) {
+                complete.update(buffer, 0, numRead);
+            }
+        } while (numRead != -1);
+        fis.close();
+        return complete.digest();
+    }
+
+    public static int getCheckSum(File file) throws IOException, NoSuchAlgorithmException {
+        return ByteBuffer.wrap(getCheckSumByte(file)).getInt();
+    }
 }

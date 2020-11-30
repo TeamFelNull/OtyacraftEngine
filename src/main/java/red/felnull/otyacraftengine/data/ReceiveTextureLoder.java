@@ -178,7 +178,17 @@ public class ReceiveTextureLoder {
                     ResourceLocation location = new ResourceLocation(str[1], str[2]);
                     if (!checkblemap.containsKey(location))
                         checkblemap.put(location, new HashMap<>());
-                    int sha = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(n.getKey())).toFile().hashCode();
+                    int sha = 0;
+                    if (!n.getValue().equals(TEXTUER_NOTFINED)) {
+                        File texFile = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(n.getKey())).toFile();
+                        if (texFile.exists()) {
+                            try {
+                                sha = IKSGFileLoadUtil.getCheckSum(texFile);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
                     checkblemap.get(location).put(str[3], sha);
                 });
             } else {
@@ -187,7 +197,10 @@ public class ReceiveTextureLoder {
                     ResourceLocation location = new ResourceLocation(str[1], str[2]);
                     if (!checkblemap.containsKey(location))
                         checkblemap.put(location, new HashMap<>());
-                    int sha = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(n.getValue()).toFile().hashCode();
+                    int sha = 0;
+                    File texFile = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(n.getValue()).toFile();
+                    if (texFile.exists())
+                        sha = texFile.hashCode();
                     checkblemap.get(location).put(str[3], sha);
                 });
             }
