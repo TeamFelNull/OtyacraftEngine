@@ -1,17 +1,14 @@
-package red.felnull.otyacraftengine.data;
+package red.felnull.otyacraftengine.client.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.DataSendReceiverManager;
 import red.felnull.otyacraftengine.api.ResponseSender;
-import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
@@ -19,31 +16,25 @@ import red.felnull.otyacraftengine.packet.PacketHandler;
 import red.felnull.otyacraftengine.packet.ReceiveTextureHashCheckMessage;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;
-import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class ReceiveTextureLoder {
-    public static final Path CASH_PATH = Paths.get("receivetextures");
+    public static final Path CASH_PATH = IKSGPathUtil.getOEReceiveTexturesPath();
     private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
-    private static ReceiveTextureLoder INSTANCE;
-    public final Map<String, String> CLIENT_INDEX_UUID = new HashMap<>();
-    public final Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<>();
-    private final Map<String, String> CLIENT_INDEX = new HashMap<>();
 
-    public static ReceiveTextureLoder instance() {
-        return INSTANCE;
-    }
+    private static ReceiveTextureLoder INSTANCE;
+    public final Map<String, String> INDEX_UUID = new HashMap<>();
+    public final Map<String, ResourceLocation> PICTUER_RECEIVE_LOCATION = new HashMap<>();
+    private final Map<String, String> INDEX = new HashMap<>();
+    public final Map<ResourceLocation, Map<String, Long>> LAST_UPDATE = new HashMap<>();
+
+    @OnlyIn(Dist.CLIENT)
 
     public static void init() {
         INSTANCE = new ReceiveTextureLoder();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void clientInit() {
         Timer timer = new Timer();
         TimerTask hashCheckRegularlyTask = new TimerTask() {
             public void run() {
@@ -53,13 +44,11 @@ public class ReceiveTextureLoder {
         timer.scheduleAtFixedRate(hashCheckRegularlyTask, 0, 10 * 1000);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public String getIndexContainLocation(String string) {
-        if (CLIENT_INDEX.containsKey(string))
-            return CLIENT_INDEX.get(string);
-        return null;
+    public static ReceiveTextureLoder instance() {
+        return INSTANCE;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void requestTextuerSend(String indexnaxme, ResourceLocation location, String name) {
         CompoundNBT tag = new CompoundNBT();
         tag.putString("location", location.toString());
@@ -67,21 +56,12 @@ public class ReceiveTextureLoder {
         ResponseSender.sendToServer(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 0, name, tag);
     }
 
-    public void requestedTextuerSendServer(String indexnaxme, ServerPlayerEntity player, ResourceLocation
-            location, String name) {
-        Path ImagePath = null;
-        if (OERegistries.TEXTUER_SEND_PATH.containsKey(location)) {
-            ImagePath = IKSGPathUtil.getWorldSaveDataPath().resolve(OERegistries.TEXTUER_SEND_PATH.get(location)).resolve(name);
-        }
-        if (ImagePath != null && ImagePath.toFile().exists()) {
-            byte[] data = IKSGFileLoadUtil.fileBytesReader(ImagePath);
-            String id = DataSendReceiverManager.instance().sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), UUID.randomUUID().toString(), data);
-            CompoundNBT tag = new CompoundNBT();
-            tag.putString("index", indexnaxme);
-            ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 0, id, tag);
-        } else {
-            ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 2, indexnaxme, new CompoundNBT());
-        }
+
+    @OnlyIn(Dist.CLIENT)
+    public String getIndexContainLocation(String string) {
+        if (INDEX.containsKey(string))
+            return INDEX.get(string);
+        return null;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -91,10 +71,10 @@ public class ReceiveTextureLoder {
 
     @OnlyIn(Dist.CLIENT)
     public void requestedTextuerReceive(String uuid, String name) {
-        if (!CLIENT_INDEX_UUID.containsKey(uuid))
+        if (!INDEX_UUID.containsKey(uuid))
             return;
-        String indexname = CLIENT_INDEX_UUID.get(uuid);
-        CLIENT_INDEX.put(indexname, name);
+        String indexname = INDEX_UUID.get(uuid);
+        INDEX.put(indexname, name);
         ResourceLocation inmap = IKSGTextureUtil.getPictureImageTexture(IKSGFileLoadUtil.fileBytesReader(CASH_PATH.resolve("cash").resolve(name)));
         PICTUER_RECEIVE_LOCATION.put(indexname, inmap);
     }
@@ -107,10 +87,9 @@ public class ReceiveTextureLoder {
             InputStreamReader reader = new InputStreamReader(new FileInputStream(CASH_PATH.resolve("index.json").toFile()));
             JsonReader jsonReader = new JsonReader(reader);
             Gson gson = new Gson();
-            Map<String, String> map = new HashMap<String, String>();
-            map.putAll(gson.fromJson(jsonReader, map.getClass()));
-            File[] cfiles = ReceiveTextureLoder.CASH_PATH.resolve("cash").toFile().listFiles();
-            Arrays.stream(cfiles).filter(n -> !map.containsValue(n.getName())).forEach(n -> IKSGFileLoadUtil.deleteFile(n));
+            Map<String, String> map = new HashMap<>(gson.fromJson(jsonReader, HashMap.class));
+            File[] cfiles = CASH_PATH.resolve("cash").toFile().listFiles();
+            Arrays.stream(Objects.requireNonNull(cfiles)).filter(n -> !map.containsValue(n.getName())).forEach(IKSGFileLoadUtil::deleteFile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -121,23 +100,13 @@ public class ReceiveTextureLoder {
         String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldUUID() + ":" + location.toString() + ":" + name;
         if (!CASH_PATH.resolve("index.json").toFile().exists())
             return;
-        if (!CLIENT_INDEX.containsKey(WORLDNAME_AND_PATH) || !ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(WORLDNAME_AND_PATH)).toFile().exists()) {
+        if (!INDEX.containsKey(WORLDNAME_AND_PATH) || !CASH_PATH.resolve("cash").resolve(INDEX.get(WORLDNAME_AND_PATH)).toFile().exists()) {
             PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
             return;
         }
-        IKSGFileLoadUtil.deleteFile(ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(WORLDNAME_AND_PATH)));
-        CLIENT_INDEX.remove(WORLDNAME_AND_PATH);
+        IKSGFileLoadUtil.deleteFile(CASH_PATH.resolve("cash").resolve(INDEX.get(WORLDNAME_AND_PATH)));
+        INDEX.remove(WORLDNAME_AND_PATH);
         PICTUER_RECEIVE_LOCATION.remove(WORLDNAME_AND_PATH);
-    }
-
-    public void updateTextuerServer(ResourceLocation location, String name) {
-        IKSGServerUtil.getOnlinePlayers().forEach(n -> updateTextuerServer(n, location, name));
-    }
-
-    public void updateTextuerServer(ServerPlayerEntity player, ResourceLocation location, String name) {
-        CompoundNBT tag = new CompoundNBT();
-        tag.putString("name", name);
-        ResponseSender.sendToClient(player, new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), 1, location.toString(), tag);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -146,7 +115,7 @@ public class ReceiveTextureLoder {
         IKSGFileLoadUtil.createFolder(CASH_PATH);
         try (Writer writer = new FileWriter(index)) {
             Gson gsonb = new GsonBuilder().create();
-            gsonb.toJson(CLIENT_INDEX, writer);
+            gsonb.toJson(INDEX, writer);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -160,8 +129,8 @@ public class ReceiveTextureLoder {
                 InputStreamReader reader = new InputStreamReader(new FileInputStream(index));
                 JsonReader jsonReader = new JsonReader(reader);
                 Gson gson = new Gson();
-                CLIENT_INDEX.clear();
-                CLIENT_INDEX.putAll(gson.fromJson(jsonReader, CLIENT_INDEX.getClass()));
+                INDEX.clear();
+                INDEX.putAll(gson.fromJson(jsonReader, INDEX.getClass()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -173,14 +142,19 @@ public class ReceiveTextureLoder {
         if (OtyacraftEngine.proxy.getMinecraft().player != null) {
             Map<ResourceLocation, Map<String, Integer>> checkblemap = new HashMap<>();
             if (!all) {
-                PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+                PICTUER_RECEIVE_LOCATION.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).filter(n -> {
+                            String[] str = n.getKey().split(":");
+                            ResourceLocation location = new ResourceLocation(str[1], str[2]);
+                            return isRecentlyUpdateble(location, str[3]);
+                        }
+                ).forEach((n) -> {
                     String[] str = n.getKey().split(":");
                     ResourceLocation location = new ResourceLocation(str[1], str[2]);
                     if (!checkblemap.containsKey(location))
                         checkblemap.put(location, new HashMap<>());
                     int sha = 0;
                     if (!n.getValue().equals(TEXTUER_NOTFINED)) {
-                        File texFile = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(CLIENT_INDEX.get(n.getKey())).toFile();
+                        File texFile = CASH_PATH.resolve("cash").resolve(INDEX.get(n.getKey())).toFile();
                         if (texFile.exists()) {
                             try {
                                 sha = IKSGFileLoadUtil.getCheckSum(texFile);
@@ -192,13 +166,13 @@ public class ReceiveTextureLoder {
                     checkblemap.get(location).put(str[3], sha);
                 });
             } else {
-                CLIENT_INDEX.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
+                INDEX.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
                     String[] str = n.getKey().split(":");
                     ResourceLocation location = new ResourceLocation(str[1], str[2]);
                     if (!checkblemap.containsKey(location))
                         checkblemap.put(location, new HashMap<>());
                     int sha = 0;
-                    File texFile = ReceiveTextureLoder.CASH_PATH.resolve("cash").resolve(n.getValue()).toFile();
+                    File texFile = CASH_PATH.resolve("cash").resolve(n.getValue()).toFile();
                     if (texFile.exists())
                         sha = texFile.hashCode();
                     checkblemap.get(location).put(str[3], sha);
@@ -206,5 +180,17 @@ public class ReceiveTextureLoder {
             }
             PacketHandler.INSTANCE.sendToServer(new ReceiveTextureHashCheckMessage(checkblemap));
         }
+    }
+
+    public void updateLastTextuerTime(ResourceLocation location, String name) {
+        if (!LAST_UPDATE.containsKey(location))
+            LAST_UPDATE.put(location, new HashMap<>());
+        LAST_UPDATE.get(location).put(name, System.currentTimeMillis());
+    }
+
+    public boolean isRecentlyUpdateble(ResourceLocation location, String name) {
+        if (LAST_UPDATE.containsKey(location) && LAST_UPDATE.get(location).containsKey(name))
+            return System.currentTimeMillis() - LAST_UPDATE.get(location).get(name) < 3 * 60 * 1000;
+        return false;
     }
 }

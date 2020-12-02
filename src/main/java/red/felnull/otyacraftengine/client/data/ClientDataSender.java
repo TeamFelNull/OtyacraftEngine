@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.event.common.SenderEvent;
@@ -39,6 +40,7 @@ public class ClientDataSender extends Thread {
     private long lastResponseTime;
     private long time;
 
+    @OnlyIn(Dist.CLIENT)
     public ClientDataSender(String uuid, ResourceLocation location, String name, byte[] data) {
         this.name = name;
         this.uuid = uuid;
@@ -51,21 +53,25 @@ public class ClientDataSender extends Thread {
         this.lastResponseTime = System.currentTimeMillis();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static boolean isMaxSending() {
         return SENDS.size() >= max;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void response(String uuid) {
         if (SENDS.containsKey(uuid)) {
             SENDS.get(uuid).response = true;
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void sending(String uuid, ResourceLocation location, String name, byte[] data) {
         ClientDataSender cds = new ClientDataSender(uuid, location, name, data);
         cds.sendStart();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void srlogsGziping() {
 
         if (!Paths.get("srlogs").toFile().exists())
@@ -123,6 +129,7 @@ public class ClientDataSender extends Thread {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void sendStart() {
         if (isMaxSending()) {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
@@ -136,6 +143,7 @@ public class ClientDataSender extends Thread {
         this.start();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void sentFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, sendingData.length);
         sendingData = null;
@@ -144,6 +152,7 @@ public class ClientDataSender extends Thread {
         MinecraftForge.EVENT_BUS.post(new SenderEvent.Client.Pos(uuid, location, name, result));
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void run() {
         try {
             if (sendingData == null) {

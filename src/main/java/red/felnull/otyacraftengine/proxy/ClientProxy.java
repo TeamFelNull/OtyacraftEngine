@@ -12,11 +12,12 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import red.felnull.otyacraftengine.asm.DeobfNames;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
+import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.client.data.URLImageTextureLoder;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.RenderHandler;
 import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.client.renderer.entity.layers.CustomElytraLayer;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
 
 import java.util.List;
@@ -46,7 +47,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         super.init();
-        ReceiveTextureLoder.clientInit();
+        ReceiveTextureLoder.init();
+        URLImageTextureLoder.init();
     }
 
     @Override

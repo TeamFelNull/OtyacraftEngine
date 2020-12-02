@@ -10,7 +10,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.proxy.ClientProxy;
 import red.felnull.otyacraftengine.proxy.CommonProxy;
 

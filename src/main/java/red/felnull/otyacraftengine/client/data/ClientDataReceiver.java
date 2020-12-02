@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.api.event.common.ReceiverEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
@@ -25,6 +26,7 @@ public class ClientDataReceiver extends Thread {
     private long fristTime;
     private long logTime;
 
+    @OnlyIn(Dist.CLIENT)
     public ClientDataReceiver(String uuid, ResourceLocation location, String name, int datasize) {
         this.uuid = uuid;
         this.location = location;
@@ -36,12 +38,14 @@ public class ClientDataReceiver extends Thread {
         this.logger = new SendReceiveLogger(location.toString(), det, Dist.CLIENT, SendReceiveLogger.SndOrRec.RECEIVE);
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static void addBufferBytes(String uuid, byte[] bytes) {
         if (RECEIVS.containsKey(uuid)) {
             RECEIVS.get(uuid).addBytes(bytes);
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void receiveFinish(SendReceiveLogger.SRResult result) {
         this.logger.addFinishLogLine(result, System.currentTimeMillis() - fristTime, RECEIVS.get(uuid).getCont());
         RECEIVS.remove(uuid);
@@ -49,6 +53,7 @@ public class ClientDataReceiver extends Thread {
         MinecraftForge.EVENT_BUS.post(new ReceiverEvent.Client.Pos(uuid, location, name, result));
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void run() {
         try {
             this.logger.addStartLogLine();

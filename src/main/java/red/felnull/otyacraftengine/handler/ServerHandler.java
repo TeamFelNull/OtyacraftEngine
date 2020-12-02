@@ -17,7 +17,8 @@ import red.felnull.otyacraftengine.api.ResponseSender;
 import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.server.StraddleChunkEvent;
 import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.data.ReceiveTextureManager;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
@@ -81,7 +82,7 @@ public class ServerHandler {
             }
         } else if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
             if (e.getId() == 0) {
-                ReceiveTextureLoder.instance().requestedTextuerSendServer(e.getData().getString("index"), e.getPlayer(), new ResourceLocation(e.getData().getString("location")), e.getMessage());
+                ReceiveTextureManager.instance().requestedTextuerSendServer(e.getData().getString("index"), e.getPlayer(), new ResourceLocation(e.getData().getString("location")), e.getMessage());
             }
         }
     }

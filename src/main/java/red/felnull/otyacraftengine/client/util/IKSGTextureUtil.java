@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.client.util;
 
+import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
@@ -12,13 +13,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.client.data.URLImageTextureLoder;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
@@ -29,8 +31,8 @@ public class IKSGTextureUtil {
     private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
     private static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
     public static int loadingPaatune;
-    private static Minecraft mc = Minecraft.getInstance();
-    private static Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = new HashMap<byte[], ResourceLocation>();
+    private static final Minecraft mc = Minecraft.getInstance();
+    private static final Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = Maps.newHashMap();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
@@ -45,7 +47,7 @@ public class IKSGTextureUtil {
     }
 
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, String name) {
-        if (name.equals(mc.player.getName().getString())) {
+        if (mc.player != null && name.equals(IKSGPlayerUtil.getUserName(mc.player))) {
             return mc.player.getLocationSkin();
         }
         ResourceLocation faselocation;
@@ -66,7 +68,8 @@ public class IKSGTextureUtil {
             Minecraft.getInstance().textureManager.loadTexture(imagelocation, new DynamicTexture(NI));
             PICTUER_BYTE_LOCATION.put(data, imagelocation);
             return imagelocation;
-        } catch (Exception e) {
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return null;
     }
@@ -89,6 +92,7 @@ public class IKSGTextureUtil {
         String WORLDNAME_AND_PATH = IKSGClientUtil.getCurrentWorldUUID() + ":" + location.toString() + ":" + name;
 
         if (ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.containsKey(WORLDNAME_AND_PATH)) {
+            ReceiveTextureLoder.instance().updateLastTextuerTime(location, name);
             return ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.get(WORLDNAME_AND_PATH);
         }
 
@@ -103,11 +107,21 @@ public class IKSGTextureUtil {
         return TEXTUER_LOADING;
     }
 
+    public static ResourceLocation getPictureImageURLTexture(String url) {
+
+        if (URLImageTextureLoder.instance().PICTUER_URL_LOCATION.containsKey(url)) {
+            return URLImageTextureLoder.instance().PICTUER_URL_LOCATION.get(url);
+        }
+
+        return LOADING_1;
+    }
+
+
     public static int getWidth(ResourceLocation location, int defalt) {
         Texture tex = mc.textureManager.getTexture(location);
 
         if (tex instanceof DynamicTexture)
-            return ((DynamicTexture) tex).getTextureData().getWidth();
+            return Objects.requireNonNull(((DynamicTexture) tex).getTextureData()).getWidth();
 
         return defalt;
     }
@@ -116,8 +130,9 @@ public class IKSGTextureUtil {
         Texture tex = mc.textureManager.getTexture(location);
 
         if (tex instanceof DynamicTexture)
-            return ((DynamicTexture) tex).getTextureData().getHeight();
+            return Objects.requireNonNull(((DynamicTexture) tex).getTextureData()).getHeight();
 
         return defalt;
     }
+
 }

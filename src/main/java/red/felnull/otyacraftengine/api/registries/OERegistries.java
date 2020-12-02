@@ -5,6 +5,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.data.OEDefinitiveWorldData;
 import red.felnull.otyacraftengine.data.PlayerWorldData;
 import red.felnull.otyacraftengine.data.WorldData;
+import red.felnull.otyacraftengine.util.IKSGPathUtil;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +28,7 @@ public class OERegistries {
         registrierModColor("minecraft", 43520);
         registrierModColor("forge", 170);
         registrierModColor(OtyacraftEngine.MODID, 5635925);
-        registrierClientRecevedPath(TEXTUERREQUEST, Paths.get("receivetextures/cash"));
+        registrierClientRecevedPath(TEXTUERREQUEST, IKSGPathUtil.getOEReceiveTexturesPath().resolve("cash"));
         registrierWorldData(WORDDEFINITIVEDATA, new OEDefinitiveWorldData());
 
         registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), Paths.get("test/ikisygi"));

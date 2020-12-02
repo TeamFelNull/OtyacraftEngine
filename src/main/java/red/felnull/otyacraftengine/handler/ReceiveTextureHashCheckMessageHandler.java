@@ -3,7 +3,7 @@ package red.felnull.otyacraftengine.handler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.data.ReceiveTextureManager;
 import red.felnull.otyacraftengine.packet.ReceiveTextureHashCheckMessage;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;
@@ -40,7 +40,7 @@ public class ReceiveTextureHashCheckMessageHandler {
         });
         responseLists.forEach((n, m) -> {
             m.forEach(n2 -> {
-                ReceiveTextureLoder.instance().updateTextuerServer(ctx.get().getSender(), n, n2);
+                ReceiveTextureManager.instance().updateTextuerServer(ctx.get().getSender(), n, n2);
             });
         });
 

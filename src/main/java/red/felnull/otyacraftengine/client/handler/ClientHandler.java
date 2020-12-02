@@ -18,12 +18,12 @@ import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
+import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.client.gui.screen.IInstructionContainerScreen;
 import red.felnull.otyacraftengine.client.gui.screen.TestScreen;
 import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.item.IDetailedInfomationItem;
@@ -114,7 +114,7 @@ public class ClientHandler {
             }
         } else if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"))) {
             if (e.getId() == 0) {
-                ReceiveTextureLoder.instance().CLIENT_INDEX_UUID.put(e.getMessage(), e.getData().getString("index"));
+                ReceiveTextureLoder.instance().INDEX_UUID.put(e.getMessage(), e.getData().getString("index"));
             } else if (e.getId() == 1) {
                 ReceiveTextureLoder.instance().updateTextuerClient(new ResourceLocation(e.getMessage()), e.getData().getString("name"));
             } else if (e.getId() == 2) {
@@ -154,6 +154,7 @@ public class ClientHandler {
         if (e.getWorld().isRemote()) {
             ReceiveTextureLoder.instance().readClientIndex();
             ReceiveTextureLoder.instance().hashCheckRegularly(true);
+            ReceiveTextureLoder.instance().LAST_UPDATE.clear();
         }
     }
 
@@ -161,6 +162,7 @@ public class ClientHandler {
     public static void onLogOut(WorldEvent.Unload e) {
         if (e.getWorld().isRemote()) {
             ReceiveTextureLoder.instance().writeClientIndex();
+            ReceiveTextureLoder.instance().LAST_UPDATE.clear();
         }
     }
 }

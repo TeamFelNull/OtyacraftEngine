@@ -26,6 +26,7 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
         super.renderByIKSG(matrix, mouseX, mouseY, parTick);
+        //  ResourceLocation location = IKSGTextureUtil.getPictureImageURLTexture("https://i.ytimg.com/vi/6s4LioUWzjs/default.jpg");
         ResourceLocation location = IKSGTextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test");
         IKSGRenderUtil.guiBindAndBlit(location, matrix, 0, 0, 0, 0, 100, 100, 100, 100);
     }

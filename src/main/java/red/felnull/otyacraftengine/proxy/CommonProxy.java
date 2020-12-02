@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import red.felnull.otyacraftengine.api.DataSendReceiverManager;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.data.ReceiveTextureManager;
 import red.felnull.otyacraftengine.data.WorldDataManager;
 import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.handler.WorldDataHandler;
@@ -18,7 +18,7 @@ public class CommonProxy {
         OERegistries.init();
         WorldDataManager.init();
         DataSendReceiverManager.init();
-        ReceiveTextureLoder.init();
+        ReceiveTextureManager.init();
         MinecraftForge.EVENT_BUS.register(ServerHandler.class);
         MinecraftForge.EVENT_BUS.register(WorldDataHandler.class);
     }
