@@ -55,6 +55,8 @@ public class ClientProxy extends CommonProxy {
     public void posInit() {
         super.posInit();
         ReceiveTextureLoder.instance().deleteUnnecessaryCash();
+        URLImageTextureLoder.instance().deleteUnnecessaryCash();
+        URLImageTextureLoder.instance().readClientIndex();
         ClientDataSender.srlogsGziping();
     }
 

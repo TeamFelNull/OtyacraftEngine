@@ -30,6 +30,8 @@ public class IKSGTextureUtil {
     private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
     private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
     private static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
+    public static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
+
     public static int loadingPaatune;
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = Maps.newHashMap();
@@ -102,18 +104,32 @@ public class IKSGTextureUtil {
             ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, inmap);
             return inmap;
         }
-        ReceiveTextureLoder.instance().requestTextuerSend(WORLDNAME_AND_PATH, location, name);
         ReceiveTextureLoder.instance().PICTUER_RECEIVE_LOCATION.put(WORLDNAME_AND_PATH, TEXTUER_LOADING);
+        ReceiveTextureLoder.instance().requestTextuerSend(WORLDNAME_AND_PATH, location, name);
         return TEXTUER_LOADING;
     }
 
     public static ResourceLocation getPictureImageURLTexture(String url) {
+        return getPictureImageURLTexture(url, 0, 0);
+    }
 
-        if (URLImageTextureLoder.instance().PICTUER_URL_LOCATION.containsKey(url)) {
-            return URLImageTextureLoder.instance().PICTUER_URL_LOCATION.get(url);
+    public static ResourceLocation getPictureImageURLTexture(String url, int width, int height) {
+
+        URLImageTextureLoder.URLImageData urlid = new URLImageTextureLoder.URLImageData(url, width, height);
+
+        if (URLImageTextureLoder.instance().PICTUER_URL_LOCATION.containsKey(urlid)) {
+            return URLImageTextureLoder.instance().PICTUER_URL_LOCATION.get(urlid);
         }
 
-        return LOADING_1;
+        String filename = URLImageTextureLoder.instance().getIndexContainLocation(urlid);
+        if (filename != null && URLImageTextureLoder.CASH_PATH.resolve("cash").resolve(filename).toFile().exists()) {
+            ResourceLocation inmap = getPictureImageTexture(IKSGFileLoadUtil.fileBytesReader(URLImageTextureLoder.CASH_PATH.resolve("cash").resolve(filename)));
+            URLImageTextureLoder.instance().PICTUER_URL_LOCATION.put(urlid, inmap);
+            return inmap;
+        }
+        URLImageTextureLoder.instance().PICTUER_URL_LOCATION.put(urlid, TEXTUER_LOADING);
+        URLImageTextureLoder.instance().downloadTextuer(urlid);
+        return TEXTUER_LOADING;
     }
 
 

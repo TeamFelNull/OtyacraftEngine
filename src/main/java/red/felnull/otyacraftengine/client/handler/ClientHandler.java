@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -19,9 +18,8 @@ import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.data.ClientDataSendReservation;
 import red.felnull.otyacraftengine.client.data.ClientDataSender;
 import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
+import red.felnull.otyacraftengine.client.data.URLImageTextureLoder;
 import red.felnull.otyacraftengine.client.gui.screen.IInstructionContainerScreen;
-import red.felnull.otyacraftengine.client.gui.screen.TestScreen;
-import red.felnull.otyacraftengine.client.keys.OEKeyBindings;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.data.WorldDataManager;
@@ -49,13 +47,14 @@ public class ClientHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void onKey(InputEvent.KeyInputEvent e) {
-        if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
-            mc.displayGuiScreen(new TestScreen());
+    /*
+        @SubscribeEvent
+        public static void onKey(InputEvent.KeyInputEvent e) {
+            if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
+                mc.displayGuiScreen(new TestScreen());
+            }
         }
-    }
-
+    */
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
@@ -155,6 +154,7 @@ public class ClientHandler {
             ReceiveTextureLoder.instance().readClientIndex();
             ReceiveTextureLoder.instance().hashCheckRegularly(true);
             ReceiveTextureLoder.instance().LAST_UPDATE.clear();
+            URLImageTextureLoder.instance().writeClientIndex();
         }
     }
 
@@ -163,6 +163,7 @@ public class ClientHandler {
         if (e.getWorld().isRemote()) {
             ReceiveTextureLoder.instance().writeClientIndex();
             ReceiveTextureLoder.instance().LAST_UPDATE.clear();
+            URLImageTextureLoder.instance().writeClientIndex();
         }
     }
 }

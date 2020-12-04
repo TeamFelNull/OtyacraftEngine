@@ -1,11 +1,7 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
-import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
-import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 
 public class TestScreen extends IkisugiScreen {
 
@@ -26,8 +22,8 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
         super.renderByIKSG(matrix, mouseX, mouseY, parTick);
-        //  ResourceLocation location = IKSGTextureUtil.getPictureImageURLTexture("https://i.ytimg.com/vi/6s4LioUWzjs/default.jpg");
-        ResourceLocation location = IKSGTextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test");
-        IKSGRenderUtil.guiBindAndBlit(location, matrix, 0, 0, 0, 0, 100, 100, 100, 100);
+        // ResourceLocation location = IKSGTextureUtil.getPictureImageURLTexture("https://www.dropbox.com/s/ibf9whj1bxnxy9a/2020-06-14_23.39.54.png?dl=1");
+        //   ResourceLocation location = IKSGTextureUtil.getReceiveTexture(new ResourceLocation(OtyacraftEngine.MODID, "test"), "test");
+        //  IKSGRenderUtil.guiBindAndBlit(location, matrix, 0, 0, 0, 0, 100, 100, 100, 100);
     }
 }

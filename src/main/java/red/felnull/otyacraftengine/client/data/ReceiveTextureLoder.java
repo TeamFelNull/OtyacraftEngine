@@ -23,7 +23,6 @@ import java.util.*;
 
 public class ReceiveTextureLoder {
     public static final Path CASH_PATH = IKSGPathUtil.getOEReceiveTexturesPath();
-    private static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
 
     private static ReceiveTextureLoder INSTANCE;
     public final Map<String, String> INDEX_UUID = new HashMap<>();
@@ -66,7 +65,7 @@ public class ReceiveTextureLoder {
 
     @OnlyIn(Dist.CLIENT)
     public void setNotFind(String index) {
-        PICTUER_RECEIVE_LOCATION.put(index, TEXTUER_NOTFINED);
+        PICTUER_RECEIVE_LOCATION.put(index, IKSGTextureUtil.TEXTUER_NOTFINED);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -153,7 +152,7 @@ public class ReceiveTextureLoder {
                     if (!checkblemap.containsKey(location))
                         checkblemap.put(location, new HashMap<>());
                     int sha = 0;
-                    if (!n.getValue().equals(TEXTUER_NOTFINED)) {
+                    if (!n.getValue().equals(IKSGTextureUtil.TEXTUER_NOTFINED)) {
                         File texFile = CASH_PATH.resolve("cash").resolve(INDEX.get(n.getKey())).toFile();
                         if (texFile.exists()) {
                             try {
