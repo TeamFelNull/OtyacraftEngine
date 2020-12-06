@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.util.ResourceLocation;
@@ -29,4 +31,27 @@ public abstract class AbstractIkisugiContainerScreen<T extends Container> extend
         super.renderByIKSG(matrix, mouseX, mouseY, parTick);
         this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
     }
+    @Override
+    public boolean keyPressedByIKSG(int keyCode, int scanCode, int modifiers) {
+
+        if (keyCode == 256) {
+            this.minecraft.player.closeScreen();
+        }
+
+        boolean cane = false;
+
+        for (Widget widget : this.buttons) {
+            if (widget instanceof TextFieldWidget) {
+                boolean keyp = !widget.keyPressed(keyCode, scanCode, modifiers);
+                boolean cap = !((TextFieldWidget) widget).canWrite();
+                if (!keyp)
+                    continue;
+                if (keyp && !cap)
+                    return true;
+            }
+        }
+
+        return super.keyPressedByIKSG(keyCode, scanCode, modifiers);
+    }
+
 }

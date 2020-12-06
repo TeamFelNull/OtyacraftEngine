@@ -29,7 +29,7 @@ public class IKSGTextureUtil {
     private static final ResourceLocation LOADING_2 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_2.png");
     private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
     private static final ResourceLocation LOADING_4 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_4.png");
-    private static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
+    public static final ResourceLocation TEXTUER_LOADING = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_loading.png");
     public static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
 
     public static int loadingPaatune;
