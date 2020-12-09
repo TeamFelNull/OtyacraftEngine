@@ -31,6 +31,7 @@ public abstract class AbstractIkisugiContainerScreen<T extends Container> extend
         super.renderByIKSG(matrix, mouseX, mouseY, parTick);
         this.renderHoveredToolTipByIKSG(matrix, mouseX, mouseY);
     }
+
     @Override
     public boolean keyPressedByIKSG(int keyCode, int scanCode, int modifiers) {
 
@@ -38,15 +39,17 @@ public abstract class AbstractIkisugiContainerScreen<T extends Container> extend
             this.minecraft.player.closeScreen();
         }
 
-        boolean cane = false;
-
         for (Widget widget : this.buttons) {
             if (widget instanceof TextFieldWidget) {
-                boolean keyp = !widget.keyPressed(keyCode, scanCode, modifiers);
+             /*   boolean keyp = !widget.keyPressed(keyCode, scanCode, modifiers);
                 boolean cap = !((TextFieldWidget) widget).canWrite();
                 if (!keyp)
                     continue;
                 if (keyp && !cap)
+                    return true;*/
+                widget.keyPressed(keyCode, scanCode, modifiers);
+                boolean cap = !((TextFieldWidget) widget).canWrite();
+                if (!cap)
                     return true;
             }
         }
