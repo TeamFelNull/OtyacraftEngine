@@ -15,7 +15,11 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "${mod_version}"
+if (System.getenv('curesforgeapikey') == null || "${curesfg_id}" == "0")
+    version = "${mod_version}-pre${getDate()}"
+else
+    version = "${mod_version}"
+
 group = "${mod_group}"
 archivesBaseName = "${mod_name}-${mc_version}"
 
@@ -61,6 +65,11 @@ minecraft {
         }
     }
 }
+
+def getDate() {
+    return new Date().format('yyyyMMddHHmm')
+}
+
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://dvs1.progwml6.com/files/maven/" }//JEI
