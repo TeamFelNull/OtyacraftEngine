@@ -15,14 +15,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ServerDataReceiver extends Thread {
-    private static Map<String, Map<String, DataReceiverBuffer>> RECEIVS = new HashMap<String, Map<String, DataReceiverBuffer>>();
+    private static final Map<String, Map<String, DataReceiverBuffer>> RECEIVS = new HashMap<>();
     private final String name;
     private final String uuid;
     private final ResourceLocation location;
     private final String playerUUID;
     private final SendReceiveLogger logger;
     private int cont;
-    private long fristTime;
+    private final long fristTime;
     private long logTime;
 
     public ServerDataReceiver(String playerUUID, String uuid, ResourceLocation location, String name, int datasize) {
@@ -33,7 +33,7 @@ public class ServerDataReceiver extends Thread {
         this.fristTime = System.currentTimeMillis();
         this.logTime = System.currentTimeMillis();
         if (!RECEIVS.containsKey(playerUUID)) {
-            RECEIVS.put(playerUUID, new HashMap<String, DataReceiverBuffer>());
+            RECEIVS.put(playerUUID, new HashMap<>());
         }
         RECEIVS.get(playerUUID).put(uuid, new DataReceiverBuffer(datasize, uuid, location, name));
         String det = "PlayerUUID:" + playerUUID + " UUID:" + uuid + " Location:" + location.toString() + " Name:" + name + " Size:" + datasize + "byte";

@@ -9,19 +9,21 @@ import red.felnull.otyacraftengine.util.IKSGStringUtil;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class SendReceiveLogger {
-    private String time;
-    private String name;
-    private String log;
-    private Dist side;
-    private SndOrRec sr;
+    private final String time;
+    private final String name;
+    private final StringBuffer log;
+    private final Dist side;
+    private final SndOrRec sr;
 
     public SendReceiveLogger(String name, String details, Dist side, SndOrRec sr) {
         this.time = IKSGStringUtil.getTimeStamp();
         this.name = name;
         this.side = side;
-        this.log = details + " - " + sr.getName().getString() + " Log \n";
+        this.log = new StringBuffer();
+        this.log.append(details).append(" - ").append(sr.getName().getString()).append(" Log \n");
         this.sr = sr;
 
     }
@@ -59,7 +61,7 @@ public class SendReceiveLogger {
     }
 
     public void addLogLine(ITextComponent log) {
-        this.log += IKSGStringUtil.getTimeStamp() + "-" + log.getString() + "\n";
+        this.log.append(IKSGStringUtil.getTimeStamp()).append("-").append(log.getString()).append("\n");
     }
 
     public void createLog() {
@@ -69,16 +71,16 @@ public class SendReceiveLogger {
         } else if (side.isDedicatedServer()) {
             savedpath = IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs"));
         }
-        IKSGFileLoadUtil.txtWriter(log, savedpath.resolve(time.replace(":", "-").replace(" ", "-") + "-" + name.replace(":", "-") + "-" + sr.getInitials() + ".log"));
+        IKSGFileLoadUtil.txtWriter(log.toString(), Objects.requireNonNull(savedpath).resolve(time.replace(":", "-").replace(" ", "-") + "-" + name.replace(":", "-") + "-" + sr.getInitials() + ".log"));
     }
 
     public enum SndOrRec {
         SEND(new TranslationTextComponent("rslog.sending"), "s"),
         RECEIVE(new TranslationTextComponent("rslog.receiving"), "r");
-        private ITextComponent name;
-        private String initials;
+        private final ITextComponent name;
+        private final String initials;
 
-        private SndOrRec(ITextComponent name, String initials) {
+        SndOrRec(ITextComponent name, String initials) {
             this.name = name;
             this.initials = initials;
         }
@@ -95,9 +97,9 @@ public class SendReceiveLogger {
     public static enum SRResult {
         SUCCESS(new TranslationTextComponent("rslog.success")),
         FAILURE(new TranslationTextComponent("rslog.failure"));
-        private ITextComponent name;
+        private final ITextComponent name;
 
-        private SRResult(ITextComponent name) {
+        SRResult(ITextComponent name) {
             this.name = name;
         }
 

@@ -13,14 +13,15 @@ import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class WorldDataManager {
     private static WorldDataManager INSTANCE;
 
-    public Map<ResourceLocation, CompoundNBT> WORLD_DATA = new HashMap<ResourceLocation, CompoundNBT>();
-    public Map<String, Map<ResourceLocation, CompoundNBT>> PLAYER_DATA = new HashMap<String, Map<ResourceLocation, CompoundNBT>>();
+    public final Map<ResourceLocation, CompoundNBT> WORLD_DATA = new HashMap<>();
+    public final Map<String, Map<ResourceLocation, CompoundNBT>> PLAYER_DATA = new HashMap<>();
 
-    public Map<ResourceLocation, CompoundNBT> CLIENT_PLAYER_DATA = new HashMap<ResourceLocation, CompoundNBT>();
+    public final Map<ResourceLocation, CompoundNBT> CLIENT_PLAYER_DATA = new HashMap<>();
 
     public static WorldDataManager instance() {
         return INSTANCE;
@@ -58,7 +59,7 @@ public class WorldDataManager {
         } else {
             OtyacraftEngine.LOGGER.info("loading " + player.getName().getString() + " data");
             if (!PLAYER_DATA.containsKey(IKSGPlayerUtil.getUUID(player))) {
-                PLAYER_DATA.put(IKSGPlayerUtil.getUUID(player), new HashMap<ResourceLocation, CompoundNBT>());
+                PLAYER_DATA.put(IKSGPlayerUtil.getUUID(player), new HashMap<>());
             }
             for (Map.Entry<ResourceLocation, PlayerWorldData> rege : OERegistries.PLAYER_WORLD_DATA.entrySet()) {
                 CompoundNBT tag = null;
@@ -76,7 +77,7 @@ public class WorldDataManager {
 
         for (String intags : intedtag.keySet()) {
             if (!tag.contains(intags)) {
-                tag.put(intags, intedtag.get(intags));
+                tag.put(intags, Objects.requireNonNull(intedtag.get(intags)));
             } else if (tag.contains(intags, 10) && intedtag.contains(intags, 10)) {
                 tag.put(intags, initialNBT(tag.getCompound(intags), intedtag.getCompound(intags)));
             }

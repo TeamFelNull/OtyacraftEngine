@@ -10,7 +10,7 @@ public class DataReceiverBuffer {
     public int allcont;
     public boolean stop;
     private int cont;
-    private byte[] bytes;
+    private final byte[] bytes;
 
     public DataReceiverBuffer(int bytecont, String uuid, ResourceLocation location, String name) {
         this.bytes = new byte[bytecont];
@@ -31,9 +31,7 @@ public class DataReceiverBuffer {
     }
 
     public void addBytes(byte[] addedbytes) {
-        for (int i = 0; i < addedbytes.length; i++) {
-            this.bytes[cont + i] = addedbytes[i];
-        }
+        System.arraycopy(addedbytes, 0, bytes, cont, addedbytes.length);
         this.cont += addedbytes.length;
     }
 

@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientDataReceiver extends Thread {
-    private static Map<String, DataReceiverBuffer> RECEIVS = new HashMap<String, DataReceiverBuffer>();
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Map<String, DataReceiverBuffer> RECEIVS = new HashMap<>();
+    private static final Minecraft mc = Minecraft.getInstance();
     private final String name;
     private final String uuid;
     private final ResourceLocation location;
     private final SendReceiveLogger logger;
     private int cont;
-    private long fristTime;
+    private final long fristTime;
     private long logTime;
 
     @OnlyIn(Dist.CLIENT)

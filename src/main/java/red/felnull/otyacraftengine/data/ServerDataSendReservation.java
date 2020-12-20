@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerDataSendReservation {
-    public static Map<String, Map<String, DataSendReservationBuffer>> RESERVATION = new HashMap<String, Map<String, DataSendReservationBuffer>>();
+    public static final Map<String, Map<String, DataSendReservationBuffer>> RESERVATION = new HashMap<>();
 
     public static void add(String plUuid, String uuid, ResourceLocation location, String name, byte[] data) {
         if (!RESERVATION.containsKey(plUuid))
-            RESERVATION.put(plUuid, new HashMap<String, DataSendReservationBuffer>());
+            RESERVATION.put(plUuid, new HashMap<>());
 
         RESERVATION.get(plUuid).put(uuid, new DataSendReservationBuffer(location, name, data));
     }
@@ -19,15 +19,15 @@ public class ServerDataSendReservation {
         if (RESERVATION.isEmpty())
             return;
 
-        RESERVATION.entrySet().forEach(n -> {
-            if (!n.getValue().isEmpty() && !ServerDataSender.isMaxSending(n.getKey())) {
+        RESERVATION.forEach((key, value) -> {
+            if (!value.isEmpty() && !ServerDataSender.isMaxSending(key)) {
                 String uuid = null;
-                for (Map.Entry<String, DataSendReservationBuffer> en : n.getValue().entrySet()) {
-                    ServerDataSender.sending(n.getKey(), en.getKey(), en.getValue().location, en.getValue().name, en.getValue().data);
+                for (Map.Entry<String, DataSendReservationBuffer> en : value.entrySet()) {
+                    ServerDataSender.sending(key, en.getKey(), en.getValue().location, en.getValue().name, en.getValue().data);
                     uuid = en.getKey();
                     break;
                 }
-                n.getValue().remove(uuid);
+                value.remove(uuid);
             }
         });
 

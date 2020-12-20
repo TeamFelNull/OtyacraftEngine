@@ -12,17 +12,17 @@ import red.felnull.otyacraftengine.util.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.zip.GZIPOutputStream;
 
 public class ServerDataSender extends Thread {
     public static int max = 5;
-    private static Map<String, Map<String, ServerDataSender>> SENDS = new HashMap<String, Map<String, ServerDataSender>>();
+    private static final Map<String, Map<String, ServerDataSender>> SENDS = new HashMap<>();
     private final String playerUUID;
     private final String name;
     private final String uuid;
@@ -74,12 +74,7 @@ public class ServerDataSender extends Thread {
         if (!IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().exists())
             return;
 
-        File[] files = IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return IKSGStringUtil.getExtension(file.getName()).equals("log");
-            }
-        });
+        File[] files = IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs")).toFile().listFiles(file -> IKSGStringUtil.getExtension(file.getName()).equals("log"));
         if (files.length == 0)
             return;
 
@@ -106,7 +101,7 @@ public class ServerDataSender extends Thread {
             for (File file : files) {
                 byte[] bytes = IKSGFileLoadUtil.fileBytesReader(file.toPath());
                 GZIPOutputStream gzip_out = new GZIPOutputStream(out);
-                gzip_out.write(bytes);
+                gzip_out.write(Objects.requireNonNull(bytes));
                 gzip_out.close();
             }
             out.close();
@@ -119,7 +114,8 @@ public class ServerDataSender extends Thread {
                 name = IKSGStringUtil.deleteExtension(mostold.getName()) + "~" + IKSGStringUtil.deleteExtension(mostnew.getName());
             }
             IKSGFileLoadUtil.fileBytesWriter(ret, IKSGPathUtil.getWorldSaveDataPath().resolve(Paths.get("srlogs\\" + name + ".log.gz")));
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         for (File file : files) {
             IKSGFileLoadUtil.deleteFile(file);
@@ -128,7 +124,7 @@ public class ServerDataSender extends Thread {
 
     public void sendStart() {
         if (!SENDS.containsKey(playerUUID)) {
-            SENDS.put(playerUUID, new HashMap<String, ServerDataSender>());
+            SENDS.put(playerUUID, new HashMap<>());
         }
         if (isMaxSending(playerUUID)) {
             OtyacraftEngine.LOGGER.error("The data cont that can be sent at one time is exceeded : " + location.toString() + " : " + this.name);
@@ -163,14 +159,11 @@ public class ServerDataSender extends Thread {
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
             for (int i = 0; i < soundbytelengt; i += sendbyte) {
-                byte[] sndingbyte = new byte[soundbytelengt - i >= sendbyte ? sendbyte : soundbytelengt - i];
-                for (int c = 0; c < sendbyte; c++) {
-                    if ((i + c) < soundbytelengt) {
-                        sndingbyte[c] = sendingData[i + c];
-                        dataCont++;
-                    }
-                }
-                ServerDataSendMessage sendpacet = null;
+                byte[] sndingbyte = new byte[Math.min(soundbytelengt - i, sendbyte)];
+                System.arraycopy(sendingData, i, sndingbyte, 0, sndingbyte.length);
+                dataCont += sndingbyte.length;
+
+                ServerDataSendMessage sendpacet ;
                 if (frist) {
                     sendpacet = new ServerDataSendMessage(uuid, location, name, sndingbyte, sendingData.length, true);
                 } else {

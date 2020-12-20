@@ -16,17 +16,17 @@ import red.felnull.otyacraftengine.util.IKSGStringUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.GZIPOutputStream;
 
 public class ClientDataSender extends Thread {
     public static int max = 5;
-    private static Map<String, ClientDataSender> SENDS = new HashMap<String, ClientDataSender>();
-    private static Minecraft mc = Minecraft.getInstance();
+    private static final Map<String, ClientDataSender> SENDS = new HashMap<>();
+    private static final Minecraft mc = Minecraft.getInstance();
     private final String name;
     private final String uuid;
     private final ResourceLocation location;
@@ -77,12 +77,7 @@ public class ClientDataSender extends Thread {
         if (!Paths.get("srlogs").toFile().exists())
             return;
 
-        File[] files = Paths.get("srlogs").toFile().listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return IKSGStringUtil.getExtension(file.getName()).equals("log");
-            }
-        });
+        File[] files = Paths.get("srlogs").toFile().listFiles(file -> IKSGStringUtil.getExtension(file.getName()).equals("log"));
         if (files.length == 0)
             return;
 
@@ -109,20 +104,21 @@ public class ClientDataSender extends Thread {
             for (File file : files) {
                 byte[] bytes = IKSGFileLoadUtil.fileBytesReader(file.toPath());
                 GZIPOutputStream gzip_out = new GZIPOutputStream(out);
-                gzip_out.write(bytes);
+                gzip_out.write(Objects.requireNonNull(bytes));
                 gzip_out.close();
             }
             out.close();
             byte[] ret = out.toByteArray();
 
-            String name = "";
+            String name;
             if (mostold == mostnew) {
                 name = mostnew.getName();
             } else {
                 name = IKSGStringUtil.deleteExtension(mostold.getName()) + "~" + IKSGStringUtil.deleteExtension(mostnew.getName());
             }
             IKSGFileLoadUtil.fileBytesWriter(ret, Paths.get("srlogs\\" + name + ".log.gz"));
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         for (File file : files) {
             IKSGFileLoadUtil.deleteFile(file);
@@ -167,14 +163,11 @@ public class ClientDataSender extends Thread {
             int sendbyte = 1024 * 8;
             int soundbytelengt = sendingData.length;
             for (int i = 0; i < soundbytelengt; i += sendbyte) {
-                byte[] sndingbyte = new byte[soundbytelengt - i >= sendbyte ? sendbyte : soundbytelengt - i];
-                for (int c = 0; c < sendbyte; c++) {
-                    if ((i + c) < soundbytelengt) {
-                        sndingbyte[c] = sendingData[i + c];
-                        dataCont++;
-                    }
-                }
-                ClientDataSendMessage sendpacet = null;
+                byte[] sndingbyte = new byte[Math.min(soundbytelengt - i, sendbyte)];
+                System.arraycopy(sendingData, i, sndingbyte, 0, sndingbyte.length);
+                dataCont += sndingbyte.length;
+
+                ClientDataSendMessage sendpacet;
                 if (frist) {
                     sendpacet = new ClientDataSendMessage(uuid, location, name, sndingbyte, sendingData.length, true);
                 } else {

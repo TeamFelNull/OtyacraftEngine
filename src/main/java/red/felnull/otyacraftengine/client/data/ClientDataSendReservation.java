@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientDataSendReservation {
-    public static Map<String, DataSendReservationBuffer> RESERVATION = new HashMap<String, DataSendReservationBuffer>();
+    public static final Map<String, DataSendReservationBuffer> RESERVATION = new HashMap<>();
 
     @OnlyIn(Dist.CLIENT)
     public static void add(String uuid, ResourceLocation location, String name, byte[] data) {
