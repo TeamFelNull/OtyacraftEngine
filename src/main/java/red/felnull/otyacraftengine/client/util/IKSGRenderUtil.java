@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3f;
@@ -95,6 +97,24 @@ public class IKSGRenderUtil {
 
     public static void matrixRotateDegreefZ(MatrixStack ms, float z) {
         ms.rotate(Vector3f.ZP.rotationDegrees(z));
+    }
+
+    public void matrixRotateHorizontal(BlockState state, MatrixStack matrix) {
+        Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
+        matrixRotateDirection(direction, matrix);
+    }
+
+    public static void matrixRotateDirection(Direction direction, MatrixStack matrix) {
+        if (direction == Direction.WEST) {
+            IKSGRenderUtil.matrixRotateDegreefY(matrix, 180);
+            IKSGRenderUtil.matrixTranslatef(matrix, -1f, 0f, -1f);
+        } else if (direction == Direction.NORTH) {
+            IKSGRenderUtil.matrixRotateDegreefY(matrix, 90);
+            IKSGRenderUtil.matrixTranslatef(matrix, -1f, 0f, 0f);
+        } else if (direction == Direction.SOUTH) {
+            IKSGRenderUtil.matrixRotateDegreefY(matrix, 270);
+            IKSGRenderUtil.matrixTranslatef(matrix, 0f, 0f, -1f);
+        }
     }
 
     public static IBakedModel getBakedModel(ResourceLocation location) {
