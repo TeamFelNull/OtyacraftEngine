@@ -65,6 +65,11 @@ public class IKSGRenderUtil {
         ms.translate(x, y, z);
     }
 
+    public static void matrixTranslatef16Divisions(MatrixStack ms, float x, float y, float z) {
+        float pix = 1f / 16f;
+        matrixTranslatef(ms, pix * x, pix * y, pix * z);
+    }
+
     public static void matrixScalf(MatrixStack ms, float all) {
         matrixScalf(ms, all, all, all);
     }
@@ -99,7 +104,7 @@ public class IKSGRenderUtil {
         ms.rotate(Vector3f.ZP.rotationDegrees(z));
     }
 
-    public void matrixRotateHorizontal(BlockState state, MatrixStack matrix) {
+    public static void matrixRotateHorizontal(BlockState state, MatrixStack matrix) {
         Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
         matrixRotateDirection(direction, matrix);
     }
