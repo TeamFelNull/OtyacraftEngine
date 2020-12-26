@@ -1,15 +1,16 @@
 package red.felnull.otyacraftengine.client.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BlockModelRenderer;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -260,4 +261,39 @@ public class IKSGRenderUtil {
         else
             drawBackString(fr, matrix, text, x, y, color);
     }
+
+    public static float partialTicksMisalignment(float val, float prevVal, float partialTicks) {
+        return val + (prevVal - val) * partialTicks;
+    }
+
+    public static void renderSpritePanel(ResourceLocation texlocation, MatrixStack matrix, IRenderTypeBuffer bufferIn, float x, float y, float z, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, float texSizeW, float texSizeH, int combinedOverlayIn, int combinedLightIn) {
+        IKSGRenderUtil.matrixPush(matrix);
+        IKSGRenderUtil.matrixRotateDegreefY(matrix, yaw);
+        IKSGRenderUtil.matrixRotateDegreefX(matrix, pitch);
+        IKSGRenderUtil.matrixRotateDegreefZ(matrix, roll);
+        IVertexBuilder ivb = bufferIn.getBuffer(getTextuerRenderType(texlocation));
+
+        float wst = texStartX / texSizeW;
+        float wft = texFinishX / texSizeW + wst;
+        float hst = texStartY / texSizeH;
+        float hft = texFinishY / texSizeH + hst;
+
+        addVertex(ivb, matrix, x, y, z, wst, hft, combinedOverlayIn, combinedLightIn);
+        addVertex(ivb, matrix, w + x, y, z, wft, hft, combinedOverlayIn, combinedLightIn);
+        addVertex(ivb, matrix, w + x, h + y, z, wft, hst, combinedOverlayIn, combinedLightIn);
+        addVertex(ivb, matrix, x, h + y, z, wst, hst, combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.matrixPop(matrix);
+    }
+
+    public static void addVertex(IVertexBuilder builder, MatrixStack matrix, float x, float y, float z, float u, float v, int combinedOverlayIn, int combinedLightIn) {
+        MatrixStack.Entry entry = matrix.getLast();
+        builder.pos(entry.getMatrix(), x, y, z).color(255, 255, 255, 255).tex(u, v).overlay(combinedOverlayIn).lightmap(combinedLightIn).normal(entry.getNormal(), 0f, 0f, 0f).endVertex();
+    }
+
+    public static RenderType getTextuerRenderType(ResourceLocation locationIn) {
+        RenderType.State state = RenderType.State.getBuilder().texture(new RenderState.TextureState(locationIn, false, false)).transparency(new RenderState.TransparencyState("no_transparency", RenderSystem::disableBlend, () -> {
+        })).diffuseLighting(new RenderState.DiffuseLightingState(false)).alpha(new RenderState.AlphaState(0.003921569F)).lightmap(new RenderState.LightmapState(true)).overlay(new RenderState.OverlayState(true)).build(true);
+        return RenderType.makeType("entity_cutout", DefaultVertexFormats.ENTITY, 7, 256, true, false, state);
+    }
+
 }
