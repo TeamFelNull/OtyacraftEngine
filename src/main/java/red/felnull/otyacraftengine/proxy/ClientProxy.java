@@ -42,6 +42,7 @@ public class ClientProxy extends CommonProxy {
         super.preInit();
         MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ItemTooltipEvent.class, new ClientHandler()::onToolTip);
         MinecraftForge.EVENT_BUS.register(ClientHandler.class);
+        MinecraftForge.EVENT_BUS.register(RenderHandler.class);
     }
 
     @Override
