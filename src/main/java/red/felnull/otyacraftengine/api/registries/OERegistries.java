@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.api.registries;
 
 import net.minecraft.util.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.client.renderer.handanimation.IHandAnimation;
 import red.felnull.otyacraftengine.data.OEDefinitiveWorldData;
 import red.felnull.otyacraftengine.data.PlayerWorldData;
 import red.felnull.otyacraftengine.data.WorldData;
@@ -19,6 +20,8 @@ public class OERegistries {
     public static final Map<ResourceLocation, Path> SERVER_RECEVED_PATH = new HashMap<>();
     public static final Map<ResourceLocation, Path> CLIENT_RECEVED_PATH = new HashMap<>();
     public static final Map<ResourceLocation, Path> TEXTUER_SEND_PATH = new HashMap<>();
+    public static final Map<ResourceLocation, IHandAnimation> HANDANIMATION = new HashMap<>();
+
 
     public static final ResourceLocation TEXTUERREQUEST = new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest");
     public static final ResourceLocation WORDDEFINITIVEDATA = new ResourceLocation(OtyacraftEngine.MODID, "worddefinitivedata");
@@ -31,7 +34,7 @@ public class OERegistries {
         registrierClientRecevedPath(TEXTUERREQUEST, IKSGPathUtil.getOEReceiveTexturesPath().resolve("cash"));
         registrierWorldData(WORDDEFINITIVEDATA, new OEDefinitiveWorldData());
 
-        registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), Paths.get("test/ikisygi"));
+        // registrierTextuerSendPath(new ResourceLocation(OtyacraftEngine.MODID, "test"), Paths.get("test/ikisygi"));
         //    registrierServerRecevedPath(new ResourceLocation(OtyacraftEngine.MODID, "textuerrequest"), "1919810");
         //  registrierPlayerData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestPlayerWorldData());
         // registrierWorldData(new ResourceLocation(OtyacraftEngine.MODID, "test"), new TestWorldData());
@@ -75,5 +78,9 @@ public class OERegistries {
 
     public static void registrierTextuerSendPath(ResourceLocation location, Path path) {
         OERegistries.TEXTUER_SEND_PATH.put(location, path);
+    }
+
+    public static void registrierHandAnimation(ResourceLocation location, IHandAnimation handAnimation) {
+        OERegistries.HANDANIMATION.put(location, handAnimation);
     }
 }

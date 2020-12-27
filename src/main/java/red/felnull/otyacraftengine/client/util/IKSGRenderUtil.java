@@ -5,17 +5,21 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -112,14 +116,14 @@ public class IKSGRenderUtil {
 
     public static void matrixRotateDirection(Direction direction, MatrixStack matrix) {
         if (direction == Direction.WEST) {
-            IKSGRenderUtil.matrixRotateDegreefY(matrix, 180);
-            IKSGRenderUtil.matrixTranslatef(matrix, -1f, 0f, -1f);
+            matrixRotateDegreefY(matrix, 180);
+            matrixTranslatef(matrix, -1f, 0f, -1f);
         } else if (direction == Direction.NORTH) {
-            IKSGRenderUtil.matrixRotateDegreefY(matrix, 90);
-            IKSGRenderUtil.matrixTranslatef(matrix, -1f, 0f, 0f);
+            matrixRotateDegreefY(matrix, 90);
+            matrixTranslatef(matrix, -1f, 0f, 0f);
         } else if (direction == Direction.SOUTH) {
-            IKSGRenderUtil.matrixRotateDegreefY(matrix, 270);
-            IKSGRenderUtil.matrixTranslatef(matrix, 0f, 0f, -1f);
+            matrixRotateDegreefY(matrix, 270);
+            matrixTranslatef(matrix, 0f, 0f, -1f);
         }
     }
 
@@ -151,7 +155,7 @@ public class IKSGRenderUtil {
         IFormattableTextComponent textc = IKSGStyles.withStyle(new StringTextComponent(text), style);
         int textSize = fontRenderer.getStringPropertyWidth(textc);
         if (width >= textSize) {
-            IKSGRenderUtil.drawString(fontRenderer, matrix, textc, x, y, 0);
+            drawString(fontRenderer, matrix, textc, x, y, 0);
             return;
         }
         int allsize = textSize + blank;
@@ -209,7 +213,7 @@ public class IKSGRenderUtil {
                 intext = cutble;
             }
             IFormattableTextComponent inextc = IKSGStyles.withStyle(new StringTextComponent(intext), style);
-            IKSGRenderUtil.drawString(fontRenderer, matrix, inextc, x + allsize - zure, y, 0);
+            drawString(fontRenderer, matrix, inextc, x + allsize - zure, y, 0);
         }
     }
 
@@ -267,10 +271,10 @@ public class IKSGRenderUtil {
     }
 
     public static void renderSpritePanel(ResourceLocation texlocation, MatrixStack matrix, IRenderTypeBuffer bufferIn, float x, float y, float z, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, float texSizeW, float texSizeH, int combinedOverlayIn, int combinedLightIn) {
-        IKSGRenderUtil.matrixPush(matrix);
-        IKSGRenderUtil.matrixRotateDegreefY(matrix, yaw);
-        IKSGRenderUtil.matrixRotateDegreefX(matrix, pitch);
-        IKSGRenderUtil.matrixRotateDegreefZ(matrix, roll);
+        matrixPush(matrix);
+        matrixRotateDegreefY(matrix, yaw);
+        matrixRotateDegreefX(matrix, pitch);
+        matrixRotateDegreefZ(matrix, roll);
         IVertexBuilder ivb = bufferIn.getBuffer(getTextuerRenderType(texlocation));
 
         float wst = texStartX / texSizeW;
@@ -282,7 +286,7 @@ public class IKSGRenderUtil {
         addVertex(ivb, matrix, w + x, y, z, wft, hft, combinedOverlayIn, combinedLightIn);
         addVertex(ivb, matrix, w + x, h + y, z, wft, hst, combinedOverlayIn, combinedLightIn);
         addVertex(ivb, matrix, x, h + y, z, wst, hst, combinedOverlayIn, combinedLightIn);
-        IKSGRenderUtil.matrixPop(matrix);
+        matrixPop(matrix);
     }
 
     public static void addVertex(IVertexBuilder builder, MatrixStack matrix, float x, float y, float z, float u, float v, int combinedOverlayIn, int combinedLightIn) {
@@ -296,4 +300,41 @@ public class IKSGRenderUtil {
         return RenderType.makeType("entity_cutout", DefaultVertexFormats.ENTITY, 7, 256, true, false, state);
     }
 
+    public static void renderRightHand(MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int combinedLightIn, AbstractClientPlayerEntity playerIn) {
+        matrixPush(matrixStack);
+        mc.getTextureManager().bindTexture(playerIn.getLocationSkin());
+        PlayerRenderer plr = (PlayerRenderer) mc.getRenderManager().getRenderer(playerIn);
+        plr.renderRightArm(matrixStack, bufferIn, combinedLightIn, playerIn);
+        matrixPop(matrixStack);
+    }
+
+    public static void renderLeftHand(MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int combinedLightIn, AbstractClientPlayerEntity playerIn) {
+        matrixPush(matrixStack);
+        mc.getTextureManager().bindTexture(playerIn.getLocationSkin());
+        PlayerRenderer plr = (PlayerRenderer) mc.getRenderManager().getRenderer(playerIn);
+        plr.renderLeftArm(matrixStack, bufferIn, combinedLightIn, playerIn);
+        matrixPop(matrixStack);
+    }
+
+    private static void matrixArmFirstPerson(MatrixStack matrixStackIn, float equippedProgress, float swingProgress, HandSide side) {
+        boolean flag = side != HandSide.LEFT;
+        float f = flag ? 1.0f : -1.0f;
+        float f1 = MathHelper.sqrt(swingProgress);
+        float f2 = -0.3f * MathHelper.sin(f1 * (float) Math.PI);
+        float f3 = 0.4f * MathHelper.sin(f1 * ((float) Math.PI * 2f));
+        float f4 = -0.4f * MathHelper.sin(swingProgress * (float) Math.PI);
+        matrixTranslatef(matrixStackIn, f * (f2 + 0.64000005f), f3 + -0.6f + equippedProgress * -0.6f, f4 + -0.71999997f);
+        matrixRotateDegreefY(matrixStackIn, f * 45.0f);
+        float f5 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+        float f6 = MathHelper.sin(f1 * (float) Math.PI);
+        matrixRotateDegreefY(matrixStackIn, f * f6 * 70.0f);
+        matrixRotateDegreefZ(matrixStackIn, f * f5 * -20.0f);
+        AbstractClientPlayerEntity abstractclientplayerentity = mc.player;
+        mc.getTextureManager().bindTexture(abstractclientplayerentity.getLocationSkin());
+        matrixTranslatef(matrixStackIn, f * -1.0f, 3.6f, 3.5f);
+        matrixRotateDegreefZ(matrixStackIn, f * 120.0f);
+        matrixRotateDegreefX(matrixStackIn, 200.0f);
+        matrixRotateDegreefY(matrixStackIn, f * -135.0f);
+        matrixTranslatef(matrixStackIn, f * 5.6f, 0.0f, 0.0f);
+    }
 }

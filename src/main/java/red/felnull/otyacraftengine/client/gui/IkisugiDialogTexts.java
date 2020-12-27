@@ -21,5 +21,7 @@ public class IkisugiDialogTexts {
     public static final ITextComponent TRAINING = new TranslationTextComponent("gui.training");
     public static final ITextComponent JOIN = new TranslationTextComponent("gui.join");
     public static final ITextComponent NEXT = new TranslationTextComponent("gui.next");
+    public static final ITextComponent START = new TranslationTextComponent("gui.start");
+    public static final ITextComponent STOP = new TranslationTextComponent("gui.stop");
 
 }

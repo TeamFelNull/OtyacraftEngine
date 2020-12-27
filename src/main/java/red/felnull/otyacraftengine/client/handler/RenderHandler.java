@@ -9,8 +9,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.config.ClientConfig;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 
@@ -26,17 +28,12 @@ public class RenderHandler {
     public void onGuiDraowEvent(GuiScreenEvent.DrawScreenEvent e) {
         if (e.getGui() instanceof BeaconScreen) {
             if (ClientConfig.BeaconOverlay.get() && ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().anyMatch(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT)) {
-
                 int ietmcont = Math.toIntExact(ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT).count());
-
                 beaconMaxCount = ietmcont - 1;
-
                 if (beaconCount > beaconMaxCount) {
                     beaconCount = 0;
                 }
-
                 ItemStack st = new ItemStack((IItemProvider) ItemTags.BEACON_PAYMENT_ITEMS.getAllElements().stream().filter(n -> n != Items.IRON_INGOT && n != Items.GOLD_INGOT && n != Items.DIAMOND && n != Items.EMERALD && n != Items.NETHERITE_INGOT).toArray()[beaconCount]);
-
                 MatrixStack matx = e.getMatrixStack();
                 int i = (e.getGui().width - ((BeaconScreen) e.getGui()).getXSize()) / 2;
                 int j = (e.getGui().height - ((BeaconScreen) e.getGui()).getYSize()) / 2;
@@ -47,9 +44,15 @@ public class RenderHandler {
                 ir.renderItemAndEffectIntoGUI(st, i + -1, j + 109);
                 ir.zLevel = 0.0F;
             }
-
         }
+    }
 
+    @SubscribeEvent
+    public static void onRenderHand(RenderHandEvent e) {
+        OERegistries.HANDANIMATION.entrySet().stream().map(n -> n.getValue()).filter(n -> n.isRender(e.getHand(), e.getItemStack(), e.getEquipProgress(), e.getInterpolatedPitch(), e.getSwingProgress())).forEach(n -> {
+            e.setCanceled(n.isRenderCancel(e.getHand(), e.getItemStack(), e.getEquipProgress(), e.getInterpolatedPitch(), e.getSwingProgress()));
+            n.render(e.getItemStack(), e.getHand(), e.getMatrixStack(), e.getPartialTicks(), e.getBuffers(), e.getLight(), e.getEquipProgress(), e.getInterpolatedPitch(), e.getSwingProgress());
+        });
     }
 
 }
