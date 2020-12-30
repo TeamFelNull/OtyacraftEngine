@@ -316,7 +316,7 @@ public class IKSGRenderUtil {
         matrixPop(matrixStack);
     }
 
-    private static void matrixArmFirstPerson(MatrixStack matrixStackIn, float equippedProgress, float swingProgress, HandSide side) {
+    public static void matrixArmFirstPerson(MatrixStack matrixStackIn, float equippedProgress, float swingProgress, HandSide side) {
         boolean flag = side != HandSide.LEFT;
         float f = flag ? 1.0f : -1.0f;
         float f1 = MathHelper.sqrt(swingProgress);
