@@ -30,7 +30,7 @@ public abstract class IkisugiContainerScreen<T extends Container> extends Contai
 
     @Override
     public BlockPos getInstrunctionPos() {
-        return getTileEntity().getPos();
+        return getTileEntity() != null ? getTileEntity().getPos() : null;
     }
 
     //drawGuiContainerBackgroundLayer

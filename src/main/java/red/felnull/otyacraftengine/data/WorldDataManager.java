@@ -5,6 +5,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
@@ -16,6 +18,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class WorldDataManager {
+    public static final Logger LOGGER = LogManager.getLogger(WorldDataManager.class);
+
     private static WorldDataManager INSTANCE;
 
     public final Map<ResourceLocation, CompoundNBT> WORLD_DATA = new HashMap<>();
@@ -46,7 +50,7 @@ public class WorldDataManager {
     */
     public void load(MinecraftServer ms, ServerPlayerEntity player) {
         if (player == null) {
-            OtyacraftEngine.LOGGER.info("loading data");
+            LOGGER.debug("loading data");
             for (Map.Entry<ResourceLocation, WorldData> rege : OERegistries.WORLD_DATA.entrySet()) {
                 CompoundNBT tag = null;
                 if (IKSGPathUtil.getWorldSaveDataPath().resolve(rege.getValue().getSavedFolderPath()).toFile().exists()) {
@@ -57,7 +61,7 @@ public class WorldDataManager {
                 WORLD_DATA.put(rege.getKey(), initialNBT(tag, rege.getValue().getInitialNBT(new CompoundNBT())));
             }
         } else {
-            OtyacraftEngine.LOGGER.info("loading " + player.getName().getString() + " data");
+            LOGGER.debug("loading " + player.getName().getString() + " data");
             if (!PLAYER_DATA.containsKey(IKSGPlayerUtil.getUUID(player))) {
                 PLAYER_DATA.put(IKSGPlayerUtil.getUUID(player), new HashMap<>());
             }
@@ -88,7 +92,7 @@ public class WorldDataManager {
 
     public void save(MinecraftServer ms, ServerPlayerEntity player) {
         if (player == null) {
-            OtyacraftEngine.LOGGER.info("saveing data");
+            LOGGER.debug("saveing data");
             for (Map.Entry<ResourceLocation, CompoundNBT> ent : WORLD_DATA.entrySet()) {
                 WorldData data = OERegistries.WORLD_DATA.get(ent.getKey());
                 IKSGFileLoadUtil.fileNBTWriter(ent.getValue(), IKSGPathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()));
@@ -101,7 +105,7 @@ public class WorldDataManager {
                 }
             }
         } else {
-            OtyacraftEngine.LOGGER.info("saveing " + player.getName().getString() + " data");
+            LOGGER.debug("saveing " + player.getName().getString() + " data");
             for (Map.Entry<ResourceLocation, CompoundNBT> ent : PLAYER_DATA.get(IKSGPlayerUtil.getUUID(player)).entrySet()) {
                 PlayerWorldData data = OERegistries.PLAYER_WORLD_DATA.get(ent.getKey());
                 IKSGFileLoadUtil.fileNBTWriter(ent.getValue(), IKSGPathUtil.getWorldSaveDataPath().resolve(data.getSavedFolderPath()).resolve(IKSGPlayerUtil.getUUID(player) + ".dat"));
@@ -111,11 +115,11 @@ public class WorldDataManager {
 
     public void unload(MinecraftServer ms, ServerPlayerEntity player) {
         if (player == null) {
-            OtyacraftEngine.LOGGER.info("unloding data");
+            LOGGER.debug("unloding data");
             WORLD_DATA.clear();
             PLAYER_DATA.clear();
         } else {
-            OtyacraftEngine.LOGGER.info("unloding " + IKSGPlayerUtil.getUserName(player) + " data");
+            LOGGER.debug("unloding " + IKSGPlayerUtil.getUserName(player) + " data");
             if (PLAYER_DATA.containsKey(IKSGPlayerUtil.getUUID(player))) {
                 PLAYER_DATA.get(IKSGPlayerUtil.getUUID(player)).clear();
             }

@@ -49,7 +49,7 @@ public class ServerHandler {
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (!e.getPlayer().world.isRemote) {
-            WorldDataEvent.load(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
+            WorldDataEvent.load(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), false);
             ResponseSender.sendToClient((ServerPlayerEntity) e.getPlayer(), CLIENT_WORLDUUID_SYNC, 0, IKSGServerUtil.getWorldUUID().toString(), new CompoundNBT());
         }
     }
@@ -58,7 +58,7 @@ public class ServerHandler {
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent e) {
         if (!e.getPlayer().world.isRemote) {
             WorldDataEvent.save(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
-            WorldDataEvent.unload(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), true);
+            WorldDataEvent.unload(e.getPlayer().getServer(), (ServerPlayerEntity) e.getPlayer(), false);
             ResponseSender.sendToClient((ServerPlayerEntity) e.getPlayer(), CLIENT_WORLDUUID_SYNC, 1, "", new CompoundNBT());
         }
     }
@@ -71,7 +71,7 @@ public class ServerHandler {
 
     @SubscribeEvent
     public static void onWorldSave(WorldEvent.Save e) {
-        WorldDataEvent.save(IKSGServerUtil.getMinecraftServer(), null, true);
+        WorldDataEvent.save(IKSGServerUtil.getMinecraftServer(), null, false);
     }
 
     @SubscribeEvent

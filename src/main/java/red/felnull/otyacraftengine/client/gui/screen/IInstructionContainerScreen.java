@@ -8,7 +8,7 @@ import red.felnull.otyacraftengine.tileentity.IInstructionTileEntity;
 
 public interface IInstructionContainerScreen {
     default void instruction(String name, CompoundNBT data) {
-        if (OtyacraftEngine.proxy.getMinecraft().world.getTileEntity(getInstrunctionPos()) instanceof IInstructionTileEntity) {
+        if (getInstrunctionPos() != null && OtyacraftEngine.proxy.getMinecraft().world.getTileEntity(getInstrunctionPos()) instanceof IInstructionTileEntity) {
             InstructionFromClient.instruction(getInstrunctionPos(), name, data);
         }
     }
