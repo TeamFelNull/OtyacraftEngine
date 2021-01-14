@@ -10,6 +10,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import red.felnull.otyacraftengine.OtyacraftEngine;
@@ -17,10 +18,14 @@ import red.felnull.otyacraftengine.api.ResponseSender;
 import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.server.StraddleChunkEvent;
 import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
+import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ReceiveTextureManager;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;
+import red.felnull.otyacraftengine.data.WorldDataManager;
+import red.felnull.otyacraftengine.util.IKSGModUtil;
+import red.felnull.otyacraftengine.util.IKSGNBTUtil;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 import red.felnull.otyacraftengine.util.IKSGServerUtil;
 
@@ -43,6 +48,14 @@ public class ServerHandler {
     public static void onServerStarting(FMLServerStartingEvent e) {
         WorldDataEvent.load(e.getServer(), null, false);
         ServerDataSender.srlogsGziping();
+        CompoundNBT omvtag = WorldDataManager.instance().getWorldData(OERegistries.WORDDEFINITIVEDATA).getCompound("OldModVersion");
+        IKSGNBTUtil.clearTag(omvtag);
+        CompoundNBT mvtag = WorldDataManager.instance().getWorldData(OERegistries.WORDDEFINITIVEDATA).getCompound("ModVersion");
+        mvtag.keySet().forEach(n -> omvtag.put(n, mvtag.get(n)));
+        IKSGNBTUtil.clearTag(mvtag);
+        ModList.get().getMods().forEach(n -> {
+            mvtag.putString(n.getModId(), IKSGModUtil.getModVersion(n.getModId()));
+        });
     }
 
 

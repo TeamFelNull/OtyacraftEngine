@@ -16,6 +16,8 @@ public class OEDefinitiveWorldData extends WorldData {
     @Override
     public CompoundNBT getInitialNBT(CompoundNBT tag) {
         tag.putString("worduuid", UUID.randomUUID().toString());
+        tag.put("ModVersion", new CompoundNBT());
+        tag.put("OldModVersion", new CompoundNBT());
         return tag;
     }
 }

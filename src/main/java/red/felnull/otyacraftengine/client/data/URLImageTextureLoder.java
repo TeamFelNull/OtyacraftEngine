@@ -2,6 +2,8 @@ package red.felnull.otyacraftengine.client.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,9 +55,11 @@ public class URLImageTextureLoder {
         IKSGFileLoadUtil.createFolder(CASH_PATH);
         try (Writer writer = new FileWriter(index)) {
             Gson gsonb = new GsonBuilder().create();
-            Map<String, String> jmap = new HashMap<>();
-            INDEX.forEach((n, m) -> jmap.put(n.toString(), m));
-            gsonb.toJson(jmap, writer);
+            JsonObject jo = new JsonObject();
+            INDEX.forEach((n, m) -> {
+                jo.add(m, n.toJsonObject());
+            });
+            gsonb.toJson(jo, writer);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -86,8 +90,11 @@ public class URLImageTextureLoder {
                 JsonReader jsonReader = new JsonReader(reader);
                 Gson gson = new Gson();
                 INDEX.clear();
-                Map<String, String> jmap = new HashMap<>(gson.fromJson(jsonReader, Map.class));
-                jmap.forEach((n, m) -> INDEX.put(URLImageData.ofString(n), m));
+                JsonObject jo = gson.fromJson(jsonReader, JsonObject.class);
+                jo.entrySet().forEach(n -> {
+                    if (n.getValue() instanceof JsonObject)
+                        INDEX.put(URLImageData.ofJsonObject((JsonObject) n.getValue()), n.getKey());
+                });
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -134,25 +141,16 @@ public class URLImageTextureLoder {
             return Objects.hash(URL, width, height);
         }
 
-        @Override
-        public String toString() {
-            Gson gson = new Gson();
-            Map<String, String> smap = new HashMap<>();
-            smap.put("u", URL);
-            smap.put("w", String.valueOf(width));
-            smap.put("h", String.valueOf(height));
-            return gson.toJson(smap);
+        public JsonObject toJsonObject() {
+            JsonObject jo = new JsonObject();
+            jo.addProperty("url", URL);
+            jo.addProperty("width", width);
+            jo.addProperty("height", height);
+            return jo;
         }
 
-        public static URLImageData ofString(String str) {
-            Gson gson = new Gson();
-            Map<String, String> smap = new HashMap<>(gson.fromJson(str, Map.class));
-            try {
-                return new URLImageData(smap.get("u"), Integer.parseInt(smap.get("w")), Integer.parseInt(smap.get("h")));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return new URLImageData(smap.get("u"), 0, 0);
+        public static URLImageData ofJsonObject(JsonObject json) {
+            return new URLImageData(json.get("url").getAsString(), json.get("width").getAsInt(), json.get("height").getAsInt());
         }
     }
 

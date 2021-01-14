@@ -80,4 +80,10 @@ public class IKSGNBTUtil {
         return tag;
     }
 
+    public static CompoundNBT clearTag(CompoundNBT tag) {
+        List<String> str = new ArrayList<>(tag.keySet());
+        str.forEach(tag::remove);
+        return tag;
+    }
+
 }
