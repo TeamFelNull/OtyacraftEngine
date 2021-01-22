@@ -36,6 +36,15 @@ public abstract class IkisugiContainer extends Container {
         setPlayerSlot(plslotX, plslotY);
     }
 
+    public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, IInventory inventory) {
+        super(type, windowId);
+        this.inventory = inventory;
+        this.playerInventory = playerInventory;
+        inventory.openInventory(playerInventory.player);
+        setSlot();
+    }
+
+
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, int plslotX, int plslotY) {
         super(type, windowId);
         this.playerInventory = playerInventory;
