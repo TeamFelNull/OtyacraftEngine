@@ -2,8 +2,7 @@ package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.StringTextComponent;
-import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
-import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
+import red.felnull.otyacraftengine.client.gui.widget.FileChooserWidget;
 
 public class TestScreen extends IkisugiScreen {
 
@@ -14,6 +13,7 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void initByIKSG() {
         super.initByIKSG();
+        addWidgetByIKSG(new FileChooserWidget(5, 5, this));
     }
 
     @Override
@@ -23,8 +23,7 @@ public class TestScreen extends IkisugiScreen {
 
     @Override
     public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
-        super.renderByIKSG(matrix, mouseX, mouseY, parTick);
         renderBackgroundByIKSG(matrix);
-        IKSGRenderUtil.guiBindAndBlit(IKSGTextureUtil.getPictureImageURLTexture("https://media.forgecdn.net/attachments/311/242/2020-09-03_18h18_43.png"), matrix, 0, 0, 0, 0, 30, 30, 30, 30);
+        super.renderByIKSG(matrix, mouseX, mouseY, parTick);
     }
 }

@@ -55,6 +55,14 @@ public class IKSGRenderUtil {
         matrixPop(matx);
     }
 
+    public static void guiBindAndBlit(ResourceLocation location, MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight) {
+        guiBindAndBlit(location, matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256);
+    }
+
+    public static void guiBindAndBlit(ResourceLocation location, MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSize) {
+        guiBindAndBlit(location, matx, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSize, textureSize);
+    }
+
     public static void guiBindAndBlit(ResourceLocation location, MatrixStack matx, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
         matrixPush(matx);
         mc.getTextureManager().bindTexture(location);

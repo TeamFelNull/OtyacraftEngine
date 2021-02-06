@@ -23,6 +23,8 @@
   "gui.stop": "Stop",
   "gui.narrate.scrollbar": "Scrollbar",
   "gui.narrate.scrolllistbutton": "Scroll List",
+  "gui.narrate.filechooser": "File Chooser",
+  "gui.narrate.window": "%s window",
   "_comment.lo": "Log",
   "rslog.start.success": "Successfully start %s",
   "rslog.start.failure": "Failed start %s: %s",

@@ -9,6 +9,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
+import java.util.stream.IntStream;
 
 public abstract class IkisugiContainer extends Container {
     protected IInventory inventory;
@@ -34,6 +35,15 @@ public abstract class IkisugiContainer extends Container {
         setSlot();
         //def 8 142
         setPlayerSlot(plslotX, plslotY);
+    }
+
+    public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, IInventory inventory, BlockPos pos) {
+        super(type, windowId);
+        this.inventory = inventory;
+        this.playerInventory = playerInventory;
+        this.pos = pos;
+        inventory.openInventory(playerInventory.player);
+        setSlot();
     }
 
     public IkisugiContainer(@Nullable ContainerType<?> type, int windowId, PlayerInventory playerInventory, IInventory inventory) {
@@ -78,14 +88,8 @@ public abstract class IkisugiContainer extends Container {
     protected void setPlayerSlot(int x, int y) {
         if (playerInventory == null)
             return;
-        for (int k = 0; k < 3; ++k) {
-            for (int i1 = 0; i1 < 9; ++i1) {
-                this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, x + i1 * 18, y + k * 18));
-            }
-        }
-        for (int l = 0; l < 9; ++l) {
-            this.addSlot(new Slot(playerInventory, l, x + l * 18, y + 58));
-        }
+        IntStream.range(0, 3).forEach(k -> IntStream.range(0, 9).forEach(i1 -> this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, x + i1 * 18, y + k * 18))));
+        IntStream.range(0, 9).forEach(l -> this.addSlot(new Slot(playerInventory, l, x + l * 18, y + 58)));
     }
 
     public IInventory getIInventory() {

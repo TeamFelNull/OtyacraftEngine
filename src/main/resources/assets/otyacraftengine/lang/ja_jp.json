@@ -23,6 +23,8 @@
   "gui.stop": "停止",
   "gui.narrate.scrollbar": "スクロールバー",
   "gui.narrate.scrolllistbutton": "スクロールバーリスト",
+  "gui.narrate.filechooser": "ファイル選択",
+  "gui.narrate.window": "%s ウィンドウ",
   "_comment.lo": "Log",
   "rslog.start.success": "%sが正常に開始しました",
   "rslog.start.failure": "%sの開始に失敗しました: %s",
