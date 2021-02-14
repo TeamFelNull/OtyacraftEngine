@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "otyacraftengine",
+  "version": "${version}",
+  "name": "Otyacraft Engine",
+  "description": "Thank you for downloading!\\nThis mod is an integrated library that facilitates mod development.\\nA Ikisugi MOD",
+  "authors": [
+    "MORIMORI0317",
+    "TeamFelNull"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine",
+    "sources": "https://github.com/TeamFelnull/OtyacraftEngine"
+  },
+  "license": "LGPL v3",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "red.felnull.otyacraftengine.OtyacraftEngineFabric"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "fabric": "*",
+    "minecraft": ">=1.17-",
+    "architectury": ">=2.0.111"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
