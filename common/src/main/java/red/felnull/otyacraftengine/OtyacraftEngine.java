@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine;
 
 import red.felnull.otyacraftengine.block.TestBlock;
+import red.felnull.otyacraftengine.item.TestItem;
 
 public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
@@ -11,5 +12,6 @@ public class OtyacraftEngine {
 
     private static void test() {
         TestBlock.init();
+        TestItem.init();
     }
 }

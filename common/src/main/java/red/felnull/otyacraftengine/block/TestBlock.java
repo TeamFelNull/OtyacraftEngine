@@ -1,37 +1,48 @@
 package red.felnull.otyacraftengine.block;
 
 import me.shedaniel.architectury.registry.DeferredRegister;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtils;
 
 public class TestBlock extends Block {
-    public static final DeferredRegister<Block> MOD_BLOCKS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
-    public static final DeferredRegister<Item> MOD_BLOCKITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
-    public static final Block TEST_BLOCK = register("test_block", new TestBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(1, 10f)));
+    private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
+    private static final VoxelShape X_LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
+    private static final VoxelShape X_LEG2 = Block.box(4.0D, 5.0D, 6.0D, 12.0D, 10.0D, 10.0D);
+    private static final VoxelShape X_TOP = Block.box(0.0D, 10.0D, 3.0D, 16.0D, 16.0D, 13.0D);
+    private static final VoxelShape X_AXIS_AABB = IKSGVoxelShapeUtils.uniteBox(BASE, X_LEG1, X_LEG2, X_TOP);
 
     public TestBlock(Properties properties) {
         super(properties);
     }
 
+    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtils.rotateBoxY270(X_AXIS_AABB);
 
-    private static Block register(String name, Block block) {
-        return register(name, block, new BlockItem(block, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+        return TEST_AABB;
     }
 
-    private static Block register(String name, Block block, Item blockitem) {
-        MOD_BLOCKS_REGISTER.register(name, () -> block);
-        MOD_BLOCKITEMS_REGISTER.register(name, () -> blockitem);
-        return block;
-    }
+    public static Block TEST_BLOCK;
 
     public static void init() {
+        DeferredRegister<Block> MOD_BLOCKS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
+        DeferredRegister<Item> MOD_BLOCKITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
+        TEST_BLOCK = new TestBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(1, 10f));
+        MOD_BLOCKS_REGISTER.register("test_block", () -> TEST_BLOCK);
+        MOD_BLOCKITEMS_REGISTER.register("test_block", () -> new BlockItem(TEST_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
         MOD_BLOCKS_REGISTER.register();
         MOD_BLOCKITEMS_REGISTER.register();
     }

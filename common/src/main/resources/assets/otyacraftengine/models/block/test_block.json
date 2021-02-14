@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "otyacraftengine:block/test_block"
-    }
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "minecraft:block/acacia_planks"
+  }
 }
