@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "red.felnull.otyacraftengine.OtyacraftEngineFabric"
+    ],
+    "client": [
+      "red.felnull.otyacraftengine.client.OtyacraftEngineClientFabric"
     ]
   },
   "depends": {
