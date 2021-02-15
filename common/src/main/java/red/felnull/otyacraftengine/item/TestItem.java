@@ -10,8 +10,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.apache.commons.lang3.ArrayUtils;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 
 public class TestItem extends Item {
 
@@ -23,16 +23,7 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
 
-        if (!level.isClientSide()) {
-            String[] arra = {"1"};
-
-            arra = ArrayUtils.add(arra, "19");
-            arra = ArrayUtils.add(arra, "19");
-            arra = ArrayUtils.add(arra, "194");
-            for (String s : arra) {
-                player.displayClientMessage(new TextComponent(s), false);
-            }
-        }
+        player.displayClientMessage(new TextComponent("" + OtyacraftEngineAPI.getInstance().getIntegrations()), false);
 
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }

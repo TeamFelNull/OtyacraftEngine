@@ -21,6 +21,9 @@
     ],
     "client": [
       "red.felnull.otyacraftengine.client.OtyacraftEngineClientFabric"
+    ],
+    "otyacraftengine": [
+      "red.felnull.otyacraftengine.integration.OtyacraftEngineIntegration"
     ]
   },
   "depends": {
@@ -31,5 +34,8 @@
   },
   "suggests": {
     "flamingo": "*"
+  },
+  "custom": {
+    "modmenu:api": true
   }
 }

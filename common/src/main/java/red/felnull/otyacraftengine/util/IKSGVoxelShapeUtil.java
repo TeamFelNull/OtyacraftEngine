@@ -11,9 +11,9 @@ import org.apache.commons.lang3.ArrayUtils;
  * VoxelShapeを簡単に移動や回転をできるようにする
  *
  * @author MORIMORI0317
- * @version 1.0
+ * @since 1.0
  */
-public class IKSGVoxelShapeUtils {
+public class IKSGVoxelShapeUtil {
     /**
      * VoxelShapeを作成する
      *
@@ -209,7 +209,7 @@ public class IKSGVoxelShapeUtils {
      *
      * @param shape 回転するVoxelShape
      * @return 回転したVoxelShape
-     * @version 2.0
+     * @since 2.0
      */
     public static VoxelShape rotateBoxX90(VoxelShape shape) {
         VoxelShape[] shapes = {};
@@ -224,7 +224,7 @@ public class IKSGVoxelShapeUtils {
      *
      * @param shape 回転するVoxelShape
      * @return 回転したVoxelShape
-     * @version 2.0
+     * @since 2.0
      */
     public static VoxelShape rotateBoxX180(VoxelShape shape) {
         VoxelShape[] shapes = {};
@@ -239,7 +239,7 @@ public class IKSGVoxelShapeUtils {
      *
      * @param shape 回転するVoxelShape
      * @return 回転したVoxelShape
-     * @version 2.0
+     * @since 2.0
      */
     public static VoxelShape rotateBoxX270(VoxelShape shape) {
         VoxelShape[] shapes = {};
@@ -254,7 +254,7 @@ public class IKSGVoxelShapeUtils {
      *
      * @param shape 回転するVoxelShape
      * @return 回転したVoxelShape
-     * @version 2.0
+     * @since 2.0
      */
     public static VoxelShape rotateBoxZ90(VoxelShape shape) {
         VoxelShape[] shapes = {};
@@ -269,7 +269,7 @@ public class IKSGVoxelShapeUtils {
      *
      * @param shape 回転するVoxelShape
      * @return 回転したVoxelShape
-     * @version 2.0
+     * @since 2.0
      */
     public static VoxelShape rotateBoxZ180(VoxelShape shape) {
         VoxelShape[] shapes = {};
