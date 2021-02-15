@@ -28,7 +28,7 @@ public class TestBlock extends Block {
         super(properties);
     }
 
-    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtils.rotateBoxY270(X_AXIS_AABB);
+    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtils.rotateBoxZ180(X_AXIS_AABB);
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
