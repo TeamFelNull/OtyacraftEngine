@@ -1,8 +1,13 @@
 package red.felnull.otyacraftengine.api;
 
+import net.minecraft.resources.ResourceLocation;
+import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
+import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.throwable.EarlyAccessError;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -36,8 +41,13 @@ public class OtyacraftEngineAPI {
         return integrations;
     }
 
-    public void integrations(Consumer<IOEIntegration> consumer) {
+    public void integrationConsumer(Consumer<IOEIntegration> consumer) {
         List<IOEIntegration> integrations = getIntegrations();
         integrations.forEach(consumer::accept);
+    }
+
+    public Set<IHandler> getHandlers() {
+        OEHandlerRegister handlers = (OEHandlerRegister) OERegistries.getSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"));
+        return handlers.getSet();
     }
 }

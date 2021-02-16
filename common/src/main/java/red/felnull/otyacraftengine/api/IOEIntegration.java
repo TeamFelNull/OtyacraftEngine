@@ -1,6 +1,5 @@
 package red.felnull.otyacraftengine.api;
 
-import red.felnull.otyacraftengine.api.register.OEEventRegister;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 
 /**
@@ -13,15 +12,11 @@ import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
  */
 public interface IOEIntegration {
     /**
-     * イベント登録
+     * ハンドラー登録
      *
-     * @param evrg レジスター
+     * @param reg レジスター
      */
-    default void registrationEvent(OEEventRegister evrg) {
-
-    }
-
-    default void registrationHandler(OEHandlerRegister hdrg) {
+    default void registrationHandler(OEHandlerRegister reg) {
 
     }
 }

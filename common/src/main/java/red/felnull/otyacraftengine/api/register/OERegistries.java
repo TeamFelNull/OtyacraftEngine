@@ -11,14 +11,11 @@ public class OERegistries {
     private static final Map<ResourceLocation, SingleRegistry<?>> SINGLE_REGISTRYS = new HashMap<>();
 
     public static void init(OtyacraftEngineAPI api) {
-        OEEventRegister eventRegister = new OEEventRegister();
         OEHandlerRegister handlerRegister = new OEHandlerRegister();
 
-        OERegistries.setSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "event"), eventRegister);
         OERegistries.setSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"), handlerRegister);
-        
-        api.integrations(n -> n.registrationEvent(eventRegister));
-        api.integrations(n -> n.registrationHandler(handlerRegister));
+
+        api.integrationConsumer(n -> n.registrationHandler(handlerRegister));
     }
 
     public static SingleRegistry<?> getSingleRegistry(ResourceLocation location) {
