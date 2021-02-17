@@ -12,7 +12,7 @@ public class OtyacraftEngine {
     public static void init() {
         OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations());
         OERegistries.init(api);
-        test();
+   //     test();
     }
 
     /**

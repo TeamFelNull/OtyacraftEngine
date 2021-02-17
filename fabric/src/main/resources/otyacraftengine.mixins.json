@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "red.felnull.otyacraftengine.mixin.fabric",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "client.MouseHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

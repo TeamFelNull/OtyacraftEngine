@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.item;
 
 import me.shedaniel.architectury.registry.DeferredRegister;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +25,7 @@ public class TestItem extends Item {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.isClientSide()) {
             TestEvent event = new TestEvent(player.getDisplayName().getString());
-            OEEventBus.callEvent(event);
+            player.displayClientMessage(new TextComponent("" + OEEventBus.post(event)), false);
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }

@@ -4,6 +4,6 @@ import red.felnull.otyacraftengine.api.event.TestEvent;
 
 public class TestHandler {
     public static void onTest(TestEvent e) {
-        System.out.println(e.getName());
+
     }
 }

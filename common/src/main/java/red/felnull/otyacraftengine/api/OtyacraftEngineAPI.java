@@ -37,6 +37,11 @@ public class OtyacraftEngineAPI {
         return INSTANCE;
     }
 
+    /**
+     * OEを利用しているMODの登録情報
+     *
+     * @return 取得
+     */
     public List<IOEIntegration> getIntegrations() {
         return integrations;
     }

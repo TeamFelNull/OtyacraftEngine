@@ -7,7 +7,4 @@ public class TestEvent extends OEEvent {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

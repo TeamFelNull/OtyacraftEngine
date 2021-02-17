@@ -6,6 +6,5 @@ public class OtyacraftEngineFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         OtyacraftEngine.init();
-
     }
 }
