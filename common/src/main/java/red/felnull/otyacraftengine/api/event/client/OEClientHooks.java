@@ -1,11 +1,23 @@
 package red.felnull.otyacraftengine.api.event.client;
 
 import net.minecraft.client.MouseHandler;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import red.felnull.otyacraftengine.api.event.OEEvent;
 import red.felnull.otyacraftengine.api.event.OEEventBus;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 
+import java.util.List;
+
 public class OEClientHooks {
+
+    public static ItemTooltipEvent onItemTooltip(ItemStack itemStack, Player player, List<Component> list, TooltipFlag flags) {
+        ItemTooltipEvent event = new ItemTooltipEvent(itemStack, player, list, flags);
+        OEEventBus.post(event);
+        return event;
+    }
 
     public static void fireMouseInput(int button, int action, int mods) {
         OEEventBus.post(new InputEvent.MouseInputEvent(button, action, mods));

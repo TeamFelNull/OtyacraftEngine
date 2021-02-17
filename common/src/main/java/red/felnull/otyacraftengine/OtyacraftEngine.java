@@ -8,17 +8,20 @@ import red.felnull.otyacraftengine.item.TestItem;
 
 public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
+    private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
 
     public static void init() {
-        boolean testmode = true;
-        boolean debugmode = true;
-
-        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode, debugmode);
         OERegistries.init(api);
 
         if (api.isTestMode()) {
             test();
         }
+    }
+
+    public static void apiInit() {
+        boolean testmode = false;
+        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
+        api.setDebugMode(false);
     }
 
     /**

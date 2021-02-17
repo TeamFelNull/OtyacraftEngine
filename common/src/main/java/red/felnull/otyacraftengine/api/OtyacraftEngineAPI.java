@@ -5,8 +5,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
+import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OERegistries;
-import red.felnull.otyacraftengine.throwable.EarlyAccessError;
 
 import java.util.List;
 import java.util.Set;
@@ -22,13 +22,12 @@ public class OtyacraftEngineAPI {
     private static OtyacraftEngineAPI INSTANCE;
     private final List<IOEIntegration> integrations;
     private final boolean isTestMode;
-    private final boolean isDebugMode;
+    private boolean isDebugMode;
     public boolean isClient;
 
-    public OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode, boolean debugmode) {
+    public OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode) {
         this.integrations = integrations;
         this.isTestMode = testmode;
-        this.isDebugMode = debugmode;
 
         INSTANCE = this;
     }
@@ -40,7 +39,7 @@ public class OtyacraftEngineAPI {
      */
     public static OtyacraftEngineAPI getInstance() {
         if (INSTANCE == null) {
-            throw new EarlyAccessError();
+            OtyacraftEngine.apiInit();
         }
         return INSTANCE;
     }
@@ -75,6 +74,10 @@ public class OtyacraftEngineAPI {
         return isDebugMode;
     }
 
+    public void setDebugMode(boolean debugMode) {
+        isDebugMode = debugMode;
+    }
+
     public boolean isTestMode() {
         return isTestMode;
     }
@@ -82,4 +85,12 @@ public class OtyacraftEngineAPI {
     public boolean isClient() {
         return isClient;
     }
+
+    public int getModColor(String modid) {
+        OEMODColorRegister colors = (OEMODColorRegister) OERegistries.getDoubleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "mod_color"));
+        if (colors.getMap().containsKey(modid))
+            return colors.getMap().get(modid);
+        return 0;
+    }
+
 }

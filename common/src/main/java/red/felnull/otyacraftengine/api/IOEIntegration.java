@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.api;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
+import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 
 /**
  * OEのイベント等の登録をするクラスにこのインターフェイスを実装する
@@ -24,6 +25,10 @@ public interface IOEIntegration {
 
     @Environment(EnvType.CLIENT)
     default void registrationClientHandler(OEHandlerRegister reg) {
+
+    }
+
+    default void registrationMODColor(OEMODColorRegister reg) {
 
     }
 }
