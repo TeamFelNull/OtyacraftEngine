@@ -10,9 +10,15 @@ public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
 
     public static void init() {
-        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations());
+        boolean testmode = true;
+        boolean debugmode = true;
+
+        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode, debugmode);
         OERegistries.init(api);
-   //     test();
+
+        if (api.isTestMode()) {
+            test();
+        }
     }
 
     /**

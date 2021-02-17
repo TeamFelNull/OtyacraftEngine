@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class IKSGPlayerUtil {
     private static final UUID FAKE_UUID = UUID.fromString("166f3515-f173-4042-9190-ec8b14505201");
-    private static final String FAKE_PLAYERNAME = "FakePlayer";
+    private static final String FAKE_PLAYERNAME = "FakePlayerOfFakePlayerByFakePlayerForFakePlayer";
     private static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
 
     public static List<ServerPlayer> getOnlinePlayers() {

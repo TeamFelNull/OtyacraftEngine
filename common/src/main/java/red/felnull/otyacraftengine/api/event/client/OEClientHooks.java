@@ -1,13 +1,11 @@
 package red.felnull.otyacraftengine.api.event.client;
 
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.world.InteractionHand;
 import red.felnull.otyacraftengine.api.event.OEEvent;
 import red.felnull.otyacraftengine.api.event.OEEventBus;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 
-public class OEHooksClient {
+public class OEClientHooks {
 
     public static void fireMouseInput(int button, int action, int mods) {
         OEEventBus.post(new InputEvent.MouseInputEvent(button, action, mods));
@@ -25,11 +23,4 @@ public class OEHooksClient {
     public static boolean onRawMouseClicked(int button, int action, int mods) {
         return OEEventBus.post(new InputEvent.RawMouseEvent(button, action, mods));
     }
-
-    public static InputEvent.ClickInputEvent onClickInput(int button, KeyMapping keyBinding, InteractionHand hand) {
-        InputEvent.ClickInputEvent event = new InputEvent.ClickInputEvent(button, keyBinding, hand);
-        OEEventBus.post(event);
-        return event;
-    }
-
 }

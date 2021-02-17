@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.api;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 
 /**
@@ -17,6 +19,11 @@ public interface IOEIntegration {
      * @param reg レジスター
      */
     default void registrationHandler(OEHandlerRegister reg) {
+
+    }
+
+    @Environment(EnvType.CLIENT)
+    default void registrationClientHandler(OEHandlerRegister reg) {
 
     }
 }

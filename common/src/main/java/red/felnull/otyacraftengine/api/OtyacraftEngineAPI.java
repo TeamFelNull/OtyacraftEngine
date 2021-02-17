@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.api;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
@@ -19,9 +21,15 @@ import java.util.function.Consumer;
 public class OtyacraftEngineAPI {
     private static OtyacraftEngineAPI INSTANCE;
     private final List<IOEIntegration> integrations;
+    private final boolean isTestMode;
+    private final boolean isDebugMode;
+    public boolean isClient;
 
-    public OtyacraftEngineAPI(List<IOEIntegration> integrations) {
+    public OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode, boolean debugmode) {
         this.integrations = integrations;
+        this.isTestMode = testmode;
+        this.isDebugMode = debugmode;
+
         INSTANCE = this;
     }
 
@@ -54,5 +62,24 @@ public class OtyacraftEngineAPI {
     public Set<IHandler> getHandlers() {
         OEHandlerRegister handlers = (OEHandlerRegister) OERegistries.getSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"));
         return handlers.getSet();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Set<IHandler> getClientHandlers() {
+        OEHandlerRegister handlers = (OEHandlerRegister) OERegistries.getSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "client_handler"));
+        return handlers.getSet();
+    }
+
+
+    public boolean isDebugMode() {
+        return isDebugMode;
+    }
+
+    public boolean isTestMode() {
+        return isTestMode;
+    }
+
+    public boolean isClient() {
+        return isClient;
     }
 }

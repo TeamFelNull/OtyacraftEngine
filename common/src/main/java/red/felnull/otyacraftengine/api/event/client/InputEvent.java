@@ -127,47 +127,4 @@ public class InputEvent extends OEEvent {
             return this.modifiers;
         }
     }
-
-    public static class ClickInputEvent extends InputEvent {
-        private final int button;
-        private final KeyMapping keyBinding;
-        private final InteractionHand hand;
-        private boolean handSwing = true;
-
-        public ClickInputEvent(int button, KeyMapping keyBinding, InteractionHand hand) {
-            this.button = button;
-            this.keyBinding = keyBinding;
-            this.hand = hand;
-        }
-
-
-        public void setSwingHand(boolean value) {
-            handSwing = value;
-        }
-
-        public boolean shouldSwingHand() {
-            return handSwing;
-        }
-
-
-        public InteractionHand getHand() {
-            return hand;
-        }
-
-        public boolean isAttack() {
-            return button == 0;
-        }
-
-        public boolean isUseItem() {
-            return button == 1;
-        }
-
-        public boolean isPickBlock() {
-            return button == 2;
-        }
-
-        public KeyMapping getKeyBinding() {
-            return keyBinding;
-        }
-    }
 }

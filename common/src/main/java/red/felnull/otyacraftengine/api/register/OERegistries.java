@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.api.register;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
@@ -16,6 +18,15 @@ public class OERegistries {
         OERegistries.setSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"), handlerRegister);
 
         api.integrationConsumer(n -> n.registrationHandler(handlerRegister));
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void clientInit(OtyacraftEngineAPI api) {
+        OEHandlerRegister clientHandlerRegister = new OEHandlerRegister();
+
+        OERegistries.setSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "client_handler"), clientHandlerRegister);
+
+        api.integrationConsumer(n -> n.registrationClientHandler(clientHandlerRegister));
     }
 
     public static SingleRegistry<?> getSingleRegistry(ResourceLocation location) {

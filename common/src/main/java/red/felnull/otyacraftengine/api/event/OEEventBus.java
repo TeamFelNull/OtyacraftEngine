@@ -20,6 +20,13 @@ public class OEEventBus {
         api.getHandlers().stream().filter(n -> n.canAccept(event)).forEach(n -> {
             n.accept(event);
         });
+
+        if (api.isClient()) {
+            api.getClientHandlers().stream().filter(n -> n.canAccept(event)).forEach(n -> {
+                n.accept(event);
+            });
+        }
+
         return event.isCanceled();
     }
 }
