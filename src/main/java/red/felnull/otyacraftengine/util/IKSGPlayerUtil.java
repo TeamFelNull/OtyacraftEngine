@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -8,15 +10,15 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.SkullTileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class IKSGPlayerUtil {
-
-    public static String FAKE_UUID = "11451419-1981-0364-364931-000000000000";
-    public static String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
-    protected static Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<String, GameProfile>();
+    public static final String FAKE_UUID = "11451419-1981-0364-364931-000000000000";
+    public static final String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
+    protected static final Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<>();
+    private static final Gson gson = new Gson();
 
     public static String getUserName(PlayerEntity pl) {
         return pl.getGameProfile().getName();
@@ -24,6 +26,43 @@ public class IKSGPlayerUtil {
 
     public static String getUUID(PlayerEntity pl) {
         return PlayerEntity.getUUID(pl.getGameProfile()).toString();
+    }
+
+    public static String getPlayerSkinTextureURL(String uuid) {
+        try {
+            String f1 = IKSGURLUtil.getURLResponse("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+            JsonObject f1jo = gson.fromJson(f1, JsonObject.class);
+            Optional<String> b64d = StreamSupport.stream(f1jo.getAsJsonArray("properties").spliterator(), false).filter(n -> {
+                JsonObject jo = n.getAsJsonObject();
+                return !jo.get("name").isJsonNull() && jo.get("name").getAsString().equals("textures");
+            }).map(n -> n.getAsJsonObject().get("value").getAsString()).findAny();
+
+            if (!b64d.isPresent())
+                return "";
+
+            byte[] b = Base64.getUrlDecoder().decode(b64d.get());
+            String de1 = new String(b, StandardCharsets.UTF_8);
+
+            JsonObject f2jo= gson.fromJson(de1, JsonObject.class);
+
+            return f2jo.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "";
+    }
+
+    public static GameProfile getPlayerProfileByUUID(String uuid) {
+        if (PLAYERGAMEPROFILES.containsKey(uuid))
+            return PLAYERGAMEPROFILES.get(uuid);
+
+        GameProfile gp = new GameProfile(UUID.fromString(uuid), null);
+        PLAYERGAMEPROFILES.put(uuid, gp);
+
+        GameProfileLoader GPL = new GameProfileLoader(uuid);
+        GPL.start();
+
+        return gp;
     }
 
     public static GameProfile getPlayerProfile(String name) {

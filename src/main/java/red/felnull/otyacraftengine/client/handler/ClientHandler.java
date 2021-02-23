@@ -50,14 +50,14 @@ public class ClientHandler {
         }
     }
 
-/*
+
     @SubscribeEvent
     public static void onKey(InputEvent.KeyInputEvent e) {
         if (e.getKey() == OEKeyBindings.TEST.getKey().getKeyCode()) {
             mc.displayGuiScreen(new TestScreen());
         }
     }
-*/
+
     private static void addDetailedInformation(ItemTooltipEvent e) {
         ItemStack stack = e.getItemStack();
         if (stack.getItem() instanceof IDetailedInfomationItem) {
