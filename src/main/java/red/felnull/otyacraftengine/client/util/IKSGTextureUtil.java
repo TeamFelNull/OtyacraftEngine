@@ -60,28 +60,8 @@ public class IKSGTextureUtil {
     }
 
     public static ResourceLocation getPlayerSkinTextureByUUID(String uuid) {
-        return getPlayerTextureByUUID(MinecraftProfileTexture.Type.SKIN, uuid);
+        return getPictureImageURLTexture(IKSGPlayerUtil.getPlayerSkinTextureURL(uuid));
     }
-
-    public static ResourceLocation getPlayerCapeTextureByUUID(String uuid) {
-        return getPlayerTextureByUUID(MinecraftProfileTexture.Type.CAPE, uuid);
-    }
-
-    public static ResourceLocation getPlayerElytraTextureByUUID(String uuid) {
-        return getPlayerTextureByUUID(MinecraftProfileTexture.Type.ELYTRA, uuid);
-    }
-
-    public static ResourceLocation getPlayerTextureByUUID(MinecraftProfileTexture.Type type, String uuid) {
-        if (mc.player != null && uuid.equals(IKSGPlayerUtil.getUUID(mc.player))) {
-            return mc.player.getLocationSkin();
-        }
-        ResourceLocation faselocation;
-        GameProfile GP = IKSGPlayerUtil.getPlayerProfileByUUID(uuid);
-        Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = mc.getSkinManager().loadSkinFromCache(GP);
-        faselocation = map.containsKey(type) ? mc.getSkinManager().loadSkin(map.get(type), type) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(GP));
-        return faselocation;
-    }
-
 
     public static ResourceLocation getPictureImageTexture(byte[] data) {
         if (PICTUER_BYTE_LOCATION.containsKey(data)) {

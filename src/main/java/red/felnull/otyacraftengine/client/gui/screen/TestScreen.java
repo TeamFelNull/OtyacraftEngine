@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.text.StringTextComponent;
 import red.felnull.otyacraftengine.client.gui.widget.FileChooserWidget;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
-import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 
 public class TestScreen extends IkisugiScreen {
 
@@ -27,6 +26,6 @@ public class TestScreen extends IkisugiScreen {
     public void renderByIKSG(MatrixStack matrix, int mouseX, int mouseY, float parTick) {
         renderBackgroundByIKSG(matrix);
         super.renderByIKSG(matrix, mouseX, mouseY, parTick);
-        IKSGRenderUtil.guiBindAndBlit(IKSGTextureUtil.getPlayerSkinTextureByUUID("81e56089-370c-4ed8-8ffb-df0635ae0762"), matrix, 0, 0, 0, 0, 256, 256);
+        IKSGRenderUtil.drawPlayerFaseByUUID(matrix, "0f286fc2-0c86-42d5-8518-c306cad74f03", 0, 0);
     }
 }

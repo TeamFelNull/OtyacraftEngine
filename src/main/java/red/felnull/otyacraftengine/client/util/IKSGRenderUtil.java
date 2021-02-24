@@ -47,6 +47,15 @@ public class IKSGRenderUtil {
 
     private static final Minecraft mc = Minecraft.getInstance();
 
+
+    public static void drawPlayerFaseByUUID(MatrixStack matx, String uuid, int x, int y) {
+        matrixPush(matx);
+        ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTextureByUUID(uuid);
+        guiBindAndBlit(plskin, matx, x, y, 8, 8, 8, 8, 64, 64);
+        guiBindAndBlit(plskin, matx, x, y, 40, 8, 8, 8, 64, 64);
+        matrixPop(matx);
+    }
+
     public static void drawPlayerFase(MatrixStack matx, String name, int x, int y) {
         matrixPush(matx);
         ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
