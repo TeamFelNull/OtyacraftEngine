@@ -1,7 +1,6 @@
 plugins {
-    id "architectury-plugin" version "2.0.65"
-    id "forgified-fabric-loom" version "0.6.54" apply false
-    id 'java'
+    id "architectury-plugin" version "3.0.84"
+    id "forgified-fabric-loom" version "0.6.69" apply false
 }
 
 architectury {
@@ -14,10 +13,9 @@ subprojects {
     loom {
         silentMojangMappingsLicense()
     }
-    
+
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-
         mappings loom.officialMojangMappings()
     }
 }
@@ -25,10 +23,14 @@ subprojects {
 allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
     version = rootProject.mod_version
     group = rootProject.maven_group
+
+    repositories {
+    }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
@@ -42,8 +44,4 @@ allprojects {
     java {
         withSourcesJar()
     }
-}
-javadoc {
-    options.charSet = 'UTF-8'
-    options.encoding = 'UTF-8'
 }
