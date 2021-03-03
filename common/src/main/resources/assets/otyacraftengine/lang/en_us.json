@@ -2,5 +2,11 @@
   "_comment.k": "Key",
   "key.categories.otyacraftengine": "Otyacraft Engine",
   "key.otyacraftengine.test": "Test",
+  "_comment.t": "ToolTip",
+  "tooltip.tag.press": "Press %s for Show Tag",
+  "tooltip.tag.item": "Item Tag",
+  "tooltip.tag.block": "Block Tag",
+  "tooltip.tag.fluid": "Fluid Tag",
+  "tooltip.tag.entitytype": "Entity Type Tag",
   "_comment.la": "Last"
 }

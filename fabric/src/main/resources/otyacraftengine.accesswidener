@@ -1,6 +1,7 @@
 accessWidener	v1	named
 
 accessible field net/minecraft/client/MouseHandler isMiddlePressed Z
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
 accessible field net/minecraft/tags/FluidTags HELPER Lnet/minecraft/tags/StaticTagHelper;
 accessible field net/minecraft/tags/GameEventTags HELPER Lnet/minecraft/tags/StaticTagHelper;
 accessible field net/minecraft/world/item/BucketItem content Lnet/minecraft/world/level/material/Fluid;
