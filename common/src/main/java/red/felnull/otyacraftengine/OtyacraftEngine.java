@@ -19,7 +19,7 @@ public class OtyacraftEngine {
     }
 
     public static void apiInit() {
-        boolean testmode = false;
+        boolean testmode = true;
         OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
         api.setDebugMode(false);
     }

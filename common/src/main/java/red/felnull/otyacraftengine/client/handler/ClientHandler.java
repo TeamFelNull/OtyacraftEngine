@@ -34,10 +34,9 @@ public class ClientHandler {
     }
 
     private static void addModName(ItemStack stack, List<Component> list) {
-        String id = IKSGModUtil.getItemAddModID(stack);
-        String name = IKSGModUtil.getModName(id);
+        String id = IKSGModUtil.getModID(stack.getItem());
         Style style = Style.EMPTY.withColor(TextColor.fromRgb(api.getModColor(id)));
-        list.add(new TextComponent(name).append(" ").append(IKSGModUtil.getModVersion(id)).setStyle(style));
+        list.add(new TextComponent(IKSGModUtil.getModName(id)).append(" ").append(IKSGModUtil.getModVersion(id)).setStyle(style));
     }
 
 }

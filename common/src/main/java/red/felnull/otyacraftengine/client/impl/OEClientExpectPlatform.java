@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.client.impl;
 
-import me.shedaniel.architectury.ExpectPlatform;
+import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.client.MouseHandler;
 
 public class OEClientExpectPlatform {
