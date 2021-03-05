@@ -5,3 +5,9 @@ accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platfor
 accessible field net/minecraft/tags/FluidTags HELPER Lnet/minecraft/tags/StaticTagHelper;
 accessible field net/minecraft/tags/GameEventTags HELPER Lnet/minecraft/tags/StaticTagHelper;
 accessible field net/minecraft/world/item/BucketItem content Lnet/minecraft/world/level/material/Fluid;
+
+accessible method net/minecraft/world/level/biome/Biome <init> (Lnet/minecraft/world/level/biome/Biome$ClimateSettings;Lnet/minecraft/world/level/biome/Biome$BiomeCategory;FFLnet/minecraft/world/level/biome/BiomeSpecialEffects;Lnet/minecraft/world/level/biome/BiomeGenerationSettings;Lnet/minecraft/world/level/biome/MobSpawnSettings;)V
+accessible method net/minecraft/world/level/biome/Biome$ClimateSettings <init> (Lnet/minecraft/world/level/biome/Biome$Precipitation;FLnet/minecraft/world/level/biome/Biome$TemperatureModifier;F)V
+
+accessible class net/minecraft/world/level/biome/Biome$ClimateSettings
+extendable class net/minecraft/world/level/biome/Biome$ClimateSettings
