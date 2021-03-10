@@ -7,6 +7,7 @@ import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.impl.OEExpectPlatform;
 import red.felnull.otyacraftengine.item.TestItem;
+import red.felnull.otyacraftengine.packet.OEPackets;
 
 public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
@@ -16,6 +17,7 @@ public class OtyacraftEngine {
 
     public static void init() {
         OERegistries.init(api);
+        OEPackets.init();
 
         if (api.isTestMode()) {
             test();

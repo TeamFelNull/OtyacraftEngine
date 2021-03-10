@@ -11,8 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.event.OEEventBus;
-import red.felnull.otyacraftengine.api.event.TestEvent;
 
 public class TestItem extends Item {
 
@@ -24,8 +22,10 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.isClientSide()) {
-            TestEvent event = new TestEvent(player.getDisplayName().getString());
-            player.displayClientMessage(new TextComponent("" + OEEventBus.post(event)), false);
+            int num = 0;
+            for (int i = 0; i < 100; i++) {
+                player.displayClientMessage(new TextComponent("n:" + (num++)), false);
+            }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }
