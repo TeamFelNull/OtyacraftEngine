@@ -20,11 +20,13 @@ public class PacketHandlerFabric {
 
     public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, IPacketMessageServerHandler<MSG> messageHandler) {
         ResourceLocation location = new ResourceLocation(OtyacraftEngine.MODID, "server_" + svnumber++ + "_packet");
+        LOCATIONS.put(messageType, location);
         ServerPlayNetworking.registerGlobalReceiver(location, (server, player, handler, buf, responseSender) -> messageHandler.reversiveMessage(decoder.apply(buf), player, handler));
     }
 
     public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, IPacketMessageClientHandler<MSG> messageHandler) {
         ResourceLocation location = new ResourceLocation(OtyacraftEngine.MODID, "client_" + clnumber++ + "_packet");
+        LOCATIONS.put(messageType, location);
         ClientPlayNetworking.registerGlobalReceiver(location, (client, handler, buf, responseSender) -> messageHandler.reversiveMessage(decoder.apply(buf), handler));
     }
 
