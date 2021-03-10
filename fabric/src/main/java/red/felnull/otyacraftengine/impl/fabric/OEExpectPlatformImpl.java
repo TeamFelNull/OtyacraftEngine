@@ -13,11 +13,15 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.IOEIntegration;
 import red.felnull.otyacraftengine.util.IKSGBiomeUtil;
+import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,5 +65,9 @@ public class OEExpectPlatformImpl {
                 return OverworldClimate.DRY;
         }
         return OverworldClimate.TEMPERATE;
+    }
+
+    public static <T extends BlockEntity> BlockEntityType.Builder<T> craeteBlockEntityTypeBuilder(IKSGBlockEntityUtil.IKSGBlockEntitySupplier<? extends T> blockEntitySupplier, Block... blocks) {
+        return BlockEntityType.Builder.of(blockEntitySupplier::create, blocks);
     }
 }

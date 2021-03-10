@@ -10,7 +10,7 @@ public class TestClientHandler {
 
     public static void onKey(InputEvent.KeyInputEvent e) {
         if (e.getKey() == OEKeyMappings.TEST.getDefaultKey().getValue()) {
-            mc.setScreen(new TestScreen());
+          //  mc.setScreen(new TestScreen());
         }
     }
 }

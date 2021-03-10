@@ -1,24 +1,12 @@
 package red.felnull.otyacraftengine;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.levelgen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
+import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.impl.OEExpectPlatform;
 import red.felnull.otyacraftengine.item.TestItem;
-import red.felnull.otyacraftengine.util.IKSGBiomeUtil;
 
 public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
@@ -50,7 +38,8 @@ public class OtyacraftEngine {
     private static void test() {
         TestBlock.init();
         TestItem.init();
-
+        TestBlockEntity.init();
+/*
         ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> OBSIDIAN_SURFACE_BUILDER = SurfaceBuilder.DEFAULT
                 .configured(new SurfaceBuilderBaseConfiguration(
                         Blocks.OBSIDIAN.defaultBlockState(),
@@ -83,12 +72,14 @@ public class OtyacraftEngine {
                 .mobSpawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
                 .build();
-        Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(OtyacraftEngine.MODID, "test"), OBSIDIAN_SURFACE_BUILDER);
 
-        ResourceKey<Biome> OBSILAND_KEY = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(OtyacraftEngine.MODID, "test"));
+        IKSGBiomeUtil.registerConfiguredSurfaceBuilder(new ResourceLocation(OtyacraftEngine.MODID, "test"), OBSIDIAN_SURFACE_BUILDER);
 
-        Registry.register(BuiltinRegistries.BIOME, OBSILAND_KEY.location(), testBiome);
+        // ResourceKey<Biome> OBSILAND_KEY = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(OtyacraftEngine.MODID, "test"));
+
+        Registry.register(BuiltinRegistries.BIOME, new ResourceLocation(OtyacraftEngine.MODID, "test"), testBiome);
 
         IKSGBiomeUtil.addOverworldContinentalBiome(new ResourceLocation(OtyacraftEngine.MODID, "test"), IKSGBiomeUtil.BiomeType.TEMPERATE, 20);
+   */
     }
 }

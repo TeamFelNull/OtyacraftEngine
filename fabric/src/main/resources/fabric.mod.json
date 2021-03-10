@@ -33,9 +33,6 @@
     "architectury": ">=2.0.111"
   },
   "accessWidener": "otyacraftengine.accesswidener",
-  "suggests": {
-    "flamingo": "*"
-  },
   "mixins": [
     "otyacraftengine.mixins.json"
   ],

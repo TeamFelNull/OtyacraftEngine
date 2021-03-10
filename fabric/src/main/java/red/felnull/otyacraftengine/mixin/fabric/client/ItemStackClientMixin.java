@@ -13,7 +13,7 @@ import red.felnull.otyacraftengine.api.event.client.OEClientHooks;
 import java.util.List;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin {
+public class ItemStackClientMixin {
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
     private void getTooltipLines(Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
         OEClientHooks.onItemTooltip((ItemStack) (Object) this, player, cir.getReturnValue(), tooltipFlag);

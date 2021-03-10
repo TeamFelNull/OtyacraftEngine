@@ -50,7 +50,7 @@ public class IKSGPlayerUtil {
         if (PLAYER_PROFILES.containsKey(name))
             return PLAYER_PROFILES.get(name);
 
-        GameProfile gp = new GameProfile((UUID) null, name);
+        GameProfile gp = new GameProfile(null, name);
         PLAYER_PROFILES.put(name, gp);
 
         GameProfileLoader GPL = new GameProfileLoader(name);

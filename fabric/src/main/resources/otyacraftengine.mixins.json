@@ -3,9 +3,10 @@
   "package": "red.felnull.otyacraftengine.mixin.fabric",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "client.ItemStackMixin"
   ],
   "client": [
+    "client.ItemStackClientMixin",
+    "client.ModelManagerMixin",
     "client.MouseHandlerMixin"
   ],
   "injectors": {

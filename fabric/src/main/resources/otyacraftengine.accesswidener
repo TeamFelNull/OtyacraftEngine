@@ -11,3 +11,6 @@ accessible method net/minecraft/world/level/biome/Biome$ClimateSettings <init> (
 
 accessible class net/minecraft/world/level/biome/Biome$ClimateSettings
 extendable class net/minecraft/world/level/biome/Biome$ClimateSettings
+
+accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+extendable class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
