@@ -12,7 +12,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
-public class TestBlockEntity extends BlockEntity {
+public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockEntity {
     public int currentValue;
 
     public static BlockEntityType<TestBlockEntity> TEST_BLOCKENTITY;
@@ -35,6 +35,8 @@ public class TestBlockEntity extends BlockEntity {
             testblockentity.currentValue = 0;
 
         setChanged(level, blockPos, blockState);
+
+        testblockentity.syncble();
     }
 
     @Override

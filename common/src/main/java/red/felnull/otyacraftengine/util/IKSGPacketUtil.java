@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.util;
 
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.chunk.LevelChunk;
 import red.felnull.otyacraftengine.impl.OEPacketExpectPlatform;
 import red.felnull.otyacraftengine.packet.IPacketMessage;
 import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
@@ -33,11 +35,17 @@ public class IKSGPacketUtil {
         }, handler);
     }
 
+    public static <MSG extends IPacketMessage> void sendToServerPacket(MSG message) {
+        OEPacketExpectPlatform.sendToServerPacket(message);
+    }
+
     public static <MSG extends IPacketMessage> void sendToClientPacket(ServerPlayer player, MSG message) {
         OEPacketExpectPlatform.sendToClientPacket(player, message);
     }
 
-    public static <MSG extends IPacketMessage> void sendToServerPacket(MSG message) {
-        OEPacketExpectPlatform.sendToServerPacket(message);
+    public static <MSG extends IPacketMessage> void sendToClientPacket(LevelChunk chunk, MSG message) {
+        ((ServerChunkCache) chunk.getLevel().getChunkSource()).chunkMap.getPlayers(chunk.getPos(), false).forEach(n -> {
+            sendToClientPacket(n, message);
+        });
     }
 }

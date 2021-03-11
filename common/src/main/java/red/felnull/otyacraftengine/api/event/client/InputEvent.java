@@ -1,7 +1,5 @@
 package red.felnull.otyacraftengine.api.event.client;
 
-import net.minecraft.client.KeyMapping;
-import net.minecraft.world.InteractionHand;
 import red.felnull.otyacraftengine.api.event.OEEvent;
 
 public class InputEvent extends OEEvent {
