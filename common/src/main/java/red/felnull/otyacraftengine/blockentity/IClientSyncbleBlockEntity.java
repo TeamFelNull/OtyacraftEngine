@@ -37,7 +37,6 @@ public interface IClientSyncbleBlockEntity {
             ResourceLocation dimension = level.dimension().location();
             ResourceLocation bereg = Registry.BLOCK_ENTITY_TYPE.getKey(be.getType());
             IKSGPacketUtil.sendToClientPacket(lch, new ClientTileEntitySyncMessage(dimension, be.getBlockPos(), bereg, clientSyncbleData(new CompoundTag())));
-
         }
     }
 }
