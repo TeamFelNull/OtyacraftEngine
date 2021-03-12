@@ -7,6 +7,7 @@ import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
+import red.felnull.otyacraftengine.fluid.TestFluid;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;
 
@@ -39,6 +40,7 @@ public class OtyacraftEngine {
         TestBlock.init();
         TestItem.init();
         TestBlockEntity.init();
+        TestFluid.init();
 /*
         ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> OBSIDIAN_SURFACE_BUILDER = SurfaceBuilder.DEFAULT
                 .configured(new SurfaceBuilderBaseConfiguration(
