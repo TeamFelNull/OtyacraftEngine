@@ -7,6 +7,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OERegistries;
+import red.felnull.otyacraftengine.impl.OEExpectPlatform;
 
 import java.util.List;
 import java.util.Set;
@@ -25,11 +26,9 @@ public class OtyacraftEngineAPI {
     private boolean isDebugMode;
     public boolean isClient;
 
-    public OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode) {
+    private OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode) {
         this.integrations = integrations;
         this.isTestMode = testmode;
-
-        INSTANCE = this;
     }
 
     /**
@@ -39,9 +38,19 @@ public class OtyacraftEngineAPI {
      */
     public static OtyacraftEngineAPI getInstance() {
         if (INSTANCE == null) {
-            OtyacraftEngine.apiInit();
+            apiInit();
         }
         return INSTANCE;
+    }
+
+    private static void apiInit() {
+        boolean testmode = true;
+        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
+        api.setDebugMode(false);
+        if (INSTANCE == null) {
+            OtyacraftEngine.LOGGER.info("API Initialize");
+            INSTANCE = api;
+        }
     }
 
     /**

@@ -1,33 +1,30 @@
 package red.felnull.otyacraftengine;
 
 import net.minecraft.world.level.biome.Biome;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
-import red.felnull.otyacraftengine.impl.OEExpectPlatform;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;
 
 public class OtyacraftEngine {
+    public static final Logger LOGGER = LogManager.getLogger(OtyacraftEngine.class);
     public static final String MODID = "otyacraftengine";
     private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
 
     public static Biome testBiome;
 
     public static void init() {
+        LOGGER.info("Otyacraft Engine Initialize");
         OERegistries.init(api);
         OEPackets.init();
 
         if (api.isTestMode()) {
             test();
         }
-    }
-
-    public static void apiInit() {
-        boolean testmode = true;
-        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
-        api.setDebugMode(false);
     }
 
     /**
@@ -38,6 +35,7 @@ public class OtyacraftEngine {
      * @since 2.0
      */
     private static void test() {
+        LOGGER.info("Test Initialize");
         TestBlock.init();
         TestItem.init();
         TestBlockEntity.init();

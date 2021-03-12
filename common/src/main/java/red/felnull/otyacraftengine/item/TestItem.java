@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 
 public class TestItem extends Item {
 
@@ -21,7 +22,8 @@ public class TestItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        player.displayClientMessage(new TextComponent(level.dimension().location().toString()), false);
+        OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
+        player.displayClientMessage(new TextComponent(api.getHandlers().toString()), false);
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }
 

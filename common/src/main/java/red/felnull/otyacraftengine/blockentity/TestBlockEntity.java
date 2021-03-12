@@ -14,6 +14,7 @@ import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
 public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockEntity {
     public int currentValue;
+    public int preCurrentValue;
 
     public static BlockEntityType<TestBlockEntity> TEST_BLOCKENTITY;
 
@@ -34,6 +35,8 @@ public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockE
         if (testblockentity.currentValue > 360)
             testblockentity.currentValue = 0;
 
+        testblockentity.preCurrentValue = testblockentity.currentValue + 3;
+
         setChanged(level, blockPos, blockState);
 
         testblockentity.syncble();
@@ -43,11 +46,13 @@ public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockE
     public void load(CompoundTag tag) {
         super.load(tag);
         this.currentValue = tag.getInt("CVal");
+        this.preCurrentValue = tag.getInt("PCVal");
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
         tag.putInt("CVal", this.currentValue);
+        tag.putInt("PCVal", this.preCurrentValue);
         return super.save(tag);
     }
 }

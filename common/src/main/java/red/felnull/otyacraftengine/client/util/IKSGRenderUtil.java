@@ -120,4 +120,7 @@ public class IKSGRenderUtil {
         renderBlockBakedModel(tile.getLevel(), model, tile.getBlockState(), tile.getBlockPos(), poseStack, consumer, tile.getLevel().random, combinedOverlayIn);
     }
 
+    public static float partialTicksMisalignment(float val, float prevVal, float partialTicks) {
+        return val + (prevVal - val) * partialTicks;
+    }
 }
