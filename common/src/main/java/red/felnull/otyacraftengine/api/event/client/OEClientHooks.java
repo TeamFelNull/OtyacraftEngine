@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.api.event.client;
 
 import net.minecraft.client.MouseHandler;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,5 +36,13 @@ public class OEClientHooks {
 
     public static boolean onRawMouseClicked(int button, int action, int mods) {
         return OEEventBus.post(new InputEvent.RawMouseEvent(button, action, mods));
+    }
+
+    public static void onBlockColorsInit(BlockColors blockColors) {
+        OEEventBus.post(new ColorHandlerEvent.Block(blockColors));
+    }
+
+    public static void onItemColorsInit(ItemColors itemColors, BlockColors blockColors) {
+        OEEventBus.post(new ColorHandlerEvent.Item(itemColors, blockColors));
     }
 }

@@ -16,19 +16,25 @@ import net.minecraft.world.level.material.FluidState;
 
 import java.util.function.Supplier;
 
-public class OEFluid extends FlowingFluid {
+public class IkisugiFluid extends FlowingFluid {
+    private final FluidProperties properties;
     private final Supplier<Fluid> sourceFluid;
     private final Supplier<FlowingFluid> flowingFluid;
     private final Supplier<Item> bucket;
     private final Supplier<Block> liquidBlock;
     private final boolean source;
 
-    public OEFluid(Supplier<Fluid> sourceFluid, Supplier<FlowingFluid> flowingFluid, Supplier<Item> bucket, Supplier<Block> liquidBlock, boolean source) {
+    public IkisugiFluid(FluidProperties properties, Supplier<Fluid> sourceFluid, Supplier<FlowingFluid> flowingFluid, Supplier<Item> bucket, Supplier<Block> liquidBlock, boolean source) {
+        this.properties = properties;
         this.sourceFluid = sourceFluid;
         this.flowingFluid = flowingFluid;
         this.bucket = bucket;
         this.liquidBlock = liquidBlock;
         this.source = source;
+    }
+
+    public FluidProperties getProperties() {
+        return properties;
     }
 
     @Override

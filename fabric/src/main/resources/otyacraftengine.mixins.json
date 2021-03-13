@@ -5,6 +5,8 @@
   "mixins": [
   ],
   "client": [
+    "client.BlockColorsMixin",
+    "client.ItemColorsMixin",
     "client.ItemStackClientMixin",
     "client.ModelManagerMixin",
     "client.MouseHandlerMixin"

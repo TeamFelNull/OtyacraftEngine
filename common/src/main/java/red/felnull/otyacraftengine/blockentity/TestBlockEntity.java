@@ -31,11 +31,9 @@ public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockE
     }
 
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TestBlockEntity testblockentity) {
-        testblockentity.currentValue += 3;
-        if (testblockentity.currentValue > 360)
-            testblockentity.currentValue = 0;
+        testblockentity.currentValue += 5;
 
-        testblockentity.preCurrentValue = testblockentity.currentValue + 3;
+      //  testblockentity.preCurrentValue = testblockentity.currentValue + 5;
 
         setChanged(level, blockPos, blockState);
 

@@ -30,7 +30,8 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         BakedModel model = IKSGRenderUtil.getBakedModel(TEST_L);
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
-        float val = IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
+        System.out.println(partialTicks);
+        float val = blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
         IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
         IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
         IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
