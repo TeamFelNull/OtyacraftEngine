@@ -35,7 +35,7 @@ public class TestFluid extends IkisugiFluid {
         DeferredRegister<Item> MOD_ITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
         DeferredRegister<Block> MOD_BLOCKS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
 
-        TEST_FLUID = new TestFluid(new FluidProperties().color(19419), new FluidData(() -> TEST_FLUID, () -> TEST_FLOWING_FLUID, () -> TEST_FLUID_BUCKET, () -> TEST_FLUID_BLOCK));
+        TEST_FLUID = new TestFluid(new FluidProperties().color(19419).lightLevel(15), new FluidData(() -> TEST_FLUID, () -> TEST_FLOWING_FLUID, () -> TEST_FLUID_BUCKET, () -> TEST_FLUID_BLOCK));
         TEST_FLOWING_FLUID = TEST_FLUID.createFlowingFluid();
         TEST_FLUID_BUCKET = TEST_FLUID.createBucketItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
         TEST_FLUID_BLOCK = TEST_FLUID.createLiquidBlock(BlockBehaviour.Properties.of(Material.WATER));

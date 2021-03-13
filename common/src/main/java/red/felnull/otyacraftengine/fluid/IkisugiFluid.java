@@ -10,6 +10,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -56,22 +57,23 @@ public class IkisugiFluid extends FlowingFluid {
 
     @Override
     protected boolean canConvertToSource() {
-        return false;
+        return properties.isCanMultiply();
     }
 
     @Override
     protected void beforeDestroyingBlock(LevelAccessor levelAccessor, BlockPos blockPos, BlockState blockState) {
-
+        BlockEntity blockEntity = blockState.hasBlockEntity() ? levelAccessor.getBlockEntity(blockPos) : null;
+        Block.dropResources(blockState, levelAccessor, blockPos, blockEntity);
     }
 
     @Override
     protected int getSlopeFindDistance(LevelReader levelReader) {
-        return 4;
+        return properties.getSlopeFindDistance();
     }
 
     @Override
     protected int getDropOff(LevelReader levelReader) {
-        return 1;
+        return properties.getLevelDecreasePerBlock();
     }
 
     @Override
@@ -81,17 +83,17 @@ public class IkisugiFluid extends FlowingFluid {
 
     @Override
     protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter blockGetter, BlockPos blockPos, Fluid fluid, Direction direction) {
-        return false;
+        return direction == Direction.DOWN && !isSame(fluid);
     }
 
     @Override
     public int getTickDelay(LevelReader levelReader) {
-        return 10;
+        return properties.getTickDelay();
     }
 
     @Override
     protected float getExplosionResistance() {
-        return 100f;
+        return properties.getExplosionResistance();
     }
 
     @Override
@@ -126,12 +128,17 @@ public class IkisugiFluid extends FlowingFluid {
         return new IkisugiFluid(properties, data, false);
     }
 
-    public Item createBucketItem(Item.Properties properties) {
-        return new IkisugiBucketItem(this, properties.craftRemainder(Items.BUCKET).stacksTo(1));
+    public Item createBucketItem(Item.Properties propertiesitm) {
+        return new IkisugiBucketItem(this, propertiesitm.craftRemainder(Items.BUCKET).stacksTo(1).rarity(properties.getRarity()));
     }
 
-    public Block createLiquidBlock(BlockBehaviour.Properties properties) {
-        return new IkisugiLiquidBlock(this, properties.noCollission().noDrops().noCollission().strength(100.0F));
+    public Block createLiquidBlock(BlockBehaviour.Properties propertiesblc) {
+
+        if (getProperties().getLightLevel() > 0) {
+            propertiesblc.lightLevel(n -> getProperties().getLightLevel());
+        }
+
+        return new IkisugiLiquidBlock(this, propertiesblc.noCollission().noDrops().noCollission().strength(100.0F));
     }
 
     @Override
