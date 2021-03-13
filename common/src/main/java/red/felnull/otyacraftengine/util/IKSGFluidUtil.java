@@ -38,10 +38,11 @@ public class IKSGFluidUtil {
         flowingFluids.put(name, fluids.get(name).createFlowingFluid());
         bucketItems.put(name, fluids.get(name).createBucketItem(new Item.Properties().tab(tab)));
         liquidBlocks.put(name, fluids.get(name).createLiquidBlock(BlockBehaviour.Properties.of(Material.WATER)));
-        fluidRegister.register(name, () -> fluids.get(name));
-        fluidRegister.register(name + "_flowing", () -> flowingFluids.get(name));
-        itemRegister.register(name + "_bucket", () -> bucketItems.get(name));
-        blockRegister.register(name, () -> liquidBlocks.get(name));
+        String path = name.getPath();
+        fluidRegister.register(path, () -> fluids.get(name));
+        fluidRegister.register(path + "_flowing", () -> flowingFluids.get(name));
+        itemRegister.register(path + "_bucket", () -> bucketItems.get(name));
+        blockRegister.register(path, () -> liquidBlocks.get(name));
         return fluids.get(name);
     }
 }
