@@ -10,10 +10,5 @@ public class OtyacraftEngineFabric implements ModInitializer {
     public void onInitialize() {
         OtyacraftEngine.init();
         RegistryInit.init();
-
-        OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
-        if (api.isTestMode()) {
-            TestFabricEvent.init();
-        }
     }
 }

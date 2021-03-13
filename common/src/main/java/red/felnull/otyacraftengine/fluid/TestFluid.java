@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.fluid;
 
 import me.shedaniel.architectury.registry.DeferredRegister;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -34,8 +35,10 @@ public class TestFluid extends IkisugiFluid {
         DeferredRegister<Fluid> MOD_FLUID_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.FLUID_REGISTRY);
         DeferredRegister<Item> MOD_ITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
         DeferredRegister<Block> MOD_BLOCKS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
-
-        TEST_FLUID = new TestFluid(new FluidProperties().color(19419).lightLevel(15), new FluidData(() -> TEST_FLUID, () -> TEST_FLOWING_FLUID, () -> TEST_FLUID_BUCKET, () -> TEST_FLUID_BLOCK));
+        TEST_FLUID = new TestFluid(new FluidProperties().color(19419)
+                .flowingTexture(new ResourceLocation(OtyacraftEngine.MODID, "block/test_flow"))
+                .stillTexture(new ResourceLocation(OtyacraftEngine.MODID, "block/test_still")),
+                new FluidData(() -> TEST_FLUID, () -> TEST_FLOWING_FLUID, () -> TEST_FLUID_BUCKET, () -> TEST_FLUID_BLOCK));
         TEST_FLOWING_FLUID = TEST_FLUID.createFlowingFluid();
         TEST_FLUID_BUCKET = TEST_FLUID.createBucketItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
         TEST_FLUID_BLOCK = TEST_FLUID.createLiquidBlock(BlockBehaviour.Properties.of(Material.WATER));
