@@ -1,4 +1,6 @@
 {
+  "_comment.i": "Item",
+  "item.otyacraftengine.ikisugibucket": "%s Bucket",
   "_comment.k": "Key",
   "key.categories.otyacraftengine": "Otyacraft Engine",
   "key.otyacraftengine.test": "Test",

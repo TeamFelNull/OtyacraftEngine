@@ -1,4 +1,6 @@
 {
+  "_comment.i": "Item",
+  "item.otyacraftengine.ikisugibucket": "%s入りバケツ",
   "_comment.k": "Key",
   "key.categories.otyacraftengine": "Otyacraft Engine",
   "key.otyacraftengine.test": "テスト",

@@ -2,49 +2,56 @@ package red.felnull.otyacraftengine.fluid;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import red.felnull.otyacraftengine.block.IkisugiLiquidBlock;
+import red.felnull.otyacraftengine.item.IkisugiBucketItem;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class IkisugiFluid extends FlowingFluid {
     private final FluidProperties properties;
-    private final Supplier<Fluid> sourceFluid;
-    private final Supplier<FlowingFluid> flowingFluid;
-    private final Supplier<Item> bucket;
-    private final Supplier<Block> liquidBlock;
+    private final FluidData data;
     private final boolean source;
 
-    public IkisugiFluid(FluidProperties properties, Supplier<Fluid> sourceFluid, Supplier<FlowingFluid> flowingFluid, Supplier<Item> bucket, Supplier<Block> liquidBlock, boolean source) {
+    public IkisugiFluid(FluidProperties properties, FluidData fluidData) {
+        this(properties, fluidData, true);
+    }
+
+    public IkisugiFluid(FluidProperties properties, FluidData fluidData, boolean isSource) {
         this.properties = properties;
-        this.sourceFluid = sourceFluid;
-        this.flowingFluid = flowingFluid;
-        this.bucket = bucket;
-        this.liquidBlock = liquidBlock;
-        this.source = source;
+        this.data = fluidData;
+        this.source = isSource;
     }
 
     public FluidProperties getProperties() {
         return properties;
     }
 
+    public FluidData getData() {
+        return data;
+    }
+
     @Override
     public Fluid getFlowing() {
-        return flowingFluid.get();
+        return data.getFlowingFluid();
     }
 
     @Override
     public Fluid getSource() {
-        return sourceFluid.get();
+        return data.getSourceFluid();
     }
 
     @Override
@@ -69,7 +76,7 @@ public class IkisugiFluid extends FlowingFluid {
 
     @Override
     public Item getBucket() {
-        return bucket.get();
+        return data.getBucketItem();
     }
 
     @Override
@@ -89,7 +96,7 @@ public class IkisugiFluid extends FlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState fluidState) {
-        return liquidBlock.get().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(fluidState));
+        return data.getLiquidBlock().defaultBlockState().setValue(LiquidBlock.LEVEL, getLegacyLevel(fluidState));
     }
 
     @Override
@@ -113,5 +120,22 @@ public class IkisugiFluid extends FlowingFluid {
     @Override
     public boolean isSame(Fluid fluid) {
         return getFlowing() == fluid || getSource() == fluid;
+    }
+
+    public FlowingFluid createFlowingFluid() {
+        return new IkisugiFluid(properties, data, false);
+    }
+
+    public Item createBucketItem(Item.Properties properties) {
+        return new IkisugiBucketItem(this, properties.craftRemainder(Items.BUCKET).stacksTo(1));
+    }
+
+    public Block createLiquidBlock(BlockBehaviour.Properties properties) {
+        return new IkisugiLiquidBlock(this, properties.noCollission().noDrops().noCollission().strength(100.0F));
+    }
+
+    @Override
+    public Optional<SoundEvent> getPickupSound() {
+        return Optional.of(properties.getPickupSound());
     }
 }
