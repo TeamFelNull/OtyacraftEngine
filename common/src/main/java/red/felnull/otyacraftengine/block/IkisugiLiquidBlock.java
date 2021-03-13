@@ -1,10 +1,17 @@
 package red.felnull.otyacraftengine.block;
 
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.FlowingFluid;
+import red.felnull.otyacraftengine.fluid.IkisugiFluid;
 
 public class IkisugiLiquidBlock extends LiquidBlock {
-    public IkisugiLiquidBlock(FlowingFluid flowingFluid, Properties properties) {
+    protected final IkisugiFluid fluid;
+
+    public IkisugiLiquidBlock(IkisugiFluid flowingFluid, Properties properties) {
         super(flowingFluid, properties);
+        this.fluid = flowingFluid;
+    }
+
+    public IkisugiFluid getFluid() {
+        return fluid;
     }
 }

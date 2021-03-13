@@ -18,7 +18,6 @@ import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.fluid.IkisugiFluid;
-import red.felnull.otyacraftengine.fluid.TestFluid;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -34,8 +33,7 @@ public class RenderHandler implements ClientSpriteRegistryCallback, SimpleSynchr
         net.minecraft.core.Registry.FLUID.stream().filter(n -> n instanceof IkisugiFluid).forEach(n -> fluidSprites.put((IkisugiFluid) n, null));
         ClientSpriteRegistryCallback.event(TextureAtlas.LOCATION_BLOCKS).register(handler);
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(handler);
-        FluidRenderHandlerRegistry.INSTANCE.register(TestFluid.TEST_FLUID, handler);
-        FluidRenderHandlerRegistry.INSTANCE.register(TestFluid.TEST_FLOWING_FLUID, handler);
+        fluidSprites.forEach((n, m) -> FluidRenderHandlerRegistry.INSTANCE.register(n, handler));
     }
 
     @Override
@@ -78,5 +76,10 @@ public class RenderHandler implements ClientSpriteRegistryCallback, SimpleSynchr
             return fluidSprites.get(fluidState.getType());
 
         return new TextureAtlasSprite[]{null, null, null};
+    }
+
+    @Override
+    public int getFluidColor(@Nullable BlockAndTintGetter view, @Nullable BlockPos pos, FluidState state) {
+        return ((IkisugiFluid) state.getType()).getProperties().getColor();
     }
 }

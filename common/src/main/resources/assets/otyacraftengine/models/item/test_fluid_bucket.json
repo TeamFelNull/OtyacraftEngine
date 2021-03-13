@@ -2,6 +2,6 @@
     "parent": "otyacraftengine:item/fluid_bucket_base",
     "textures": {
         "bucket": "otyacraftengine:item/bucket_base",
-        "liquid": "otyacraftengine:item/bucket_lava_base_overlay"
+        "liquid": "otyacraftengine:item/bucket_water_base_overlay"
     }
 }
