@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.api.helper.BiomeRegisterHelper;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
+import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
 
 /**
  * OEのイベント等の登録をするクラスにこのインターフェイスを実装する
@@ -34,6 +35,11 @@ public interface IOEIntegration {
     }
 
     default void biomeRegisterHelper(BiomeRegisterHelper reg) {
+
+    }
+
+    @Environment(EnvType.CLIENT)
+    default void registrationModelLoaderPath(OEModelLoaderPathRegister reg) {
 
     }
 }

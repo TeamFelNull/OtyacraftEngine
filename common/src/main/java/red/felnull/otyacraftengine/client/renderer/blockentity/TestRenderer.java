@@ -37,6 +37,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         IKSGRenderUtil.renderBlockBakedModel(model, poseStack, ivb, combinedOverlayIn, blockEntity);
+
+
+
         poseStack.popPose();
     }
 

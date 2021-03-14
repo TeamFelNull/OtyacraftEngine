@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.client.client.fabric;
+package red.felnull.otyacraftengine.client.handler.fabric;
 
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;

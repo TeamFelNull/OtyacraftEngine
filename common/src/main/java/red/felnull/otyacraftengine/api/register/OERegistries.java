@@ -33,10 +33,13 @@ public class OERegistries {
     @Environment(EnvType.CLIENT)
     public static void clientInit(OtyacraftEngineAPI api) {
         OEHandlerRegister clientHandlerRegister = new OEHandlerRegister();
+        OEModelLoaderPathRegister modelLoaderPathRegister = new OEModelLoaderPathRegister();
 
         OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "client_handler"), clientHandlerRegister);
+        OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "model_loader_path"), modelLoaderPathRegister);
 
         api.integrationConsumer(n -> n.registrationClientHandler(clientHandlerRegister));
+        api.integrationConsumer(n -> n.registrationModelLoaderPath(modelLoaderPathRegister));
     }
 
     public static SingleRegistry<?> getSingleRegistry(ResourceLocation location) {

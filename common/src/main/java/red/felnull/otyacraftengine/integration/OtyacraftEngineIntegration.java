@@ -6,6 +6,7 @@ import red.felnull.otyacraftengine.api.OEIntegration;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
+import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.TestClientHandler;
 import red.felnull.otyacraftengine.handler.TestHandler;
@@ -34,5 +35,10 @@ public class OtyacraftEngineIntegration implements IOEIntegration {
         reg.register("minecraft", 43520);
         reg.register("forge", 170);
         reg.register(OtyacraftEngine.MODID, 5635925);
+    }
+
+    @Override
+    public void registrationModelLoaderPath(OEModelLoaderPathRegister reg) {
+        reg.register("otyacraftengine");
     }
 }
