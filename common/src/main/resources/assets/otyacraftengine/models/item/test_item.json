@@ -1,5 +1,6 @@
 {
-  "parent": "otyacraftengine:item/test_antenna_base",
-  "loader": "forge:obj",
-  "model": "otyacraftengine:models/item/test_obj.obj"
+  "parent": "item/generated",
+  "textures": {
+      "layer0": "otyacraftengine:item/test_item"
+  }
 }

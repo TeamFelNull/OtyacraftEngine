@@ -39,7 +39,7 @@ public class FabricOBJLoader {
         return null;
     }
 
-    public Map<String, OBJMtlData> loadMTL(ResourceLocation modelLocation, List<String> mtlNames) throws IOException {
+    public Map<String, OBJMtlData> loadMTL(ResourceLocation modelLocation, List<String> mtlNames) throws Exception {
         Map<String, OBJMtlData> mtls = new LinkedHashMap<>();
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         for (String name : mtlNames) {

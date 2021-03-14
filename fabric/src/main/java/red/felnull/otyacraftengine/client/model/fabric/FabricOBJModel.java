@@ -105,25 +105,28 @@ public class FabricOBJModel implements UnbakedModel {
     }
 
     private void addVertex(int faceIndex, int vertIndex, Vector3f vertex, FloatTuple normal, QuadEmitter emitter, Obj matGroup, boolean degenerate, ModelState modelState) {
-        int textureCoordIndex = vertIndex;
-        if (degenerate)
-            textureCoordIndex--;
+        try {
+            int textureCoordIndex = vertIndex;
+            if (degenerate)
+                textureCoordIndex--;
 
-        if (modelState.getRotation() != Transformation.identity() && !degenerate) {
-            vertex.add(-0.5F, -0.5F, -0.5F);
-            vertex.transform(modelState.getRotation().getLeftRotation());
-            vertex.add(0.5f, 0.5f, 0.5f);
-        }
+            if (modelState.getRotation() != Transformation.identity() && !degenerate) {
+                vertex.add(-0.5F, -0.5F, -0.5F);
+                vertex.transform(modelState.getRotation().getLeftRotation());
+                vertex.add(0.5f, 0.5f, 0.5f);
+            }
 
-        emitter.pos(vertIndex, vertex.x(), vertex.y(), vertex.z());
-        emitter.normal(vertIndex, normal.getX(), normal.getY(), normal.getZ());
+            emitter.pos(vertIndex, vertex.x(), vertex.y(), vertex.z());
+            emitter.normal(vertIndex, normal.getX(), normal.getY(), normal.getZ());
 
-        if (modelObj.getNumTexCoords() > 0) {
-            FloatTuple text = matGroup.getTexCoord(matGroup.getFace(faceIndex).getTexCoordIndex(textureCoordIndex));
+            if (modelObj.getNumTexCoords() > 0) {
+                FloatTuple text = matGroup.getTexCoord(matGroup.getFace(faceIndex).getTexCoordIndex(textureCoordIndex));
 
-            emitter.sprite(vertIndex, 0, text.getX(), text.getY());
-        } else {
-            emitter.nominalFace(Direction.getNearest(normal.getX(), normal.getY(), normal.getZ()));
+                emitter.sprite(vertIndex, 0, text.getX(), text.getY());
+            } else {
+                emitter.nominalFace(Direction.getNearest(normal.getX(), normal.getY(), normal.getZ()));
+            }
+        } catch (Exception ignored) {
         }
     }
 }
