@@ -7,7 +7,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -21,7 +20,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
-public class TestBlock extends BaseEntityBlock {
+public class TestBlock extends IkisugiBaseEntityBlock {
     private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
     private static final VoxelShape X_LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
     private static final VoxelShape X_LEG2 = Block.box(4.0D, 5.0D, 6.0D, 12.0D, 10.0D, 10.0D);

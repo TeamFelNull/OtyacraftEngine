@@ -5,14 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
-public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockEntity {
+public class TestBlockEntity extends IkisugiBlockEntity {
     public int currentValue;
     public int preCurrentValue;
 
@@ -33,7 +32,7 @@ public class TestBlockEntity extends BlockEntity implements IClientSyncbleBlockE
     public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TestBlockEntity testblockentity) {
         testblockentity.currentValue += 5;
 
-      //  testblockentity.preCurrentValue = testblockentity.currentValue + 5;
+        //  testblockentity.preCurrentValue = testblockentity.currentValue + 5;
 
         setChanged(level, blockPos, blockState);
 
