@@ -36,7 +36,7 @@ dependencies {
         transitive = false
     }
 
-    modCompile "de.javagl:obj:0.3.0"
+    modApi "de.javagl:obj:0.3.0"
     include "de.javagl:obj:0.3.0"
 }
 

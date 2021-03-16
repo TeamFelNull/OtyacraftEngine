@@ -1,7 +1,5 @@
 package red.felnull.otyacraftengine;
 
-import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.level.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

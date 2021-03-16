@@ -16,11 +16,14 @@ public class TestBlockEntity extends IkisugiBlockEntity {
     public int preCurrentValue;
 
     public static BlockEntityType<TestBlockEntity> TEST_BLOCKENTITY;
+    public static BlockEntityType<TestTankBlockEntity> TEST_TANK_BLOCKENTITY;
 
     public static void init() {
         DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
         TEST_BLOCKENTITY = IKSGBlockEntityUtil.craeteBlockEntityType(TestBlockEntity::new, TestBlock.TEST_BLOCK);
+        TEST_TANK_BLOCKENTITY = IKSGBlockEntityUtil.craeteBlockEntityType(TestTankBlockEntity::new, TestBlock.TEST_TANK_BLOCK);
         BLOCK_ENTITY_TYPES_REGISTER.register("test_block_entity", () -> TEST_BLOCKENTITY);
+        BLOCK_ENTITY_TYPES_REGISTER.register("test_tank_block_entity", () -> TEST_TANK_BLOCKENTITY);
         BLOCK_ENTITY_TYPES_REGISTER.register();
     }
 

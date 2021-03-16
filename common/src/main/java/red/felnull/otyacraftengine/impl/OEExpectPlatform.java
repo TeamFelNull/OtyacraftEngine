@@ -48,4 +48,9 @@ public class OEExpectPlatform {
     public static <T extends BlockEntity> BlockEntityType.Builder<T> craeteBlockEntityTypeBuilder(IKSGBlockEntityUtil.IKSGBlockEntitySupplier<? extends T> blockEntitySupplier, Block... blocks) {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static boolean isBlockEntity(Block block) {
+        throw new AssertionError();
+    }
 }

@@ -32,8 +32,14 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         DeferredRegister<Block> MOD_BLOCKS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
         DeferredRegister<Item> MOD_BLOCKITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
         TEST_BLOCK = new TestBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(1, 10f));
+        TEST_TANK_BLOCK = new TestTankBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(1, 10f));
+
         MOD_BLOCKS_REGISTER.register("test_block", () -> TEST_BLOCK);
         MOD_BLOCKITEMS_REGISTER.register("test_block", () -> new BlockItem(TEST_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
+        MOD_BLOCKS_REGISTER.register("test_tank_block", () -> TEST_TANK_BLOCK);
+        MOD_BLOCKITEMS_REGISTER.register("test_tank_block", () -> new BlockItem(TEST_TANK_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+
         MOD_BLOCKS_REGISTER.register();
         MOD_BLOCKITEMS_REGISTER.register();
     }
@@ -51,7 +57,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         }
     */
     public static Block TEST_BLOCK;
-
+    public static Block TEST_TANK_BLOCK;
 
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -65,6 +71,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         }
         return null;
     }
+
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.INVISIBLE;

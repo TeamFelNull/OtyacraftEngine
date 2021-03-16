@@ -12,12 +12,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
+import red.felnull.otyacraftengine.blockentity.IIkisugibleTankBlockEntity;
 import red.felnull.otyacraftengine.fluid.FluidData;
 import red.felnull.otyacraftengine.fluid.FluidProperties;
+import red.felnull.otyacraftengine.fluid.IIkisugiFluidHandler;
 import red.felnull.otyacraftengine.fluid.IkisugiFluid;
 import red.felnull.otyacraftengine.impl.OEExpectPlatform;
 
@@ -52,8 +56,35 @@ public class IKSGFluidUtil {
     }
 
     public static boolean interactWithFluidHandler(Player player, InteractionHand hand, Level level, BlockPos pos, Direction side) {
-
-        return true;
+        return getFluidHandler(level, pos, side).map(n -> interactWithFluidHandler(player, hand, n)).orElse(false);
     }
 
+    public static boolean interactWithFluidHandler(Player player, InteractionHand hand, IIkisugiFluidHandler handler) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        if (!heldItem.isEmpty()) {
+            Optional<FluidStack> stack = getFluidContained(heldItem);
+            if (!stack.isPresent())
+                return false;
+
+            FluidStack fs = handler.drain(stack.get(), IIkisugiFluidHandler.FluidAction.EXECUTE);
+
+            System.out.println(fs.getAmount());
+
+        }
+        return false;
+    }
+
+    public static Optional<IIkisugiFluidHandler> getFluidHandler(Level level, BlockPos blockPos, Direction side) {
+        BlockState state = level.getBlockState(blockPos);
+        Block block = state.getBlock();
+        if (IKSGBlockEntityUtil.hasBlockEntity(block)) {
+            BlockEntity be = level.getBlockEntity(blockPos);
+            if (be != null) {
+                if (be instanceof IIkisugibleTankBlockEntity) {
+                    return ((IIkisugibleTankBlockEntity) be).getFluidCapability();
+                }
+            }
+        }
+        return Optional.empty();
+    }
 }

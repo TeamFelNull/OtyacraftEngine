@@ -15,4 +15,8 @@ public class IKSGBlockEntityUtil {
     public static interface IKSGBlockEntitySupplier<T extends BlockEntity> {
         T create(BlockPos blockPos, BlockState blockState);
     }
+
+    public static boolean hasBlockEntity(Block block) {
+        return OEExpectPlatform.isBlockEntity(block);
+    }
 }
