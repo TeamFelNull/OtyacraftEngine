@@ -15,7 +15,7 @@ public class OtyacraftEngineClientFabric implements ClientModInitializer {
 
         OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
         if (api.isTestMode()) {
-        //    TestFabricEvent.init();
+            TestFabricEvent.init();
         }
 
     }

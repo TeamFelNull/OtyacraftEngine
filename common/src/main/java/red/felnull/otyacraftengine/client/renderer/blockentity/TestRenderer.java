@@ -22,24 +22,21 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         super(context);
     }
 
-    private static final ResourceLocation TEST_L = new ResourceLocation(OtyacraftEngine.MODID, "block/test_block_or");
+    private static final ResourceLocation TEST_L = new ResourceLocation(OtyacraftEngine.MODID, "item/test_item");
 
     @Override
     public void render(TestBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLightIn, int combinedOverlayIn) {
         VertexConsumer ivb = multiBufferSource.getBuffer(RenderType.solid());
+
         BakedModel model = IKSGRenderUtil.getBakedModel(TEST_L);
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
-        System.out.println(partialTicks);
         float val = blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
         IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
         IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
         IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         IKSGRenderUtil.renderBlockBakedModel(model, poseStack, ivb, combinedOverlayIn, blockEntity);
-
-
-
         poseStack.popPose();
     }
 

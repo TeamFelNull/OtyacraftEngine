@@ -2,10 +2,15 @@ package red.felnull.otyacraftengine.util;
 
 import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.registry.DeferredRegister;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -45,4 +50,10 @@ public class IKSGFluidUtil {
         blockRegister.register(path, () -> liquidBlocks.get(name));
         return fluids.get(name);
     }
+
+    public static boolean interactWithFluidHandler(Player player, InteractionHand hand, Level level, BlockPos pos, Direction side) {
+
+        return true;
+    }
+
 }

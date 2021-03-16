@@ -4,7 +4,9 @@ import com.mojang.blaze3d.platform.InputConstants.Key;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.MouseHandler;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.resources.ResourceLocation;
 
 public class OEClientExpectPlatform {
     @ExpectPlatform

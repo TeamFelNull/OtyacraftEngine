@@ -26,6 +26,7 @@ import java.util.Random;
 public class IKSGRenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
+    private static final Map<ResourceLocation, BakedModel> BAKED_OBJMODELS = new HashMap<>();
 
     public static void drawPlayerFase(PoseStack psstack, String name, int x, int y) {
         psstack.pushPose();

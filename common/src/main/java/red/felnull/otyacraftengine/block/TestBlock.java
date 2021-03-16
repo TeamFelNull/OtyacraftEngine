@@ -8,6 +8,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -64,6 +65,8 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         }
         return null;
     }
-
-
+    @Override
+    public RenderShape getRenderShape(BlockState blockState) {
+        return RenderShape.INVISIBLE;
+    }
 }
