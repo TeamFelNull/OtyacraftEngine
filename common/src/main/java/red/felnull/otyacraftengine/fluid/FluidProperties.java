@@ -141,7 +141,7 @@ public class FluidProperties {
     }
 
     public SoundEvent getCustomEmptySound() {
-        return customEmptySound;
+        return isCustomEmptySound() ? customEmptySound : SoundEvents.BUCKET_EMPTY;
     }
 
     public boolean isCustomEmptySound() {

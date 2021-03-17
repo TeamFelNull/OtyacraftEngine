@@ -3,6 +3,9 @@
   "package": "red.felnull.otyacraftengine.mixin.fabric",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BottleItemMixin",
+    "BucketItemMixin",
+    "PotionItemMixin"
   ],
   "client": [
     "client.BlockColorsMixin",

@@ -28,11 +28,14 @@ public class TestItem extends Item {
     }
 
     public static Item TEST_ITEM;
+    public static Item TEST_TANK_ITEM;
 
     public static void init() {
         DeferredRegister<Item> MOD_ITEMS_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
         TEST_ITEM = new TestItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
+        TEST_TANK_ITEM = new TestTankItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
         MOD_ITEMS_REGISTER.register("test_item", () -> TEST_ITEM);
+        MOD_ITEMS_REGISTER.register("test_tank_item", () -> TEST_TANK_ITEM);
         MOD_ITEMS_REGISTER.register();
     }
 }

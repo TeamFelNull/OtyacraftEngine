@@ -11,10 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.GameEventTags;
 import net.minecraft.tags.TagCollection;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -46,10 +43,6 @@ public class OEExpectPlatformImpl {
     public static final Fraction BUCKET_VOLUME = Fraction.ofWhole(1000);
 
     public static Optional<FluidStack> getFluidContained(ItemStack container) {
-        Item item = container.getItem();
-        if (item instanceof BucketItem) {
-            return Optional.of(FluidStack.create(((BucketItem) item).content, BUCKET_VOLUME));
-        }
         return Optional.empty();
     }
 
@@ -85,31 +78,18 @@ public class OEExpectPlatformImpl {
     }
 
     public static boolean canNotIncompleteFluidItem(ItemStack stack) {
-        Item item = stack.getItem();
-        return item instanceof BucketItem;
+        return false;
     }
 
     public static ItemStack getEmptyFluidItem(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof BucketItem) {
-            return new ItemStack(Items.BUCKET);
-        }
         return ItemStack.EMPTY;
     }
 
     public static int getFluidItemMaxAmont(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof BucketItem) {
-            return 1000;
-        }
         return 0;
     }
 
-    public static ItemStack getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
-        Item item = stack.getItem();
-        if (item instanceof BucketItem) {
-            return new ItemStack(fluid.getBucket());
-        }
-        return ItemStack.EMPTY;
+    public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
+        return Optional.empty();
     }
 }

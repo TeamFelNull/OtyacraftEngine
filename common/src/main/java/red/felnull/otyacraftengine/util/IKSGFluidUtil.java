@@ -22,12 +22,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
-import red.felnull.otyacraftengine.blockentity.IIkisugibleTankBlockEntity;
+import red.felnull.otyacraftengine.blockentity.IIkisugibleFluidTankBlockEntity;
 import red.felnull.otyacraftengine.fluid.FluidData;
 import red.felnull.otyacraftengine.fluid.FluidProperties;
 import red.felnull.otyacraftengine.fluid.IkisugiFluid;
 import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
 import red.felnull.otyacraftengine.impl.OEExpectPlatform;
+import red.felnull.otyacraftengine.item.IIkisugibleFluidTankItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +40,21 @@ public class IKSGFluidUtil {
     private static final Map<ResourceLocation, Item> bucketItems = new HashMap<>();
     private static final Map<ResourceLocation, Block> liquidBlocks = new HashMap<>();
 
-    public static Optional<FluidStack> getFluidContained(ItemStack container) {
-        if (!container.isEmpty()) {
-            return OEExpectPlatform.getFluidContained(container);
+    public static Optional<FluidStack> getFluidContained(ItemStack stack) {
+        if (!stack.isEmpty()) {
+            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getFluidTank(stack).map(IkisugiFluidTank::getFluidStack);
+            }
+            return OEExpectPlatform.getFluidContained(stack);
         }
         return Optional.empty();
     }
 
     public static ItemStack getEmptyFluidItem(ItemStack stack) {
         if (!stack.isEmpty()) {
+            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getEmptyFluidItem();
+            }
             return OEExpectPlatform.getEmptyFluidItem(stack);
         }
         return ItemStack.EMPTY;
@@ -55,32 +62,60 @@ public class IKSGFluidUtil {
 
     public static int getFluidItemMaxAmont(ItemStack stack) {
         if (!stack.isEmpty()) {
+            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getCapacity();
+            }
             return OEExpectPlatform.getFluidItemMaxAmont(stack);
         }
         return 0;
     }
 
-    public static ItemStack getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
+    public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
         if (!stack.isEmpty()) {
+            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+                IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
+                IkisugiFluidTank tank = new IkisugiFluidTank(ifti.getCapacity());
+                tank.setFluid(fluid);
+                tank.setAmount(ifti.getCapacity());
+                return ifti.setFluidTank(stack, tank);
+            }
             return OEExpectPlatform.getFilledNotIncompleteFluidItem(stack, fluid);
         }
-        return ItemStack.EMPTY;
+        return Optional.empty();
     }
 
-    public static ItemStack getReducedFluidItem(ItemStack stack, int reducedFluid) {
-        if (canNotIncompleteFluidItem(stack)) {
-            return getEmptyFluidItem(stack);
+    public static Optional<ItemStack> getReducedFluidItem(ItemStack stack, int reducedFluid) {
+        if (!stack.isEmpty()) {
+            if (canNotIncompleteFluidItem(stack)) {
+                return Optional.of(getEmptyFluidItem(stack));
+            }
+            IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
+            if (ifti.getFluidTank(stack).isPresent()) {
+                IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
+                tank.reduceAmount(reducedFluid);
+                return ifti.setFluidTank(stack, tank);
+            } else {
+                return Optional.of(stack);
+            }
         }
-        return ItemStack.EMPTY;
+        return Optional.empty();
     }
 
-    public static ItemStack getFilledFluidItem(ItemStack stack, FluidStack addFluid) {
+    public static Optional<ItemStack> getFilledFluidItem(ItemStack stack, FluidStack addFluid) {
         if (canNotIncompleteFluidItem(stack)) {
             if (getFluidItemMaxAmont(stack) <= addFluid.getAmount().intValue()) {
                 return getFilledNotIncompleteFluidItem(stack, addFluid.getFluid());
             }
+            IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
+            if (ifti.getFluidTank(stack).isPresent()) {
+                IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
+                tank.setFluidStack(addFluid);
+                return ifti.setFluidTank(stack, tank);
+            } else {
+                return Optional.of(stack);
+            }
         }
-        return ItemStack.EMPTY;
+        return Optional.empty();
     }
 
     public static IkisugiFluid register(ResourceLocation name, FluidProperties properties, CreativeModeTab tab, DeferredRegister<Fluid> fluidRegister, DeferredRegister<Item> itemRegister, DeferredRegister<Block> blockRegister) {
@@ -124,39 +159,41 @@ public class IKSGFluidUtil {
 
                     if (!level.isClientSide) {
                         int am = tank.getAmount();
-                        tank.addFluidStack(itemStack);
-                        int sa = tank.getAmount() - am;
-                        ItemStack atoItem = getReducedFluidItem(heldItem, sa);
-
-                        if (!player.getAbilities().instabuild) {
-                            heldItem.shrink(1);
-                            IKSGPlayerUtil.giveItem(player, atoItem);
-                        }
-
-                        SoundEvent soundevent = getEmptySound(itemStack);
-                        if (soundevent != null) {
-                            player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        int sa = Math.min(am + itemStack.getAmount().intValue(), tank.getCapacity()) - am;
+                        Optional<ItemStack> atoItem = getReducedFluidItem(heldItem, sa);
+                        if (atoItem.isPresent()) {
+                            tank.addFluidStack(itemStack);
+                            if (!player.getAbilities().instabuild) {
+                                heldItem.shrink(1);
+                                IKSGPlayerUtil.giveItem(player, atoItem.get());
+                            }
+                            SoundEvent soundevent = getEmptySound(itemStack);
+                            if (soundevent != null) {
+                                player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            }
                         }
                     }
 
                     return true;
                 }
             } else if (!tankStack.isEmpty()) {
-                int ra = tank.simulateReduceAmount(1000);
+                int ra = tank.simulateReduceAmount(getFluidItemMaxAmont(heldItem));
                 if (ra > 0 && canNotIncompleteFluidItem(heldItem)) {
                     return false;
                 }
                 if (!level.isClientSide) {
                     int am = tank.getAmount();
-                    tank.reduceAmount(1000);
-                    int sa = am - tank.getAmount();
+                    int sa = am-Math.max(am - getFluidItemMaxAmont(heldItem),0); //Math.min(am - getFluidItemMaxAmont(heldItem), 0) - tank.getAmount();
                     if (sa > 0) {
-                        ItemStack rai = getFilledFluidItem(heldItem, FluidStack.create(tankStack.getFluid(), Fraction.ofWhole(sa)));
-                       // if (!player.getAbilities().instabuild) {
-                            heldItem.shrink(1);
-                            IKSGPlayerUtil.giveItem(player, rai);
-                    //    }
-                        tankStack.getFluid().getPickupSound().ifPresent(n -> player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), n, SoundSource.BLOCKS, 1.0F, 1.0F));
+                        Optional<ItemStack> rai = getFilledFluidItem(heldItem, FluidStack.create(tankStack.getFluid(), Fraction.ofWhole(sa)));
+                        if (rai.isPresent()) {
+                            tank.reduceAmount(getFluidItemMaxAmont(heldItem));
+                            if (!player.getAbilities().instabuild) {
+                                heldItem.shrink(1);
+                                IKSGPlayerUtil.giveItem(player, rai.get());
+                            }
+                            tankStack.getFluid().getPickupSound().ifPresent(n -> player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), n, SoundSource.BLOCKS, 1.0F, 1.0F));
+                        }
                     }
                 }
                 return true;
@@ -171,8 +208,8 @@ public class IKSGFluidUtil {
         if (IKSGBlockEntityUtil.hasBlockEntity(block)) {
             BlockEntity be = level.getBlockEntity(blockPos);
             if (be != null) {
-                if (be instanceof IIkisugibleTankBlockEntity) {
-                    return ((IIkisugibleTankBlockEntity) be).getTank(side);
+                if (be instanceof IIkisugibleFluidTankBlockEntity) {
+                    return ((IIkisugibleFluidTankBlockEntity) be).getFluidTank(side);
                 }
             }
         }
@@ -188,6 +225,9 @@ public class IKSGFluidUtil {
     }
 
     public static boolean canNotIncompleteFluidItem(ItemStack stack) {
+        if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+            return ((IIkisugibleFluidTankItem) stack.getItem()).canNotIncompleteFluidItem();
+        }
         return OEExpectPlatform.canNotIncompleteFluidItem(stack);
     }
 }

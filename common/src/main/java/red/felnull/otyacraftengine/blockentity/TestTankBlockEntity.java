@@ -8,7 +8,7 @@ import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
 
 import java.util.Optional;
 
-public class TestTankBlockEntity extends IkisugiBlockEntity implements IIkisugibleTankBlockEntity {
+public class TestTankBlockEntity extends IkisugiBlockEntity implements IIkisugibleFluidTankBlockEntity {
     private IkisugiFluidTank tank;
 
     public TestTankBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -33,7 +33,7 @@ public class TestTankBlockEntity extends IkisugiBlockEntity implements IIkisugib
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getTank(Direction side) {
+    public Optional<IkisugiFluidTank> getFluidTank(Direction side) {
         return Optional.of(tank);
     }
 }

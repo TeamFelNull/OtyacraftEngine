@@ -76,7 +76,7 @@ public class OEExpectPlatform {
         throw new AssertionError();
     }
     @ExpectPlatform
-    public static ItemStack getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
+    public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
         throw new AssertionError();
     }
 }
