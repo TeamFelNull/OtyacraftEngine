@@ -6,12 +6,15 @@ import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
 import net.fabricmc.fabric.impl.biome.InternalBiomeData;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.GameEventTags;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -74,5 +77,39 @@ public class OEExpectPlatformImpl {
 
     public static boolean isBlockEntity(Block block) {
         return block instanceof EntityBlock;
+    }
+
+    public static SoundEvent getEmptySound(FluidStack stack) {
+        SoundEvent soundEvent = stack.getFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
+        return soundEvent;
+    }
+
+    public static boolean canNotIncompleteFluidItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item instanceof BucketItem;
+    }
+
+    public static ItemStack getEmptyFluidItem(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof BucketItem) {
+            return new ItemStack(Items.BUCKET);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static int getFluidItemMaxAmont(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof BucketItem) {
+            return 1000;
+        }
+        return 0;
+    }
+
+    public static ItemStack getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
+        Item item = stack.getItem();
+        if (item instanceof BucketItem) {
+            return new ItemStack(fluid.getBucket());
+        }
+        return ItemStack.EMPTY;
     }
 }

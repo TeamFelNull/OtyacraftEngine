@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.impl;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.fluid.FluidStack;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
@@ -51,6 +52,31 @@ public class OEExpectPlatform {
 
     @ExpectPlatform
     public static boolean isBlockEntity(Block block) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static SoundEvent getEmptySound(FluidStack stack) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static boolean canNotIncompleteFluidItem(ItemStack stack) {
+        throw new AssertionError();
+    }
+
+
+    @ExpectPlatform
+    public static ItemStack getEmptyFluidItem(ItemStack stack) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static int getFluidItemMaxAmont(ItemStack stack) {
+        throw new AssertionError();
+    }
+    @ExpectPlatform
+    public static ItemStack getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
         throw new AssertionError();
     }
 }

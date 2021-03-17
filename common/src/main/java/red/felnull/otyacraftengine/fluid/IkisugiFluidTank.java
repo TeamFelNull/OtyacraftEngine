@@ -3,166 +3,145 @@ package red.felnull.otyacraftengine.fluid;
 import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.utils.Fraction;
 import net.minecraft.nbt.CompoundTag;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.material.Fluid;
 
-import java.util.function.Predicate;
-
-public class IkisugiFluidTank implements IIkisugiFluidHandler, IIkisugiFluidTank {
-    protected Predicate<FluidStack> validator;
-    @Nullable
-    protected FluidStack fluid = FluidStack.empty();
-    protected int capacity;
+public class IkisugiFluidTank {
+    private int capacity;
+    private FluidStack fluid = FluidStack.empty();
 
     public IkisugiFluidTank(int capacity) {
-        this(capacity, e -> true);
-    }
-
-    public IkisugiFluidTank(int capacity, Predicate<FluidStack> validator) {
         this.capacity = capacity;
-        this.validator = validator;
     }
 
-    public IkisugiFluidTank setCapacity(int capacity) {
-        this.capacity = capacity;
-        return this;
+    public FluidStack getFluidStack() {
+        return fluid;
     }
 
-    public IkisugiFluidTank setValidator(Predicate<FluidStack> validator) {
-        if (validator != null) {
-            this.validator = validator;
-        }
-        return this;
-    }
-
-    public boolean isFluidValid(FluidStack stack) {
-        return validator.test(stack);
+    public void setFluidStack(FluidStack fluid) {
+        this.fluid = fluid;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    @Nullable
-    public FluidStack getFluid() {
-        return fluid;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public int getFluidAmount() {
+    public CompoundTag save(CompoundTag compoundTag) {
+        compoundTag.put("Fluid", fluid.write(new CompoundTag()));
+        return compoundTag;
+    }
+
+    public void load(CompoundTag compoundTag) {
+        fluid = FluidStack.read(compoundTag.getCompound("Fluid"));
+    }
+
+    public int getAmount() {
         return fluid.getAmount().intValue();
     }
 
-    public IkisugiFluidTank readFromNBT(CompoundTag nbt) {
-
-        FluidStack fluid = FluidStack.read(nbt);
-        setFluid(fluid);
-        return this;
+    public Fluid getFluid() {
+        return fluid.getFluid();
     }
 
-    public CompoundTag writeToNBT(CompoundTag nbt) {
+    public int addFluidStack(FluidStack stack) {
 
-        fluid.write(nbt);
-
-        return nbt;
-    }
-
-    @Override
-    public int getTanks() {
-
-        return 1;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack getFluidInTank(int tank) {
-
-        return getFluid();
-    }
-
-    @Override
-    public int getTankCapacity(int tank) {
-
-        return getCapacity();
-    }
-
-    @Override
-    public boolean isFluidValid(int tank, @Nullable FluidStack stack) {
-
-        return isFluidValid(stack);
-    }
-
-    @Override
-    public int fill(FluidStack resource, FluidAction action) {
-        if (resource.isEmpty() || !isFluidValid(resource)) {
+        if (stack.isEmpty())
             return 0;
+
+        if (getFluidStack().isEmpty() || getFluid() == stack.getRawFluid()) {
+            setFluid(stack.getFluid());
+            return addAmount(stack.getAmount().intValue());
         }
-        if (action.simulate()) {
-            if (fluid.isEmpty()) {
-                return Math.min(capacity, resource.getAmount().intValue());
-            }
-            if (!fluid.isFluidStackEqual(resource)) {
-                return 0;
-            }
-            return Math.min(capacity - fluid.getAmount().intValue(), resource.getAmount().intValue());
-        }
-        if (fluid.isEmpty()) {
-            fluid = FluidStack.create(resource, Fraction.ofWhole(Math.min(capacity, resource.getAmount().intValue())));
-            onContentsChanged();
-            return fluid.getAmount().intValue();
-        }
-        if (!fluid.isFluidStackEqual(resource)) {
+        return stack.getAmount().intValue();
+    }
+
+    /**
+     * 液体の量を減らす
+     *
+     * @param value 減らす量
+     * @return 余った量
+     */
+    public int reduceAmount(int value) {
+        int allAmont = getAmount() - value;
+        setAmount(allAmont);
+        return Math.max(-allAmont, 0);
+    }
+
+    /**
+     * 実際には液体量を減らさずに余った量を予測する
+     *
+     * @param value 減らす量
+     * @return 余った量予想
+     */
+    public int simulateReduceAmount(int value) {
+        int allAmont = getAmount() - value;
+        return Math.max(-allAmont, 0);
+    }
+
+    /**
+     * 液体の量を追加する
+     *
+     * @param value 追加する量
+     * @return 余った量
+     */
+    public int addAmount(int value) {
+        int allAmont = getAmount() + value;
+        setAmount(allAmont);
+        return Math.max(allAmont - capacity, 0);
+    }
+
+
+    /**
+     * 実際には液体量を追加せずに余った量を予測する
+     *
+     * @param value 追加する量
+     * @return 余った量の予測
+     */
+    public int simulateAddAmount(int value) {
+        int allAmont = getAmount() + value;
+        return Math.max(allAmont - capacity, 0);
+    }
+
+    public int simulateAddFluidStack(FluidStack stack) {
+        if (stack.isEmpty())
             return 0;
+        if (getFluidStack().isEmpty() || getFluid() == stack.getRawFluid()) {
+            return simulateAddAmount(stack.getAmount().intValue());
         }
-        int filled = capacity - fluid.getAmount().intValue();
+        return stack.getAmount().intValue();
+    }
 
-        if (resource.getAmount().intValue() < filled) {
-            fluid.grow(resource.getAmount());
-            filled = resource.getAmount().intValue();
-        } else {
-            fluid.setAmount(Fraction.ofWhole(capacity));
+    public void setAmount(int value) {
+        FluidStack stack = fluid.copy();
+        stack.setAmount(Fraction.ofWhole(Math.min(Math.max(value, 0), capacity)));
+        setFluidStack(stack);
+        update(false);
+    }
+
+
+    public void setFluid(Fluid fluid) {
+        setFluidStack(FluidStack.create(fluid, Fraction.ofWhole(getAmount())));
+        update(true);
+    }
+
+    public void update(boolean chaneFluid) {
+        if (capacity < getAmount()) {
+            FluidStack stack = fluid.copy();
+            stack.setAmount(Fraction.ofWhole(capacity));
+            setFluidStack(stack);
         }
-        if (filled > 0)
-            onContentsChanged();
-        return filled;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (resource.isEmpty() || !resource.isFluidStackEqual(fluid)) {
-            return FluidStack.empty();
+        if (!chaneFluid) {
+            if (getAmount() == 0) {
+                setFluidStack(FluidStack.empty());
+            }
         }
-        return drain(resource.getAmount().intValue(), action);
     }
 
-    @Nullable
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-        int drained = maxDrain;
-        if (fluid.getAmount().intValue() < drained) {
-            drained = fluid.getAmount().intValue();
-        }
-        FluidStack stack = FluidStack.create(fluid, Fraction.ofWhole(drained));
-        if (action.execute() && drained > 0) {
-            fluid.shrink(Fraction.ofWhole(drained));
-            onContentsChanged();
-        }
-        return stack;
-    }
-
-    protected void onContentsChanged() {
-
-    }
-
-    public void setFluid(FluidStack stack) {
-        this.fluid = stack;
-    }
-
-    public boolean isEmpty() {
-        return fluid.isEmpty();
-    }
-
-    public int getSpace() {
-        return Math.max(0, capacity - fluid.getAmount().intValue());
+    public boolean isMaxCapacity() {
+        return capacity <= getAmount();
     }
 
 }
