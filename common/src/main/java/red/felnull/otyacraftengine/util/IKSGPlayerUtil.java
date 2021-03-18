@@ -5,6 +5,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -63,8 +64,18 @@ public class IKSGPlayerUtil {
 
 
     public static void giveItem(Player player, ItemStack stack) {
-        if (player.addItem(stack)) {
-            player.drop(stack, false);
+        if (!player.addItem(stack))
+            player.drop(stack, false, true);
+    }
+
+    public static void changeOrGiveItem(Player player, InteractionHand hand, ItemStack stack) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        if (!player.getAbilities().instabuild)
+            heldItem.shrink(1);
+        if (heldItem.isEmpty()) {
+            player.setItemInHand(hand, stack);
+        } else {
+            giveItem(player, stack);
         }
     }
 

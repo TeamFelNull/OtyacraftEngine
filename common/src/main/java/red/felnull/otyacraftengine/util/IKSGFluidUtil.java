@@ -63,7 +63,7 @@ public class IKSGFluidUtil {
     public static int getFluidItemMaxAmont(ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getCapacity();
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getCapacity(stack);
             }
             return OEExpectPlatform.getFluidItemMaxAmont(stack);
         }
@@ -74,9 +74,9 @@ public class IKSGFluidUtil {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
                 IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-                IkisugiFluidTank tank = new IkisugiFluidTank(ifti.getCapacity());
+                IkisugiFluidTank tank = new IkisugiFluidTank(ifti.getCapacity(stack));
                 tank.setFluid(fluid);
-                tank.setAmount(ifti.getCapacity());
+                tank.setAmount(ifti.getCapacity(stack));
                 return ifti.setFluidTank(stack, tank);
             }
             return OEExpectPlatform.getFilledNotIncompleteFluidItem(stack, fluid);
@@ -89,13 +89,15 @@ public class IKSGFluidUtil {
             if (canNotIncompleteFluidItem(stack)) {
                 return Optional.of(getEmptyFluidItem(stack));
             }
-            IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-            if (ifti.getFluidTank(stack).isPresent()) {
-                IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
-                tank.reduceAmount(reducedFluid);
-                return ifti.setFluidTank(stack, tank);
-            } else {
-                return Optional.of(stack);
+            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
+                IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
+                if (ifti.getFluidTank(stack).isPresent()) {
+                    IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
+                    tank.reduceAmount(reducedFluid);
+                    return ifti.setFluidTank(stack, tank);
+                } else {
+                    return Optional.of(stack);
+                }
             }
         }
         return Optional.empty();
@@ -106,6 +108,8 @@ public class IKSGFluidUtil {
             if (getFluidItemMaxAmont(stack) <= addFluid.getAmount().intValue()) {
                 return getFilledNotIncompleteFluidItem(stack, addFluid.getFluid());
             }
+        }
+        if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
             IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
             if (ifti.getFluidTank(stack).isPresent()) {
                 IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
@@ -114,6 +118,7 @@ public class IKSGFluidUtil {
             } else {
                 return Optional.of(stack);
             }
+
         }
         return Optional.empty();
     }
@@ -149,54 +154,50 @@ public class IKSGFluidUtil {
             FluidStack tankStack = tank.getFluidStack();
             FluidStack itemStack = itmstack.get();
 
-            if (!itemStack.isEmpty()) {
-                if (!tank.isMaxCapacity()) {
-                    int amari = tank.simulateAddFluidStack(itemStack);
+            if (tankStack.isEmpty() || tankStack.getFluid() == tankStack.getFluid()) {
+                if (!itemStack.isEmpty()) {
+                    if (!tank.isMaxCapacity() && (tankStack.isEmpty() || tankStack.getFluid() == tankStack.getFluid())) {
+                        int amari = tank.simulateAddFluidStack(itemStack);
 
-                    if (amari > 0 && canNotIncompleteFluidItem(heldItem)) {
+                        if (amari > 0 && canNotIncompleteFluidItem(heldItem)) {
+                            return false;
+                        }
+
+                        if (!level.isClientSide) {
+                            int am = tank.getAmount();
+                            int sa = Math.min(am + itemStack.getAmount().intValue(), tank.getCapacity()) - am;
+                            Optional<ItemStack> atoItem = getReducedFluidItem(IKSGItemUtil.copyStackWithSize(heldItem, 1), sa);
+                            if (atoItem.isPresent()) {
+                                tank.addFluidStack(itemStack);
+                                IKSGPlayerUtil.changeOrGiveItem(player, hand, atoItem.get());
+                                SoundEvent soundevent = getEmptySound(itemStack);
+                                if (soundevent != null) {
+                                    player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                                }
+                            }
+                        }
+
+                        return true;
+                    }
+                } else if (!tankStack.isEmpty()) {
+                    int ra = tank.simulateReduceAmount(getFluidItemMaxAmont(heldItem));
+                    if (ra > 0 && canNotIncompleteFluidItem(heldItem)) {
                         return false;
                     }
-
                     if (!level.isClientSide) {
                         int am = tank.getAmount();
-                        int sa = Math.min(am + itemStack.getAmount().intValue(), tank.getCapacity()) - am;
-                        Optional<ItemStack> atoItem = getReducedFluidItem(heldItem, sa);
-                        if (atoItem.isPresent()) {
-                            tank.addFluidStack(itemStack);
-                            if (!player.getAbilities().instabuild) {
-                                heldItem.shrink(1);
-                                IKSGPlayerUtil.giveItem(player, atoItem.get());
-                            }
-                            SoundEvent soundevent = getEmptySound(itemStack);
-                            if (soundevent != null) {
-                                player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        int sa = am - Math.max(am - getFluidItemMaxAmont(heldItem), 0);
+                        if (sa > 0) {
+                            Optional<ItemStack> rai = getFilledFluidItem(IKSGItemUtil.copyStackWithSize(heldItem, 1), FluidStack.create(tankStack.getFluid(), Fraction.ofWhole(sa)));
+                            if (rai.isPresent()) {
+                                tank.reduceAmount(getFluidItemMaxAmont(heldItem));
+                                IKSGPlayerUtil.changeOrGiveItem(player, hand, rai.get());
+                                tankStack.getFluid().getPickupSound().ifPresent(n -> player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), n, SoundSource.BLOCKS, 1.0F, 1.0F));
                             }
                         }
                     }
-
                     return true;
                 }
-            } else if (!tankStack.isEmpty()) {
-                int ra = tank.simulateReduceAmount(getFluidItemMaxAmont(heldItem));
-                if (ra > 0 && canNotIncompleteFluidItem(heldItem)) {
-                    return false;
-                }
-                if (!level.isClientSide) {
-                    int am = tank.getAmount();
-                    int sa = am-Math.max(am - getFluidItemMaxAmont(heldItem),0); //Math.min(am - getFluidItemMaxAmont(heldItem), 0) - tank.getAmount();
-                    if (sa > 0) {
-                        Optional<ItemStack> rai = getFilledFluidItem(heldItem, FluidStack.create(tankStack.getFluid(), Fraction.ofWhole(sa)));
-                        if (rai.isPresent()) {
-                            tank.reduceAmount(getFluidItemMaxAmont(heldItem));
-                            if (!player.getAbilities().instabuild) {
-                                heldItem.shrink(1);
-                                IKSGPlayerUtil.giveItem(player, rai.get());
-                            }
-                            tankStack.getFluid().getPickupSound().ifPresent(n -> player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(), n, SoundSource.BLOCKS, 1.0F, 1.0F));
-                        }
-                    }
-                }
-                return true;
             }
         }
         return false;

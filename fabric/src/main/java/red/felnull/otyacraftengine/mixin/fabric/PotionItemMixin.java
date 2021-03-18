@@ -20,16 +20,16 @@ public class PotionItemMixin implements IIkisugibleFluidTankItem {
     }
 
     @Override
-    public int getCapacity() {
+    public int getCapacity(ItemStack stack) {
         return 1000 / 3;
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getFluidTank(ItemStack container) {
-        if (PotionUtils.getPotion(container) == Potions.WATER) {
-            IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity());
+    public Optional<IkisugiFluidTank> getFluidTank(ItemStack stack) {
+        if (PotionUtils.getPotion(stack) == Potions.WATER) {
+            IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity(stack));
             ift.setFluid(Fluids.WATER);
-            ift.setAmount(getCapacity());
+            ift.setAmount(getCapacity(stack));
             return Optional.of(ift);
         }
 

@@ -26,15 +26,15 @@ public class BucketItemMixin implements IIkisugibleFluidTankItem {
     }
 
     @Override
-    public int getCapacity() {
+    public int getCapacity(ItemStack stack) {
         return 1000;
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getFluidTank(ItemStack container) {
-        IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity());
+    public Optional<IkisugiFluidTank> getFluidTank(ItemStack stack) {
+        IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity(stack));
         ift.setFluid(content);
-        ift.setAmount(content == Fluids.EMPTY ? 0 : getCapacity());
+        ift.setAmount(content == Fluids.EMPTY ? 0 : getCapacity(stack));
         return Optional.of(ift);
     }
 

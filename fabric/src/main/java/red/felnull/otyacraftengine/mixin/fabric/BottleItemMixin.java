@@ -20,13 +20,13 @@ public class BottleItemMixin implements IIkisugibleFluidTankItem {
     }
 
     @Override
-    public int getCapacity() {
+    public int getCapacity(ItemStack stack) {
         return 1000 / 3;
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getFluidTank(ItemStack container) {
-        IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity());
+    public Optional<IkisugiFluidTank> getFluidTank(ItemStack stack) {
+        IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity(stack));
         ift.setFluid(Fluids.EMPTY);
         ift.setAmount(0);
         return Optional.of(ift);

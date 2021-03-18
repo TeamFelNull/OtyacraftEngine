@@ -33,8 +33,7 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
                 if (level.getBlockEntity(blockPos) instanceof TestTankBlockEntity) {
                     TestTankBlockEntity ttbe = (TestTankBlockEntity) level.getBlockEntity(blockPos);
                     player.displayClientMessage(new TextComponent("Fluid: ").append(ttbe.getTank().getFluidStack().getName()), false);
-                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getTank().getFluidStack().getAmount().intValue() + "mb"), false);
-                    player.displayClientMessage(new TextComponent("Capacity: " + ttbe.getTank().getCapacity() + "mb"), false);
+                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getTank().getFluidStack().getAmount().intValue() + "mb").append("/").append(ttbe.getTank().getCapacity() + "mb"), false);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
