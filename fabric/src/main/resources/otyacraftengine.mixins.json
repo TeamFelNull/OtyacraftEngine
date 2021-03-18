@@ -9,6 +9,7 @@
   ],
   "client": [
     "client.BlockColorsMixin",
+    "client.BlockEntityWithoutLevelRendererMixin",
     "client.ItemColorsMixin",
     "client.ItemStackClientMixin",
     "client.ModelManagerMixin",

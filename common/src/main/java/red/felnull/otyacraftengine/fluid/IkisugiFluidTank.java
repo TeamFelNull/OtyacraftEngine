@@ -134,7 +134,7 @@ public class IkisugiFluidTank {
             setFluidStack(stack);
         }
         if (!chaneFluid) {
-            if (getAmount() == 0) {
+            if (getAmount() <= 0) {
                 setFluidStack(FluidStack.empty());
             }
         }
@@ -142,6 +142,10 @@ public class IkisugiFluidTank {
 
     public boolean isMaxCapacity() {
         return capacity <= getAmount();
+    }
+
+    public boolean isEmpty() {
+        return fluid.isEmpty() || getAmount() <= 0;
     }
 
 }

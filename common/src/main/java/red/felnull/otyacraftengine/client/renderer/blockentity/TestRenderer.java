@@ -9,13 +9,13 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
-import red.felnull.otyacraftengine.client.util.IKSGBlockEntityRendererUtil;
+import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 
 public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
 
     public static void init() {
-        IKSGBlockEntityRendererUtil.registerRenderer(TestBlockEntity.TEST_BLOCKENTITY, TestRenderer::new);
+        IKSGClientUtil.registerBlockEntityRenderer(TestBlockEntity.TEST_BLOCKENTITY, TestRenderer::new);
     }
 
     public TestRenderer(BlockEntityRendererProvider.Context context) {
