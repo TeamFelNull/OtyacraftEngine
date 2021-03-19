@@ -19,6 +19,7 @@ public class IKSGPlayerUtil {
     public static final String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
     protected static final Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<>();
     protected static final Map<String, String> PLAYERSKINURLS = new HashMap<>();
+    protected static final Map<String, String> PLAYERNAMES = new HashMap<>();
     private static final Gson gson = new Gson();
 
     public static String getUserName(PlayerEntity pl) {
@@ -27,6 +28,18 @@ public class IKSGPlayerUtil {
 
     public static String getUUID(PlayerEntity pl) {
         return PlayerEntity.getUUID(pl.getGameProfile()).toString();
+    }
+
+    public static String getPlayerName(String uuid) {
+        if (PLAYERNAMES.containsKey(uuid))
+            return PLAYERNAMES.get(uuid);
+
+        PLAYERNAMES.put(uuid, "");
+
+        NameLoader NL = new NameLoader(uuid);
+        NL.start();
+
+        return "";
     }
 
     public static String getPlayerSkinTextureURL(String uuid) {
@@ -94,6 +107,24 @@ public class IKSGPlayerUtil {
         public void run() {
             GameProfile gp = PLAYERGAMEPROFILES.get(name);
             PLAYERGAMEPROFILES.put(name, SkullTileEntity.updateGameProfile(gp));
+        }
+    }
+
+    private static class NameLoader extends Thread {
+        private String uuid;
+
+        public NameLoader(String uuid) {
+            this.uuid = uuid;
+        }
+
+        public void run() {
+            try {
+                String f1 = IKSGURLUtil.getURLResponse("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
+                JsonObject f1jo = gson.fromJson(f1, JsonObject.class);
+                PLAYERNAMES.put(uuid, f1jo.get("name").getAsString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

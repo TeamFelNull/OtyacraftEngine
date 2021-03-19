@@ -32,7 +32,7 @@ public class TestItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         if (worldIn.isRemote) {
-            playerIn.sendStatusMessage(new StringTextComponent(IKSGPlayerUtil.getPlayerSkinTextureURL("0f286fc2-0c86-42d5-8518-c306cad74f03")), false);
+            playerIn.sendStatusMessage(new StringTextComponent(IKSGPlayerUtil.getPlayerName("0f286fc2-0c86-42d5-8518-c306cad74f03")), false);
         }
         return ActionResult.func_233538_a_(itemstack, worldIn.isRemote());
     }
