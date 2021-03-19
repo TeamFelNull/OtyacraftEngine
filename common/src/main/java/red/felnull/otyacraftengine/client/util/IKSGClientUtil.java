@@ -36,4 +36,8 @@ public class IKSGClientUtil {
         }
         CustomBlockEntityWithoutLevelRenderer.ITEMRENDERERS.get(item).add(renderer);
     }
+
+    public static void registerItemRenderer(Block block, ICustomBEWLRenderer renderer) {
+        registerItemRenderer(block.asItem(), renderer);
+    }
 }
