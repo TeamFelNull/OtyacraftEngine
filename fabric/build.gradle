@@ -3,7 +3,7 @@ plugins {
 }
 
 configurations {
-    shadowCommon
+    shadow
 }
 
 architectury {
@@ -32,12 +32,11 @@ dependencies {
     developmentFabric(project(path: ":common")) {
         transitive = false
     }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
+    shadow(project(path: ":common", configuration: "transformProductionFabric")) {
         transitive = false
     }
 
-    modApi "de.javagl:obj:0.3.0"
-    include "de.javagl:obj:0.3.0"
+    shadow "de.javagl:obj:0.3.0"
 }
 
 processResources {
@@ -49,8 +48,9 @@ processResources {
 }
 
 shadowJar {
-    configurations = [project.configurations.shadowCommon]
+    configurations = [project.configurations.shadow]
     classifier "dev-shadow"
+    relocate 'de.javagl', 'red.felnull.otyacraftengine.libs.de.javagl'
 }
 
 remapJar {

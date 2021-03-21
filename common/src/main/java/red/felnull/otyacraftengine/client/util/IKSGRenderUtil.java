@@ -7,9 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -124,4 +122,17 @@ public class IKSGRenderUtil {
     public static float partialTicksMisalignment(float val, float prevVal, float partialTicks) {
         return val + (prevVal - val) * partialTicks;
     }
+
+    public static BakedModel getBlockBakedModel(ModelResourceLocation modelResourceLocation) {
+        BlockRenderDispatcher blockrendererdispatcher = mc.getBlockRenderer();
+        ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
+        return modelmanager.getModel(modelResourceLocation);
+    }
+
+    public static void renderBakedModel(PoseStack poseStack, VertexConsumer vertexConsumer, BlockState state, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
+        BlockRenderDispatcher brd = mc.getBlockRenderer();
+        ModelBlockRenderer bmr = brd.getModelRenderer();
+        bmr.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
+    }
+
 }
