@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.packet;
+package red.felnull.otyacraftengine.fabric.packet;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -7,13 +7,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.packet.IPacketMessage;
+import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
+import red.felnull.otyacraftengine.packet.IPacketMessageServerHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public class PacketHandlerFabric {
+public class PacketHandler {
     private static final Map<Class<? extends IPacketMessage>, ResourceLocation> LOCATIONS = new HashMap<>();
     private static int svnumber;
     private static int clnumber;

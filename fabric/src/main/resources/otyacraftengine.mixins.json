@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "red.felnull.otyacraftengine.mixin.fabric",
+  "package": "red.felnull.otyacraftengine.fabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BottleItemMixin",

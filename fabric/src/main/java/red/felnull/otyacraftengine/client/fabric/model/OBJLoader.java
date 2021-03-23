@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.client.model.fabric;
+package red.felnull.otyacraftengine.client.fabric.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Optional;
 
 //https://github.com/OnyxStudios/FOML <-参考
-public class FabricOBJLoader {
-    private static final FabricOBJLoader INSTANCE = new FabricOBJLoader();
+public class OBJLoader {
+    private static final OBJLoader INSTANCE = new OBJLoader();
     public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(ItemTransforms.class, new ItemTransforms.Deserializer()).registerTypeAdapter(ItemTransform.class, new ItemTransform.Deserializer()).create();
 
-    public static FabricOBJLoader getInstance() {
+    public static OBJLoader getInstance() {
         return INSTANCE;
     }
 
@@ -58,7 +58,7 @@ public class FabricOBJLoader {
             try {
                 InputStreamReader reader = new InputStreamReader(resourceManager.getResource(location).getInputStream());
                 Obj obj = ObjUtils.convertToRenderable(ObjReader.read(reader));
-                return new FabricOBJModel(obj, loadMTL(location, obj.getMtlFileNames()), transforms);
+                return new OBJUnbakedModelModel(obj, loadMTL(location, obj.getMtlFileNames()), transforms);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

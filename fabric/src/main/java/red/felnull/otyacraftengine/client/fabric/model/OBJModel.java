@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.client.model.fabric;
+package red.felnull.otyacraftengine.client.fabric.model;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class FabricOBJBakedModel implements BakedModel, FabricBakedModel {
+public class OBJModel implements BakedModel, FabricBakedModel {
     private final Mesh mesh;
     private final ItemTransforms transforms;
     private final TextureAtlasSprite atlasSprite;
 
-    public FabricOBJBakedModel(Mesh mesh, ItemTransforms transforms, TextureAtlasSprite atlasSprite) {
+    public OBJModel(Mesh mesh, ItemTransforms transforms, TextureAtlasSprite atlasSprite) {
         this.mesh = mesh;
         this.transforms = transforms;
         this.atlasSprite = atlasSprite;

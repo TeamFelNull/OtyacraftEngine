@@ -1,9 +1,7 @@
 package red.felnull.otyacraftengine;
 
 import net.fabricmc.api.ModInitializer;
-import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
-import red.felnull.otyacraftengine.client.TestFabricEvent;
-import red.felnull.otyacraftengine.init.fabric.RegistryInit;
+import red.felnull.otyacraftengine.fabric.init.RegistryInit;
 
 public class OtyacraftEngineFabric implements ModInitializer {
     @Override

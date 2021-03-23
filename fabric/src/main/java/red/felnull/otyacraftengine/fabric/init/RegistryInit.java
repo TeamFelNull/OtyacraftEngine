@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.init.fabric;
+package red.felnull.otyacraftengine.fabric.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;

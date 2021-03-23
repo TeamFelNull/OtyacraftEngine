@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.client.model.fabric;
+package red.felnull.otyacraftengine.client.fabric.model;
 
 import de.javagl.obj.Mtls;
 

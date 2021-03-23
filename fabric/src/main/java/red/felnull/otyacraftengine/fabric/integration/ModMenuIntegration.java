@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.integration.fabric;
+package red.felnull.otyacraftengine.fabric.integration;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

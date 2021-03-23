@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.client.model.fabric;
+package red.felnull.otyacraftengine.client.fabric.model;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Function;
 
-public class FabricOBJModel implements UnbakedModel {
+public class OBJUnbakedModelModel implements UnbakedModel {
     public static final Material DEFAULT_SPRITE = new Material(InventoryMenu.BLOCK_ATLAS, null);
 
     private final Obj modelObj;
@@ -29,7 +29,7 @@ public class FabricOBJModel implements UnbakedModel {
     private final ItemTransforms transforms;
     private final Material material;
 
-    public FabricOBJModel(Obj modelObj, Map<String, OBJMtlData> mtls, ItemTransforms transforms) {
+    public OBJUnbakedModelModel(Obj modelObj, Map<String, OBJMtlData> mtls, ItemTransforms transforms) {
         this.modelObj = ObjUtils.triangulate(modelObj);
         this.mtls = mtls;
         this.transforms = transforms;
@@ -100,8 +100,7 @@ public class FabricOBJModel implements UnbakedModel {
             }
             mesh = builder.build();
         }
-
-        return new FabricOBJBakedModel(mesh, transforms, function.apply(material));
+        return new OBJModel(mesh, transforms, function.apply(material));
     }
 
     private void addVertex(int faceIndex, int vertIndex, Vector3f vertex, FloatTuple normal, QuadEmitter emitter, Obj matGroup, boolean degenerate, ModelState modelState) {

@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.mixin.fabric;
+package red.felnull.otyacraftengine.fabric.mixin;
 
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
