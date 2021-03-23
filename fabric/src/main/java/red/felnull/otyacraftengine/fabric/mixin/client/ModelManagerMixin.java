@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.mixin.fabric.client;
+package red.felnull.otyacraftengine.fabric.mixin.client;
 
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelManager;
