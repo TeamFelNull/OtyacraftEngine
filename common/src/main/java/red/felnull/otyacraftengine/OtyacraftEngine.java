@@ -23,7 +23,6 @@ public class OtyacraftEngine {
         LOGGER.info("Otyacraft Engine Initialize");
         OERegistries.init(api);
         OEPackets.init();
-
         if (api.isTestMode()) {
             test();
         }

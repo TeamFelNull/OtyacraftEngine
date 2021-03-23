@@ -10,5 +10,9 @@
   "tooltip.tag.block": "ブロックのタグ",
   "tooltip.tag.fluid": "液体のタグ",
   "tooltip.tag.entitytype": "エンティティタイプのタグ",
+  "_comment.c": "Config",
+  "text.autoconfig.otyacraftengine.title": "Otyacraft Engineの設定",
+  "text.autoconfig.otyacraftengine.option.testMode": "テストモード",
+  "text.autoconfig.otyacraftengine.option.debugMode": "デバッグモード",
   "_comment.la": "Last"
 }

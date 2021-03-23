@@ -4,6 +4,7 @@ plugins {
 
 configurations {
     shadow
+    compile.extendsFrom(shadow)
 }
 
 architectury {
