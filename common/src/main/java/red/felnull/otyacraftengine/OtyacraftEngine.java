@@ -1,12 +1,14 @@
 package red.felnull.otyacraftengine;
 
-import net.minecraft.world.level.biome.Biome;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
+import red.felnull.otyacraftengine.config.OEConfig;
 import red.felnull.otyacraftengine.fluid.TestFluid;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;
@@ -14,9 +16,8 @@ import red.felnull.otyacraftengine.packet.OEPackets;
 public class OtyacraftEngine {
     public static final Logger LOGGER = LogManager.getLogger(OtyacraftEngine.class);
     public static final String MODID = "otyacraftengine";
+    public static final OEConfig CONFIG = AutoConfig.register(OEConfig.class, Toml4jConfigSerializer::new).getConfig();
     private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
-
-    public static Biome testBiome;
 
     public static void init() {
         LOGGER.info("Otyacraft Engine Initialize");

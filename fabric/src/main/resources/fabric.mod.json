@@ -24,6 +24,9 @@
     ],
     "otyacraftengine": [
       "red.felnull.otyacraftengine.integration.OtyacraftEngineIntegration"
+    ],
+    "modmenu": [
+      "red.felnull.otyacraftengine.integration.fabric.ModMenuIntegration"
     ]
   },
   "depends": {

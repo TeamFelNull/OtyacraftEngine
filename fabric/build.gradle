@@ -22,7 +22,7 @@ dependencies {
     modApi "me.shedaniel:architectury:${rootProject.architectury_version}:fabric"
     modApi "com.terraformersmc:modmenu:${modmenu_version}"
 
-    modApi include("me.shedaniel.cloth:cloth-config:${cloth_config_version}:fabric") {
+    modApi include("me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}:fabric") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
