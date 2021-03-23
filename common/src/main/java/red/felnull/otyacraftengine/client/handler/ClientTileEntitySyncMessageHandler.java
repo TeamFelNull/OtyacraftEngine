@@ -18,20 +18,17 @@ public class ClientTileEntitySyncMessageHandler implements IPacketMessageClientH
         if (!mc.level.dimension().location().equals(message.dimension))
             return true;
 
-
         BlockEntity be = mc.level.getBlockEntity(message.pos);
 
-        if (be == null)
+        if (!(be instanceof IClientSyncbleBlockEntity))
             return true;
 
         ResourceLocation belocation = Registry.BLOCK_ENTITY_TYPE.getKey(be.getType());
 
-        if (belocation == null || !belocation.equals(message.tileName))
+        if (!message.beName.equals(belocation))
             return true;
 
-        if (be instanceof IClientSyncbleBlockEntity) {
-            ((IClientSyncbleBlockEntity) be).clientSyncble(message.syncedData);
-        }
+        ((IClientSyncbleBlockEntity) be).clientSyncble(message.syncedData);
 
         return true;
     }

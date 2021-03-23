@@ -1,12 +1,11 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 
-public class TestScreen extends Screen {
+public class TestScreen extends IkisugiScreen {
     public TestScreen() {
         super(new TextComponent("test"));
     }

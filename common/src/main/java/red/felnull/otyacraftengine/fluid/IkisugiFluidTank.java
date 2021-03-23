@@ -4,6 +4,7 @@ import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.utils.Fraction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
+import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class IkisugiFluidTank {
     private int capacity;
@@ -116,7 +117,7 @@ public class IkisugiFluidTank {
 
     public void setAmount(int value) {
         FluidStack stack = fluid.copy();
-        stack.setAmount(Fraction.ofWhole(Math.min(Math.max(value, 0), capacity)));
+        stack.setAmount(Fraction.ofWhole(IKSGMath.clamp(value, 0, capacity)));
         setFluidStack(stack);
         update(false);
     }

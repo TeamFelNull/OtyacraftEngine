@@ -5,31 +5,32 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-
-public class ClientTileEntitySyncMessage implements IPacketMessage {
+public class BlockEntityInstructionReturnMessage implements IPacketMessage {
     public ResourceLocation dimension;
     public BlockPos pos;
     public ResourceLocation beName;
-    public CompoundTag syncedData;
+    public String name;
+    public CompoundTag data;
 
-    public ClientTileEntitySyncMessage() {
+    public BlockEntityInstructionReturnMessage() {
 
     }
 
-    public ClientTileEntitySyncMessage(ResourceLocation dimension, BlockPos pos, ResourceLocation beName, CompoundTag syncedData) {
+    public BlockEntityInstructionReturnMessage(ResourceLocation dimension, BlockPos pos, ResourceLocation beName, String name, CompoundTag data) {
         this.dimension = dimension;
         this.pos = pos;
         this.beName = beName;
-        this.syncedData = syncedData;
+        this.name = name;
+        this.data = data;
     }
-
 
     @Override
     public void decode(FriendlyByteBuf buffer) {
         this.dimension = buffer.readResourceLocation();
         this.pos = buffer.readBlockPos();
         this.beName = buffer.readResourceLocation();
-        this.syncedData = buffer.readNbt();
+        this.name = buffer.readUtf(32767);
+        this.data = buffer.readNbt();
     }
 
     @Override
@@ -37,6 +38,7 @@ public class ClientTileEntitySyncMessage implements IPacketMessage {
         buffer.writeResourceLocation(dimension);
         buffer.writeBlockPos(pos);
         buffer.writeResourceLocation(beName);
-        buffer.writeNbt(syncedData);
+        buffer.writeUtf(name);
+        buffer.writeNbt(data);
     }
 }
