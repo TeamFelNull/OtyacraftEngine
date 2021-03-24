@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import red.felnull.otyacraftengine.blockentity.IIkisugibleBlockEntity;
+import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestTankBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGFluidUtil;
@@ -59,7 +60,7 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
     }
 
     @Override
-    public BlockEntityType<? extends IIkisugibleBlockEntity> getTickerBlockEntityType() {
+    public BlockEntityType<? extends ITickbleBlockEntity> getTickerBlockEntityType() {
         return TestBlockEntity.TEST_TANK_BLOCKENTITY;
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.IIkisugibleBlockEntity;
+import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
@@ -69,7 +70,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
     }
 
     @Override
-    public BlockEntityType<? extends IIkisugibleBlockEntity> getTickerBlockEntityType() {
+    public BlockEntityType<? extends ITickbleBlockEntity> getTickerBlockEntityType() {
         return TestBlockEntity.TEST_BLOCKENTITY;
     }
 }
