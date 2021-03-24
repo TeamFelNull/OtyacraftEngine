@@ -149,4 +149,8 @@ public class IkisugiFluidTank {
         return fluid.isEmpty() || getAmount() <= 0;
     }
 
+    public double getAmountPercent() {
+        return (double) getAmount() / (double) capacity;
+    }
+
 }

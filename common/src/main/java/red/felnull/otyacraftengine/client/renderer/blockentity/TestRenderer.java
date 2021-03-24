@@ -27,9 +27,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         float val = blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
-        IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
-        IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
-        IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
+        //  IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
+        //   IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
+        //  IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         testRender(blockEntity, partialTicks, poseStack, multiBufferSource, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
@@ -41,6 +41,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
     private static void testRender(TestBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLightIn, int combinedOverlayIn) {
         float pix = 1f / 16f;
         //   IKSGRenderUtil.renderSpritePanel(BEACON_LOCATION, poseStack, multiBufferSource, -1, 0, 0, 0, 180, 0, pix * 10.5f, pix * 7.5f, 0, 0, 199, 122, 199, 122, combinedOverlayIn, combinedLightIn);
-        IKSGRenderUtil.renderFluid(Fluids.WATER, blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, multiBufferSource, 0.5d, pix * 1, pix * 1, pix * 3, pix * 14f, pix * 14f, combinedLightIn, combinedOverlayIn);
+        //IKSGRenderUtil.renderFluid(Fluids.WATER, blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, multiBufferSource, 0.5d, pix * 1, pix * 1, pix * 3, pix * 14f, pix * 14f, combinedLightIn, combinedOverlayIn);
+
+        IKSGRenderUtil.renderFluid(Fluids.LAVA, poseStack, multiBufferSource, 1d, pix * 3, pix * 1, pix * 3, pix * 10, pix * 14, combinedLightIn, combinedOverlayIn);
+
     }
 }
