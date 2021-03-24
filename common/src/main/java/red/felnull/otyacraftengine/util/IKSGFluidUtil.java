@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.util;
 import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.registry.DeferredRegister;
 import me.shedaniel.architectury.utils.Fraction;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.*;
 import red.felnull.otyacraftengine.blockentity.IIkisugibleFluidTankBlockEntity;
 import red.felnull.otyacraftengine.fluid.FluidData;
 import red.felnull.otyacraftengine.fluid.FluidProperties;
@@ -230,5 +229,19 @@ public class IKSGFluidUtil {
             return ((IIkisugibleFluidTankItem) stack.getItem()).canNotIncompleteFluidItem();
         }
         return OEExpectPlatform.canNotIncompleteFluidItem(stack);
+    }
+
+    public static FluidProperties createVanillaFluidProperties(Fluid fluid) {
+
+        if (fluid instanceof EmptyFluid)
+            return new FluidProperties().stillTexture(null).flowingTexture(null).color(0).density(0).temperature(0).lightLevel(0).viscosity(0);
+
+        if (fluid instanceof WaterFluid)
+            return new FluidProperties().stillTexture(new ResourceLocation("block/water_still")).flowingTexture(new ResourceLocation("block/water_flow")).color(0xFF3F76E4).density(0).temperature(0).lightLevel(0).viscosity(0).worldColor((n, m) -> BiomeColors.getAverageWaterColor(n, m) | 0xFF000000);
+
+        if (fluid instanceof LavaFluid)
+            return new FluidProperties().stillTexture(new ResourceLocation("block/lava_still")).flowingTexture(new ResourceLocation("block/lava_flow")).density(3000).temperature(1300).lightLevel(15).viscosity(6000);
+
+        throw new RuntimeException("Can't create not Vanilla Fluid properties");
     }
 }

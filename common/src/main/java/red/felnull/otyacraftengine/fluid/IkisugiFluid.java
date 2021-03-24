@@ -22,7 +22,7 @@ import red.felnull.otyacraftengine.item.IkisugiBucketItem;
 
 import java.util.Optional;
 
-public class IkisugiFluid extends FlowingFluid {
+public class IkisugiFluid extends FlowingFluid implements IIkisugibleFluid {
     private final FluidProperties properties;
     private final FluidData data;
     private final boolean source;
@@ -37,6 +37,7 @@ public class IkisugiFluid extends FlowingFluid {
         this.source = isSource;
     }
 
+    @Override
     public FluidProperties getProperties() {
         return properties;
     }

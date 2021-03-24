@@ -80,6 +80,6 @@ public class RenderHandler implements ClientSpriteRegistryCallback, SimpleSynchr
 
     @Override
     public int getFluidColor(@Nullable BlockAndTintGetter view, @Nullable BlockPos pos, FluidState state) {
-        return ((IkisugiFluid) state.getType()).getProperties().getColor();
+        return ((IkisugiFluid) state.getType()).getProperties().getWorldColor(view, pos);
     }
 }

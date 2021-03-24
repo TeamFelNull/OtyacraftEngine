@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
+import red.felnull.otyacraftengine.fluid.IIkisugibleFluid;
 import red.felnull.otyacraftengine.util.IKSGColorUtil;
 
 import java.util.HashMap;
@@ -187,29 +188,41 @@ public class IKSGRenderUtil {
         poseStack.popPose();
     }
 
+    public static void renderFluid(Fluid fluid, BlockAndTintGetter getter, BlockPos pos, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
+        if (fluid instanceof IIkisugibleFluid) {
+            if (getter != null && pos != null)
+                renderFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getWorldColor(getter, pos), poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
+            else
+                renderFluid(fluid, poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
+        }
+    }
 
-    public static void renderFluid(Fluid fluid, PoseStack poseStack, MultiBufferSource mbs, boolean flow, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
-        ResourceLocation location = new ResourceLocation("block/water_still");
+    public static void renderFluid(Fluid fluid, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
+        if (fluid instanceof IIkisugibleFluid) {
+            renderFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getColor(), poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
+        }
+    }
+
+    private static void renderFluid(Fluid fluid, int color, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
+        ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
         TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
-        int color = 1919;
         float r = (float) IKSGColorUtil.getRed(color) / 255f;
         float g = (float) IKSGColorUtil.getGreen(color) / 255f;
         float b = (float) IKSGColorUtil.getBlue(color) / 255f;
-        float a = (float) IKSGColorUtil.getAlpha(color) / 255f;
+        float a = 1;//(float) IKSGColorUtil.getAlpha(color) / 255f;
 
         float hight = (float) (h * parsent);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y + hight, z + w, r, g, b, 1 - a, -90, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y + hight, z + w, r, g, b, a, -90, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z, r, g, b, 1 - a, 0, 180, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z, r, g, b, a, 0, 180, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z + h, r, g, b, 1 - a, 0, 90, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z + h, r, g, b, a, 0, 90, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z + h, r, g, b, 1 - a, 0, 0, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z + h, r, g, b, a, 0, 0, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, 1 - a, 0, 270, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, a, 0, 270, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
 
-        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, 1 - a, -270, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
-
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, a, -270, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
     }
 }

@@ -1,9 +1,11 @@
 package red.felnull.otyacraftengine.fluid;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.BlockAndTintGetter;
 
 public class FluidProperties {
     private int color = 0xFFFFFFFF;
@@ -26,6 +28,12 @@ public class FluidProperties {
     private float explosionResistance = 1;
     private int slopeFindDistance = 4;
     private boolean canMultiply;
+    private WorldFluidColor worldColor = (getter, pos) -> getColor();
+
+    public FluidProperties worldColor(WorldFluidColor worldColor) {
+        this.worldColor = worldColor;
+        return this;
+    }
 
     public FluidProperties multiply() {
         this.canMultiply = true;
@@ -210,5 +218,13 @@ public class FluidProperties {
 
     public boolean isCanMultiply() {
         return canMultiply;
+    }
+
+    public int getWorldColor(BlockAndTintGetter getter, BlockPos pos) {
+        return worldColor.getColor(getter, pos);
+    }
+
+    public static interface WorldFluidColor {
+        int getColor(BlockAndTintGetter getter, BlockPos pos);
     }
 }
