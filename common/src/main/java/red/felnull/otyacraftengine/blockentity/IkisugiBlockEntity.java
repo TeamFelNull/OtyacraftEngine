@@ -13,7 +13,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import red.felnull.otyacraftengine.packet.ClientTileEntitySyncMessage;
 import red.felnull.otyacraftengine.util.IKSGPacketUtil;
 
-public abstract class IkisugiBlockEntity extends BlockEntity implements IIkisugibleBlockEntity, IClientSyncbleBlockEntity, IInstructionBlockEntity {
+public abstract class IkisugiBlockEntity extends BlockEntity implements IIkisugibleBlockEntity, ITickbleBlockEntity, IClientSyncbleBlockEntity, IInstructionBlockEntity {
     public IkisugiBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -52,5 +52,15 @@ public abstract class IkisugiBlockEntity extends BlockEntity implements IIkisugi
     @Override
     public boolean isUsableByPlayer(Player player) {
         return this.level.getBlockEntity(getBlockPos()) == this && player.distanceToSqr((double) getBlockPos().getX() + 0.5D, (double) getBlockPos().getY() + 0.5D, (double) getBlockPos().getZ() + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public void tick() {
+
+    }
+
+    @Override
+    public boolean tickble() {
+        return false;
     }
 }

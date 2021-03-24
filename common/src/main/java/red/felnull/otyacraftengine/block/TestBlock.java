@@ -6,18 +6,17 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.blockentity.IIkisugibleBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
@@ -65,15 +64,12 @@ public class TestBlock extends IkisugiBaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (!level.isClientSide && blockEntityType == TestBlockEntity.TEST_BLOCKENTITY) {
-            return (level1, blockPos, blockState1, blockEntity) -> TestBlockEntity.serverTick(level1, blockPos, blockState1, (TestBlockEntity) blockEntity);
-        }
-        return null;
+    public RenderShape getRenderShape(BlockState blockState) {
+        return RenderShape.INVISIBLE;
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.INVISIBLE;
+    public BlockEntityType<? extends IIkisugibleBlockEntity> getTickerBlockEntityType() {
+        return TestBlockEntity.TEST_BLOCKENTITY;
     }
 }

@@ -4,7 +4,6 @@ import me.shedaniel.architectury.registry.DeferredRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import red.felnull.otyacraftengine.OtyacraftEngine;
@@ -32,14 +31,19 @@ public class TestBlockEntity extends IkisugiBlockEntity {
         super(TEST_BLOCKENTITY, blockPos, blockState);
     }
 
-    public static void serverTick(Level level, BlockPos blockPos, BlockState blockState, TestBlockEntity testblockentity) {
-        testblockentity.currentValue += 5;
+    @Override
+    public void tick() {
+        if (!level.isClientSide()) {
+            currentValue += 5;
+            //  testblockentity.preCurrentValue = testblockentity.currentValue + 5;
+            setChanged();
+            syncble();
+        }
+    }
 
-        //  testblockentity.preCurrentValue = testblockentity.currentValue + 5;
-
-        setChanged(level, blockPos, blockState);
-
-        testblockentity.syncble();
+    @Override
+    public boolean tickble() {
+        return true;
     }
 
     @Override
