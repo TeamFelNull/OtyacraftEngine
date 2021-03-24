@@ -5,17 +5,23 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
+import red.felnull.otyacraftengine.util.IKSGColorUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -135,4 +141,75 @@ public class IKSGRenderUtil {
         bmr.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
     }
 
+    public static RenderType getTextuerRenderType(ResourceLocation locationIn) {
+        return RenderType.text(locationIn);
+    }
+
+    public static void renderSpritePanel(ResourceLocation texlocation, PoseStack poseStack, MultiBufferSource multiBufferSource, float x, float y, float z, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, float texSizeW, float texSizeH, int combinedOverlayIn, int combinedLightIn) {
+        renderSpritePanel(texlocation, poseStack, multiBufferSource, x, y, z, 1f, 1f, 1f, 1f, pitch, yaw, roll, w, h, texStartX, texStartY, texFinishX, texFinishY, texSizeW, texSizeH, combinedOverlayIn, combinedLightIn);
+    }
+
+    public static void renderSpritePanel(ResourceLocation texlocation, PoseStack poseStack, MultiBufferSource multiBufferSource, float x, float y, float z, float r, float g, float b, float a, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, float texSizeW, float texSizeH, int combinedOverlayIn, int combinedLightIn) {
+        poseStack.pushPose();
+        matrixRotateDegreefY(poseStack, yaw);
+        matrixRotateDegreefX(poseStack, pitch);
+        matrixRotateDegreefZ(poseStack, roll);
+        VertexConsumer vc = multiBufferSource.getBuffer(getTextuerRenderType(texlocation));
+        float wst = texStartX / texSizeW;
+        float wft = texFinishX / texSizeW + wst;
+        float hst = texStartY / texSizeH;
+        float hft = texFinishY / texSizeH + hst;
+        PoseStack.Pose pose = poseStack.last();
+        vertexed(vc, pose, 0, 0, 0, texStartX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, w, 0, 0, texFinishX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, w, h, 0, texFinishX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, 0, h, 0, texStartX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        poseStack.popPose();
+    }
+
+    private static void vertexed(VertexConsumer builder, PoseStack.Pose pose, float x, float y, float z, float u, float v, float r, float g, float b, float a, int combinedOverlayIn, int combinedLightIn) {
+        builder.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(combinedOverlayIn).uv2(combinedLightIn).normal(pose.normal(), 0f, 0f, 0f).endVertex();
+    }
+
+    public static void renderSpritePanel(TextureAtlasSprite sprite, PoseStack poseStack, MultiBufferSource multiBufferSource, float x, float y, float z, float r, float g, float b, float a, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, int combinedOverlayIn, int combinedLightIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        matrixRotateDegreefY(poseStack, yaw);
+        matrixRotateDegreefX(poseStack, pitch);
+        matrixRotateDegreefZ(poseStack, roll);
+        VertexConsumer vc = multiBufferSource.getBuffer(RenderType.text(sprite.atlas().location()));
+
+        PoseStack.Pose pose = poseStack.last();
+        vertexed(vc, pose, 0, 0, 0, texStartX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, w, 0, 0, texFinishX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, w, h, 0, texFinishX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertexed(vc, pose, 0, h, 0, texStartX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        poseStack.popPose();
+    }
+
+
+    public static void renderFluid(Fluid fluid, PoseStack poseStack, MultiBufferSource mbs, boolean flow, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
+        ResourceLocation location = new ResourceLocation("block/water_still");
+        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        int color = 1919;
+        float r = (float) IKSGColorUtil.getRed(color) / 255f;
+        float g = (float) IKSGColorUtil.getGreen(color) / 255f;
+        float b = (float) IKSGColorUtil.getBlue(color) / 255f;
+        float a = (float) IKSGColorUtil.getAlpha(color) / 255f;
+
+        float hight = (float) (h * parsent);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y + hight, z + w, r, g, b, 1 - a, -90, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z, r, g, b, 1 - a, 0, 180, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x + w, y, z + h, r, g, b, 1 - a, 0, 90, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z + h, r, g, b, 1 - a, 0, 0, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, 1 - a, 0, 270, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
+
+        IKSGRenderUtil.renderSpritePanel(sprite, poseStack, mbs, x, y, z, r, g, b, 1 - a, -270, 0, 0, w, h, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
+
+    }
 }
