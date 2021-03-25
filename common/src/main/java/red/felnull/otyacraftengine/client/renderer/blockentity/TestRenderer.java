@@ -27,9 +27,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         float val = blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
-        //  IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
-        //   IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
-        //  IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
+        IKSGRenderUtil.matrixRotateDegreefX(poseStack, val);
+        IKSGRenderUtil.matrixRotateDegreefY(poseStack, val);
+        IKSGRenderUtil.matrixRotateDegreefZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         testRender(blockEntity, partialTicks, poseStack, multiBufferSource, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
