@@ -26,9 +26,7 @@ public abstract class IkisugiBaseEntityBlock extends BaseEntityBlock implements 
         return Registry.BLOCK.getKey(this);
     }
 
-    public BlockEntityType<?> getBlockEntityType() {
-        return null;
-    }
+    abstract public BlockEntityType<?> getBlockEntityType();
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {

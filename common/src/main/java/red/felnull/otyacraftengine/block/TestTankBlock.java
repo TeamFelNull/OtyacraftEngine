@@ -8,10 +8,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestTankBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGFluidUtil;
 
@@ -56,5 +58,8 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-
+    @Override
+    public BlockEntityType<?> getBlockEntityType() {
+        return TestBlockEntity.TEST_TANK_BLOCKENTITY;
+    }
 }
