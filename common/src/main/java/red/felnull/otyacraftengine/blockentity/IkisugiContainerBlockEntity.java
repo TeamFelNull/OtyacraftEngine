@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.blockentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +10,8 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
+import red.felnull.otyacraftengine.util.IKSGContainerUtil;
 
 public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEntity implements IIkisugibleBlockEntity {
 
@@ -68,5 +71,45 @@ public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEnti
     @Override
     public void clearContent() {
         getItems().clear();
+    }
+
+    @Override
+    public CompoundTag save(CompoundTag compoundTag) {
+        super.save(compoundTag);
+        ContainerHelper.saveAllItems(compoundTag, getItems());
+        if (isTank()) {
+            IKSGContainerUtil.saveAllTanks(compoundTag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks());
+        }
+        return compoundTag;
+    }
+
+    @Override
+    public void load(CompoundTag compoundTag) {
+        super.load(compoundTag);
+        ContainerHelper.loadAllItems(compoundTag, getItems());
+        if (isTank()) {
+            IKSGContainerUtil.loadAllTanks(compoundTag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks());
+        }
+    }
+
+    public CompoundTag saveToTag(CompoundTag tag) {
+        ContainerHelper.saveAllItems(tag, getItems(), false);
+        if (isTank()) {
+            IKSGContainerUtil.saveAllTanks(tag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks(), false);
+        }
+        return tag;
+    }
+
+    public boolean isAllEmpty() {
+        boolean flag1 = isEmpty();
+        boolean flag2 = true;
+        if (isTank()) {
+            flag2 = ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks().stream().allMatch(IkisugiFluidTank::isEmpty);
+        }
+        return flag1 && flag2;
+    }
+
+    public boolean isTank() {
+        return this instanceof IIkisugibleFluidTankBlockEntity;
     }
 }

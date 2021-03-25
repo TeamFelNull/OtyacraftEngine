@@ -7,8 +7,14 @@ import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class IkisugiFluidTank {
+    public static final IkisugiFluidTank EMPTY = new IkisugiFluidTank(0);
+
     private int capacity;
     private FluidStack fluid = FluidStack.empty();
+
+    public IkisugiFluidTank() {
+
+    }
 
     public IkisugiFluidTank(int capacity) {
         this.capacity = capacity;
@@ -32,11 +38,13 @@ public class IkisugiFluidTank {
 
     public CompoundTag save(CompoundTag compoundTag) {
         compoundTag.put("Fluid", fluid.write(new CompoundTag()));
+        compoundTag.putInt("Capacity", capacity);
         return compoundTag;
     }
 
     public void load(CompoundTag compoundTag) {
         fluid = FluidStack.read(compoundTag.getCompound("Fluid"));
+        capacity = compoundTag.getInt("Capacity");
     }
 
     public int getAmount() {

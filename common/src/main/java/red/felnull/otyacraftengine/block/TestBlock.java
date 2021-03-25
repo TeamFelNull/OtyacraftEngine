@@ -10,14 +10,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.blockentity.IIkisugibleBlockEntity;
-import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
@@ -44,7 +41,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         MOD_BLOCKITEMS_REGISTER.register();
     }
 
-    public TestBlock(Properties properties) {
+    public TestBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
@@ -69,8 +66,5 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         return RenderShape.INVISIBLE;
     }
 
-    @Override
-    public BlockEntityType<? extends ITickbleBlockEntity> getTickerBlockEntityType() {
-        return TestBlockEntity.TEST_BLOCKENTITY;
-    }
+
 }

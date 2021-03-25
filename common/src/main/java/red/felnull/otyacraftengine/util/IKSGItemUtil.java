@@ -1,9 +1,12 @@
 package red.felnull.otyacraftengine.util;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+
 
 public class IKSGItemUtil {
     public static ItemStack copyStackWithSize(ItemStack itemStack, int size) {
@@ -45,4 +48,13 @@ public class IKSGItemUtil {
         return createPlayerHead(player.getGameProfile().getName());
     }
 
+    public static ItemEntity createItemEntity(ItemStack item, Level level, double x, double y, double z) {
+        ItemEntity iteme = new ItemEntity(level, x, y, z, item);
+        iteme.setDefaultPickUpDelay();
+        return iteme;
+    }
+
+    public static void spawnItemEntity(ItemStack item, Level level, double x, double y, double z) {
+        level.addFreshEntity(createItemEntity(item, level, x, y, z));
+    }
 }

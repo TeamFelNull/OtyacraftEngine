@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
-import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
-import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
 
 public abstract class IkisugiBaseEntityBlock extends BaseEntityBlock implements IIkisugibleBlock {
     protected IkisugiBaseEntityBlock(Properties properties) {
@@ -28,13 +26,13 @@ public abstract class IkisugiBaseEntityBlock extends BaseEntityBlock implements 
         return Registry.BLOCK.getKey(this);
     }
 
-    public BlockEntityType<? extends ITickbleBlockEntity> getTickerBlockEntityType() {
+    public BlockEntityType<?> getBlockEntityType() {
         return null;
     }
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == getTickerBlockEntityType()) {
+        if (blockEntityType == getBlockEntityType()) {
             return (level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof ITickbleBlockEntity && ((ITickbleBlockEntity) blockEntity).tickble()) {
                     ((ITickbleBlockEntity) blockEntity).tick();

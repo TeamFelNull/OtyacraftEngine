@@ -8,18 +8,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-import red.felnull.otyacraftengine.blockentity.IIkisugibleBlockEntity;
-import red.felnull.otyacraftengine.blockentity.ITickbleBlockEntity;
-import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestTankBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGFluidUtil;
 
 public class TestTankBlock extends IkisugiBaseEntityBlock {
-    protected TestTankBlock(Properties properties) {
+    protected TestTankBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
@@ -36,8 +33,8 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
             if (!level.isClientSide()) {
                 if (level.getBlockEntity(blockPos) instanceof TestTankBlockEntity) {
                     TestTankBlockEntity ttbe = (TestTankBlockEntity) level.getBlockEntity(blockPos);
-                    player.displayClientMessage(new TextComponent("Fluid: ").append(ttbe.getTank().getFluidStack().getName()), false);
-                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getTank().getFluidStack().getAmount().intValue() + "mb").append("/").append(ttbe.getTank().getCapacity() + "mb"), false);
+                    player.displayClientMessage(new TextComponent("Fluid: ").append(ttbe.getFluidTank(0).getFluidStack().getName()), false);
+                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getFluidTank(0).getFluidStack().getAmount().intValue() + "mb").append("/").append(ttbe.getFluidTank(0).getCapacity() + "mb"), false);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
@@ -59,8 +56,5 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    @Override
-    public BlockEntityType<? extends ITickbleBlockEntity> getTickerBlockEntityType() {
-        return TestBlockEntity.TEST_TANK_BLOCKENTITY;
-    }
+
 }
