@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
-import red.felnull.otyacraftengine.item.IIkisugibleFluidTankItem;
+import red.felnull.otyacraftengine.item.IIkisugibleNotIncompleteFluidTankItem;
 
 import java.util.Optional;
 
 @Mixin(BucketItem.class)
-public class BucketItemMixin implements IIkisugibleFluidTankItem {
+public class BucketItemMixin implements IIkisugibleNotIncompleteFluidTankItem {
     @Shadow
     @Final
     public Fluid content;
@@ -26,25 +26,20 @@ public class BucketItemMixin implements IIkisugibleFluidTankItem {
     }
 
     @Override
-    public int getCapacity(ItemStack stack) {
+    public int getPriorityCapacity(ItemStack stack) {
         return 1000;
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getFluidTank(ItemStack stack) {
-        IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity(stack));
+    public Optional<IkisugiFluidTank> getPriorityFluidTank(ItemStack stack) {
+        IkisugiFluidTank ift = new IkisugiFluidTank(getPriorityCapacity(stack));
         ift.setFluid(content);
-        ift.setAmount(content == Fluids.EMPTY ? 0 : getCapacity(stack));
+        ift.setAmount(content == Fluids.EMPTY ? 0 : getPriorityCapacity(stack));
         return Optional.of(ift);
     }
 
     @Override
-    public Optional<ItemStack> setFluidTank(ItemStack stack, IkisugiFluidTank tank) {
+    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, IkisugiFluidTank tank) {
         return Optional.of(new ItemStack(tank.getFluid().getBucket()));
-    }
-
-    @Override
-    public boolean canNotIncompleteFluidItem() {
-        return true;
     }
 }

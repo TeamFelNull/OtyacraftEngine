@@ -7,8 +7,6 @@ import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;
 
 public class IkisugiFluidTank {
-    public static final IkisugiFluidTank EMPTY = new IkisugiFluidTank(0);
-
     private int capacity;
     private FluidStack fluid = FluidStack.empty();
 
@@ -18,6 +16,14 @@ public class IkisugiFluidTank {
 
     public IkisugiFluidTank(int capacity) {
         this.capacity = capacity;
+    }
+
+    public static IkisugiFluidTank createEmpty(int capacity) {
+        return new IkisugiFluidTank(capacity);
+    }
+
+    public static IkisugiFluidTank createEmpty() {
+        return new IkisugiFluidTank(0);
     }
 
     public FluidStack getFluidStack() {

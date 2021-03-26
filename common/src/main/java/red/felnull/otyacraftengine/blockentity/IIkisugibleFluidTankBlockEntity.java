@@ -12,4 +12,8 @@ public interface IIkisugibleFluidTankBlockEntity {
     NonNullList<IkisugiFluidTank> getFluidTanks();
 
     IkisugiFluidTank getFluidTank(int number);
+
+    boolean isAllFluidEmpty();
+
+    int getFluidTankSize();
 }

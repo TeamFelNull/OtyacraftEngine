@@ -2,7 +2,6 @@ package red.felnull.otyacraftengine.blockentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,11 +12,10 @@ import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
 import java.util.Optional;
 
 public class TestTankBlockEntity extends IkisugiContainerBlockEntity implements IIkisugibleFluidTankBlockEntity {
-    private final NonNullList<IkisugiFluidTank> tanks = NonNullList.withSize(1, IkisugiFluidTank.EMPTY);
 
     public TestTankBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TestBlockEntity.TEST_TANK_BLOCKENTITY, blockPos, blockState);
-        tanks.set(0, new IkisugiFluidTank(10194));
+        setFluidTankCapacity(0, 114514);
     }
 
     @Override
@@ -36,17 +34,8 @@ public class TestTankBlockEntity extends IkisugiContainerBlockEntity implements 
     }
 
     @Override
-    public NonNullList<IkisugiFluidTank> getFluidTanks() {
-        return tanks;
+    public int getFluidTankSize() {
+        return 1;
     }
 
-    @Override
-    public IkisugiFluidTank getFluidTank(int number) {
-        return tanks.get(number);
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 0;
-    }
 }

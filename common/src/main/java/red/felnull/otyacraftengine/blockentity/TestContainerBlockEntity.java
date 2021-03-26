@@ -22,9 +22,5 @@ public class TestContainerBlockEntity extends IkisugiContainerBlockEntity {
         return null;
     }
 
-    @Override
-    public int getContainerSize() {
-        return 0;
-    }
 
 }

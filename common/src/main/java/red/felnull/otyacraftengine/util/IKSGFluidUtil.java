@@ -42,7 +42,7 @@ public class IKSGFluidUtil {
     public static Optional<FluidStack> getFluidContained(ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getFluidTank(stack).map(IkisugiFluidTank::getFluidStack);
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getPriorityFluidTank(stack).map(IkisugiFluidTank::getFluidStack);
             }
             return OEExpectPlatform.getFluidContained(stack);
         }
@@ -62,7 +62,7 @@ public class IKSGFluidUtil {
     public static int getFluidItemMaxAmont(ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getCapacity(stack);
+                return ((IIkisugibleFluidTankItem) stack.getItem()).getPriorityCapacity(stack);
             }
             return OEExpectPlatform.getFluidItemMaxAmont(stack);
         }
@@ -73,10 +73,10 @@ public class IKSGFluidUtil {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
                 IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-                IkisugiFluidTank tank = new IkisugiFluidTank(ifti.getCapacity(stack));
+                IkisugiFluidTank tank = new IkisugiFluidTank(ifti.getPriorityCapacity(stack));
                 tank.setFluid(fluid);
-                tank.setAmount(ifti.getCapacity(stack));
-                return ifti.setFluidTank(stack, tank);
+                tank.setAmount(ifti.getPriorityCapacity(stack));
+                return ifti.setPriorityFluidTank(stack, tank);
             }
             return OEExpectPlatform.getFilledNotIncompleteFluidItem(stack, fluid);
         }
@@ -90,10 +90,10 @@ public class IKSGFluidUtil {
             }
             if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
                 IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-                if (ifti.getFluidTank(stack).isPresent()) {
-                    IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
+                if (ifti.getPriorityFluidTank(stack).isPresent()) {
+                    IkisugiFluidTank tank = ifti.getPriorityFluidTank(stack).get();
                     tank.reduceAmount(reducedFluid);
-                    return ifti.setFluidTank(stack, tank);
+                    return ifti.setPriorityFluidTank(stack, tank);
                 } else {
                     return Optional.of(stack);
                 }
@@ -110,10 +110,10 @@ public class IKSGFluidUtil {
         }
         if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
             IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-            if (ifti.getFluidTank(stack).isPresent()) {
-                IkisugiFluidTank tank = ifti.getFluidTank(stack).get();
+            if (ifti.getPriorityFluidTank(stack).isPresent()) {
+                IkisugiFluidTank tank = ifti.getPriorityFluidTank(stack).get();
                 tank.setFluidStack(addFluid);
-                return ifti.setFluidTank(stack, tank);
+                return ifti.setPriorityFluidTank(stack, tank);
             } else {
                 return Optional.of(stack);
             }

@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine.blockentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.ContainerHelper;
@@ -13,9 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
 import red.felnull.otyacraftengine.util.IKSGContainerUtil;
 
-public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEntity implements IIkisugibleBlockEntity {
+import java.util.Optional;
 
+public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEntity implements IIkisugibleBlockEntity, IIkisugibleFluidTankBlockEntity {
     private final NonNullList<ItemStack> items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+    private final NonNullList<IkisugiFluidTank> tanks = NonNullList.withSize(getFluidTankSize(), IkisugiFluidTank.createEmpty());
 
     protected IkisugiContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -77,9 +80,7 @@ public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEnti
     public CompoundTag save(CompoundTag compoundTag) {
         super.save(compoundTag);
         ContainerHelper.saveAllItems(compoundTag, getItems());
-        if (isTank()) {
-            IKSGContainerUtil.saveAllTanks(compoundTag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks());
-        }
+        IKSGContainerUtil.saveAllTanks(compoundTag, getFluidTanks());
         return compoundTag;
     }
 
@@ -87,29 +88,80 @@ public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEnti
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, getItems());
-        if (isTank()) {
-            IKSGContainerUtil.loadAllTanks(compoundTag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks());
-        }
+        IKSGContainerUtil.loadAllTanks(compoundTag, getFluidTanks());
     }
 
     public CompoundTag saveToTag(CompoundTag tag) {
         ContainerHelper.saveAllItems(tag, getItems(), false);
-        if (isTank()) {
-            IKSGContainerUtil.saveAllTanks(tag, ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks(), false);
-        }
+        IKSGContainerUtil.saveAllTanks(tag, getFluidTanks(), false);
         return tag;
     }
 
     public boolean isAllEmpty() {
         boolean flag1 = isEmpty();
-        boolean flag2 = true;
-        if (isTank()) {
-            flag2 = ((IIkisugibleFluidTankBlockEntity) this).getFluidTanks().stream().allMatch(IkisugiFluidTank::isEmpty);
-        }
+        boolean flag2 = isAllFluidEmpty();
+
         return flag1 && flag2;
     }
 
-    public boolean isTank() {
-        return this instanceof IIkisugibleFluidTankBlockEntity;
+    @Override
+    public CompoundTag clientSyncbleData(CompoundTag compoundTag) {
+        ContainerHelper.saveAllItems(compoundTag, getItems());
+        IKSGContainerUtil.saveAllTanks(compoundTag, getFluidTanks());
+        return compoundTag;
+    }
+
+    @Override
+    public void clientSyncble(CompoundTag compoundTag) {
+        getItems().clear();
+        ContainerHelper.loadAllItems(compoundTag, getItems());
+        getFluidTanks().clear();
+        IKSGContainerUtil.loadAllTanks(compoundTag, getFluidTanks());
+    }
+
+    @Override
+    public boolean isAllFluidEmpty() {
+        return this.getFluidTanks().stream().allMatch(IkisugiFluidTank::isEmpty);
+    }
+
+    @Override
+    public Optional<IkisugiFluidTank> getFluidTank(Direction side) {
+        return Optional.empty();
+    }
+
+    @Override
+    public NonNullList<IkisugiFluidTank> getFluidTanks() {
+        return tanks;
+    }
+
+    @Override
+    public IkisugiFluidTank getFluidTank(int number) {
+        return tanks.get(number);
+    }
+
+    @Override
+    public int getFluidTankSize() {
+        return 0;
+    }
+
+    @Override
+    public int getContainerSize() {
+        return 0;
+    }
+
+    public void setFluidTankCapacity(int number, int capacity) {
+        getFluidTank(number).setCapacity(capacity);
+    }
+
+    @Override
+    public void tick() {
+        if (!level.isClientSide()) {
+            syncble();
+        }
+    }
+
+    @Override
+    public boolean tickble() {
+        return true;
     }
 }

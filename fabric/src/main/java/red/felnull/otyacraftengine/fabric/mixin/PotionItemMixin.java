@@ -8,28 +8,28 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
 import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
-import red.felnull.otyacraftengine.item.IIkisugibleFluidTankItem;
+import red.felnull.otyacraftengine.item.IIkisugibleNotIncompleteFluidTankItem;
 
 import java.util.Optional;
 
 @Mixin(PotionItem.class)
-public class PotionItemMixin implements IIkisugibleFluidTankItem {
+public class PotionItemMixin implements IIkisugibleNotIncompleteFluidTankItem {
     @Override
     public ItemStack getEmptyFluidItem() {
         return new ItemStack(Items.GLASS_BOTTLE);
     }
 
     @Override
-    public int getCapacity(ItemStack stack) {
+    public int getPriorityCapacity(ItemStack stack) {
         return 1000 / 3;
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getFluidTank(ItemStack stack) {
+    public Optional<IkisugiFluidTank> getPriorityFluidTank(ItemStack stack) {
         if (PotionUtils.getPotion(stack) == Potions.WATER) {
-            IkisugiFluidTank ift = new IkisugiFluidTank(getCapacity(stack));
+            IkisugiFluidTank ift = new IkisugiFluidTank(getPriorityCapacity(stack));
             ift.setFluid(Fluids.WATER);
-            ift.setAmount(getCapacity(stack));
+            ift.setAmount(getPriorityCapacity(stack));
             return Optional.of(ift);
         }
 
@@ -37,15 +37,11 @@ public class PotionItemMixin implements IIkisugibleFluidTankItem {
     }
 
     @Override
-    public Optional<ItemStack> setFluidTank(ItemStack stack, IkisugiFluidTank tank) {
+    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, IkisugiFluidTank tank) {
         if (tank.getFluid() == Fluids.WATER) {
             return Optional.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER));
         }
         return Optional.empty();
     }
 
-    @Override
-    public boolean canNotIncompleteFluidItem() {
-        return true;
-    }
 }
