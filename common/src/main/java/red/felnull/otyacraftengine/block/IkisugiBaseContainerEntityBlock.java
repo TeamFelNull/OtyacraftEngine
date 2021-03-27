@@ -40,16 +40,21 @@ public abstract class IkisugiBaseContainerEntityBlock extends IkisugiBaseEntityB
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof IkisugiContainerBlockEntity && blockEntity.getType() == getBlockEntityType()) {
             IkisugiContainerBlockEntity icbe = (IkisugiContainerBlockEntity) blockEntity;
-            if (!level.isClientSide && player.isCreative() && !icbe.isAllEmpty()) {
+            if (!level.isClientSide) {
                 ItemStack itemStack = new ItemStack(blockState.getBlock());
-                CompoundTag compoundTag = icbe.saveToTag(new CompoundTag());
-                if (!compoundTag.isEmpty()) {
-                    itemStack.addTagElement("BlockEntityTag", compoundTag);
+                if (!icbe.isAllEmpty()) {
+                    CompoundTag compoundTag = icbe.saveToTag(new CompoundTag());
+                    if (!compoundTag.isEmpty()) {
+                        itemStack.addTagElement("BlockEntityTag", compoundTag);
+                    }
                 }
                 if (icbe.hasCustomName()) {
                     itemStack.setHoverName(icbe.getCustomName());
                 }
-                IKSGItemUtil.spawnItemEntity(itemStack, level, (double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
+
+                if (!player.isCreative() || !icbe.isAllEmpty()) {
+                    IKSGItemUtil.spawnItemEntity(itemStack, level, (double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
+                }
             }
         }
         super.playerWillDestroy(level, blockPos, blockState, player);
