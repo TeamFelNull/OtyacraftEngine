@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.fluid;
+package red.felnull.otyacraftengine.fluid.storage;
 
 import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.utils.Fraction;
@@ -6,24 +6,26 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;
 
-public class IkisugiFluidTank {
+public class FluidTank {
     private int capacity;
     private FluidStack fluid = FluidStack.empty();
 
-    public IkisugiFluidTank() {
-
-    }
-
-    public IkisugiFluidTank(int capacity) {
+    public FluidTank(int capacity) {
         this.capacity = capacity;
     }
 
-    public static IkisugiFluidTank createEmpty(int capacity) {
-        return new IkisugiFluidTank(capacity);
+    public static FluidTank loadTank(CompoundTag tag, int capacity) {
+        FluidTank tank = createEmpty(capacity);
+        tank.load(tag);
+        return tank;
     }
 
-    public static IkisugiFluidTank createEmpty() {
-        return new IkisugiFluidTank(0);
+    public static FluidTank createEmpty(int capacity) {
+        return new FluidTank(capacity);
+    }
+
+    public static FluidTank createEmpty() {
+        return new FluidTank(0);
     }
 
     public FluidStack getFluidStack() {
@@ -44,13 +46,11 @@ public class IkisugiFluidTank {
 
     public CompoundTag save(CompoundTag compoundTag) {
         compoundTag.put("Fluid", fluid.write(new CompoundTag()));
-        compoundTag.putInt("Capacity", capacity);
         return compoundTag;
     }
 
     public void load(CompoundTag compoundTag) {
         fluid = FluidStack.read(compoundTag.getCompound("Fluid"));
-        capacity = compoundTag.getInt("Capacity");
     }
 
     public int getAmount() {

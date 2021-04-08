@@ -17,7 +17,7 @@ import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.blockentity.TestTankBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGFluidUtil;
 
-public class TestTankBlock extends IkisugiBaseEntityBlock {
+public class TestTankBlock extends IkisugiBaseContainerEntityBlock {
     protected TestTankBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
@@ -50,16 +50,6 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
             if (IKSGFluidUtil.interactWithFluidTank(player, interactionHand, level, blockPos, blockHitResult.getDirection())) {
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
-            //    player.displayClientMessage(new TextComponent("test: " + (stack.getItem() instanceof IIkisugibleFluidTankItem)), false);
-/*
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem && level.getBlockEntity(blockPos) instanceof TestTankBlockEntity) {
-                Optional<IkisugiFluidTank> tank = ((IIkisugibleFluidTankItem) stack.getItem()).getFluidTank(stack);
-                tank.ifPresent(n->{
-                    player.displayClientMessage(new TextComponent("Fluid: ").append(n.getFluidStack().getName()), false);
-                    player.displayClientMessage(new TextComponent("Amont: " + n.getFluidStack().getAmount().intValue() + "mb"), false);
-                    player.displayClientMessage(new TextComponent("Capacity: " + n.getCapacity() + "mb"), false);
-                });
-            }*/
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
@@ -67,5 +57,10 @@ public class TestTankBlock extends IkisugiBaseEntityBlock {
     @Override
     public BlockEntityType<?> getBlockEntityType() {
         return TestBlockEntity.TEST_TANK_BLOCKENTITY;
+    }
+
+    @Override
+    public boolean isKeepContainerInventory() {
+        return true;
     }
 }

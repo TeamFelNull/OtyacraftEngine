@@ -8,7 +8,7 @@ import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
+import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 import red.felnull.otyacraftengine.item.IIkisugibleNotIncompleteFluidTankItem;
 
 import java.util.Optional;
@@ -31,15 +31,15 @@ public class BucketItemMixin implements IIkisugibleNotIncompleteFluidTankItem {
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getPriorityFluidTank(ItemStack stack) {
-        IkisugiFluidTank ift = new IkisugiFluidTank(getPriorityCapacity(stack));
+    public Optional<FluidTank> getPriorityFluidTank(ItemStack stack) {
+        FluidTank ift = new FluidTank(getPriorityCapacity(stack));
         ift.setFluid(content);
         ift.setAmount(content == Fluids.EMPTY ? 0 : getPriorityCapacity(stack));
         return Optional.of(ift);
     }
 
     @Override
-    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, IkisugiFluidTank tank) {
+    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, FluidTank tank) {
         return Optional.of(new ItemStack(tank.getFluid().getBucket()));
     }
 }

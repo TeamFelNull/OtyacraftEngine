@@ -3,18 +3,18 @@ package red.felnull.otyacraftengine.util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
+import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 
 public class IKSGContainerUtil {
-    public static CompoundTag saveAllTanks(CompoundTag compoundTag, NonNullList<IkisugiFluidTank> nonNullList) {
+    public static CompoundTag saveAllTanks(CompoundTag compoundTag, NonNullList<FluidTank> nonNullList) {
         return saveAllTanks(compoundTag, nonNullList, true);
     }
 
-    public static CompoundTag saveAllTanks(CompoundTag compoundTag, NonNullList<IkisugiFluidTank> nonNullList, boolean bl) {
+    public static CompoundTag saveAllTanks(CompoundTag compoundTag, NonNullList<FluidTank> nonNullList, boolean bl) {
         ListTag listTag = new ListTag();
 
         for (int i = 0; i < nonNullList.size(); ++i) {
-            IkisugiFluidTank tank = nonNullList.get(i);
+            FluidTank tank = nonNullList.get(i);
             if (!tank.isEmpty()) {
                 CompoundTag compoundTag2 = new CompoundTag();
                 compoundTag2.putByte("Number", (byte) i);
@@ -29,16 +29,14 @@ public class IKSGContainerUtil {
         return compoundTag;
     }
 
-    public static void loadAllTanks(CompoundTag compoundTag, NonNullList<IkisugiFluidTank> nonNullList) {
+    public static void loadAllTanks(CompoundTag compoundTag, NonNullList<FluidTank> nonNullList) {
         ListTag listTag = compoundTag.getList("Tanks", 10);
 
         for (int i = 0; i < listTag.size(); ++i) {
             CompoundTag compoundTag2 = listTag.getCompound(i);
             int j = compoundTag2.getByte("Number") & 255;
             if (j >= 0 && j < nonNullList.size()) {
-                IkisugiFluidTank tank = new IkisugiFluidTank();
-                tank.load(compoundTag2);
-                nonNullList.set(j, tank);
+                nonNullList.set(j, FluidTank.loadTank(compoundTag2, nonNullList.get(j).getCapacity()));
             }
         }
 

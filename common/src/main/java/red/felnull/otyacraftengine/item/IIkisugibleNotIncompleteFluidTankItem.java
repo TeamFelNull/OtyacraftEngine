@@ -2,7 +2,7 @@ package red.felnull.otyacraftengine.item;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
-import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
+import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 
 import java.util.Optional;
 
@@ -13,12 +13,12 @@ public interface IIkisugibleNotIncompleteFluidTankItem extends IIkisugibleFluidT
     }
 
     @Override
-    default Optional<ItemStack> setFluidTank(int number, ItemStack stack, IkisugiFluidTank tank) {
+    default Optional<ItemStack> setFluidTank(int number, ItemStack stack, FluidTank tank) {
         return number == 0 ? setPriorityFluidTank(stack, tank) : Optional.empty();
     }
 
     @Override
-    default Optional<ItemStack> setFluidTanks(ItemStack stack, NonNullList<IkisugiFluidTank> tanks) {
+    default Optional<ItemStack> setFluidTanks(ItemStack stack, NonNullList<FluidTank> tanks) {
         return Optional.empty();
     }
 
@@ -28,9 +28,9 @@ public interface IIkisugibleNotIncompleteFluidTankItem extends IIkisugibleFluidT
     }
 
     @Override
-    default Optional<NonNullList<IkisugiFluidTank>> getFluidTanks(ItemStack stack) {
+    default Optional<NonNullList<FluidTank>> getFluidTanks(ItemStack stack) {
         if (getPriorityFluidTank(stack).isPresent()) {
-            NonNullList<IkisugiFluidTank> list = NonNullList.create();
+            NonNullList<FluidTank> list = NonNullList.create();
             list.set(0, getPriorityFluidTank(stack).get());
             return Optional.of(list);
         }

@@ -5,8 +5,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import red.felnull.otyacraftengine.blockentity.container.IkisugiItemContainerBlockEntity;
 
-public class TestContainerBlockEntity extends IkisugiContainerBlockEntity {
+public class TestContainerBlockEntity extends IkisugiItemContainerBlockEntity {
 
     protected TestContainerBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(null, blockPos, blockState);
@@ -23,4 +24,8 @@ public class TestContainerBlockEntity extends IkisugiContainerBlockEntity {
     }
 
 
+    @Override
+    public int getContainerSize() {
+        return 0;
+    }
 }

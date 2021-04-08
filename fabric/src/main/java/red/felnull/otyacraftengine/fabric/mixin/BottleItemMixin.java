@@ -7,7 +7,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
-import red.felnull.otyacraftengine.fluid.IkisugiFluidTank;
+import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 import red.felnull.otyacraftengine.item.IIkisugibleNotIncompleteFluidTankItem;
 
 import java.util.Optional;
@@ -26,12 +26,12 @@ public class BottleItemMixin implements IIkisugibleNotIncompleteFluidTankItem {
     }
 
     @Override
-    public Optional<IkisugiFluidTank> getPriorityFluidTank(ItemStack stack) {
-        return Optional.of(IkisugiFluidTank.createEmpty());
+    public Optional<FluidTank> getPriorityFluidTank(ItemStack stack) {
+        return Optional.of(FluidTank.createEmpty());
     }
 
     @Override
-    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, IkisugiFluidTank tank) {
+    public Optional<ItemStack> setPriorityFluidTank(ItemStack stack, FluidTank tank) {
         if (tank.getFluid() == Fluids.WATER) {
             return Optional.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER));
         }

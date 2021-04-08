@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.Nullable;
-import red.felnull.otyacraftengine.blockentity.IkisugiContainerBlockEntity;
+import red.felnull.otyacraftengine.blockentity.container.IkisugiContainerBlockEntity;
 import red.felnull.otyacraftengine.util.IKSGItemUtil;
 
 import java.util.List;
@@ -37,23 +37,25 @@ public abstract class IkisugiBaseContainerEntityBlock extends IkisugiBaseEntityB
 
     @Override
     public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof IkisugiContainerBlockEntity && blockEntity.getType() == getBlockEntityType()) {
-            IkisugiContainerBlockEntity icbe = (IkisugiContainerBlockEntity) blockEntity;
-            if (!level.isClientSide) {
-                ItemStack itemStack = new ItemStack(blockState.getBlock());
-                if (!icbe.isAllEmpty()) {
-                    CompoundTag compoundTag = icbe.saveToTag(new CompoundTag());
-                    if (!compoundTag.isEmpty()) {
-                        itemStack.addTagElement("BlockEntityTag", compoundTag);
+        if (isKeepContainerInventory()) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof IkisugiContainerBlockEntity && blockEntity.getType() == getBlockEntityType()) {
+                IkisugiContainerBlockEntity icbe = (IkisugiContainerBlockEntity) blockEntity;
+                if (!level.isClientSide) {
+                    ItemStack itemStack = new ItemStack(blockState.getBlock());
+                    if (!icbe.isAllEmpty()) {
+                        CompoundTag compoundTag = icbe.saveToTag(new CompoundTag());
+                        if (!compoundTag.isEmpty()) {
+                            itemStack.addTagElement("BlockEntityTag", compoundTag);
+                        }
                     }
-                }
-                if (icbe.hasCustomName()) {
-                    itemStack.setHoverName(icbe.getCustomName());
-                }
+                    if (icbe.hasCustomName()) {
+                        itemStack.setHoverName(icbe.getCustomName());
+                    }
 
-                if (!player.isCreative() || !icbe.isAllEmpty()) {
-                    IKSGItemUtil.spawnItemEntity(itemStack, level, (double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
+                    if (!player.isCreative() || !icbe.isAllEmpty()) {
+                        IKSGItemUtil.spawnItemEntity(itemStack, level, (double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
+                    }
                 }
             }
         }
@@ -73,4 +75,9 @@ public abstract class IkisugiBaseContainerEntityBlock extends IkisugiBaseEntityB
         }
         return super.getDrops(blockState, builder);
     }
+
+    public boolean isKeepContainerInventory() {
+        return false;
+    }
+
 }
