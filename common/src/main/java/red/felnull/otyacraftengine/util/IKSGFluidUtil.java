@@ -27,7 +27,7 @@ import red.felnull.otyacraftengine.fluid.FluidProperties;
 import red.felnull.otyacraftengine.fluid.IkisugiFluid;
 import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 import red.felnull.otyacraftengine.impl.OEExpectPlatform;
-import red.felnull.otyacraftengine.item.IIkisugibleFluidTankItem;
+import red.felnull.otyacraftengine.item.storage.IFluidTankItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class IKSGFluidUtil {
 
     public static Optional<FluidStack> getFluidContained(ItemStack stack) {
         if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getPriorityFluidTank(stack).map(FluidTank::getFluidStack);
+            if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+                return ((IFluidTankItem) stack.getItem()).getFluidTank(stack).map(FluidTank::getFluidStack);
             }
             return OEExpectPlatform.getFluidContained(stack);
         }
@@ -51,8 +51,8 @@ public class IKSGFluidUtil {
 
     public static ItemStack getEmptyFluidItem(ItemStack stack) {
         if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getEmptyFluidItem();
+            if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+                return ((IFluidTankItem) stack.getItem()).getEmptyFluidTankItem();
             }
             return OEExpectPlatform.getEmptyFluidItem(stack);
         }
@@ -61,8 +61,8 @@ public class IKSGFluidUtil {
 
     public static int getFluidItemMaxAmont(ItemStack stack) {
         if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                return ((IIkisugibleFluidTankItem) stack.getItem()).getPriorityCapacity(stack);
+            if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+                return ((IFluidTankItem) stack.getItem()).getCapacity(stack);
             }
             return OEExpectPlatform.getFluidItemMaxAmont(stack);
         }
@@ -71,12 +71,12 @@ public class IKSGFluidUtil {
 
     public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
         if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-                FluidTank tank = new FluidTank(ifti.getPriorityCapacity(stack));
+            if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+                IFluidTankItem ifti = ((IFluidTankItem) stack.getItem());
+                FluidTank tank = new FluidTank(ifti.getCapacity(stack));
                 tank.setFluid(fluid);
-                tank.setAmount(ifti.getPriorityCapacity(stack));
-                return ifti.setPriorityFluidTank(stack, tank);
+                tank.setAmount(ifti.getCapacity(stack));
+                return ifti.setFluidTank(stack, tank);
             }
             return OEExpectPlatform.getFilledNotIncompleteFluidItem(stack, fluid);
         }
@@ -88,12 +88,12 @@ public class IKSGFluidUtil {
             if (canNotIncompleteFluidItem(stack)) {
                 return Optional.of(getEmptyFluidItem(stack));
             }
-            if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-                IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-                if (ifti.getPriorityFluidTank(stack).isPresent()) {
-                    FluidTank tank = ifti.getPriorityFluidTank(stack).get();
+            if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+                IFluidTankItem ifti = ((IFluidTankItem) stack.getItem());
+                if (ifti.getFluidTank(stack).isPresent()) {
+                    FluidTank tank = ifti.getFluidTank(stack).get();
                     tank.reduceAmount(reducedFluid);
-                    return ifti.setPriorityFluidTank(stack, tank);
+                    return ifti.setFluidTank(stack, tank);
                 } else {
                     return Optional.of(stack);
                 }
@@ -108,12 +108,12 @@ public class IKSGFluidUtil {
                 return getFilledNotIncompleteFluidItem(stack, addFluid.getFluid());
             }
         }
-        if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-            IIkisugibleFluidTankItem ifti = ((IIkisugibleFluidTankItem) stack.getItem());
-            if (ifti.getPriorityFluidTank(stack).isPresent()) {
-                FluidTank tank = ifti.getPriorityFluidTank(stack).get();
+        if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+            IFluidTankItem ifti = ((IFluidTankItem) stack.getItem());
+            if (ifti.getFluidTank(stack).isPresent()) {
+                FluidTank tank = ifti.getFluidTank(stack).get();
                 tank.setFluidStack(addFluid);
-                return ifti.setPriorityFluidTank(stack, tank);
+                return ifti.setFluidTank(stack, tank);
             } else {
                 return Optional.of(stack);
             }
@@ -225,8 +225,8 @@ public class IKSGFluidUtil {
     }
 
     public static boolean canNotIncompleteFluidItem(ItemStack stack) {
-        if (stack.getItem() instanceof IIkisugibleFluidTankItem) {
-            return ((IIkisugibleFluidTankItem) stack.getItem()).canNotIncompleteFluidItem();
+        if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
+            return ((IFluidTankItem) stack.getItem()).canNotIncompleteFluidTankItem();
         }
         return OEExpectPlatform.canNotIncompleteFluidItem(stack);
     }
