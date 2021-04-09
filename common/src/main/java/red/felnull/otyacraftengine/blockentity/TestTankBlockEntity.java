@@ -7,6 +7,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import red.felnull.otyacraftengine.blockentity.container.IkisugiFluidContainerBlockEntity;
 import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 

@@ -6,26 +6,38 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;
 
+import java.util.function.Function;
+
 public class FluidTank {
     private int capacity;
     private FluidStack fluid = FluidStack.empty();
+    private Function<FluidStack, Boolean> filter = null;
 
-    public FluidTank(int capacity) {
+    private FluidTank(int capacity, Function<FluidStack, Boolean> filter) {
         this.capacity = capacity;
+        this.filter = filter;
     }
 
     public static FluidTank loadTank(CompoundTag tag, int capacity) {
-        FluidTank tank = createEmpty(capacity);
+        return loadTank(tag, capacity, null);
+    }
+
+    public static FluidTank loadTank(CompoundTag tag, int capacity, Function<FluidStack, Boolean> filter) {
+        FluidTank tank = createEmpty(capacity, filter);
         tank.load(tag);
         return tank;
     }
 
+    public static FluidTank createEmpty(int capacity, Function<FluidStack, Boolean> filter) {
+        return new FluidTank(capacity, filter);
+    }
+
     public static FluidTank createEmpty(int capacity) {
-        return new FluidTank(capacity);
+        return new FluidTank(capacity, null);
     }
 
     public static FluidTank createEmpty() {
-        return new FluidTank(0);
+        return new FluidTank(0, null);
     }
 
     public FluidStack getFluidStack() {
@@ -47,6 +59,10 @@ public class FluidTank {
     public CompoundTag save(CompoundTag compoundTag) {
         compoundTag.put("Fluid", fluid.write(new CompoundTag()));
         return compoundTag;
+    }
+
+    public void setFilter(Function<FluidStack, Boolean> filter) {
+        this.filter = filter;
     }
 
     public void load(CompoundTag compoundTag) {
@@ -165,6 +181,10 @@ public class FluidTank {
 
     public double getAmountPercent() {
         return (double) getAmount() / (double) capacity;
+    }
+
+    public boolean canAddFluid(FluidStack fluid) {
+        return filter == null || filter.apply(fluid);
     }
 
 }

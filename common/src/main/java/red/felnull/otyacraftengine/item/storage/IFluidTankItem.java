@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.item.storage;
 
+import me.shedaniel.architectury.fluid.FluidStack;
 import net.minecraft.world.item.ItemStack;
 import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 
@@ -23,4 +24,9 @@ public interface IFluidTankItem {
     default boolean isFluidTankItem(ItemStack stack) {
         return true;
     }
+
+    default boolean fluidFilter(FluidStack stack) {
+        return true;
+    }
+
 }
