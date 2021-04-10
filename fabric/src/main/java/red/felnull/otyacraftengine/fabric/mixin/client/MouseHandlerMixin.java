@@ -14,7 +14,7 @@ public class MouseHandlerMixin {
         OEClientHooks.fireMouseInput(i, k, j);
     }
 
-    @Inject(method = "onPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;overlay:Lnet/minecraft/client/gui/screens/Overlay;", ordinal = 0), cancellable = true)
+    @Inject(method = "onPress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getOverlay()Lnet/minecraft/client/gui/screens/Overlay;", ordinal = 0), cancellable = true)
     private void onPress2(long l, int i, int j, int k, CallbackInfo ci) {
         if (OEClientHooks.onRawMouseClicked(i, k, j)) {
             ci.cancel();

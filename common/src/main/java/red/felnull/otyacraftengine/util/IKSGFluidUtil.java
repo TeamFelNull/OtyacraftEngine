@@ -2,7 +2,6 @@ package red.felnull.otyacraftengine.util;
 
 import me.shedaniel.architectury.fluid.FluidStack;
 import me.shedaniel.architectury.registry.DeferredRegister;
-import me.shedaniel.architectury.utils.Fraction;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -69,7 +68,7 @@ public class IKSGFluidUtil {
         return ItemStack.EMPTY;
     }
 
-    public static int getFluidItemMaxAmont(ItemStack stack) {
+    public static long getFluidItemMaxAmont(ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof IFluidTankItem && ((IFluidTankItem) stack.getItem()).isFluidTankItem(stack)) {
                 return ((IFluidTankItem) stack.getItem()).getCapacity(stack);
@@ -93,7 +92,7 @@ public class IKSGFluidUtil {
         return Optional.empty();
     }
 
-    public static Optional<ItemStack> getReducedFluidItem(ItemStack stack, int reducedFluid) {
+    public static Optional<ItemStack> getReducedFluidItem(ItemStack stack, long reducedFluid) {
         if (!stack.isEmpty()) {
             if (canNotIncompleteFluidItem(stack)) {
                 return Optional.of(getEmptyFluidItem(stack));
@@ -114,7 +113,7 @@ public class IKSGFluidUtil {
 
     public static Optional<ItemStack> getFilledFluidItem(ItemStack stack, FluidStack addFluid) {
         if (canNotIncompleteFluidItem(stack)) {
-            if (getFluidItemMaxAmont(stack) <= addFluid.getAmount().intValue()) {
+            if (getFluidItemMaxAmont(stack) <= addFluid.getAmount()) {
                 return getFilledNotIncompleteFluidItem(stack, addFluid.getFluid());
             }
         }
@@ -167,15 +166,15 @@ public class IKSGFluidUtil {
                 if (!itemStack.isEmpty()) {
                     if (!tank.isMaxCapacity() && (tankStack.isEmpty() || tankStack.getFluid() == tankStack.getFluid())) {
                         if (tank.canAddFluid(itemStack)) {
-                            int amari = tank.simulateAddFluidStack(itemStack);
+                            long amari = tank.simulateAddFluidStack(itemStack);
 
                             if (amari > 0 && canNotIncompleteFluidItem(heldItem)) {
                                 return false;
                             }
 
                             if (!level.isClientSide) {
-                                int am = tank.getAmount();
-                                int sa = Math.min(am + itemStack.getAmount().intValue(), tank.getCapacity()) - am;
+                                long am = tank.getAmount();
+                                long sa = Math.min(am + itemStack.getAmount(), tank.getCapacity()) - am;
                                 Optional<ItemStack> atoItem = getReducedFluidItem(IKSGItemUtil.copyStackWithSize(heldItem, 1), sa);
                                 if (atoItem.isPresent()) {
                                     tank.addFluidStack(itemStack);
@@ -191,16 +190,16 @@ public class IKSGFluidUtil {
                     }
                 } else if (!tankStack.isEmpty()) {
                     if (getFluidTank(heldItem).isPresent() && getFluidTank(heldItem).get().canAddFluid(tank.getFluidStack())) {
-                        int ra = tank.simulateReduceAmount(getFluidItemMaxAmont(heldItem));
+                        long ra = tank.simulateReduceAmount(getFluidItemMaxAmont(heldItem));
                         if (ra > 0 && canNotIncompleteFluidItem(heldItem)) {
                             return false;
                         }
                         if (!level.isClientSide) {
-                            int am = tank.getAmount();
-                            int sa = am - Math.max(am - getFluidItemMaxAmont(heldItem), 0);
+                            long am = tank.getAmount();
+                            long sa = am - Math.max(am - getFluidItemMaxAmont(heldItem), 0);
                             if (sa > 0) {
 
-                                Optional<ItemStack> rai = getFilledFluidItem(IKSGItemUtil.copyStackWithSize(heldItem, 1), FluidStack.create(tankStack.getFluid(), Fraction.ofWhole(sa)));
+                                Optional<ItemStack> rai = getFilledFluidItem(IKSGItemUtil.copyStackWithSize(heldItem, 1), FluidStack.create(tankStack.getFluid(), sa));
                                 if (rai.isPresent()) {
                                     tank.reduceAmount(getFluidItemMaxAmont(heldItem));
                                     IKSGPlayerUtil.changeOrGiveItem(player, hand, rai.get());

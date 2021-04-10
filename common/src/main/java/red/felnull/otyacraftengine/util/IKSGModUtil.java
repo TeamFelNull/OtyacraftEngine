@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.util;
 
-import me.shedaniel.architectury.platform.fabric.PlatformImpl;
+
+import com.sun.javafx.application.PlatformImpl;
+import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -28,15 +30,15 @@ public class IKSGModUtil {
 
     public static String getModName(String modid) {
 
-        if (PlatformImpl.getModIds().contains(modid))
-            return PlatformImpl.getMod(modid).getName();
+        if (Platform.getModIds().contains(modid))
+            return Platform.getMod(modid).getName();
 
         return StringUtils.capitalize(modid);
     }
 
     public static String getModVersion(String modid) {
-        if (PlatformImpl.getModIds().contains(modid))
-            return PlatformImpl.getMod(modid).getVersion();
+        if (Platform.getModIds().contains(modid))
+            return Platform.getMod(modid).getVersion();
 
         return "";
     }

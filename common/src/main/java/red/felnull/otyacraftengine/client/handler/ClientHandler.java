@@ -59,13 +59,11 @@ public class ClientHandler {
     private static void drawBackGroundBar(int x, int y) {
         RenderSystem.disableDepthTest();
         RenderSystem.disableTexture();
-        RenderSystem.disableAlphaTest();
         RenderSystem.disableBlend();
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tesselator.getBuilder();
         fillRect(bufferBuilder, x, y, 13, 2, 0, 0, 0, 255);
         RenderSystem.enableBlend();
-        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
         RenderSystem.enableDepthTest();
     }

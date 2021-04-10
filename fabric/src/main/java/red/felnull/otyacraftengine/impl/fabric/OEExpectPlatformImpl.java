@@ -1,7 +1,6 @@
 package red.felnull.otyacraftengine.impl.fabric;
 
 import me.shedaniel.architectury.fluid.FluidStack;
-import me.shedaniel.architectury.utils.Fraction;
 import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
 import net.fabricmc.fabric.impl.biome.InternalBiomeData;
 import net.fabricmc.loader.api.FabricLoader;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
+import org.apache.commons.lang3.math.Fraction;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.IOEIntegration;
 import red.felnull.otyacraftengine.util.IKSGBiomeUtil;
@@ -40,7 +40,7 @@ public class OEExpectPlatformImpl {
         return GameEventTags.HELPER.getAllTags();
     }
 
-    public static final Fraction BUCKET_VOLUME = Fraction.ofWhole(1000);
+    public static final long BUCKET_VOLUME = 1000;
 
     public static Optional<FluidStack> getFluidContained(ItemStack container) {
         return Optional.empty();

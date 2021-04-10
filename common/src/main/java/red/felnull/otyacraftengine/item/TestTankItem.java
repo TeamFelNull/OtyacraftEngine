@@ -25,7 +25,7 @@ public class TestTankItem extends Item implements ISimpleFluidTankItem {
         if (itemStack.getItem() instanceof TestTankItem) {
             ((TestTankItem) itemStack.getItem()).getFluidTank(itemStack).ifPresent(n -> {
                 list.add(new TextComponent("Fluid: ").append(n.getFluidStack().getName()));
-                list.add(new TextComponent("Amont: " + n.getFluidStack().getAmount().intValue() + "mb").append("/").append(n.getCapacity() + "mb"));
+                list.add(new TextComponent("Amont: " + n.getFluidStack().getAmount() + "mb").append("/").append(n.getCapacity() + "mb"));
             });
         }
 

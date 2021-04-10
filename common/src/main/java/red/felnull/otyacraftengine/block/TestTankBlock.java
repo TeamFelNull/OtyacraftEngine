@@ -37,12 +37,12 @@ public class TestTankBlock extends IkisugiBaseContainerEntityBlock {
                     TestTankBlockEntity ttbe = (TestTankBlockEntity) level.getBlockEntity(blockPos);
                     player.displayClientMessage(new TextComponent("Server"), false);
                     player.displayClientMessage(new TextComponent("Fluid: ").append(ttbe.getFluidTank(0).getFluidStack().getName()), false);
-                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getFluidTank(0).getFluidStack().getAmount().intValue() + "mb").append("/").append(ttbe.getFluidTank(0).getCapacity() + "mb"), false);
+                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getFluidTank(0).getFluidStack().getAmount() + "mb").append("/").append(ttbe.getFluidTank(0).getCapacity() + "mb"), false);
                 } else {
                     TestTankBlockEntity ttbe = (TestTankBlockEntity) level.getBlockEntity(blockPos);
                     player.displayClientMessage(new TextComponent("Client"), false);
                     player.displayClientMessage(new TextComponent("Fluid: ").append(ttbe.getFluidTank(0).getFluidStack().getName()), false);
-                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getFluidTank(0).getFluidStack().getAmount().intValue() + "mb").append("/").append(ttbe.getFluidTank(0).getCapacity() + "mb"), false);
+                    player.displayClientMessage(new TextComponent("Amont: " + ttbe.getFluidTank(0).getFluidStack().getAmount() + "mb").append("/").append(ttbe.getFluidTank(0).getCapacity() + "mb"), false);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide());

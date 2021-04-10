@@ -1,7 +1,6 @@
 package red.felnull.otyacraftengine.fluid.storage;
 
 import me.shedaniel.architectury.fluid.FluidStack;
-import me.shedaniel.architectury.utils.Fraction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;
@@ -9,30 +8,30 @@ import red.felnull.otyacraftengine.util.IKSGMath;
 import java.util.function.Function;
 
 public class FluidTank {
-    private int capacity;
+    private long capacity;
     private FluidStack fluid = FluidStack.empty();
     private Function<FluidStack, Boolean> filter = null;
 
-    private FluidTank(int capacity, Function<FluidStack, Boolean> filter) {
+    private FluidTank(long capacity, Function<FluidStack, Boolean> filter) {
         this.capacity = capacity;
         this.filter = filter;
     }
 
-    public static FluidTank loadTank(CompoundTag tag, int capacity) {
+    public static FluidTank loadTank(CompoundTag tag, long capacity) {
         return loadTank(tag, capacity, null);
     }
 
-    public static FluidTank loadTank(CompoundTag tag, int capacity, Function<FluidStack, Boolean> filter) {
+    public static FluidTank loadTank(CompoundTag tag, long capacity, Function<FluidStack, Boolean> filter) {
         FluidTank tank = createEmpty(capacity, filter);
         tank.load(tag);
         return tank;
     }
 
-    public static FluidTank createEmpty(int capacity, Function<FluidStack, Boolean> filter) {
+    public static FluidTank createEmpty(long capacity, Function<FluidStack, Boolean> filter) {
         return new FluidTank(capacity, filter);
     }
 
-    public static FluidTank createEmpty(int capacity) {
+    public static FluidTank createEmpty(long capacity) {
         return new FluidTank(capacity, null);
     }
 
@@ -48,11 +47,11 @@ public class FluidTank {
         this.fluid = fluid;
     }
 
-    public int getCapacity() {
+    public long getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(long capacity) {
         this.capacity = capacity;
     }
 
@@ -69,24 +68,24 @@ public class FluidTank {
         fluid = FluidStack.read(compoundTag.getCompound("Fluid"));
     }
 
-    public int getAmount() {
-        return fluid.getAmount().intValue();
+    public long getAmount() {
+        return fluid.getAmount();
     }
 
     public Fluid getFluid() {
         return fluid.getFluid();
     }
 
-    public int addFluidStack(FluidStack stack) {
+    public long addFluidStack(FluidStack stack) {
 
         if (stack.isEmpty())
             return 0;
 
         if (getFluidStack().isEmpty() || getFluid() == stack.getRawFluid()) {
             setFluid(stack.getFluid());
-            return addAmount(stack.getAmount().intValue());
+            return addAmount(stack.getAmount());
         }
-        return stack.getAmount().intValue();
+        return stack.getAmount();
     }
 
     /**
@@ -95,8 +94,8 @@ public class FluidTank {
      * @param value 減らす量
      * @return 余った量
      */
-    public int reduceAmount(int value) {
-        int allAmont = getAmount() - value;
+    public long reduceAmount(long value) {
+        long allAmont = getAmount() - value;
         setAmount(allAmont);
         return Math.max(-allAmont, 0);
     }
@@ -107,8 +106,8 @@ public class FluidTank {
      * @param value 減らす量
      * @return 余った量予想
      */
-    public int simulateReduceAmount(int value) {
-        int allAmont = getAmount() - value;
+    public long simulateReduceAmount(long value) {
+        long allAmont = getAmount() - value;
         return Math.max(-allAmont, 0);
     }
 
@@ -118,8 +117,8 @@ public class FluidTank {
      * @param value 追加する量
      * @return 余った量
      */
-    public int addAmount(int value) {
-        int allAmont = getAmount() + value;
+    public long addAmount(long value) {
+        long allAmont = getAmount() + value;
         setAmount(allAmont);
         return Math.max(allAmont - capacity, 0);
     }
@@ -131,37 +130,37 @@ public class FluidTank {
      * @param value 追加する量
      * @return 余った量の予測
      */
-    public int simulateAddAmount(int value) {
-        int allAmont = getAmount() + value;
+    public long simulateAddAmount(long value) {
+        long allAmont = getAmount() + value;
         return Math.max(allAmont - capacity, 0);
     }
 
-    public int simulateAddFluidStack(FluidStack stack) {
+    public long simulateAddFluidStack(FluidStack stack) {
         if (stack.isEmpty())
             return 0;
         if (getFluidStack().isEmpty() || getFluid() == stack.getRawFluid()) {
-            return simulateAddAmount(stack.getAmount().intValue());
+            return simulateAddAmount(stack.getAmount());
         }
-        return stack.getAmount().intValue();
+        return stack.getAmount();
     }
 
-    public void setAmount(int value) {
+    public void setAmount(long value) {
         FluidStack stack = fluid.copy();
-        stack.setAmount(Fraction.ofWhole(IKSGMath.clamp(value, 0, capacity)));
+        stack.setAmount(IKSGMath.clamp(value, 0, capacity));
         setFluidStack(stack);
         update(false);
     }
 
 
     public void setFluid(Fluid fluid) {
-        setFluidStack(FluidStack.create(fluid, Fraction.ofWhole(getAmount())));
+        setFluidStack(FluidStack.create(fluid, getAmount()));
         update(true);
     }
 
     public void update(boolean chaneFluid) {
         if (capacity < getAmount()) {
             FluidStack stack = fluid.copy();
-            stack.setAmount(Fraction.ofWhole(capacity));
+            stack.setAmount(capacity);
             setFluidStack(stack);
         }
         if (!chaneFluid) {

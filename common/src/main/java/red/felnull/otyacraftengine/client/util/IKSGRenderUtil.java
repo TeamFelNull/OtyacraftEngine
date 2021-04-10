@@ -51,7 +51,7 @@ public class IKSGRenderUtil {
 
     public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, int x, int y, float textureStartX, float textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
         psstack.pushPose();
-        mc.getTextureManager().bind(location);
+        RenderSystem.setShaderTexture(0, location);
         GuiComponent.blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         psstack.popPose();
     }
@@ -62,7 +62,7 @@ public class IKSGRenderUtil {
 
     public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY) {
         psstack.pushPose();
-        mc.getTextureManager().bind(location);
+        RenderSystem.setShaderTexture(0, location);
         blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         psstack.popPose();
     }
@@ -87,13 +87,12 @@ public class IKSGRenderUtil {
         bufferBuilder.vertex(matrix4f, j, k, m).uv(g, h).endVertex();
         bufferBuilder.vertex(matrix4f, i, k, m).uv(f, h).endVertex();
         bufferBuilder.end();
-        RenderSystem.enableAlphaTest();
         BufferUploader.end(bufferBuilder);
     }
 
     public static void drawBindColorTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY, float r, float g, float b, float a) {
         psstack.pushPose();
-        mc.getTextureManager().bind(location);
+        RenderSystem.setShaderTexture(0, location);
         blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY, r, g, b, a);
         psstack.popPose();
     }
@@ -120,7 +119,6 @@ public class IKSGRenderUtil {
         bufferBuilder.vertex(matrix4f, j, k, m).color(r, g, b, a).uv(w, h).endVertex();
         bufferBuilder.vertex(matrix4f, i, k, m).color(r, g, b, a).uv(f, h).endVertex();
         bufferBuilder.end();
-        RenderSystem.enableAlphaTest();
         BufferUploader.end(bufferBuilder);
         RenderSystem.disableBlend();
     }
