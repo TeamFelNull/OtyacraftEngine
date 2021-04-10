@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -80,4 +81,15 @@ public abstract class IkisugiBaseContainerEntityBlock extends IkisugiBaseEntityB
         return false;
     }
 
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+        ItemStack itemStack = super.getCloneItemStack(blockGetter, blockPos, blockState);
+        IkisugiContainerBlockEntity entity = (IkisugiContainerBlockEntity) blockGetter.getBlockEntity(blockPos);
+        CompoundTag compoundTag = entity.saveToTag(new CompoundTag());
+        if (!compoundTag.isEmpty()) {
+            itemStack.addTagElement("BlockEntityTag", compoundTag);
+        }
+
+        return itemStack;
+    }
 }

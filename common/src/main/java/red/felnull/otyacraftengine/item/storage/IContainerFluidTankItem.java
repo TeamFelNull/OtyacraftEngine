@@ -13,6 +13,10 @@ public interface IContainerFluidTankItem extends IFluidTankItem {
     default Optional<FluidTank> getFluidTank(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("BlockEntityTag") && stack.getTag().getCompound("BlockEntityTag").contains("Tanks")) {
             int tankCont = stack.getTag().getCompound("BlockEntityTag").getInt("TankCont");
+
+            if (tankCont <= 0)
+                return Optional.of(FluidTank.createEmpty(getCapacity(stack), n -> fluidFilter(stack, n)));
+
             NonNullList<FluidTank> tanks = NonNullList.withSize(tankCont, FluidTank.createEmpty());
             tanks.set(getPriorityFluidTankNumber(), FluidTank.createEmpty(getCapacity(stack), n -> fluidFilter(stack, n)));
             IKSGContainerUtil.loadAllTanks(stack.getTag().getCompound("BlockEntityTag"), tanks);
