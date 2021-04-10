@@ -36,7 +36,7 @@ public class IKSGContainerUtil {
             CompoundTag compoundTag2 = listTag.getCompound(i);
             int j = compoundTag2.getByte("Number") & 255;
             if (j >= 0 && j < nonNullList.size()) {
-                nonNullList.set(j, FluidTank.loadTank(compoundTag2, nonNullList.get(j).getCapacity()));
+                nonNullList.set(j, FluidTank.loadTank(compoundTag2, nonNullList.get(j).getCapacity(), nonNullList.get(j).getFilter()));
             }
         }
 

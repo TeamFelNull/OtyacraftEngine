@@ -10,9 +10,9 @@ public interface ISimpleFluidTankItem extends IFluidTankItem {
     @Override
     default Optional<FluidTank> getFluidTank(ItemStack stack) {
         if (stack.hasTag() && stack.getTag().contains("FluidTank")) {
-            return Optional.of(FluidTank.loadTank(stack.getTag().getCompound("FluidTank"), getCapacity(stack), this::fluidFilter));
+            return Optional.of(FluidTank.loadTank(stack.getTag().getCompound("FluidTank"), getCapacity(stack), n -> fluidFilter(stack, n)));
         }
-        return Optional.of(FluidTank.createEmpty(getCapacity(stack), this::fluidFilter));
+        return Optional.of(FluidTank.createEmpty(getCapacity(stack), n -> fluidFilter(stack, n)));
     }
 
     @Override

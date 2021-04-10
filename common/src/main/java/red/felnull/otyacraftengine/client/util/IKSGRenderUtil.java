@@ -6,6 +6,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -51,6 +52,8 @@ public class IKSGRenderUtil {
 
     public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, int x, int y, float textureStartX, float textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
         psstack.pushPose();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, location);
         GuiComponent.blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         psstack.popPose();
@@ -62,6 +65,8 @@ public class IKSGRenderUtil {
 
     public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY) {
         psstack.pushPose();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, location);
         blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         psstack.popPose();
@@ -80,6 +85,7 @@ public class IKSGRenderUtil {
     }
 
     private static void innerBlit(Matrix4f matrix4f, float i, float j, float k, float l, float m, float f, float g, float h, float n) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         bufferBuilder.vertex(matrix4f, i, l, m).uv(f, n).endVertex();
@@ -92,35 +98,15 @@ public class IKSGRenderUtil {
 
     public static void drawBindColorTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY, float r, float g, float b, float a) {
         psstack.pushPose();
-        RenderSystem.setShaderTexture(0, location);
-        blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY, r, g, b, a);
-        psstack.popPose();
-    }
-
-    private static void blit(PoseStack poseStack, float i, float j, float f, float w, float k, float l, float m, float n, float r, float g, float b, float a) {
-        blit(poseStack, i, j, k, l, f, w, k, l, m, n, r, g, b, a);
-    }
-
-    private static void blit(PoseStack poseStack, float i, float j, float k, float l, float f, float w, float m, float n, float o, float p, float r, float g, float b, float a) {
-        innerBlit(poseStack, i, i + k, j, j + l, 0, m, n, f, w, o, p, r, g, b, a);
-    }
-
-    private static void innerBlit(PoseStack poseStack, float i, float j, float k, float l, float m, float n, float o, float f, float w, float p, float q, float r, float g, float b, float a) {
-        innerBlit(poseStack.last().pose(), i, j, k, l, m, (f + 0.0F) / p, (f + n) / p, (w + 0.0F) / q, (w + o) / q, r, g, b, a);
-    }
-
-    private static void innerBlit(Matrix4f matrix4f, float i, float j, float k, float l, float m, float f, float w, float h, float n, float r, float g, float b, float a) {
-        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-        bufferBuilder.vertex(matrix4f, i, l, m).color(r, g, b, a).uv(f, n).endVertex();
-        bufferBuilder.vertex(matrix4f, j, l, m).color(r, g, b, a).uv(w, n).endVertex();
-        bufferBuilder.vertex(matrix4f, j, k, m).color(r, g, b, a).uv(w, h).endVertex();
-        bufferBuilder.vertex(matrix4f, i, k, m).color(r, g, b, a).uv(f, h).endVertex();
-        bufferBuilder.end();
-        BufferUploader.end(bufferBuilder);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(r, g, b, a);
+        RenderSystem.setShaderTexture(0, location);
+        blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
+        psstack.popPose();
     }
 
     public static void matrixTranslatef16Divisions(PoseStack psstack, double x, double y, double z) {

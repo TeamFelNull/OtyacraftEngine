@@ -55,6 +55,10 @@ public class FluidTank {
         this.capacity = capacity;
     }
 
+    public Function<FluidStack, Boolean> getFilter() {
+        return filter;
+    }
+
     public CompoundTag save(CompoundTag compoundTag) {
         compoundTag.put("Fluid", fluid.write(new CompoundTag()));
         return compoundTag;

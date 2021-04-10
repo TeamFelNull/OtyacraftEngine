@@ -27,7 +27,7 @@ public interface IFluidTankItem {
         return true;
     }
 
-    default boolean fluidFilter(FluidStack stack) {
+    default boolean fluidFilter(ItemStack itemStack, FluidStack fluidStack) {
         return true;
     }
 

@@ -74,6 +74,7 @@ public abstract class IkisugiFluidContainerBlockEntity extends IkisugiContainerB
 
     @Override
     public CompoundTag saveToTag(CompoundTag tag) {
+        tag.putInt("TankCont", getFluidTanks().size());
         IKSGContainerUtil.saveAllTanks(tag, getFluidTanks(), false);
         return super.saveToTag(tag);
     }

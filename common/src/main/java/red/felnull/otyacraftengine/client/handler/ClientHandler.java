@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import me.shedaniel.architectury.event.events.client.ClientRawInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +50,7 @@ public class ClientHandler {
                 if (!n.isEmpty()) {
                     PoseStack poseStack = new PoseStack();
                     float f = 1f / 13f;
-                    IKSGRenderUtil.drawFluid(n.getFluid(), poseStack, e.getXPosition() + 2, e.getYPosition() + 11 + (damegeBar ? 0 : 2), 13,0, 0, (float) n.getAmountPercent(), f);
+                    IKSGRenderUtil.drawFluid(n.getFluid(), poseStack, e.getXPosition() + 2, e.getYPosition() + 11 + (damegeBar ? 0 : 2), 13, 0, 0, (float) n.getAmountPercent(), f);
                 }
                 RenderSystem.enableDepthTest();
             });
@@ -69,11 +70,13 @@ public class ClientHandler {
     }
 
     private static void fillRect(BufferBuilder bufferBuilder, int i, int j, int k, int l, int m, int n, int o, int p) {
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         bufferBuilder.vertex(i, j, 0.0D).color(m, n, o, p).endVertex();
         bufferBuilder.vertex(i, j + l, 0.0D).color(m, n, o, p).endVertex();
         bufferBuilder.vertex(i + k, j + l, 0.0D).color(m, n, o, p).endVertex();
         bufferBuilder.vertex(i + k, j, 0.0D).color(m, n, o, p).endVertex();
-        Tesselator.getInstance().end();
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
     }
 }

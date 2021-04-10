@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
+import red.felnull.otyacraftengine.item.TestTankBlockItem;
 import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
 
 public class TestBlock extends IkisugiBaseEntityBlock {
@@ -36,7 +37,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         MOD_BLOCKITEMS_REGISTER.register("test_block", () -> new BlockItem(TEST_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
         MOD_BLOCKS_REGISTER.register("test_tank_block", () -> TEST_TANK_BLOCK);
-        MOD_BLOCKITEMS_REGISTER.register("test_tank_block", () -> new BlockItem(TEST_TANK_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+        MOD_BLOCKITEMS_REGISTER.register("test_tank_block", () -> new TestTankBlockItem(TEST_TANK_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
         MOD_BLOCKS_REGISTER.register();
         MOD_BLOCKITEMS_REGISTER.register();

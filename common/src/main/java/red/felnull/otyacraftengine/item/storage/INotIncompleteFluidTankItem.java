@@ -15,7 +15,7 @@ public interface INotIncompleteFluidTankItem extends IFluidTankItem {
     @Override
     default Optional<FluidTank> getFluidTank(ItemStack stack) {
         return getFluid(stack).map(n -> {
-            FluidTank ift = FluidTank.createEmpty(getCapacity(stack), this::fluidFilter);
+            FluidTank ift = FluidTank.createEmpty(getCapacity(stack), m -> fluidFilter(stack, m));
             ift.setFluid(n);
             ift.setAmount(getCapacity(stack));
             return ift;

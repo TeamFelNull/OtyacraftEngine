@@ -15,5 +15,7 @@ public class TestScreen extends IkisugiScreen {
         renderBackground(poseStack);
         super.render(poseStack, i, j, f);
         IKSGRenderUtil.drawFluid(Fluids.WATER, poseStack, 0, 0, 128, 0, 0, 1, 1);
+        //   IKSGRenderUtil.drawPlayerFase(poseStack, "MoriMori_0317_jp", 0, 0);
+
     }
 }
