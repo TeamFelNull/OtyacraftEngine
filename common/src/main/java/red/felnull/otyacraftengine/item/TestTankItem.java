@@ -2,6 +2,7 @@ package red.felnull.otyacraftengine.item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
@@ -27,6 +28,7 @@ public class TestTankItem extends Item implements ISimpleFluidTankItem {
                 list.add(new TextComponent("Amont: " + n.getFluidStack().getAmount().intValue() + "mb").append("/").append(n.getCapacity() + "mb"));
             });
         }
+
     }
 
     @Override

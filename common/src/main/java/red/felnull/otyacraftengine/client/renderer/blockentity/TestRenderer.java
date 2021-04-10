@@ -43,7 +43,7 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         //   IKSGRenderUtil.renderSpritePanel(BEACON_LOCATION, poseStack, multiBufferSource, -1, 0, 0, 0, 180, 0, pix * 10.5f, pix * 7.5f, 0, 0, 199, 122, 199, 122, combinedOverlayIn, combinedLightIn);
         //IKSGRenderUtil.renderFluid(Fluids.WATER, blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, multiBufferSource, 0.5d, pix * 1, pix * 1, pix * 3, pix * 14f, pix * 14f, combinedLightIn, combinedOverlayIn);
 
-        IKSGRenderUtil.renderFluid(Fluids.LAVA, poseStack, multiBufferSource, 1d, pix * 3, pix * 1, pix * 3, pix * 10, pix * 14, combinedLightIn, combinedOverlayIn);
+        IKSGRenderUtil.renderFluid(Fluids.WATER, poseStack, multiBufferSource, 1d, pix * 3, pix * 1, pix * 3, pix * 10, pix * 14, combinedLightIn, combinedOverlayIn);
 
     }
 }

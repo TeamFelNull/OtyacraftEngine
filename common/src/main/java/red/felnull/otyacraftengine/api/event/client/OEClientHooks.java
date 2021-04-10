@@ -3,6 +3,8 @@ package red.felnull.otyacraftengine.api.event.client;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -44,5 +46,9 @@ public class OEClientHooks {
 
     public static void onItemColorsInit(ItemColors itemColors, BlockColors blockColors) {
         OEEventBus.post(new ColorHandlerEvent.Item(itemColors, blockColors));
+    }
+
+    public static boolean onRenderGuiItemDecorationss(ItemRenderer itemRenderer, Font font, ItemStack itemStack, int xPosition, int yPosition, String string) {
+        return OEEventBus.post(new RenderGuiItemDecorationsEvent(itemRenderer, font, itemStack, xPosition, yPosition, string));
     }
 }

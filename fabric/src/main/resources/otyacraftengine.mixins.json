@@ -12,6 +12,7 @@
     "client.BlockColorsMixin",
     "client.BlockEntityWithoutLevelRendererMixin",
     "client.ItemColorsMixin",
+    "client.ItemRendererMixin",
     "client.ItemStackClientMixin",
     "client.ModelManagerMixin",
     "client.MouseHandlerMixin"

@@ -28,4 +28,9 @@ public interface INotIncompleteFluidTankItem extends IFluidTankItem {
     default boolean isFluidTankEmpty(ItemStack stack) {
         return getFluid(stack).isPresent();
     }
+
+    @Override
+    default boolean isFluidTankBarVisible(ItemStack stack) {
+        return false;
+    }
 }

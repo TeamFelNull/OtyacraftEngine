@@ -1,7 +1,8 @@
 package red.felnull.otyacraftengine.client.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -39,22 +40,90 @@ public class IKSGRenderUtil {
     public static void drawPlayerFase(PoseStack psstack, String name, int x, int y) {
         psstack.pushPose();
         ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
-        guiBindAndBlit(plskin, psstack, x, y, 8, 8, 8, 8, 64, 64);
-        guiBindAndBlit(plskin, psstack, x, y, 40, 8, 8, 8, 64, 64);
+        drawBindTextuer(plskin, psstack, x, y, 8, 8, 8, 8, 64, 64);
+        drawBindTextuer(plskin, psstack, x, y, 40, 8, 8, 8, 64, 64);
         psstack.popPose();
     }
 
-    public static void guiBindAndBlit(ResourceLocation location, PoseStack psstack, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight) {
-        guiBindAndBlit(location, psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256, 256);
+    public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, int x, int y, int textureStartX, int textureStartY, int textureFinishWidth, int textureFinishHeight) {
+        drawBindTextuer(location, psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256, 256);
     }
 
-    public static void guiBindAndBlit(ResourceLocation location, PoseStack psstack, int x, int y, float textureStartX, float textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
+    public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, int x, int y, float textureStartX, float textureStartY, int textureFinishWidth, int textureFinishHeight, int textureSizeX, int textureSizeY) {
         psstack.pushPose();
         mc.getTextureManager().bind(location);
         GuiComponent.blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         psstack.popPose();
     }
 
+    public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight) {
+        drawBindTextuer(location, psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256f, 256f);
+    }
+
+    public static void drawBindTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY) {
+        psstack.pushPose();
+        mc.getTextureManager().bind(location);
+        blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
+        psstack.popPose();
+    }
+
+    private static void blit(PoseStack poseStack, float i, float j, float f, float g, float k, float l, float m, float n) {
+        blit(poseStack, i, j, k, l, f, g, k, l, m, n);
+    }
+
+    private static void blit(PoseStack poseStack, float i, float j, float k, float l, float f, float g, float m, float n, float o, float p) {
+        innerBlit(poseStack, i, i + k, j, j + l, 0, m, n, f, g, o, p);
+    }
+
+    private static void innerBlit(PoseStack poseStack, float i, float j, float k, float l, float m, float n, float o, float f, float g, float p, float q) {
+        innerBlit(poseStack.last().pose(), i, j, k, l, m, (f + 0.0F) / p, (f + n) / p, (g + 0.0F) / q, (g + o) / q);
+    }
+
+    private static void innerBlit(Matrix4f matrix4f, float i, float j, float k, float l, float m, float f, float g, float h, float n) {
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.vertex(matrix4f, i, l, m).uv(f, n).endVertex();
+        bufferBuilder.vertex(matrix4f, j, l, m).uv(g, n).endVertex();
+        bufferBuilder.vertex(matrix4f, j, k, m).uv(g, h).endVertex();
+        bufferBuilder.vertex(matrix4f, i, k, m).uv(f, h).endVertex();
+        bufferBuilder.end();
+        RenderSystem.enableAlphaTest();
+        BufferUploader.end(bufferBuilder);
+    }
+
+    public static void drawBindColorTextuer(ResourceLocation location, PoseStack psstack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY, float r, float g, float b, float a) {
+        psstack.pushPose();
+        mc.getTextureManager().bind(location);
+        blit(psstack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY, r, g, b, a);
+        psstack.popPose();
+    }
+
+    private static void blit(PoseStack poseStack, float i, float j, float f, float w, float k, float l, float m, float n, float r, float g, float b, float a) {
+        blit(poseStack, i, j, k, l, f, w, k, l, m, n, r, g, b, a);
+    }
+
+    private static void blit(PoseStack poseStack, float i, float j, float k, float l, float f, float w, float m, float n, float o, float p, float r, float g, float b, float a) {
+        innerBlit(poseStack, i, i + k, j, j + l, 0, m, n, f, w, o, p, r, g, b, a);
+    }
+
+    private static void innerBlit(PoseStack poseStack, float i, float j, float k, float l, float m, float n, float o, float f, float w, float p, float q, float r, float g, float b, float a) {
+        innerBlit(poseStack.last().pose(), i, j, k, l, m, (f + 0.0F) / p, (f + n) / p, (w + 0.0F) / q, (w + o) / q, r, g, b, a);
+    }
+
+    private static void innerBlit(Matrix4f matrix4f, float i, float j, float k, float l, float m, float f, float w, float h, float n, float r, float g, float b, float a) {
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        bufferBuilder.vertex(matrix4f, i, l, m).color(r, g, b, a).uv(f, n).endVertex();
+        bufferBuilder.vertex(matrix4f, j, l, m).color(r, g, b, a).uv(w, n).endVertex();
+        bufferBuilder.vertex(matrix4f, j, k, m).color(r, g, b, a).uv(w, h).endVertex();
+        bufferBuilder.vertex(matrix4f, i, k, m).color(r, g, b, a).uv(f, h).endVertex();
+        bufferBuilder.end();
+        RenderSystem.enableAlphaTest();
+        BufferUploader.end(bufferBuilder);
+        RenderSystem.disableBlend();
+    }
 
     public static void matrixTranslatef16Divisions(PoseStack psstack, double x, double y, double z) {
         float pix = 1f / 16f;
@@ -232,4 +301,50 @@ public class IKSGRenderUtil {
     public static void renderApple(PoseStack poseStack, MultiBufferSource mbs, int combinedLightIn, int combinedOverlayIn) {
         mc.getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, mbs, 0);
     }
+
+    public static void drawFluid(Fluid fluid, BlockAndTintGetter getter, BlockPos pos, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
+        if (fluid instanceof IIkisugibleFluid) {
+            if (getter != null && pos != null)
+                drawFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getWorldColor(getter, pos), poseStack, x, y, size, startX, startY, endX, endY);
+            else
+                drawFluid(fluid, poseStack, x, y, size, startX, startY, endX, endY);
+        }
+    }
+
+    public static void drawFluid(Fluid fluid, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
+        if (fluid instanceof IIkisugibleFluid) {
+            drawFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getColor(), poseStack, x, y, size, startX, startY, endX, endY);
+        }
+    }
+
+    public static void drawFluid(Fluid fluid, int color, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
+        ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
+        float r = (float) IKSGColorUtil.getRed(color) / 255f;
+        float g = (float) IKSGColorUtil.getGreen(color) / 255f;
+        float b = (float) IKSGColorUtil.getBlue(color) / 255f;
+        float a = 1;//(float) IKSGColorUtil.getAlpha(color) / 255f;
+
+        drawBlockAtlasColorTextuer(location, poseStack, x, y, size, startX, startY, endX, endY, r, g, b, a);
+    }
+
+    public static void drawBlockAtlasTextuer(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
+        poseStack.pushPose();
+        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        float brit = size / 16f;
+        float bariW = 16384 / (float) sprite.getWidth() * brit;
+        float bariH = 16384 / (float) sprite.getHeight() * brit;
+        drawBindTextuer(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH);
+        poseStack.popPose();
+    }
+
+    public static void drawBlockAtlasColorTextuer(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY, float r, float g, float b, float a) {
+        poseStack.pushPose();
+        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        float brit = size / 16f;
+        float bariW = 16384 / (float) sprite.getWidth() * brit;
+        float bariH = 16384 / (float) sprite.getHeight() * brit;
+        drawBindColorTextuer(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH, r, g, b, a);
+        poseStack.popPose();
+    }
+
 }

@@ -1,6 +1,8 @@
 package red.felnull.otyacraftengine.item.storage;
 
 import me.shedaniel.architectury.fluid.FluidStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.item.ItemStack;
 import red.felnull.otyacraftengine.fluid.storage.FluidTank;
 
@@ -27,6 +29,11 @@ public interface IFluidTankItem {
 
     default boolean fluidFilter(FluidStack stack) {
         return true;
+    }
+
+    @Environment(EnvType.CLIENT)
+    default boolean isFluidTankBarVisible(ItemStack stack) {
+        return isFluidTankItem(stack);
     }
 
 }
