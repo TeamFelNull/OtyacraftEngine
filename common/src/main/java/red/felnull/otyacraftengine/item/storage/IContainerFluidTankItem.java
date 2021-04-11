@@ -27,7 +27,18 @@ public interface IContainerFluidTankItem extends IFluidTankItem {
 
     @Override
     default Optional<ItemStack> setFluidTank(ItemStack stack, FluidTank tank) {
-        stack.getOrCreateTag().put("FluidTank", tank.save(new CompoundTag()));
+
+        if (!stack.getOrCreateTag().contains("BlockEntityTag")) {
+            stack.getOrCreateTag().put("BlockEntityTag", new CompoundTag());
+        }
+        CompoundTag tag = stack.getOrCreateTag().getCompound("BlockEntityTag");
+
+        tag.putInt("TankCont", getFluidTankCont());
+        NonNullList<FluidTank> tanks = NonNullList.withSize(getFluidTankCont(), FluidTank.createEmpty());
+        IKSGContainerUtil.loadAllTanks(tag, tanks);
+        tanks.set(getPriorityFluidTankNumber(), tank);
+        tag.remove("Tanks");
+        IKSGContainerUtil.saveAllTanks(tag, tanks, false);
         return Optional.of(stack);
     }
 
@@ -37,4 +48,6 @@ public interface IContainerFluidTankItem extends IFluidTankItem {
     }
 
     int getPriorityFluidTankNumber();
+
+    int getFluidTankCont();
 }

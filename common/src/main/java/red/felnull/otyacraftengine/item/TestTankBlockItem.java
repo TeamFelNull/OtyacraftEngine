@@ -16,6 +16,11 @@ public class TestTankBlockItem extends BlockItem implements IContainerFluidTankI
     }
 
     @Override
+    public int getFluidTankCont() {
+        return 1;
+    }
+
+    @Override
     public ItemStack getEmptyFluidTankItem() {
         return new ItemStack(this);
     }

@@ -6,6 +6,7 @@
     "BottleItemMixin",
     "BucketItemMixin",
     "FluidMixin",
+    "ItemMixin",
     "PotionItemMixin"
   ],
   "client": [

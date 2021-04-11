@@ -5,15 +5,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.util.IKSGItemUtil;
-import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
-
-import java.util.stream.IntStream;
+import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
 
 public class TestItem extends Item {
 
@@ -38,5 +37,8 @@ public class TestItem extends Item {
         MOD_ITEMS_REGISTER.register("test_item", () -> TEST_ITEM);
         MOD_ITEMS_REGISTER.register("test_tank_item", () -> TEST_TANK_ITEM);
         MOD_ITEMS_REGISTER.register();
+
+        IKSGRegistryUtil.replaceFood(Items.DIAMOND, Foods.APPLE);
+        IKSGRegistryUtil.registerCompostable(0.5f, Items.DIAMOND);
     }
 }

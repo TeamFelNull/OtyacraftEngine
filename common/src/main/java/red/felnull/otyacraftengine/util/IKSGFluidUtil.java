@@ -33,10 +33,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class IKSGFluidUtil {
-    private static final Map<ResourceLocation, IkisugiFluid> fluids = new HashMap<>();
-    private static final Map<ResourceLocation, FlowingFluid> flowingFluids = new HashMap<>();
-    private static final Map<ResourceLocation, Item> bucketItems = new HashMap<>();
-    private static final Map<ResourceLocation, Block> liquidBlocks = new HashMap<>();
 
     public static Optional<FluidTank> getFluidTank(ItemStack stack) {
         if (!stack.isEmpty()) {
@@ -131,18 +127,7 @@ public class IKSGFluidUtil {
         return Optional.empty();
     }
 
-    public static IkisugiFluid register(ResourceLocation name, FluidProperties properties, CreativeModeTab tab, DeferredRegister<Fluid> fluidRegister, DeferredRegister<Item> itemRegister, DeferredRegister<Block> blockRegister) {
-        fluids.put(name, new IkisugiFluid(properties, new FluidData(() -> fluids.get(name), () -> flowingFluids.get(name), () -> bucketItems.get(name), () -> liquidBlocks.get(name))));
-        flowingFluids.put(name, fluids.get(name).createFlowingFluid());
-        bucketItems.put(name, fluids.get(name).createBucketItem(new Item.Properties().tab(tab)));
-        liquidBlocks.put(name, fluids.get(name).createLiquidBlock(BlockBehaviour.Properties.of(Material.WATER)));
-        String path = name.getPath();
-        fluidRegister.register(path, () -> fluids.get(name));
-        fluidRegister.register(path + "_flowing", () -> flowingFluids.get(name));
-        itemRegister.register(path + "_bucket", () -> bucketItems.get(name));
-        blockRegister.register(path, () -> liquidBlocks.get(name));
-        return fluids.get(name);
-    }
+
 
     public static boolean interactWithFluidTank(Player player, InteractionHand hand, Level level, BlockPos pos, Direction side) {
         return getFluidTank(level, pos, side).map(n -> interactWithFluidTank(player, hand, n)).orElse(false);
