@@ -1,8 +1,7 @@
 package red.felnull.otyacraftengine.api;
 
+import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigHolder;
-import me.shedaniel.autoconfig.event.ConfigSerializeEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
@@ -101,7 +100,8 @@ public class OtyacraftEngineAPI {
     }
 
     public boolean isClient() {
-        return isClient;
+
+        return Platform.getEnv() == EnvType.CLIENT;
     }
 
     public int getModColor(String modid) {

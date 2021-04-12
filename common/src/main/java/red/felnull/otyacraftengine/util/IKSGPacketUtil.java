@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.util;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
+import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.impl.OEPacketExpectPlatform;
 import red.felnull.otyacraftengine.packet.IPacketMessage;
 import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
@@ -23,16 +24,18 @@ public class IKSGPacketUtil {
     }
 
     public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> message, IPacketMessageServerHandler<MSG> handler) {
-        OEPacketExpectPlatform.registerSendToServerPacket(message, IPacketMessage::encode, n -> {
-            try {
-                MSG pm = message.newInstance();
-                pm.decode(n);
-                return pm;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }, handler);
+        if (OtyacraftEngineAPI.getInstance().isClient()) {
+            OEPacketExpectPlatform.registerSendToServerPacket(message, IPacketMessage::encode, n -> {
+                try {
+                    MSG pm = message.newInstance();
+                    pm.decode(n);
+                    return pm;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }, handler);
+        }
     }
 
     public static <MSG extends IPacketMessage> void sendToServerPacket(MSG message) {
