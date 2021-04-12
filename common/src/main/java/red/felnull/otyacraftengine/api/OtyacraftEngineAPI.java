@@ -28,7 +28,6 @@ public class OtyacraftEngineAPI {
     private final List<IOEIntegration> integrations;
     private final boolean isTestMode;
     private boolean isDebugMode;
-    public boolean isClient;
 
     private OtyacraftEngineAPI(List<IOEIntegration> integrations, boolean testmode) {
         this.integrations = integrations;
@@ -100,7 +99,6 @@ public class OtyacraftEngineAPI {
     }
 
     public boolean isClient() {
-
         return Platform.getEnv() == EnvType.CLIENT;
     }
 

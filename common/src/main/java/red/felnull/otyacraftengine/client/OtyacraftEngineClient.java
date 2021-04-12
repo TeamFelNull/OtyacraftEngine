@@ -14,7 +14,6 @@ import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 public class OtyacraftEngineClient {
     public static void clientInit() {
         OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
-        api.isClient = true;
         ClientHandler.init();
         OERegistries.clientInit(api);
         OEKeyMappings.init(api);

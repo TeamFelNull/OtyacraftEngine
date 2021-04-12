@@ -11,21 +11,7 @@ import red.felnull.otyacraftengine.packet.IPacketMessageServerHandler;
 
 public class IKSGPacketUtil {
     public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> message, IPacketMessageClientHandler<MSG> handler) {
-        OEPacketExpectPlatform.registerSendToClientPacket(message, IPacketMessage::encode, n -> {
-            try {
-                MSG pm = message.newInstance();
-                pm.decode(n);
-                return pm;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }, handler);
-    }
-
-    public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> message, IPacketMessageServerHandler<MSG> handler) {
-        if (OtyacraftEngineAPI.getInstance().isClient()) {
-            OEPacketExpectPlatform.registerSendToServerPacket(message, IPacketMessage::encode, n -> {
+            OEPacketExpectPlatform.registerSendToClientPacket(message, IPacketMessage::encode, n -> {
                 try {
                     MSG pm = message.newInstance();
                     pm.decode(n);
@@ -35,7 +21,19 @@ public class IKSGPacketUtil {
                 }
                 return null;
             }, handler);
-        }
+    }
+
+    public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> message, IPacketMessageServerHandler<MSG> handler) {
+        OEPacketExpectPlatform.registerSendToServerPacket(message, IPacketMessage::encode, n -> {
+            try {
+                MSG pm = message.newInstance();
+                pm.decode(n);
+                return pm;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }, handler);
     }
 
     public static <MSG extends IPacketMessage> void sendToServerPacket(MSG message) {

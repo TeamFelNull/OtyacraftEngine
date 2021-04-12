@@ -7,6 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.packet.IPacketMessage;
 import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
 import red.felnull.otyacraftengine.packet.IPacketMessageServerHandler;
@@ -30,7 +31,9 @@ public class PacketHandler {
     public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, IPacketMessageClientHandler<MSG> messageHandler) {
         ResourceLocation location = new ResourceLocation(OtyacraftEngine.MODID, "client_" + clnumber++ + "_packet");
         LOCATIONS.put(messageType, location);
-        ClientPlayNetworking.registerGlobalReceiver(location, (client, handler, buf, responseSender) -> messageHandler.reversiveMessage(decoder.apply(buf), handler));
+        if (OtyacraftEngineAPI.getInstance().isClient()) {
+            ClientPlayNetworking.registerGlobalReceiver(location, (client, handler, buf, responseSender) -> messageHandler.reversiveMessage(decoder.apply(buf), handler));
+        }
     }
 
     public static <MSG extends IPacketMessage> void sendToClientPacket(ServerPlayer player, MSG message) {
