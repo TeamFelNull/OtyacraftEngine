@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine;
 
+import me.shedaniel.architectury.event.events.ChatEvent;
 import net.fabricmc.api.ModInitializer;
 import red.felnull.otyacraftengine.fabric.init.RegistryInit;
 

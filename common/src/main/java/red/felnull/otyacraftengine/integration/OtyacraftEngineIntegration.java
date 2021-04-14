@@ -9,6 +9,7 @@ import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.client.handler.TestClientHandler;
+import red.felnull.otyacraftengine.handler.ServerHandler;
 import red.felnull.otyacraftengine.handler.TestHandler;
 
 @OEIntegration
@@ -17,6 +18,7 @@ public class OtyacraftEngineIntegration implements IOEIntegration {
 
     @Override
     public void registrationHandler(OEHandlerRegister reg) {
+        reg.register(ServerHandler.class);
         if (api.isTestMode()) {
             reg.register(TestHandler.class);
         }

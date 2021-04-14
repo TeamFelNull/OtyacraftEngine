@@ -15,7 +15,7 @@ import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 
 import java.util.List;
 
-public class OEClientHooks {
+public class OEClientEventHooks {
 
     public static ItemTooltipEvent onItemTooltip(ItemStack itemStack, Player player, List<Component> list, TooltipFlag flags) {
         ItemTooltipEvent event = new ItemTooltipEvent(itemStack, player, list, flags);

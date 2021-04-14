@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import red.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import red.felnull.otyacraftengine.api.event.client.OEClientEventHooks;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ import java.util.List;
 public class ItemStackClientMixin {
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
     private void getTooltipLines(Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
-        OEClientHooks.onItemTooltip((ItemStack) (Object) this, player, cir.getReturnValue(), tooltipFlag);
+        OEClientEventHooks.onItemTooltip((ItemStack) (Object) this, player, cir.getReturnValue(), tooltipFlag);
     }
 }

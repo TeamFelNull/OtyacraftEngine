@@ -5,12 +5,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import red.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import red.felnull.otyacraftengine.api.event.client.OEClientEventHooks;
 
 @Mixin(BlockColors.class)
 public class BlockColorsMixin {
     @Inject(method = "createDefault", at = @At("RETURN"))
     private static void createDefault(CallbackInfoReturnable<BlockColors> cir) {
-        OEClientHooks.onBlockColorsInit(cir.getReturnValue());
+        OEClientEventHooks.onBlockColorsInit(cir.getReturnValue());
     }
 }

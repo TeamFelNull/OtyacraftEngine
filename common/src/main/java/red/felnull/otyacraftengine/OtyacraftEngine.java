@@ -9,6 +9,7 @@ import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.config.OEConfig;
+import red.felnull.otyacraftengine.data.OEWorldData;
 import red.felnull.otyacraftengine.fluid.TestFluid;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;
@@ -23,6 +24,7 @@ public class OtyacraftEngine {
         LOGGER.info("Otyacraft Engine Initialize");
         OERegistries.init(api);
         OEPackets.init();
+        OEWorldData.init();
         if (api.isTestMode()) {
             test();
         }

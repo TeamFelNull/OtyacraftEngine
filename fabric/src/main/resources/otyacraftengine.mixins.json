@@ -7,14 +7,18 @@
     "BucketItemMixin",
     "FluidMixin",
     "ItemMixin",
-    "PotionItemMixin"
+    "MinecraftServerMixin",
+    "PotionItemMixin",
+    "ServerLevelMixin"
   ],
   "client": [
     "client.BlockColorsMixin",
     "client.BlockEntityWithoutLevelRendererMixin",
+    "client.ClientLevelMixin",
     "client.ItemColorsMixin",
     "client.ItemRendererMixin",
     "client.ItemStackClientMixin",
+    "client.MinecraftMixin",
     "client.ModelManagerMixin",
     "client.MouseHandlerMixin"
   ],

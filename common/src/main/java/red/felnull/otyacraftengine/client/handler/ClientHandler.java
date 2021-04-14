@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 import red.felnull.otyacraftengine.api.event.client.ColorHandlerEvent;
-import red.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import red.felnull.otyacraftengine.api.event.client.OEClientEventHooks;
 import red.felnull.otyacraftengine.api.event.client.RenderGuiItemDecorationsEvent;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.item.IkisugiBucketItem;
@@ -24,10 +24,10 @@ public class ClientHandler {
 
     public static void init() {
         ClientRawInputEvent.KEY_PRESSED.register((mc, i, i1, i2, i3) -> {
-            OEClientHooks.fireKeyInput(i, i1, i2, i3);
+            OEClientEventHooks.fireKeyInput(i, i1, i2, i3);
             return InteractionResult.SUCCESS;
         });
-        ClientRawInputEvent.MOUSE_SCROLLED.register((mc, v) -> OEClientHooks.onMouseScroll(mc.mouseHandler, v) ? InteractionResult.FAIL : InteractionResult.PASS);
+        ClientRawInputEvent.MOUSE_SCROLLED.register((mc, v) -> OEClientEventHooks.onMouseScroll(mc.mouseHandler, v) ? InteractionResult.FAIL : InteractionResult.PASS);
     }
 
     public static void onItemColor(ColorHandlerEvent.Item e) {
