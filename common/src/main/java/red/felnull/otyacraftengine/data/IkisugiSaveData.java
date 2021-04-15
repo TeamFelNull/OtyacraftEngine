@@ -9,4 +9,6 @@ public abstract class IkisugiSaveData extends SavedData {
     public abstract void load(CompoundTag compoundTag);
 
     public abstract Path getSavePath();
+
+    public abstract void clear();
 }

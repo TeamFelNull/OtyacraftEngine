@@ -6,17 +6,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TestSaveData extends IkisugiSaveData {
-    private int testIntValue;
+    private String test;
+
+    public TestSaveData() {
+        setDirty();
+    }
 
     @Override
     public CompoundTag save(CompoundTag compoundTag) {
-        compoundTag.putInt("TestInt", testIntValue);
+        compoundTag.putString("Test", test);
         return compoundTag;
     }
 
     @Override
     public void load(CompoundTag compoundTag) {
-        testIntValue = compoundTag.getInt("TestInt");
+        test = compoundTag.getString("Test");
     }
 
     @Override
@@ -24,7 +28,18 @@ public class TestSaveData extends IkisugiSaveData {
         return Paths.get("test.dat");
     }
 
-    public int getTestIntValue() {
-        return testIntValue;
+    @Override
+    public void clear() {
+        test = "";
+        setDirty();
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+        setDirty();
+    }
+
+    public String getTest() {
+        return test;
     }
 }
