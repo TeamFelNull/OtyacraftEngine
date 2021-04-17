@@ -5,8 +5,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
 public class IKSGNbtUtil {
@@ -36,5 +35,24 @@ public class IKSGNbtUtil {
 
     public static <T> void readList(CompoundTag tag, String name, List<T> list, Function<Tag, T> reader) {
         readList(tag, name, list, reader, 10);
+    }
+
+    public static <T, M> CompoundTag writeMap(CompoundTag tag, String name, Map<T, M> map, Function<T, Tag> writerKey, Function<M, Tag> writerEntry) {
+        return writeList(tag, name, new ArrayList<>(map.entrySet()), n -> {
+            CompoundTag it = new CompoundTag();
+            it.put("k", writerKey.apply(n.getKey()));
+            it.put("e", writerEntry.apply(n.getValue()));
+            return it;
+        });
+    }
+
+    public static <T, M> void readMap(CompoundTag tag, String name, Map<T, M> map, Function<Tag, T> readerKey, Function<Tag, M> readerEntry, int num) {
+        List<Map.Entry<T, M>> entries = new ArrayList<>();
+        readList(tag, name, entries, n -> {
+            CompoundTag it = new CompoundTag();
+            return new AbstractMap.SimpleEntry<>(readerKey.apply(it.get("k")), readerEntry.apply(it.get("e")));
+        }, num);
+        map.clear();
+        entries.forEach(n -> map.put(n.getKey(), n.getValue()));
     }
 }
