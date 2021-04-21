@@ -8,7 +8,9 @@ import java.nio.file.Path;
 public abstract class IkisugiSaveData extends SavedData {
     public abstract void load(CompoundTag compoundTag);
 
-    public abstract Path getSavePath();
+    public Path getSavePath() {
+        return null;
+    }
 
     public abstract void clear();
 }

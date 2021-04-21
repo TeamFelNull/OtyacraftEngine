@@ -9,8 +9,8 @@ public class TestClientHandler {
     private static final Minecraft mc = Minecraft.getInstance();
 
     public static void onKey(InputEvent.KeyInputEvent e) {
-        if (e.getKey() == OEKeyMappings.TEST.getDefaultKey().getValue()) {
-            mc.setScreen(new TestScreen());
-        }
+      //  if (e.getKey() == OEKeyMappings.TEST.getDefaultKey().getValue()) {
+      //      mc.setScreen(new TestScreen());
+      //  }
     }
 }

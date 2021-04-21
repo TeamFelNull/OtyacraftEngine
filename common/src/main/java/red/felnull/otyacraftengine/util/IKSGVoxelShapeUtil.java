@@ -1,11 +1,20 @@
 package red.felnull.otyacraftengine.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * VoxelShapeを簡単に移動や回転をできるようにする
@@ -14,6 +23,8 @@ import org.apache.commons.lang3.ArrayUtils;
  * @since 1.0
  */
 public class IKSGVoxelShapeUtil {
+    private static final Gson gson = new Gson();
+
     /**
      * VoxelShapeを作成する
      *
@@ -297,5 +308,23 @@ public class IKSGVoxelShapeUtil {
             default:
                 return shape;
         }
+    }
+
+    public static VoxelShape getShapeFromJson(JsonObject shapeJ) {
+        VoxelShape[] shapes = null;
+        for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
+            JsonArray ja = jshape.getAsJsonArray();
+            VoxelShape shape = makeBox(ja.get(0).getAsDouble(), ja.get(1).getAsDouble(), ja.get(2).getAsDouble(), ja.get(3).getAsDouble(), ja.get(4).getAsDouble(), ja.get(5).getAsDouble());
+            shapes = ArrayUtils.add(shapes, shape);
+        }
+        return uniteBox(shapes);
+    }
+
+    public static VoxelShape getShapeFromResource(ResourceLocation location) {
+        InputStream stream = IKSGVoxelShapeUtil.class.getResourceAsStream("/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
+        if (stream == null) {
+            return makeBox(16, 16, 16, 16, 16, 16);
+        }
+        return getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
     }
 }

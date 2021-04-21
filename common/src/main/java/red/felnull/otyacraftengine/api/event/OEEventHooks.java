@@ -1,8 +1,9 @@
 package red.felnull.otyacraftengine.api.event;
 
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -34,4 +35,30 @@ public class OEEventHooks {
     public static boolean onCreateWorldSpawn(Level level, ServerLevelData settings) {
         return OEEventBus.post(new WorldEvent.CreateSpawnPosition(level, settings));
     }
+
+
+    public static void onPlayerPreTick(Player player) {
+        OEEventBus.post(new TickEvent.PlayerTickEvent(TickEvent.Phase.START, player));
+    }
+
+    public static void onPlayerPostTick(Player player) {
+        OEEventBus.post(new TickEvent.PlayerTickEvent(TickEvent.Phase.END, player));
+    }
+
+    public static void onPreWorldTick(Level level) {
+        OEEventBus.post(new TickEvent.WorldTickEvent(EnvType.SERVER, TickEvent.Phase.START, level));
+    }
+
+    public static void onPostWorldTick(Level level) {
+        OEEventBus.post(new TickEvent.WorldTickEvent(EnvType.SERVER, TickEvent.Phase.END, level));
+    }
+
+    public static void onPreServerTick() {
+        OEEventBus.post(new TickEvent.ServerTickEvent(TickEvent.Phase.START));
+    }
+
+    public static void onPostServerTick() {
+        OEEventBus.post(new TickEvent.ServerTickEvent(TickEvent.Phase.END));
+    }
+
 }

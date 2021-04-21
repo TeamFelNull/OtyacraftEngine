@@ -18,7 +18,7 @@ public class IKSGDokataUtil {
             return;
         INITED = true;
         try {
-            InputStream stream = IKSGDokataUtil.class.getResourceAsStream("/dokata.gz");
+            InputStream stream = IKSGDokataUtil.class.getResourceAsStream("/data/otyacraftengine/dokata.gz");
             JsonObject jo = gson.fromJson(new String(IKSGDataUtil.inputStreamToByteArray(IKSGDataUtil.unzipGz(stream))), JsonObject.class);
             jo.entrySet().forEach(n -> {
                 DOKATAS.put(n.getKey(), IKSGStringUtil.decodeUTFEscapeSequence(n.getValue().getAsString()));

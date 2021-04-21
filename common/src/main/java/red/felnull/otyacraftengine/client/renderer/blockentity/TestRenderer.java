@@ -24,6 +24,8 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
 
     @Override
     public void render(TestBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLightIn, int combinedOverlayIn) {
+
+        /*
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         float val = blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
@@ -33,7 +35,7 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         testRender(blockEntity, partialTicks, poseStack, multiBufferSource, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
-
+*/
     }
 
     private static final ResourceLocation BEACON_LOCATION = new ResourceLocation("textures/gui/container/beacon.png");

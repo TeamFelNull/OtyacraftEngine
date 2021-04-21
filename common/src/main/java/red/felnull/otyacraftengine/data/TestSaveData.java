@@ -2,9 +2,6 @@ package red.felnull.otyacraftengine.data;
 
 import net.minecraft.nbt.CompoundTag;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class TestSaveData extends IkisugiSaveData {
     private String test;
 
@@ -21,11 +18,6 @@ public class TestSaveData extends IkisugiSaveData {
     @Override
     public void load(CompoundTag compoundTag) {
         test = compoundTag.getString("Test");
-    }
-
-    @Override
-    public Path getSavePath() {
-        return Paths.get("test.dat");
     }
 
     @Override

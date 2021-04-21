@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import red.felnull.otyacraftengine.api.event.OEEventHooks;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
@@ -47,5 +48,15 @@ public abstract class MinecraftServerMixin {
                 OEEventHooks.onWorldUnload(serverworld1);
             }
         }
+    }
+
+    @Inject(method = "tickServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;tickChildren(Ljava/util/function/BooleanSupplier;)V"))
+    protected void tickServer(BooleanSupplier booleanSupplier, CallbackInfo ci) {
+        OEEventHooks.onPreServerTick();
+    }
+
+    @Inject(method = "tickServer", at = @At("TAIL"))
+    private void tickServer2(BooleanSupplier booleanSupplier, CallbackInfo ci) {
+        OEEventHooks.onPostServerTick();
     }
 }

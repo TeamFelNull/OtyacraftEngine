@@ -17,6 +17,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.event.client.OEClientEventHooks;
 import red.felnull.otyacraftengine.fluid.IkisugiFluid;
 
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class RenderHandler implements ClientSpriteRegistryCallback, SimpleSynchr
 
     @Override
     public void registerSprites(TextureAtlas atlasTexture, Registry registry) {
+        OEClientEventHooks.regisSprites().forEach(registry::register);
         fluidSprites.forEach((n, m) -> {
             registry.register(n.getProperties().getStillTexture());
             registry.register(n.getProperties().getFlowingTexture());

@@ -6,11 +6,13 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import red.felnull.otyacraftengine.api.event.OEEvent;
 import red.felnull.otyacraftengine.api.event.OEEventBus;
+import red.felnull.otyacraftengine.api.event.TickEvent;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 
 import java.util.List;
@@ -50,5 +52,28 @@ public class OEClientEventHooks {
 
     public static boolean onRenderGuiItemDecorationss(ItemRenderer itemRenderer, Font font, ItemStack itemStack, int xPosition, int yPosition, String string) {
         return OEEventBus.post(new RenderGuiItemDecorationsEvent(itemRenderer, font, itemStack, xPosition, yPosition, string));
+    }
+
+    public static List<ResourceLocation> regisSprites() {
+        SpriteRegiserEvent sre = new SpriteRegiserEvent();
+        OEEventBus.post(sre);
+        return sre.getRegistTextuers();
+    }
+
+    public static void onRenderTickStart(float timer) {
+        // Animation.setClientPartialTickTime(timer);
+        OEEventBus.post(new TickEvent.RenderTickEvent(TickEvent.Phase.START, timer));
+    }
+
+    public static void onRenderTickEnd(float timer) {
+        OEEventBus.post(new TickEvent.RenderTickEvent(TickEvent.Phase.END, timer));
+    }
+
+    public static void onPreClientTick() {
+        OEEventBus.post(new TickEvent.ClientTickEvent(TickEvent.Phase.START));
+    }
+
+    public static void onPostClientTick() {
+        OEEventBus.post(new TickEvent.ClientTickEvent(TickEvent.Phase.END));
     }
 }

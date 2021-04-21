@@ -6,6 +6,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
@@ -24,6 +26,7 @@ import java.util.function.Consumer;
  * @since 2.0
  */
 public class OtyacraftEngineAPI {
+    private static final Logger LOGGER = LogManager.getLogger(OtyacraftEngineAPI.class);
     private static OtyacraftEngineAPI INSTANCE;
     private final List<IOEIntegration> integrations;
     private final boolean isTestMode;
@@ -51,12 +54,14 @@ public class OtyacraftEngineAPI {
         OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
         api.setDebugMode(OtyacraftEngine.CONFIG.debugMode);
         if (INSTANCE == null) {
-            OtyacraftEngine.LOGGER.info("API Initialize");
+            LOGGER.info("API Initialize");
+            long startTime = System.currentTimeMillis();
             INSTANCE = api;
             AutoConfig.getConfigHolder(OEConfig.class).registerSaveListener((manager, data) -> {
                 INSTANCE.setDebugMode(data.debugMode);
                 return InteractionResult.SUCCESS;
             });
+            LOGGER.info("API Initialize elapsed time: " + (System.currentTimeMillis() - startTime) + "ms");
         }
     }
 

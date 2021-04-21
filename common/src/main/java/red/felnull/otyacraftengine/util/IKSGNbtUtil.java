@@ -38,20 +38,23 @@ public class IKSGNbtUtil {
     }
 
     public static <T, M> CompoundTag writeMap(CompoundTag tag, String name, Map<T, M> map, Function<T, Tag> writerKey, Function<M, Tag> writerEntry) {
-        return writeList(tag, name, new ArrayList<>(map.entrySet()), n -> {
+
+        Function<Map.Entry<T, M>, Tag> writer = n -> {
             CompoundTag it = new CompoundTag();
-            it.put("k", writerKey.apply(n.getKey()));
-            it.put("e", writerEntry.apply(n.getValue()));
+            it.put("K", writerKey.apply(n.getKey()));
+            it.put("E", writerEntry.apply(n.getValue()));
             return it;
-        });
+        };
+        return writeList(tag, name, new ArrayList<>(map.entrySet()), writer);
     }
 
     public static <T, M> void readMap(CompoundTag tag, String name, Map<T, M> map, Function<Tag, T> readerKey, Function<Tag, M> readerEntry, int num) {
         List<Map.Entry<T, M>> entries = new ArrayList<>();
-        readList(tag, name, entries, n -> {
-            CompoundTag it = new CompoundTag();
-            return new AbstractMap.SimpleEntry<>(readerKey.apply(it.get("k")), readerEntry.apply(it.get("e")));
-        }, num);
+        Function<Tag, Map.Entry<T, M>> reader = n -> {
+            CompoundTag it = (CompoundTag) n;
+            return new AbstractMap.SimpleEntry<>(readerKey.apply(it.get("K")), readerEntry.apply(it.get("E")));
+        };
+        readList(tag, name, entries, reader, num);
         map.clear();
         entries.forEach(n -> map.put(n.getKey(), n.getValue()));
     }

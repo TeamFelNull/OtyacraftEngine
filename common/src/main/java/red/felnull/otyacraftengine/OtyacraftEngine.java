@@ -21,13 +21,15 @@ public class OtyacraftEngine {
     private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
 
     public static void init() {
-        LOGGER.info("Otyacraft Engine Initialize");
+        LOGGER.info("Initialize");
+        long startTime = System.currentTimeMillis();
         OERegistries.init(api);
         OEPackets.init();
         OEWorldData.init();
         if (api.isTestMode()) {
             test();
         }
+        LOGGER.info("Initialize elapsed time: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     /**
@@ -38,12 +40,10 @@ public class OtyacraftEngine {
      * @since 2.0
      */
     private static void test() {
-        LOGGER.info("Test Initialize");
         TestBlock.init();
         TestItem.init();
         TestBlockEntity.init();
         TestFluid.init();
-
 /*
         ConfiguredSurfaceBuilder<SurfaceBuilderBaseConfiguration> OBSIDIAN_SURFACE_BUILDER = SurfaceBuilder.DEFAULT
                 .configured(new SurfaceBuilderBaseConfiguration(

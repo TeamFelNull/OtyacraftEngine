@@ -8,6 +8,7 @@
     "FluidMixin",
     "ItemMixin",
     "MinecraftServerMixin",
+    "PlayerMixin",
     "PotionItemMixin",
     "ServerLevelMixin"
   ],

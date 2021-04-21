@@ -3,9 +3,11 @@ package red.felnull.otyacraftengine.block;
 import me.shedaniel.architectury.registry.DeferredRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
@@ -41,20 +44,20 @@ public class TestBlock extends IkisugiBaseEntityBlock {
 
         MOD_BLOCKS_REGISTER.register();
         MOD_BLOCKITEMS_REGISTER.register();
+
     }
 
     public TestBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
-    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtil.rotateBoxZ180(X_AXIS_AABB);
+    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "testshape2"));
 
-    /*
-        @Override
-        public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-            return TEST_AABB;
-        }
-    */
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
+        return TEST_AABB;
+    }
+
     public static Block TEST_BLOCK;
     public static Block TEST_TANK_BLOCK;
 
