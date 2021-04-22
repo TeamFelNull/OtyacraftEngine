@@ -6,8 +6,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class IkisugiBaseContainerMenu extends IkisugiContainerMenu {
@@ -47,4 +50,59 @@ public abstract class IkisugiBaseContainerMenu extends IkisugiContainerMenu {
         super.removed(player);
         this.container.stopOpen(player);
     }
+
+    public int getNonPlayerInventorySlotCount() {
+        return getNonPlayerInventorySlots().size();
+    }
+
+    public List<Slot> getNonPlayerInventorySlots() {
+        return slots.stream().filter(n -> n.container != getInventory()).collect(Collectors.toList());
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack slotitem = slot.getItem();
+            itemstack = slotitem.copy();
+            if (index <= getNonPlayerInventorySlotCount() - 1) {
+                if (!this.moveItemStackTo(slotitem, getNonPlayerInventorySlotCount(), 36 + getNonPlayerInventorySlotCount(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index <= getNonPlayerInventorySlotCount() + 26) {
+                for (int i = 0; i < getNonPlayerInventorySlotCount(); i++) {
+                    if (getNonPlayerInventorySlots().get(i).mayPlace(slotitem) && !this.moveItemStackTo(slotitem, i, i + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                if (!this.moveItemStackTo(slotitem, getNonPlayerInventorySlotCount() + 27, getNonPlayerInventorySlotCount() + 36, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                for (int i = 0; i < getNonPlayerInventorySlotCount(); i++) {
+                    if (getNonPlayerInventorySlots().get(i).mayPlace(slotitem) && !this.moveItemStackTo(slotitem, i, i + 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                if (!this.moveItemStackTo(slotitem, getNonPlayerInventorySlotCount(), getNonPlayerInventorySlotCount() + 26, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (slotitem.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (slotitem.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, slotitem);
+        }
+        return itemstack;
+    }
+
 }

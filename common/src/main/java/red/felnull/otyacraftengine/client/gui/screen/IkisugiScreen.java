@@ -7,4 +7,9 @@ public class IkisugiScreen extends Screen implements IIkisugibleScreen {
     protected IkisugiScreen(Component component) {
         super(component);
     }
+
+    @Override
+    public Screen getScreen() {
+        return this;
+    }
 }

@@ -15,6 +15,9 @@ public class ClientTileEntitySyncMessageHandler implements IPacketMessageClientH
 
         Minecraft mc = Minecraft.getInstance();
 
+        if (mc.level == null)
+            return true;
+
         if (!mc.level.dimension().location().equals(message.dimension))
             return true;
 
