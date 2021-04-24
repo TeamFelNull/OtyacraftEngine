@@ -1,0 +1,6 @@
+{
+  "parent": "base/generated",
+  "textures": {
+      "layer0": "otyacraftengine:item/test_item"
+  }
+}

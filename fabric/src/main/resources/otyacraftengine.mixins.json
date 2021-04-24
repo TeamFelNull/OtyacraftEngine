@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "package": "red.felnull.otyacraftengine.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BottleItemMixin",
+    "BucketItemMixin",
+    "FluidMixin",
+    "ItemMixin",
+    "MinecraftServerMixin",
+    "PlayerMixin",
+    "PotionItemMixin",
+    "ServerLevelMixin"
+  ],
+  "client": [
+    "client.BlockColorsMixin",
+    "client.BlockEntityWithoutLevelRendererMixin",
+    "client.ClientLevelMixin",
+    "client.ItemColorsMixin",
+    "client.ItemRendererMixin",
+    "client.ItemStackClientMixin",
+    "client.MinecraftMixin",
+    "client.ModelManagerMixin",
+    "client.MouseHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "OtyacraftEngine-fabric-refmap.json"
+}
