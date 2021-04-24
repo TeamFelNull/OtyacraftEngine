@@ -9,7 +9,7 @@ import red.felnull.otyacraftengine.blockentity.IClientSyncbleBlockEntity;
 import red.felnull.otyacraftengine.packet.ClientTileEntitySyncMessage;
 import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
 
-public class ClientTileEntitySyncMessageHandler implements IPacketMessageClientHandler<ClientTileEntitySyncMessage> {
+public class ClientBlockEntitySyncMessageHandler implements IPacketMessageClientHandler<ClientTileEntitySyncMessage> {
     @Override
     public boolean reversiveMessage(ClientTileEntitySyncMessage message, ClientPacketListener handler) {
 
