@@ -25,7 +25,10 @@ public class PacketHandler {
     public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, IPacketMessageServerHandler<MSG> messageHandler) {
         ResourceLocation location = new ResourceLocation(OtyacraftEngine.MODID, "server_" + svnumber++ + "_packet");
         LOCATIONS.put(messageType, location);
-        ServerPlayNetworking.registerGlobalReceiver(location, (server, player, handler, buf, responseSender) -> messageHandler.reversiveMessage(decoder.apply(buf), player, handler));
+        ServerPlayNetworking.registerGlobalReceiver(location, (server, player, handler, buf, responseSender) -> {
+            MSG message = decoder.apply(buf);
+            server.execute(() -> messageHandler.reversiveMessage(message, player, handler));
+        });
     }
 
     public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> messageType, BiConsumer<MSG, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, MSG> decoder, IPacketMessageClientHandler<MSG> messageHandler) {

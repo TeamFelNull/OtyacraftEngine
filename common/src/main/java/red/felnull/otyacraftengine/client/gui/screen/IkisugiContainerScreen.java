@@ -53,5 +53,5 @@ public abstract class IkisugiContainerScreen<T extends IkisugiContainerMenu> ext
     }
 
 
-    abstract ResourceLocation getBackGrandTextuer();
+    protected abstract ResourceLocation getBackGrandTextuer();
 }

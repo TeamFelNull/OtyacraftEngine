@@ -28,7 +28,7 @@ public interface IIkisugibleBlockEntity extends ITickbleBlockEntity, IClientSync
     }
 
     @Override
-    default CompoundTag clientSyncbleData(CompoundTag tag) {
+    default CompoundTag clientSyncbleData(ServerPlayer player, CompoundTag tag) {
         return getBlockEntity().save(tag);
     }
 
@@ -45,7 +45,7 @@ public interface IIkisugibleBlockEntity extends ITickbleBlockEntity, IClientSync
         LevelChunk lch = (LevelChunk) getBlockEntity().getLevel().getChunk(getBlockEntity().getBlockPos());
         ResourceLocation dimension = getBlockEntity().getLevel().dimension().location();
         ResourceLocation bereg = Registry.BLOCK_ENTITY_TYPE.getKey(getBlockEntity().getType());
-        IKSGPacketUtil.sendToClientPacket(lch, new ClientTileEntitySyncMessage(dimension, getBlockEntity().getBlockPos(), bereg, clientSyncbleData(new CompoundTag())));
+        IKSGPacketUtil.sendToClientPacketPlayerd(lch, n -> new ClientTileEntitySyncMessage(dimension, getBlockEntity().getBlockPos(), bereg, clientSyncbleData(n, new CompoundTag())));
     }
 
     @Override

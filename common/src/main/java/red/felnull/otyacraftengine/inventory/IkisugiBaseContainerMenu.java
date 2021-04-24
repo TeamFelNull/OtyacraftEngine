@@ -89,17 +89,14 @@ public abstract class IkisugiBaseContainerMenu extends IkisugiContainerMenu {
                     return ItemStack.EMPTY;
                 }
             }
-
             if (slotitem.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
-
             if (slotitem.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
-
             slot.onTake(player, slotitem);
         }
         return itemstack;

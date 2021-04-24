@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.blockentity.container;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -87,9 +88,9 @@ public abstract class IkisugiItemContainerBlockEntity extends IkisugiContainerBl
     }
 
     @Override
-    public CompoundTag clientSyncbleData(CompoundTag compoundTag) {
+    public CompoundTag clientSyncbleData(ServerPlayer player, CompoundTag compoundTag) {
         ContainerHelper.saveAllItems(compoundTag, getItems());
-        return super.clientSyncbleData(compoundTag);
+        return super.clientSyncbleData(player, compoundTag);
     }
 
     @Override

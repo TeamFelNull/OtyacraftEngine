@@ -51,7 +51,7 @@ public class TestBlock extends IkisugiBaseEntityBlock {
         super(properties);
     }
 
-    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "testshape2"));
+    private static final VoxelShape TEST_AABB = IKSGVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "testshape"));
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {

@@ -36,4 +36,8 @@ public abstract class IkisugiContainerBlockEntity extends BaseContainerBlockEnti
     public boolean tickble() {
         return true;
     }
+
+    public void setBlockStated(BlockState state) {
+        this.level.setBlockAndUpdate(getBlockPos(), state);
+    }
 }

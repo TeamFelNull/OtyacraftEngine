@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -86,7 +87,7 @@ public abstract class IkisugiFluidContainerBlockEntity extends IkisugiContainerB
     }
 
     @Override
-    public CompoundTag clientSyncbleData(CompoundTag compoundTag) {
+    public CompoundTag clientSyncbleData(ServerPlayer player, CompoundTag compoundTag) {
         IKSGContainerUtil.saveAllTanks(compoundTag, getFluidTanks());
         return compoundTag;
     }
