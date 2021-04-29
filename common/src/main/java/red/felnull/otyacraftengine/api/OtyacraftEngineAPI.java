@@ -4,16 +4,16 @@ import me.shedaniel.architectury.platform.Platform;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.api.register.OEClientHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.config.OEConfig;
-import red.felnull.otyacraftengine.impl.OEExpectPlatform;
+import red.felnull.otyacraftengine.util.IKSGModUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class OtyacraftEngineAPI {
 
     private static void apiInit() {
         boolean testmode = OtyacraftEngine.CONFIG.testMode;
-        OtyacraftEngineAPI api = new OtyacraftEngineAPI(OEExpectPlatform.getIntegrations(), testmode);
+        OtyacraftEngineAPI api = new OtyacraftEngineAPI(IKSGModUtil.getModEntrypoints(IOEIntegration.class, OtyacraftEngine.MODID, OEIntegration.class), testmode);
         api.setDebugMode(OtyacraftEngine.CONFIG.debugMode);
         if (INSTANCE == null) {
             LOGGER.info("API Initialize");
@@ -76,17 +76,17 @@ public class OtyacraftEngineAPI {
 
     public void integrationConsumer(Consumer<IOEIntegration> consumer) {
         List<IOEIntegration> integrations = getIntegrations();
-        integrations.forEach(consumer::accept);
+        integrations.forEach(consumer);
     }
 
     public Set<IHandler> getHandlers() {
-        OEHandlerRegister handlers = (OEHandlerRegister) OERegistries.getSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"));
+        OEHandlerRegister handlers = OERegistries.getRegistry(OEHandlerRegister.class);
         return handlers.getSet();
     }
 
     @Environment(EnvType.CLIENT)
     public Set<IHandler> getClientHandlers() {
-        OEHandlerRegister handlers = (OEHandlerRegister) OERegistries.getSingleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "client_handler"));
+        OEClientHandlerRegister handlers = OERegistries.getRegistry(OEClientHandlerRegister.class);
         return handlers.getSet();
     }
 
@@ -108,7 +108,7 @@ public class OtyacraftEngineAPI {
     }
 
     public int getModColor(String modid) {
-        OEMODColorRegister colors = (OEMODColorRegister) OERegistries.getDoubleRegistry(new ResourceLocation(OtyacraftEngine.MODID, "mod_color"));
+        OEMODColorRegister colors = OERegistries.getRegistry(OEMODColorRegister.class);
         if (colors.getMap().containsKey(modid))
             return colors.getMap().get(modid);
         return 0;

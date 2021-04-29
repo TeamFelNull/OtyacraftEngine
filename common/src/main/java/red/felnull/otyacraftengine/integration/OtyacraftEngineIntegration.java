@@ -4,6 +4,7 @@ import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.IOEIntegration;
 import red.felnull.otyacraftengine.api.OEIntegration;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
+import red.felnull.otyacraftengine.api.register.OEClientHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
@@ -25,7 +26,7 @@ public class OtyacraftEngineIntegration implements IOEIntegration {
     }
 
     @Override
-    public void registrationClientHandler(OEHandlerRegister reg) {
+    public void registrationClientHandler(OEClientHandlerRegister reg) {
         if (api.isTestMode()) {
             reg.register(TestClientHandler.class);
         }

@@ -47,4 +47,5 @@ public class IKSGRegistryUtil {
         ComposterBlock.COMPOSTABLES.put(itemLike.asItem(), cont);
     }
 
+
 }

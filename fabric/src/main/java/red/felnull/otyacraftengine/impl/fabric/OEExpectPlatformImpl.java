@@ -11,17 +11,13 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.GameEventTags;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
-import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.IOEIntegration;
 import red.felnull.otyacraftengine.util.IKSGBiomeUtil;
 import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
@@ -29,10 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class OEExpectPlatformImpl {
-    public static List<IOEIntegration> getIntegrations() {
-        return FabricLoader.getInstance().getEntrypoints(OtyacraftEngine.MODID, IOEIntegration.class);
-    }
-
     public static TagCollection<Fluid> getFluidAllTags() {
         return FluidTags.HELPER.getAllTags();
     }
@@ -74,8 +66,7 @@ public class OEExpectPlatformImpl {
     }
 
     public static SoundEvent getEmptySound(FluidStack stack) {
-        SoundEvent soundEvent = stack.getFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
-        return soundEvent;
+        return stack.getFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
     }
 
     public static boolean canNotIncompleteFluidItem(ItemStack stack) {
@@ -92,5 +83,9 @@ public class OEExpectPlatformImpl {
 
     public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
         return Optional.empty();
+    }
+
+    public static <T> List<T> getModEntrypoints(Class<T> type, String key, Class<?> anotation) {
+        return FabricLoader.getInstance().getEntrypoints(key, type);
     }
 }

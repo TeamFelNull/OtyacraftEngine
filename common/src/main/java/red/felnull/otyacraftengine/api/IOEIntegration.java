@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.api;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.api.helper.BiomeRegisterHelper;
+import red.felnull.otyacraftengine.api.register.OEClientHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEHandlerRegister;
 import red.felnull.otyacraftengine.api.register.OEMODColorRegister;
 import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
@@ -26,7 +27,7 @@ public interface IOEIntegration {
     }
 
     @Environment(EnvType.CLIENT)
-    default void registrationClientHandler(OEHandlerRegister reg) {
+    default void registrationClientHandler(OEClientHandlerRegister reg) {
 
     }
 

@@ -6,14 +6,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagCollection;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
-import red.felnull.otyacraftengine.api.IOEIntegration;
 import red.felnull.otyacraftengine.util.IKSGBiomeUtil;
 import red.felnull.otyacraftengine.util.IKSGBlockEntityUtil;
 
@@ -21,11 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class OEExpectPlatform {
-    @ExpectPlatform
-    public static List<IOEIntegration> getIntegrations() {
-        throw new AssertionError();
-    }
-
     @ExpectPlatform
     public static TagCollection<Fluid> getFluidAllTags() {
         throw new AssertionError();
@@ -79,6 +72,11 @@ public class OEExpectPlatform {
 
     @ExpectPlatform
     public static Optional<ItemStack> getFilledNotIncompleteFluidItem(ItemStack stack, Fluid fluid) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T> List<T> getModEntrypoints(Class<T> type, String key, Class<?> anotation) {
         throw new AssertionError();
     }
 }

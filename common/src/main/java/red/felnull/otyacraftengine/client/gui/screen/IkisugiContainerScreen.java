@@ -52,6 +52,12 @@ public abstract class IkisugiContainerScreen<T extends IkisugiContainerMenu> ext
         }
     }
 
+    @Override
+    public boolean mouseDragged(double d, double e, int i, double f, double g) {
+        boolean flag1 = super.mouseDragged(d, e, i, f, g);
+        boolean flag2 = this.getFocused() != null && this.isDragging() && i == 0 && this.getFocused().mouseDragged(d, e, i, f, g);
+        return flag1 & flag2;
+    }
 
     protected abstract ResourceLocation getBackGrandTextuer();
 }

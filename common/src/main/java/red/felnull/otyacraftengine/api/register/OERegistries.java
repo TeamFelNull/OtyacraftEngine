@@ -3,8 +3,6 @@ package red.felnull.otyacraftengine.api.register;
 import me.shedaniel.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.resources.ResourceLocation;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
 
 import java.util.HashMap;
@@ -12,17 +10,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class OERegistries {
-    private static final Map<ResourceLocation, IRegister> REGISTRYS = new HashMap<>();
+    private static final Map<Class<? extends IRegister>, IRegister> REGISTRYS = new HashMap<>();
 
     public static void init(OtyacraftEngineAPI api) {
         OEHandlerRegister handlerRegister = new OEHandlerRegister();
         OEMODColorRegister modColorRegister = new OEMODColorRegister();
 
-        OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "handler"), handlerRegister);
-        OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "mod_color"), modColorRegister);
+        OERegistries.setRegistry(OEHandlerRegister.class, handlerRegister);
+        OERegistries.setRegistry(OEMODColorRegister.class, modColorRegister);
 
-        api.integrationConsumer(n -> n.registrationHandler(handlerRegister));
-        api.integrationConsumer(n -> n.registrationMODColor(modColorRegister));
+        api.integrationConsumer(n -> {
+            n.registrationHandler(handlerRegister);
+            n.registrationMODColor(modColorRegister);
+        });
 
         Platform.getModIds().stream().filter(n -> !modColorRegister.contains(n)).forEach(n -> {
             Random r = new Random(n.hashCode());
@@ -32,32 +32,28 @@ public class OERegistries {
 
     @Environment(EnvType.CLIENT)
     public static void clientInit(OtyacraftEngineAPI api) {
-        OEHandlerRegister clientHandlerRegister = new OEHandlerRegister();
+        OEClientHandlerRegister clientHandlerRegister = new OEClientHandlerRegister();
         OEModelLoaderPathRegister modelLoaderPathRegister = new OEModelLoaderPathRegister();
 
-        OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "client_handler"), clientHandlerRegister);
-        OERegistries.setRegistry(new ResourceLocation(OtyacraftEngine.MODID, "model_loader_path"), modelLoaderPathRegister);
+        OERegistries.setRegistry(OEClientHandlerRegister.class, clientHandlerRegister);
+        OERegistries.setRegistry(OEModelLoaderPathRegister.class, modelLoaderPathRegister);
 
-        api.integrationConsumer(n -> n.registrationClientHandler(clientHandlerRegister));
-        api.integrationConsumer(n -> n.registrationModelLoaderPath(modelLoaderPathRegister));
+        api.integrationConsumer(n -> {
+            n.registrationClientHandler(clientHandlerRegister);
+            n.registrationModelLoaderPath(modelLoaderPathRegister);
+        });
     }
 
-    public static SingleRegistry<?> getSingleRegistry(ResourceLocation location) {
-
-        return (SingleRegistry<?>) REGISTRYS.get(location);
+    public static <T extends IRegister> T getRegistry(Class<T> register) {
+        return (T) REGISTRYS.get(register);
     }
 
-    public static DoubleRegistry<?, ?> getDoubleRegistry(ResourceLocation location) {
-
-        return (DoubleRegistry<?, ?>) REGISTRYS.get(location);
+    public static <T extends IRegister> void setRegistry(Class<T> register, T registry) {
+        REGISTRYS.put(register, registry);
     }
 
-    public static void setRegistry(ResourceLocation location, IRegister registry) {
-        REGISTRYS.put(location, registry);
-    }
-
-    public static boolean hasRegistryContain(ResourceLocation location) {
-        return REGISTRYS.containsKey(location);
+    public static <T extends IRegister> boolean hasRegistryContain(Class<T> register) {
+        return REGISTRYS.containsKey(register);
     }
 
 }
