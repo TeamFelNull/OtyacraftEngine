@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.util;
 
+import net.minecraft.util.Mth;
+
 public class IKSGMath {
     public static final float ABSOLUTE_ZERO = -273.15f;
 
@@ -20,19 +22,18 @@ public class IKSGMath {
     }
 
     public static int clamp(int value, int min, int max) {
-        return Math.max(Math.min(value, max), min);
+        return Mth.clamp(value, min, min);
     }
 
     public static long clamp(long value, long min, long max) {
-        return Math.max(Math.min(value, max), min);
+        return Mth.clamp(value, min, min);
     }
 
     public static float clamp(float value, float min, float max) {
-        return Math.max(Math.min(value, max), min);
+        return Mth.clamp(value, min, min);
     }
 
     public static double clamp(double value, double min, double max) {
-        return Math.max(Math.min(value, max), min);
+        return Mth.clamp(value, min, min);
     }
-
 }

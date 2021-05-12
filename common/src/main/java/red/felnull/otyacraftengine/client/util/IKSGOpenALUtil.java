@@ -21,4 +21,24 @@ public class IKSGOpenALUtil {
                 throw new OpenALException("Unable to allocate memory.");
         }
     }
+
+    public static int getOpenALFormat(int channel, int bit) {
+        if (channel == 1) {
+            if (bit == 8) {
+                return AL_FORMAT_MONO8;
+            }
+            if (bit == 16) {
+                return AL_FORMAT_MONO16;
+            }
+        } else if (channel == 2) {
+            if (bit == 8) {
+                return AL_FORMAT_STEREO8;
+            }
+
+            if (bit == 16) {
+                return AL_FORMAT_STEREO16;
+            }
+        }
+        return AL_FORMAT_MONO16;
+    }
 }

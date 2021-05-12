@@ -6,10 +6,12 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.phys.Vec3;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 import red.felnull.otyacraftengine.client.renderer.CustomBlockEntityWithoutLevelRenderer;
 import red.felnull.otyacraftengine.client.renderer.item.ICustomBEWLRenderer;
@@ -39,5 +41,9 @@ public class IKSGClientUtil {
 
     public static void registerItemRenderer(Block block, ICustomBEWLRenderer renderer) {
         registerItemRenderer(block.asItem(), renderer);
+    }
+
+    public static void addSubtitle(Component text, Vec3 location) {
+        OEClientExpectPlatform.addSubtitle(text, location);
     }
 }

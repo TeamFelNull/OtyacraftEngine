@@ -6,7 +6,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.Vec3;
 
 public class OEClientExpectPlatform {
     @ExpectPlatform
@@ -26,6 +28,11 @@ public class OEClientExpectPlatform {
 
     @ExpectPlatform
     public static void setRenderLayer(Block block, RenderType type) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void addSubtitle(Component text, Vec3 location) {
         throw new AssertionError();
     }
 }
