@@ -21,7 +21,8 @@
     "client.ItemStackClientMixin",
     "client.MinecraftMixin",
     "client.ModelManagerMixin",
-    "client.MouseHandlerMixin"
+    "client.MouseHandlerMixin",
+    "client.SubtitleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

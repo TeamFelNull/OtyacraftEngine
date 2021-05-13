@@ -10,6 +10,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.UUID;
+import java.util.function.Supplier;
+
 public class OEClientExpectPlatform {
     @ExpectPlatform
     public static boolean isMiddlePressed(MouseHandler mouseHelper) {
@@ -33,6 +36,16 @@ public class OEClientExpectPlatform {
 
     @ExpectPlatform
     public static void addSubtitle(Component text, Vec3 location) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void addSubtitle(UUID id, Component text, Vec3 location) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void addSubtitle(UUID id, Component text, Supplier<Vec3> location) {
         throw new AssertionError();
     }
 }

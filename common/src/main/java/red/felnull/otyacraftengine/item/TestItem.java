@@ -14,8 +14,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
-import red.felnull.otyacraftengine.util.IKSGDokataUtil;
 import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
+
+import java.util.Random;
 
 public class TestItem extends Item {
 
@@ -29,7 +30,7 @@ public class TestItem extends Item {
         if (!level.isClientSide()) {
             //  player.displayClientMessage(new TextComponent("file" + TestItem.class.getResourceAsStream("/data/otyacraftengine/dokata.gza")), false);
         } else {
-         //   IKSGClientUtil.addSubtitle(new TextComponent(IKSGDokataUtil.getYattaze()), player.position());
+            IKSGClientUtil.addSubtitle(player.getGameProfile().getId(), new TextComponent(new Random().nextDouble() + ""), () -> player.position());
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }

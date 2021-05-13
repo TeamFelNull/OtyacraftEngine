@@ -11,6 +11,10 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
+import red.felnull.otyacraftengine.client.gui.components.IIkisugiSubtitle;
+
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class OEClientExpectPlatformImpl {
     private static final Minecraft mc = Minecraft.getInstance();
@@ -43,4 +47,36 @@ public class OEClientExpectPlatformImpl {
         mc.gui.subtitleOverlay.subtitles.add(sb);
     }
 
+    public static void addSubtitle(UUID id, Component text, Vec3 location) {
+        for (SubtitleOverlay.Subtitle subtitle : mc.gui.subtitleOverlay.subtitles) {
+            if (subtitle instanceof IIkisugiSubtitle) {
+                IIkisugiSubtitle is = (IIkisugiSubtitle) subtitle;
+                if (id.equals(is.getID())) {
+                    is.overrideRefresh(text, location);
+                    return;
+                }
+            }
+        }
+        SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location);
+        IIkisugiSubtitle is = (IIkisugiSubtitle) sb;
+        is.setID(id);
+        mc.gui.subtitleOverlay.subtitles.add(sb);
+    }
+
+    public static void addSubtitle(UUID id, Component text, Supplier<Vec3> location) {
+        for (SubtitleOverlay.Subtitle subtitle : mc.gui.subtitleOverlay.subtitles) {
+            if (subtitle instanceof IIkisugiSubtitle) {
+                IIkisugiSubtitle is = (IIkisugiSubtitle) subtitle;
+                if (id.equals(is.getID())) {
+                    is.overrideRefresh(text, location);
+                    return;
+                }
+            }
+        }
+        SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location.get());
+        IIkisugiSubtitle is = (IIkisugiSubtitle) sb;
+        is.setID(id);
+        is.setDynamicLocation(location);
+        mc.gui.subtitleOverlay.subtitles.add(sb);
+    }
 }

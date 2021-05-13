@@ -17,6 +17,9 @@ import red.felnull.otyacraftengine.client.renderer.CustomBlockEntityWithoutLevel
 import red.felnull.otyacraftengine.client.renderer.item.ICustomBEWLRenderer;
 
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
 public class IKSGClientUtil {
 
@@ -46,4 +49,13 @@ public class IKSGClientUtil {
     public static void addSubtitle(Component text, Vec3 location) {
         OEClientExpectPlatform.addSubtitle(text, location);
     }
+
+    public static void addSubtitle(UUID id, Component text, Vec3 location) {
+        OEClientExpectPlatform.addSubtitle(id, text, location);
+    }
+
+    public static void addSubtitle(UUID id, Component text, Supplier<Vec3> location) {
+        OEClientExpectPlatform.addSubtitle(id, text, location);
+    }
+
 }
