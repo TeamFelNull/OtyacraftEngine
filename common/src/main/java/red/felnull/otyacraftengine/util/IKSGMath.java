@@ -22,18 +22,18 @@ public class IKSGMath {
     }
 
     public static int clamp(int value, int min, int max) {
-        return Mth.clamp(value, min, min);
+        return Mth.clamp(value, min, max);
     }
 
     public static long clamp(long value, long min, long max) {
-        return Mth.clamp(value, min, min);
+        return Mth.clamp(value, min, max);
     }
 
     public static float clamp(float value, float min, float max) {
-        return Mth.clamp(value, min, min);
+        return Mth.clamp(value, min, max);
     }
 
     public static double clamp(double value, double min, double max) {
-        return Mth.clamp(value, min, min);
+        return Mth.clamp(value, min, max);
     }
 }
