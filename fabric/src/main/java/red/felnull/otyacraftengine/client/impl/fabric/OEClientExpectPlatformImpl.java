@@ -36,39 +36,12 @@ public class OEClientExpectPlatformImpl {
         BlockRenderLayerMap.INSTANCE.putBlock(block, type);
     }
 
-    public static void addSubtitle(Component text, Vec3 location) {
-        for (SubtitleOverlay.Subtitle subtitle : mc.gui.subtitleOverlay.subtitles) {
-            if (subtitle.getText().equals(text)) {
-                subtitle.refresh(location);
-                return;
-            }
-        }
-        SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location);
-        mc.gui.subtitleOverlay.subtitles.add(sb);
-    }
-
-    public static void addSubtitle(UUID id, Component text, Vec3 location) {
+    public static void addSubtitle(UUID id, Component text, long time, Supplier<Vec3> location) {
         for (SubtitleOverlay.Subtitle subtitle : mc.gui.subtitleOverlay.subtitles) {
             if (subtitle instanceof IIkisugiSubtitle) {
                 IIkisugiSubtitle is = (IIkisugiSubtitle) subtitle;
-                if (id.equals(is.getID())) {
-                    is.overrideRefresh(text, location);
-                    return;
-                }
-            }
-        }
-        SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location);
-        IIkisugiSubtitle is = (IIkisugiSubtitle) sb;
-        is.setID(id);
-        mc.gui.subtitleOverlay.subtitles.add(sb);
-    }
-
-    public static void addSubtitle(UUID id, Component text, Supplier<Vec3> location) {
-        for (SubtitleOverlay.Subtitle subtitle : mc.gui.subtitleOverlay.subtitles) {
-            if (subtitle instanceof IIkisugiSubtitle) {
-                IIkisugiSubtitle is = (IIkisugiSubtitle) subtitle;
-                if (id.equals(is.getID())) {
-                    is.overrideRefresh(text, location);
+                if ((is.getID() != null && is.getID().equals(id)) || (id == null && subtitle.getText().equals(text))) {
+                    is.overrideRefresh(text, location, time);
                     return;
                 }
             }
@@ -76,6 +49,7 @@ public class OEClientExpectPlatformImpl {
         SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location.get());
         IIkisugiSubtitle is = (IIkisugiSubtitle) sb;
         is.setID(id);
+        is.setTime(time);
         is.setDynamicLocation(location);
         mc.gui.subtitleOverlay.subtitles.add(sb);
     }

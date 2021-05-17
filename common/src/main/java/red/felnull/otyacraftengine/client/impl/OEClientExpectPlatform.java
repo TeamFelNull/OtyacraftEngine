@@ -35,17 +35,7 @@ public class OEClientExpectPlatform {
     }
 
     @ExpectPlatform
-    public static void addSubtitle(Component text, Vec3 location) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static void addSubtitle(UUID id, Component text, Vec3 location) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static void addSubtitle(UUID id, Component text, Supplier<Vec3> location) {
+    public static void addSubtitle(UUID id, Component text, long time, Supplier<Vec3> location) {
         throw new AssertionError();
     }
 }

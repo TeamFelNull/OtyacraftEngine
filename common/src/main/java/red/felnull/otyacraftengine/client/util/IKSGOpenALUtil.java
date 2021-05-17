@@ -1,9 +1,12 @@
 package red.felnull.otyacraftengine.client.util;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.throwable.OpenALException;
 
 import static org.lwjgl.openal.AL10.*;
 
+@Environment(EnvType.CLIENT)
 public class IKSGOpenALUtil {
     public static void checkErrorThrower() throws OpenALException {
         switch (alGetError()) {

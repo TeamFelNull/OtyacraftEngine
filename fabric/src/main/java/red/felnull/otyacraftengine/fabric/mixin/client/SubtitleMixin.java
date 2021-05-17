@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.fabric.mixin.client;
 
+import net.minecraft.Util;
 import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.Vec3;
@@ -22,16 +23,15 @@ public abstract class SubtitleMixin implements IIkisugiSubtitle {
     @Shadow
     public abstract void refresh(Vec3 vec3);
 
-    @Override
-    public void overrideRefresh(Component component, Vec3 vec3) {
-        this.itext = component;
-        refresh(vec3);
-    }
+    @Shadow
+    private long time;
 
     @Override
-    public void overrideRefresh(Component component, Supplier<Vec3> vec3) {
+    public void overrideRefresh(Component component, Supplier<Vec3> vec3, long time) {
         this.dynamicLocation = vec3;
-        overrideRefresh(component, vec3.get());
+        this.itext = component;
+        refresh(vec3.get());
+        setTime(time);
     }
 
     @Override
@@ -57,12 +57,12 @@ public abstract class SubtitleMixin implements IIkisugiSubtitle {
     }
 
     @Override
-    public Supplier<Vec3> getDynamicLocation() {
-        return dynamicLocation;
+    public void setDynamicLocation(Supplier<Vec3> location) {
+        this.dynamicLocation = location;
     }
 
     @Override
-    public void setDynamicLocation(Supplier<Vec3> location) {
-        this.dynamicLocation = location;
+    public void setTime(long time) {
+        this.time = Util.getMillis() - 3000 + time;
     }
 }

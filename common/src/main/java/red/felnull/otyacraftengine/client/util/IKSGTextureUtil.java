@@ -2,6 +2,8 @@ package red.felnull.otyacraftengine.client.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +12,7 @@ import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 public class IKSGTextureUtil {
     private static final Minecraft mc = Minecraft.getInstance();
 

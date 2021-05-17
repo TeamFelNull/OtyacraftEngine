@@ -8,6 +8,7 @@ accessible field net/minecraft/world/item/BucketItem content Lnet/minecraft/worl
 accessible field net/minecraft/client/resources/model/ModelBakery atlasSet Lnet/minecraft/client/renderer/texture/AtlasSet;
 accessible field net/minecraft/client/gui/components/SubtitleOverlay subtitles Ljava/util/List;
 accessible field net/minecraft/client/gui/Gui subtitleOverlay Lnet/minecraft/client/gui/components/SubtitleOverlay;
+accessible field net/minecraft/client/resources/language/I18n language Lnet/minecraft/locale/Language;
 
 accessible method net/minecraft/world/level/biome/Biome <init> (Lnet/minecraft/world/level/biome/Biome$ClimateSettings;Lnet/minecraft/world/level/biome/Biome$BiomeCategory;FFLnet/minecraft/world/level/biome/BiomeSpecialEffects;Lnet/minecraft/world/level/biome/BiomeGenerationSettings;Lnet/minecraft/world/level/biome/MobSpawnSettings;)V
 accessible method net/minecraft/world/level/biome/Biome$ClimateSettings <init> (Lnet/minecraft/world/level/biome/Biome$Precipitation;FLnet/minecraft/world/level/biome/Biome$TemperatureModifier;F)V

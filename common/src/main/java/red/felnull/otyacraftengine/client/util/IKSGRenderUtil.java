@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+@Environment(EnvType.CLIENT)
 public class IKSGRenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();

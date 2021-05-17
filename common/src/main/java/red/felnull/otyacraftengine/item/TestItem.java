@@ -30,7 +30,7 @@ public class TestItem extends Item {
         if (!level.isClientSide()) {
             //  player.displayClientMessage(new TextComponent("file" + TestItem.class.getResourceAsStream("/data/otyacraftengine/dokata.gza")), false);
         } else {
-            IKSGClientUtil.addSubtitle(player.getGameProfile().getId(), new TextComponent(new Random().nextDouble() + ""), () -> player.position());
+            IKSGClientUtil.addSubtitle(new TextComponent(new Random().nextDouble() + ""),1000, player::position);
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }

@@ -13,7 +13,7 @@
     "sources": "https://github.com/TeamFelnull/OtyacraftEngine"
   },
   "license": "LGPL v3",
-  "icon": "icon.png",
+  "icon": "logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
