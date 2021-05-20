@@ -46,7 +46,7 @@ public class OEClientExpectPlatformImpl {
                 }
             }
         }
-        SubtitleOverlay.Subtitle sb = (mc.gui.subtitleOverlay).new Subtitle(text, location.get());
+        SubtitleOverlay.Subtitle sb = new SubtitleOverlay.Subtitle(text, location.get());
         IIkisugiSubtitle is = (IIkisugiSubtitle) sb;
         is.setID(id);
         is.setTime(time);

@@ -33,7 +33,7 @@
     "fabricloader": ">=0.11.1",
     "fabric": "*",
     "minecraft": ">=1.17-",
-    "architectury": ">=2.0.147"
+    "architectury": ">=2.0.11"
   },
   "accessWidener": "otyacraftengine.accesswidener",
   "mixins": [

@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.model.ModelResourceProvider;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.register.OEModelLoaderPathRegister;
 import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.client.fabric.model.OBJLoader;

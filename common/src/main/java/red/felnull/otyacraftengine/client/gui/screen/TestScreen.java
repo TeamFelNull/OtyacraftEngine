@@ -1,13 +1,10 @@
 package red.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
-import red.felnull.otyacraftengine.client.gui.components.IkisugiSelectionList;
-import red.felnull.otyacraftengine.util.IKSGDokataUtil;
 
 public class TestScreen extends IkisugiScreen {
-    private TestList list;
+    //  private TestList list;
 
     public TestScreen() {
         super(new TextComponent("test"));
@@ -17,17 +14,17 @@ public class TestScreen extends IkisugiScreen {
     @Override
     protected void init() {
         super.init();
-        this.list = addWidget(new TestList(getMinecraft(), width / 4, height / 4, width / 2, height / 2, 18));
+        //      this.list = addWidget(new TestList(getMinecraft(), width / 4, height / 4, width / 2, height / 2, 18));
     }
 
     @Override
     public void render(PoseStack poseStack, int i, int j, float f) {
         renderBackground(poseStack);
-        this.list.render(poseStack, i, j, f);
+        //   this.list.render(poseStack, i, j, f);
         super.render(poseStack, i, j, f);
     }
 
-    public class TestList extends IkisugiSelectionList<TestList.Entry> {
+  /*  public class TestList extends IkisugiSelectionList<TestList.Entry> {
 
         public TestList(Minecraft minecraft, int x, int y, int width, int height, int selectHeight) {
             super(minecraft, x, y, width, height, selectHeight);
@@ -61,5 +58,5 @@ public class TestScreen extends IkisugiScreen {
 
 
         }
-    }
+    }*/
 }
