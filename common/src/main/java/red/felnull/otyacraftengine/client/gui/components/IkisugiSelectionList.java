@@ -1,11 +1,11 @@
 package red.felnull.otyacraftengine.client.gui.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
-public abstract class IkisugiSelectionList<E extends IkisugiSelectionList.Entry<E>> extends ObjectSelectionList<E> {
+public abstract class IkisugiSelectionList<E extends IkisugiSelectionList.Entry<E>> extends ObjectSelectionList<E> implements IIkisugibleWidget {
     private int selectWidth;
     private int scrollbarPosition;
 
@@ -39,14 +39,6 @@ public abstract class IkisugiSelectionList<E extends IkisugiSelectionList.Entry<
         return scrollbarPosition;
     }
 
-    @Override
-    public void setSelected(@Nullable E entry) {
-        super.setSelected(entry);
-        if (entry != null) {
-            NarratorChatListener.INSTANCE.sayNow(entry.getName());
-        }
-    }
-
     public abstract static class Entry<E extends IkisugiSelectionList.Entry<E>> extends ObjectSelectionList.Entry<E> {
         private final String name;
 
@@ -56,6 +48,11 @@ public abstract class IkisugiSelectionList<E extends IkisugiSelectionList.Entry<
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public Component getNarration() {
+            return new TextComponent(name);
         }
     }
 }

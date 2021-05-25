@@ -8,7 +8,4 @@ public interface IIkisugibleContainerScreen<T extends IkisugiContainerMenu> exte
     default AbstractContainerScreen<T> getContainerScreen() {
         return (AbstractContainerScreen<T>) getScreen();
     }
-
-
-
 }
