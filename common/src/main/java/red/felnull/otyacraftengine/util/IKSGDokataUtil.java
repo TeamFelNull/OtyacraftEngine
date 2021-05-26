@@ -226,9 +226,9 @@ public class IKSGDokataUtil {
         ISSYONI(getIssyoni()),
         OKAYAMADE(getOkayamade()),
         KURASHIKIMUKAIYAMAROSHUTSUZUKI(getKurashikiMukaiyamaRoshutsuZuki());
-        public String str;
+        private final String str;
 
-        private Dokata(String st) {
+        Dokata(String st) {
             this.str = st;
         }
 
