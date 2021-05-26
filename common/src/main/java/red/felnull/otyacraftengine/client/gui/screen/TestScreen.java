@@ -25,7 +25,7 @@ public class TestScreen extends IkisugiScreen {
     @Override
     protected void init() {
         super.init();
-        this.addRenderableWidget(new TestFixedButtonsList(10, 10, 29, 100, 5, new TextComponent("Test List"), testList, TextComponent::new, n -> {
+        this.addRenderableWidget(new TestFixedButtonsList(144, 109, 29, 100, 5, new TextComponent("Test List"), testList, TextComponent::new, n -> {
             System.out.println(n);
         }));
     }

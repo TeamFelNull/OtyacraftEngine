@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class FixedButtonsList<T> extends AbstractWidget implements IIkisugibleWidget {
+public abstract class FixedButtonsList<T> extends AbstractWidget implements IIkisugibleWidget {
     private static final ResourceLocation WIDGETS_TEXTURE = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/widgets.png");
     private final List<T> list;
     private final Function<T, Component> listName;
@@ -106,7 +106,7 @@ public class FixedButtonsList<T> extends AbstractWidget implements IIkisugibleWi
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        int k = this.getYImage(this.isHovered(lnum));
+        int k = this.getYImage(this.isHovered(bnum));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
@@ -158,7 +158,7 @@ public class FixedButtonsList<T> extends AbstractWidget implements IIkisugibleWi
     public void onPress(int num) {
         int cn = getCurrentFirstNumber() + num;
 
-        if (cn < list.size() && isHovered(cn))
+        if (cn < list.size() && isHovered(num))
             onPress.accept(new PressState<>(this, list.get(cn), cn, num));
     }
 
