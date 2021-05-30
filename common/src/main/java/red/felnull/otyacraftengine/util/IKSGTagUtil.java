@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -33,5 +34,25 @@ public class IKSGTagUtil {
 
     public static List<ResourceLocation> getGameEventTags(GameEvent gameevent) {
         return new ArrayList<>(OEExpectPlatform.getGameEventAllTags().getMatchingTags(gameevent));
+    }
+
+    public static Tag.Named<Item> bindItemTag(ResourceLocation location) {
+        return OEExpectPlatform.bindItemTag(location.toString());
+    }
+
+    public static Tag.Named<Block> bindBlockTag(ResourceLocation location) {
+        return OEExpectPlatform.bindBlockTag(location.toString());
+    }
+
+    public static Tag.Named<EntityType<?>> bindEntityTypeTag(ResourceLocation location) {
+        return OEExpectPlatform.bindEntityTypeTag(location.toString());
+    }
+
+    public static Tag.Named<Fluid> bindFluidTag(ResourceLocation location) {
+        return OEExpectPlatform.bindFluidTag(location.toString());
+    }
+
+    public static Tag.Named<GameEvent> bindGameEventTag(ResourceLocation location) {
+        return OEExpectPlatform.bindGameEventTag(location.toString());
     }
 }

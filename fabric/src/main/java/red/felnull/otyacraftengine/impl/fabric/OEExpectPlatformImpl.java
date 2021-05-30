@@ -7,9 +7,9 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.GameEventTags;
-import net.minecraft.tags.TagCollection;
+import net.minecraft.tags.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -87,5 +87,25 @@ public class OEExpectPlatformImpl {
 
     public static <T> List<T> getModEntrypoints(Class<T> type, String key, Class<?> anotation) {
         return FabricLoader.getInstance().getEntrypoints(key, type);
+    }
+
+    public static Tag.Named<Item> bindItemTag(String name) {
+        return ItemTags.bind(name);
+    }
+
+    public static Tag.Named<Block> bindBlockTag(String name) {
+        return BlockTags.bind(name);
+    }
+
+    public static Tag.Named<EntityType<?>> bindEntityTypeTag(String name) {
+        return EntityTypeTags.bind(name);
+    }
+
+    public static Tag.Named<Fluid> bindFluidTag(String name) {
+        return FluidTags.bind(name);
+    }
+
+    public static Tag.Named<GameEvent> bindGameEventTag(String name) {
+        return GameEventTags.bind(name);
     }
 }

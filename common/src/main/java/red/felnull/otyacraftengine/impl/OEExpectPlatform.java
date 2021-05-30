@@ -3,8 +3,12 @@ package red.felnull.otyacraftengine.impl;
 import me.shedaniel.architectury.annotations.ExpectPlatform;
 import me.shedaniel.architectury.fluid.FluidStack;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollection;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -77,6 +81,31 @@ public class OEExpectPlatform {
 
     @ExpectPlatform
     public static <T> List<T> getModEntrypoints(Class<T> type, String key, Class<?> anotation) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Tag.Named<Item> bindItemTag(String name) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Tag.Named<Block> bindBlockTag(String name) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Tag.Named<EntityType<?>> bindEntityTypeTag(String name) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Tag.Named<Fluid> bindFluidTag(String name) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static Tag.Named<GameEvent> bindGameEventTag(String name) {
         throw new AssertionError();
     }
 }
