@@ -2,12 +2,12 @@ package red.felnull.otyacraftengine.client.handler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import me.shedaniel.architectury.event.events.client.ClientRawInputEvent;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientRawInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Registry;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
@@ -23,11 +23,13 @@ public class ClientHandler {
     private static final Minecraft mc = Minecraft.getInstance();
 
     public static void init() {
+
         ClientRawInputEvent.KEY_PRESSED.register((mc, i, i1, i2, i3) -> {
             OEClientEventHooks.fireKeyInput(i, i1, i2, i3);
-            return InteractionResult.SUCCESS;
+            return EventResult.interruptTrue();
         });
-        ClientRawInputEvent.MOUSE_SCROLLED.register((mc, v) -> OEClientEventHooks.onMouseScroll(mc.mouseHandler, v) ? InteractionResult.FAIL : InteractionResult.PASS);
+
+        ClientRawInputEvent.MOUSE_SCROLLED.register((mc, v) -> OEClientEventHooks.onMouseScroll(mc.mouseHandler, v) ? EventResult.interruptFalse() : EventResult.interruptDefault());
     }
 
     public static void onItemColor(ColorHandlerEvent.Item e) {

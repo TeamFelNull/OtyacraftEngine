@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.item.storage;
 
-import me.shedaniel.architectury.fluid.FluidStack;
+import dev.architectury.fluid.FluidStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.item.ItemStack;

@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.TextComponent;
 import red.felnull.otyacraftengine.client.gui.components.TestFixedButtonsList;
+import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.util.IKSGDokataUtil;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void render(PoseStack poseStack, int i, int j, float f) {
         renderBackground(poseStack);
+        IKSGRenderUtil.drawPlayerFase(poseStack, "MoriMori_0317_jp", 0, 0);
 
         super.render(poseStack, i, j, f);
     }

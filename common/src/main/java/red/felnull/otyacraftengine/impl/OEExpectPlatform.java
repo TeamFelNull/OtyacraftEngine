@@ -1,7 +1,7 @@
 package red.felnull.otyacraftengine.impl;
 
-import me.shedaniel.architectury.annotations.ExpectPlatform;
-import me.shedaniel.architectury.fluid.FluidStack;
+import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

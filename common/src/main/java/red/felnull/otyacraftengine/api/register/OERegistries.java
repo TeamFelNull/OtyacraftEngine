@@ -1,6 +1,7 @@
 package red.felnull.otyacraftengine.api.register;
 
-import me.shedaniel.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
+import dev.architectury.platform.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;

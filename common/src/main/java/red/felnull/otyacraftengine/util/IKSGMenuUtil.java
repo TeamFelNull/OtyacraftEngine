@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
-import me.shedaniel.architectury.registry.MenuRegistry;
+import dev.architectury.registry.menu.MenuRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;

@@ -1,7 +1,7 @@
 package red.felnull.otyacraftengine.client.impl;
 
 import com.mojang.blaze3d.platform.InputConstants.Key;
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.renderer.RenderType;

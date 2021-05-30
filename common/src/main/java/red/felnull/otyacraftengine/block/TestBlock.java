@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.block;
 
-import me.shedaniel.architectury.registry.DeferredRegister;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

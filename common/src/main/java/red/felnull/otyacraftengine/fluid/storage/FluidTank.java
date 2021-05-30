@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.fluid.storage;
 
-import me.shedaniel.architectury.fluid.FluidStack;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.material.Fluid;
 import red.felnull.otyacraftengine.util.IKSGMath;

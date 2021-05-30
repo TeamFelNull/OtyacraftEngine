@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.impl.fabric;
 
-import me.shedaniel.architectury.fluid.FluidStack;
+import dev.architectury.fluid.FluidStack;
 import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
 import net.fabricmc.fabric.impl.biome.InternalBiomeData;
 import net.fabricmc.loader.api.FabricLoader;

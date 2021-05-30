@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.client.keys;
 
-import me.shedaniel.architectury.registry.KeyBindings;
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 import red.felnull.otyacraftengine.OtyacraftEngine;
@@ -11,7 +11,7 @@ public class OEKeyMappings {
 
     public static void init(OtyacraftEngineAPI api) {
         if (api.isTestMode()) {
-            KeyBindings.registerKeyBinding(TEST);
+            KeyMappingRegistry.register(TEST);
         }
     }
 

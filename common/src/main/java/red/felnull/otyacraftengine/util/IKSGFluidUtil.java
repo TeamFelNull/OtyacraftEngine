@@ -1,7 +1,7 @@
 package red.felnull.otyacraftengine.util;
 
-import me.shedaniel.architectury.fluid.FluidStack;
-import me.shedaniel.architectury.registry.DeferredRegister;
+import dev.architectury.fluid.FluidStack;
+import dev.architectury.registry.registries.DeferredRegister;;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

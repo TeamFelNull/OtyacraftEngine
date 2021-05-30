@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.item;
 
-import me.shedaniel.architectury.registry.DeferredRegister;
+import dev.architectury.registry.registries.DeferredRegister;;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;

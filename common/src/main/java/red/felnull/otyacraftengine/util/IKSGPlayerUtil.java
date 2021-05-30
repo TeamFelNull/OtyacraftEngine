@@ -56,8 +56,7 @@ public class IKSGPlayerUtil {
         GameProfile gp = new GameProfile(null, name);
         PLAYER_PROFILES.put(name, gp);
 
-        GameProfileLoader GPL = new GameProfileLoader(name);
-        GPL.start();
+        SkullBlockEntity.updateGameprofile(gp, n -> PLAYER_PROFILES.put(name, n));
 
         return gp;
     }
@@ -78,18 +77,4 @@ public class IKSGPlayerUtil {
             giveItem(player, stack);
         }
     }
-
-    private static class GameProfileLoader extends Thread {
-        private String name;
-
-        public GameProfileLoader(String name) {
-            this.name = name;
-        }
-
-        public void run() {
-            GameProfile gp = PLAYER_PROFILES.get(name);
-            PLAYER_PROFILES.put(name, SkullBlockEntity.updateGameprofile(gp));
-        }
-    }
-
 }

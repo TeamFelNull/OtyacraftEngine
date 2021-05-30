@@ -1,13 +1,14 @@
 package red.felnull.otyacraftengine.client.util;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import me.shedaniel.architectury.registry.BlockEntityRenderers;
+import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +35,7 @@ public class IKSGClientUtil {
     }
 
     public static <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<T> tileEntityType, BlockEntityRendererProvider<T> provider) {
-        BlockEntityRenderers.registerRenderer(tileEntityType, provider);
+        BlockEntityRendererRegistry.register(tileEntityType, provider);
     }
 
     public static void registerItemRenderer(Item item, ICustomBEWLRenderer renderer) {

@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
-import me.shedaniel.architectury.utils.GameInstance;
+import dev.architectury.utils.GameInstance;
 import net.minecraft.server.MinecraftServer;
 
 public class IKSGServerUtil {

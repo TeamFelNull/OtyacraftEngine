@@ -1,6 +1,6 @@
 package red.felnull.otyacraftengine.impl;
 
-import me.shedaniel.architectury.annotations.ExpectPlatform;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import red.felnull.otyacraftengine.packet.IPacketMessage;
