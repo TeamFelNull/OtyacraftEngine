@@ -1,8 +1,9 @@
-package red.felnull.otyacraftengine.data;
+package red.felnull.otyacraftengine.data.save;
 
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
+import red.felnull.otyacraftengine.data.WorldDataManager;
 
 public class OEWorldData {
     public static void init() {

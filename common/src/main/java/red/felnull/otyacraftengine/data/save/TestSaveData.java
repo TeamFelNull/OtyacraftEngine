@@ -1,4 +1,4 @@
-package red.felnull.otyacraftengine.data;
+package red.felnull.otyacraftengine.data.save;
 
 import net.minecraft.nbt.CompoundTag;
 

@@ -9,7 +9,7 @@ import red.felnull.otyacraftengine.api.register.OERegistries;
 import red.felnull.otyacraftengine.block.TestBlock;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import red.felnull.otyacraftengine.config.OEConfig;
-import red.felnull.otyacraftengine.data.OEWorldData;
+import red.felnull.otyacraftengine.data.save.OEWorldData;
 import red.felnull.otyacraftengine.fluid.TestFluid;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;

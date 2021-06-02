@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +18,7 @@ import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
 public class OtyacraftEngineClient {
     public static final Logger LOGGER = LogManager.getLogger(OtyacraftEngineClient.class);
 
+    @Environment(EnvType.CLIENT)
     public static void clientInit() {
         LOGGER.info("Client Initialize");
         long startTime = System.currentTimeMillis();

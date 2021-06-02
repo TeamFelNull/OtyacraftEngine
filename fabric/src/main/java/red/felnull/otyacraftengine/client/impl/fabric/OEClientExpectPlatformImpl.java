@@ -1,12 +1,14 @@
 package red.felnull.otyacraftengine.client.impl.fabric;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.NativeImage;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
@@ -52,5 +54,9 @@ public class OEClientExpectPlatformImpl {
         is.setTime(time);
         is.setDynamicLocation(location);
         mc.gui.subtitleOverlay.subtitles.add(sb);
+    }
+
+    public static void setNonClosePixels(DynamicTexture texture, NativeImage image) {
+     //   texture.getPixels()
     }
 }

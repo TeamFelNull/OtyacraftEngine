@@ -20,8 +20,6 @@ accessible method net/minecraft/tags/EntityTypeTags bind (Ljava/lang/String;)Lne
 accessible method net/minecraft/tags/FluidTags bind (Ljava/lang/String;)Lnet/minecraft/tags/Tag$Named;
 accessible method net/minecraft/tags/GameEventTags bind (Ljava/lang/String;)Lnet/minecraft/tags/Tag$Named;
 
-
-
 accessible class net/minecraft/world/level/biome/Biome$ClimateSettings
 extendable class net/minecraft/world/level/biome/Biome$ClimateSettings
 
