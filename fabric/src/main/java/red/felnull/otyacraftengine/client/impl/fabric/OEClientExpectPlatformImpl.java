@@ -57,6 +57,6 @@ public class OEClientExpectPlatformImpl {
     }
 
     public static void setNonClosePixels(DynamicTexture texture, NativeImage image) {
-     //   texture.getPixels()
+        texture.pixels = image;
     }
 }
