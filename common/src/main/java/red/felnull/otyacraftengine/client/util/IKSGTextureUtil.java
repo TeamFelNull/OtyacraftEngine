@@ -1,5 +1,7 @@
 package red.felnull.otyacraftengine.client.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -7,34 +9,38 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 import red.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
-import red.felnull.otyacraftengine.util.IKSGPictureUtil;
-import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
+import red.felnull.otyacraftengine.throwable.SizeOverException;
+import red.felnull.otyacraftengine.util.*;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class IKSGTextureUtil {
+    private static final Gson GSON = new Gson();
     private static final Minecraft mc = Minecraft.getInstance();
-    private static final Map<UUID, NativeTextureData> NATIVE_TEXTURES = new HashMap<>();
-    private static final String[] imageatt = {"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
+    private static final Map<UUID, ResourceLocation> NATIVE_TEXTURES = new HashMap<>();
+    private static final String[] imageData = {"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
+    private static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
@@ -58,9 +64,10 @@ public class IKSGTextureUtil {
         return faselocation;
     }
 
+
     public static ResourceLocation getNativeTexture(UUID id, InputStream stream) {
         if (NATIVE_TEXTURES.containsKey(id))
-            return NATIVE_TEXTURES.get(id).location();
+            return NATIVE_TEXTURES.get(id);
         byte[] data = null;
         String format = null;
         try {
@@ -75,16 +82,14 @@ public class IKSGTextureUtil {
 
         boolean nonNomalDynamicTexture = false;
 
-        NativeImage ni = null;
         ResourceLocation location = new ResourceLocation("missingno");
-        NativeImage[] nis = new NativeImage[0];
         if ("gif".equalsIgnoreCase(format)) {
             try {
                 ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
                 ImageInputStream ciis = ImageIO.createImageInputStream(new ByteArrayInputStream(data));
                 reader.setInput(ciis, false);
                 int noi = reader.getNumImages(true);
-                nis = new NativeImage[noi];
+                NativeImage[] nis = new NativeImage[noi];
                 BufferedImage master = null;
                 long[] mss = new long[noi];
                 for (int i = 0; i < noi; i++) {
@@ -105,7 +110,7 @@ public class IKSGTextureUtil {
                         if (nodeItem.getNodeName().equals("ImageDescriptor")) {
                             imageAttr = new HashMap<>();
 
-                            for (String s : imageatt) {
+                            for (String s : imageData) {
                                 NamedNodeMap attr = nodeItem.getAttributes();
                                 Node attnode = attr.getNamedItem(s);
                                 imageAttr.put(s, Integer.valueOf(attnode.getNodeValue()));
@@ -118,11 +123,9 @@ public class IKSGTextureUtil {
                         }
                         master.getGraphics().drawImage(image, imageAttr.get("imageLeftPosition"), imageAttr.get("imageTopPosition"), null);
 
-
                         nis[i] = NativeImage.read(new ByteArrayInputStream(IKSGPictureUtil.geByteImage(master)));
 
                     }
-
 
                 }
 
@@ -133,33 +136,97 @@ public class IKSGTextureUtil {
             }
         }
 
-
         if (!nonNomalDynamicTexture) {
-            System.out.println("test");
             try {
-                ni = NativeImage.read(new ByteArrayInputStream(data));
+                NativeImage ni = NativeImage.read(new ByteArrayInputStream(data));
                 location = Minecraft.getInstance().getTextureManager().register("native_texture", new DynamicTexture(ni));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        nis = ArrayUtils.add(nis, ni);
-        NATIVE_TEXTURES.put(id, new NativeTextureData(location, nis));
+        NATIVE_TEXTURES.put(id, location);
         return location;
     }
 
     public static void freeNativeTexture(UUID id) {
         if (NATIVE_TEXTURES.containsKey(id)) {
-            NativeImage[] nativeImage = NATIVE_TEXTURES.get(id).image();
-            if (nativeImage != null) {
-                for (NativeImage image : nativeImage) {
-                    if (image != null)
-                        image.close();
-                }
-            }
+            freeTexture(NATIVE_TEXTURES.get(id));
             NATIVE_TEXTURES.remove(id);
         }
+    }
+
+    public static ResourceLocation getURLTexture(String url) {
+        if (URL_TEXTURES_UUIDS.containsKey(url))
+            return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
+
+        return MissingTextureAtlasSprite.getLocation();
+    }
+
+    public static ResourceLocation getURLTexture(String url, boolean cash) throws IOException, SizeOverException {
+        if (URL_TEXTURES_UUIDS.containsKey(url))
+            return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
+
+        HttpURLConnection connection = IKSGURLUtil.getAgentURLConnection(new URL(url));
+
+        long length = connection.getContentLengthLong();
+        long maxL = 1024L * 1024L;
+
+        if (length > maxL)
+            throw new SizeOverException(length, maxL);
+
+        InputStream stream = null;
+
+        if (cash) {
+            File cashIndex = IKSGPathUtil.getOtyacraftEngineDataPath().resolve("urltexturecashindex.json").toFile();
+
+            JsonObject index;
+
+            if (!cashIndex.exists())
+                index = new JsonObject();
+            else
+                index = GSON.fromJson(new FileReader(cashIndex), JsonObject.class);
+
+
+            String b64url = Base64.getEncoder().encodeToString(url.getBytes(StandardCharsets.UTF_8));
+            boolean nonFlag = false;
+            if (index.get(b64url) != null) {
+                String cid = index.get(b64url).getAsString();
+                File cf = IKSGPathUtil.getCashPath().resolve(cid).toFile();
+                if (cf.exists()) {
+                    stream = IKSGDataUtil.unzipGz(new FileInputStream(cf));
+                } else {
+                    nonFlag = true;
+                }
+            } else {
+                nonFlag = true;
+            }
+
+            if (nonFlag) {
+                byte[] data = connection.getInputStream().readAllBytes();
+                ImageInputStream istream = ImageIO.createImageInputStream(new ByteArrayInputStream(data));
+                ImageIO.getImageReaders(istream).next();
+                String cid = UUID.randomUUID().toString();
+                Path cp = IKSGPathUtil.getCashPath();
+                cp.toFile().mkdirs();
+                byte[] gzdata = IKSGDataUtil.zipGz(new ByteArrayInputStream(data)).readAllBytes();
+                Files.write(cp.resolve(cid), gzdata);
+                index.addProperty(b64url, cid);
+                Files.writeString(cashIndex.toPath(), index.toString());
+                stream = new ByteArrayInputStream(data);
+            }
+        } else {
+            stream = connection.getInputStream();
+        }
+
+        UUID id = UUID.randomUUID();
+        URL_TEXTURES_UUIDS.put(url, id);
+        return getNativeTexture(id, stream);
+    }
+
+    public static void freeURLTexture(String url) {
+        freeNativeTexture(URL_TEXTURES_UUIDS.get(url));
+        URL_TEXTURES_UUIDS.remove(url);
     }
 
     public static ResourceLocation getWorldShareTexture(UUID id) {
@@ -167,8 +234,7 @@ public class IKSGTextureUtil {
         return null;
     }
 
-
-    private record NativeTextureData(ResourceLocation location, NativeImage... image) {
-
+    public static void freeTexture(ResourceLocation location) {
+        OEClientExpectPlatform.freeTexture(location);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
@@ -43,6 +44,11 @@ public class OEClientExpectPlatform {
 
     @ExpectPlatform
     public static void setNonClosePixels(DynamicTexture texture, NativeImage image) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static void freeTexture(ResourceLocation location) {
         throw new AssertionError();
     }
 }

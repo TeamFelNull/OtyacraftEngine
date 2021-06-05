@@ -5,11 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public class IKSGURLUtil {
@@ -25,6 +21,12 @@ public class IKSGURLUtil {
             sb.append(inputLine).append('\n');
         in.close();
         return sb.toString();
+    }
+
+    public static HttpURLConnection getAgentURLConnection(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.addRequestProperty("user-agent", USER_AGENT);
+        return connection;
     }
 
     public static InputStream getURLStream(URL url) throws IOException {

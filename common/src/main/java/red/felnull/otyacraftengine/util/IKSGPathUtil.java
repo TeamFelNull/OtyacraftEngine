@@ -27,4 +27,9 @@ public class IKSGPathUtil {
     public static Path getMODWorldDataPath(String modid) {
         return getWorldSaveDataPath().resolve(modid);
     }
+
+    public static Path getCashPath() {
+        return getOtyacraftEngineDataPath().resolve("cash");
+    }
+
 }

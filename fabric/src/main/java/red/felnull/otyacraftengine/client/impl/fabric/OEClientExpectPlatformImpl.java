@@ -8,9 +8,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import red.felnull.otyacraftengine.client.gui.components.IIkisugiSubtitle;
@@ -58,5 +61,14 @@ public class OEClientExpectPlatformImpl {
 
     public static void setNonClosePixels(DynamicTexture texture, NativeImage image) {
         texture.pixels = image;
+    }
+
+    public static void freeTexture(ResourceLocation location) {
+        TextureManager textureManager = mc.getTextureManager();
+        AbstractTexture abstractTexture = textureManager.byPath.get(location);
+        if (abstractTexture != null) {
+            textureManager.tickableTextures.remove(abstractTexture);
+            textureManager.safeClose(location, abstractTexture);
+        }
     }
 }

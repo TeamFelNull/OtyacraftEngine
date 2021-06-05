@@ -12,8 +12,6 @@ public class DynamicGifTexture extends DynamicTexture implements Tickable {
     private final NativeImage[] images;
     private final long[] durations;
     private final long duration;
-    private long lastTime;
-    private long time;
     private int count;
     private int lastCount;
 
@@ -31,13 +29,12 @@ public class DynamicGifTexture extends DynamicTexture implements Tickable {
 
     @Override
     public void tick() {
-        if (lastTime != 0)
+    /*    if (lastTime != 0)
             time += System.currentTimeMillis() - lastTime;
 
-        lastTime = System.currentTimeMillis();
-
+        lastTime = System.currentTimeMillis();*/
         count = 0;
-        long tm = time % duration;
+        long tm = System.currentTimeMillis() % duration;
         long al = 0;
         for (int i = 0; i < durations.length; i++) {
             count = i;
@@ -46,11 +43,21 @@ public class DynamicGifTexture extends DynamicTexture implements Tickable {
             al += durations[i];
         }
 
-
         if (lastCount != count) {
             OEClientExpectPlatform.setNonClosePixels(this, images[count]);
             upload();
             lastCount = count;
+        }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        if (images != null) {
+            for (NativeImage image : images) {
+                if (image != null)
+                    image.close();
+            }
         }
     }
 }
