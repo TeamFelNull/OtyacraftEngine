@@ -16,7 +16,7 @@ public class TestScreen extends IkisugiScreen {
     public final List<String> testList = new ArrayList<>();
     private static final UUID uuid = UUID.randomUUID();
     private InputStream stream;
-    private String url = "https://cdn.discordapp.com/attachments/358878159615164416/850625064130969630/microbroken.gif";
+    private String url = "http://www.google.com/logos/doodles/2015/googles-new-logo-5078286822539264.3-hp2x.gif";
 
     public TestScreen() {
         super(new TextComponent("test"));
@@ -53,7 +53,7 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void onClose() {
         super.onClose();
-        IKSGTextureUtil.freeNativeTexture(uuid);
-        IKSGTextureUtil.freeURLTexture(url);
+     //   IKSGTextureUtil.freeNativeTexture(uuid);
+    //    IKSGTextureUtil.freeURLTexture(url);
     }
 }

@@ -1,7 +1,5 @@
 package red.felnull.otyacraftengine.client.util;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -36,11 +34,11 @@ import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class IKSGTextureUtil {
-    private static final Gson GSON = new Gson();
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<UUID, ResourceLocation> NATIVE_TEXTURES = new HashMap<>();
     private static final String[] imageData = {"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
     private static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
+    public static final Map<String, String> URL_TEXTURES_INDEX = new HashMap<>();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
@@ -68,6 +66,10 @@ public class IKSGTextureUtil {
     public static ResourceLocation getNativeTexture(UUID id, InputStream stream) {
         if (NATIVE_TEXTURES.containsKey(id))
             return NATIVE_TEXTURES.get(id);
+
+        ResourceLocation location = new ResourceLocation("missingno");
+        NATIVE_TEXTURES.put(id, location);
+
         byte[] data = null;
         String format = null;
         try {
@@ -82,7 +84,6 @@ public class IKSGTextureUtil {
 
         boolean nonNomalDynamicTexture = false;
 
-        ResourceLocation location = new ResourceLocation("missingno");
         if ("gif".equalsIgnoreCase(format)) {
             try {
                 ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
@@ -178,20 +179,10 @@ public class IKSGTextureUtil {
         InputStream stream = null;
 
         if (cash) {
-            File cashIndex = IKSGPathUtil.getOtyacraftEngineDataPath().resolve("urltexturecashindex.json").toFile();
-
-            JsonObject index;
-
-            if (!cashIndex.exists())
-                index = new JsonObject();
-            else
-                index = GSON.fromJson(new FileReader(cashIndex), JsonObject.class);
-
-
             String b64url = Base64.getEncoder().encodeToString(url.getBytes(StandardCharsets.UTF_8));
             boolean nonFlag = false;
-            if (index.get(b64url) != null) {
-                String cid = index.get(b64url).getAsString();
+            if (URL_TEXTURES_INDEX.containsKey(b64url)) {
+                String cid = URL_TEXTURES_INDEX.get(b64url);
                 File cf = IKSGPathUtil.getCashPath().resolve(cid).toFile();
                 if (cf.exists()) {
                     stream = IKSGDataUtil.unzipGz(new FileInputStream(cf));
@@ -211,8 +202,7 @@ public class IKSGTextureUtil {
                 cp.toFile().mkdirs();
                 byte[] gzdata = IKSGDataUtil.zipGz(new ByteArrayInputStream(data)).readAllBytes();
                 Files.write(cp.resolve(cid), gzdata);
-                index.addProperty(b64url, cid);
-                Files.writeString(cashIndex.toPath(), index.toString());
+                URL_TEXTURES_INDEX.put(b64url, cid);
                 stream = new ByteArrayInputStream(data);
             }
         } else {

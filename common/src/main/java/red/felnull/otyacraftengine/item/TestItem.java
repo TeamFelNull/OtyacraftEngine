@@ -1,8 +1,7 @@
 package red.felnull.otyacraftengine.item;
 
-import dev.architectury.registry.registries.DeferredRegister;;
+import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -13,10 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
+import red.felnull.otyacraftengine.client.data.WorldShareManager;
 import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
 
-import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+;
 
 public class TestItem extends Item {
 
@@ -28,9 +31,13 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (!level.isClientSide()) {
-            //  player.displayClientMessage(new TextComponent("file" + TestItem.class.getResourceAsStream("/data/otyacraftengine/dokata.gza")), false);
-        } else {
-            IKSGClientUtil.addSubtitle(new TextComponent(new Random().nextDouble() + ""),1000, player::position);
+            try {
+                WorldShareManager.getInstance().upload(UUID.randomUUID(), Files.readAllBytes(Paths.get("D:\\pcdatas\\music\\素材\\dog.ogg")), n -> {
+                    System.out.println("P: "+n.progress());
+                });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }
