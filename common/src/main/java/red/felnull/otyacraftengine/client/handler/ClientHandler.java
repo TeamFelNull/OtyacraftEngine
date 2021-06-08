@@ -10,19 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.OtyacraftEngineAPI;
-import red.felnull.otyacraftengine.api.event.SimpleMessageEvent;
-import red.felnull.otyacraftengine.api.event.TickEvent;
 import red.felnull.otyacraftengine.api.event.WorldEvent;
 import red.felnull.otyacraftengine.api.event.client.ColorHandlerEvent;
 import red.felnull.otyacraftengine.api.event.client.OEClientEventHooks;
 import red.felnull.otyacraftengine.api.event.client.RenderGuiItemDecorationsEvent;
-import red.felnull.otyacraftengine.client.data.WorldShareManager;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
 import red.felnull.otyacraftengine.item.IkisugiBucketItem;
@@ -48,21 +42,6 @@ public class ClientHandler {
         ClientRawInputEvent.MOUSE_SCROLLED.register((mc, v) -> OEClientEventHooks.onMouseScroll(mc.mouseHandler, v) ? EventResult.interruptFalse() : EventResult.interruptDefault());
     }
 
-    public static void onSimpleMessage(SimpleMessageEvent.Client e) {
-        if (e.getLocation().equals(new ResourceLocation(OtyacraftEngine.MODID, "worldsharedownload"))) {
-            WorldShareManager manager = WorldShareManager.getInstance();
-            CompoundTag tag = e.getData();
-            if (e.getId() == 0) {
-                manager.onDownloadStartSuccess(tag.getUUID("Id"));
-            } else if (e.getId() == 1) {
-                manager.onDownloadStartError(tag.getUUID("Id"), tag.getString("Exception"));
-            }
-        }
-    }
-
-    public static void onClientTick(TickEvent.ClientTickEvent e) {
-        WorldShareManager.getInstance().tick();
-    }
 
     public static void onItemColor(ColorHandlerEvent.Item e) {
         ItemColors c = e.getItemColors();

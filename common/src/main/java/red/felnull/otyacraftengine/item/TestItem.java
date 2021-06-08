@@ -12,12 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.client.data.WorldShareManager;
 import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.UUID;
 
 ;
 
@@ -32,9 +27,7 @@ public class TestItem extends Item {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (!level.isClientSide()) {
             try {
-                WorldShareManager.getInstance().upload(UUID.randomUUID(), Files.readAllBytes(Paths.get("D:\\pcdatas\\music\\素材\\dog.ogg")), n -> {
-                    System.out.println("P: "+n.progress());
-                });
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
