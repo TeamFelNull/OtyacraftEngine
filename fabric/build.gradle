@@ -38,6 +38,8 @@ dependencies {
     }
 
     shadow "de.javagl:obj:0.3.0"
+
+    modApi "me.shedaniel:RoughlyEnoughItems-api-fabric:${rootProject.rei_version}"
 }
 
 processResources {
