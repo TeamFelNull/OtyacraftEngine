@@ -64,11 +64,10 @@ public abstract class FixedButtonsList<T> extends AbstractWidget implements IIki
 
     @Override
     public void renderButton(PoseStack poseStack, int mx, int my, float parTick) {
-
         for (int i = 0; i < num; i++) {
             int cn = getCurrentFirstNumber() + i;
 
-            if (cn >= list.size())
+            if (cn >= list.size() || cn < 0)
                 break;
 
             renderOneButton(poseStack, getList().get(cn), cn, i, x, y + getOneButtonHeight() * i, mx, my, parTick);
@@ -171,6 +170,11 @@ public abstract class FixedButtonsList<T> extends AbstractWidget implements IIki
     }
 
     protected int getCurrentFirstNumber() {
+
+
+        if (list.size() <= num)
+            return 0;
+
         return (int) ((list.size() - num) * scrollAmount);
     }
 

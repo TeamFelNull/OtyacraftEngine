@@ -124,7 +124,7 @@ public class IKSGTextureUtil {
                         }
                         master.getGraphics().drawImage(image, imageAttr.get("imageLeftPosition"), imageAttr.get("imageTopPosition"), null);
 
-                        nis[i] = NativeImage.read(new ByteArrayInputStream(IKSGPictureUtil.geByteImage(master)));
+                        nis[i] = NativeImage.read(new ByteArrayInputStream(IKSGImageUtil.toByte(master,"png")));
 
                     }
 
@@ -227,4 +227,6 @@ public class IKSGTextureUtil {
     public static void freeTexture(ResourceLocation location) {
         OEClientExpectPlatform.freeTexture(location);
     }
+
+
 }

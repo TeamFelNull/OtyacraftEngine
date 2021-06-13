@@ -41,6 +41,15 @@ public class IKSGRenderUtil {
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
     private static final Map<ResourceLocation, BakedModel> BAKED_OBJMODELS = new HashMap<>();
 
+    public static void drawPlayerFase(PoseStack psstack, String name, float x, float y, float size) {
+        psstack.pushPose();
+        float sc = size / 8f;
+        ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
+        drawBindTextuer(plskin, psstack, x, y, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        drawBindTextuer(plskin, psstack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        psstack.popPose();
+    }
+
     public static void drawPlayerFase(PoseStack psstack, String name, int x, int y) {
         psstack.pushPose();
         ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
