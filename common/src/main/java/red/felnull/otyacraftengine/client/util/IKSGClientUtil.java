@@ -8,7 +8,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -18,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 import red.felnull.otyacraftengine.client.renderer.CustomBlockEntityWithoutLevelRenderer;
 import red.felnull.otyacraftengine.client.renderer.item.ICustomBEWLRenderer;
+import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
 public class IKSGClientUtil {
+    private static final Minecraft mc = Minecraft.getInstance();
 
     public static boolean isKeyInput(KeyMapping key) {
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), OEClientExpectPlatform.getKey(key).getValue());
@@ -71,5 +72,12 @@ public class IKSGClientUtil {
 
     public static void addSubtitle(UUID id, Component text, long time, Supplier<Vec3> location) {
         OEClientExpectPlatform.addSubtitle(id, text, time, location);
+    }
+
+    public static String getPlayerNameByUUID(UUID uuid) {
+        if (mc.player.connection.getPlayerInfo(uuid) != null) {
+            return mc.player.connection.getPlayerInfo(uuid).getProfile().getName();
+        }
+        return IKSGPlayerUtil.getNameByUUIDNoSync(uuid);
     }
 }

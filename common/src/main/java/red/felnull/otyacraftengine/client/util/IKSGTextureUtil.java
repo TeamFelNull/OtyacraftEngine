@@ -39,8 +39,6 @@ public class IKSGTextureUtil {
     private static final String[] imageData = {"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
     private static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
     public static final Map<String, String> URL_TEXTURES_INDEX = new HashMap<>();
-    private static final Map<UUID, String> UUID_PLAYER_NAMES = new HashMap<>();
-    private static final List<UUID> LOADING_UUIDS = new ArrayList<>();
 
     public static ResourceLocation getPlayerSkinTexture(UUID uuid) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid);
@@ -67,11 +65,11 @@ public class IKSGTextureUtil {
     }
 
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, String name) {
-        if (mc.player != null && name.equals(mc.player.getGameProfile().getName())) {
+        if (mc.player != null && mc.player.connection.getPlayerInfo(name) != null) {
             return switch (type) {
-                case SKIN -> mc.player.getSkinTextureLocation();
-                case CAPE -> mc.player.getCloakTextureLocation();
-                case ELYTRA -> mc.player.getElytraTextureLocation();
+                case SKIN -> mc.player.connection.getPlayerInfo(name).getSkinLocation();
+                case CAPE -> mc.player.connection.getPlayerInfo(name).getCapeLocation();
+                case ELYTRA -> mc.player.connection.getPlayerInfo(name).getElytraLocation();
             };
         }
         GameProfile GP = IKSGPlayerUtil.getPlayerProfile(name);
@@ -81,14 +79,6 @@ public class IKSGTextureUtil {
     }
 
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, UUID uuid) {
-        if (mc.player != null && uuid.equals(mc.player.getGameProfile().getId())) {
-            return switch (type) {
-                case SKIN -> mc.player.getSkinTextureLocation();
-                case CAPE -> mc.player.getCloakTextureLocation();
-                case ELYTRA -> mc.player.getElytraTextureLocation();
-            };
-        }
-
         if (mc.player != null && mc.player.connection.getPlayerInfo(uuid) != null) {
             return switch (type) {
                 case SKIN -> mc.player.connection.getPlayerInfo(uuid).getSkinLocation();
@@ -97,17 +87,10 @@ public class IKSGTextureUtil {
             };
         }
 
-        if (UUID_PLAYER_NAMES.containsKey(uuid)) {
-            if (UUID_PLAYER_NAMES.get(uuid).equals(IKSGPlayerUtil.getFakePlayerName()))
-                return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
+        String name = IKSGPlayerUtil.getNameByUUIDNoSync(uuid);
 
-            return getPlayerTexture(type, UUID_PLAYER_NAMES.get(uuid));
-        }
-
-        if (!LOADING_UUIDS.contains(uuid)) {
-            LOADING_UUIDS.add(uuid);
-            UUIDPlayerNameLoadThread upnlt = new UUIDPlayerNameLoadThread(uuid);
-            upnlt.start();
+        if (!IKSGPlayerUtil.getFakePlayerName().equals(name)) {
+            return getPlayerTexture(type, name);
         }
 
         return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
@@ -278,20 +261,4 @@ public class IKSGTextureUtil {
     public static void freeTexture(ResourceLocation location) {
         OEClientExpectPlatform.freeTexture(location);
     }
-
-    private static class UUIDPlayerNameLoadThread extends Thread {
-        private final UUID uuid;
-
-        public UUIDPlayerNameLoadThread(UUID uuid) {
-            this.uuid = uuid;
-        }
-
-        @Override
-        public void run() {
-            String str = IKSGPlayerUtil.getNameByUUID(uuid);
-            UUID_PLAYER_NAMES.put(uuid, str);
-            LOADING_UUIDS.remove(uuid);
-        }
-    }
-
 }

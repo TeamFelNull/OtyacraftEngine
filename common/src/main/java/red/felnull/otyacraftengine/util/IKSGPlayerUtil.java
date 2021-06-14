@@ -12,16 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class IKSGPlayerUtil {
     private static final UUID FAKE_UUID = UUID.fromString("166f3515-f173-4042-9190-ec8b14505201");
     private static final String FAKE_PLAYERNAME = "FakePlayerOfFakePlayerByFakePlayerForFakePlayer";
     private static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
     private static final Map<UUID, String> UUID_PLAYERNAMES = new HashMap<>();
+    private static final List<UUID> LOADING_UUIDNAME = new ArrayList<>();
 
     public static List<ServerPlayer> getOnlinePlayers() {
         return IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayers();
@@ -97,5 +95,30 @@ public class IKSGPlayerUtil {
         return FAKE_PLAYERNAME;
     }
 
+    public static String getNameByUUIDNoSync(UUID uuid) {
+        if (UUID_PLAYERNAMES.containsKey(uuid))
+            return UUID_PLAYERNAMES.get(uuid);
 
+        if (!LOADING_UUIDNAME.contains(uuid)) {
+            LOADING_UUIDNAME.add(uuid);
+            NameByUUIDLoadThread nbult = new NameByUUIDLoadThread(uuid);
+            nbult.start();
+        }
+
+        return FAKE_PLAYERNAME;
+    }
+
+    private static class NameByUUIDLoadThread extends Thread {
+        private final UUID uuid;
+
+        public NameByUUIDLoadThread(UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        @Override
+        public void run() {
+            getNameByUUID(uuid);
+            LOADING_UUIDNAME.remove(uuid);
+        }
+    }
 }

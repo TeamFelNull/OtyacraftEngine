@@ -1,23 +1,16 @@
 package red.felnull.otyacraftengine.client.handler;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import red.felnull.otyacraftengine.api.event.TickEvent;
 import red.felnull.otyacraftengine.api.event.client.InputEvent;
 import red.felnull.otyacraftengine.client.gui.screen.TestScreen;
 import red.felnull.otyacraftengine.client.keys.OEKeyMappings;
-import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
-import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
-import red.felnull.otyacraftengine.throwable.SizeOverException;
-
-import java.io.IOException;
 
 public class TestClientHandler {
     private static final Minecraft mc = Minecraft.getInstance();
 
     public static void onKey(InputEvent.KeyInputEvent e) {
         if (e.getKey() == OEKeyMappings.TEST.getDefaultKey().getValue()) {
-    //    mc.setScreen(new TestScreen());
+            mc.setScreen(new TestScreen());
         }
     }
 
