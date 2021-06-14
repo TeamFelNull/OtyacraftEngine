@@ -34,12 +34,30 @@ import red.felnull.otyacraftengine.util.IKSGColorUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class IKSGRenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
     private static final Map<ResourceLocation, BakedModel> BAKED_OBJMODELS = new HashMap<>();
+
+    public static void drawPlayerFase(PoseStack psstack, UUID uuid, float x, float y, float size) {
+        psstack.pushPose();
+        float sc = size / 8f;
+        ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(uuid);
+        drawBindTextuer(plskin, psstack, x, y, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        drawBindTextuer(plskin, psstack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        psstack.popPose();
+    }
+
+    public static void drawPlayerFase(PoseStack psstack, UUID uuid, float x, float y) {
+        psstack.pushPose();
+        ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(uuid);
+        drawBindTextuer(plskin, psstack, x, y, 8, 8, 8, 8, 64, 64);
+        drawBindTextuer(plskin, psstack, x, y, 40, 8, 8, 8, 64, 64);
+        psstack.popPose();
+    }
 
     public static void drawPlayerFase(PoseStack psstack, String name, float x, float y, float size) {
         psstack.pushPose();
@@ -50,7 +68,7 @@ public class IKSGRenderUtil {
         psstack.popPose();
     }
 
-    public static void drawPlayerFase(PoseStack psstack, String name, int x, int y) {
+    public static void drawPlayerFase(PoseStack psstack, String name, float x, float y) {
         psstack.pushPose();
         ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
         drawBindTextuer(plskin, psstack, x, y, 8, 8, 8, 8, 64, 64);

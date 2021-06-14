@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
+import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ public class IKSGPlayerUtil {
     private static final UUID FAKE_UUID = UUID.fromString("166f3515-f173-4042-9190-ec8b14505201");
     private static final String FAKE_PLAYERNAME = "FakePlayerOfFakePlayerByFakePlayerForFakePlayer";
     private static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
+    private static final Map<UUID, String> UUID_PLAYERNAMES = new HashMap<>();
 
     public static List<ServerPlayer> getOnlinePlayers() {
         return IKSGServerUtil.getMinecraftServer().getPlayerList().getPlayers();
@@ -77,4 +80,22 @@ public class IKSGPlayerUtil {
             giveItem(player, stack);
         }
     }
+
+    public static String getNameByUUID(UUID uuid) {
+        if (UUID_PLAYERNAMES.containsKey(uuid))
+            return UUID_PLAYERNAMES.get(uuid);
+        try {
+            String url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString();
+            JsonObject jo = IKSGURLUtil.getJsonResponse(new URL(url));
+            String name = jo.get("name").getAsString();
+            UUID_PLAYERNAMES.put(uuid, name);
+            return name;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        UUID_PLAYERNAMES.put(uuid, FAKE_PLAYERNAME);
+        return FAKE_PLAYERNAME;
+    }
+
+
 }
