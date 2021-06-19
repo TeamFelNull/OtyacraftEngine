@@ -275,6 +275,15 @@ public class IKSGImageUtil {
         return imgebyte;
     }
 
-    public static record ImageAndDelayTime(BufferedImage image, long delayTime) {
+    public static ImageSimpleInfo getSimpleInfo(BufferedImage image) {
+        float w = image.getWidth() >= image.getHeight() ? 1 : (float) image.getWidth() / image.getHeight();
+        float h = image.getHeight() >= image.getWidth() ? 1 : (float) image.getHeight() / image.getWidth();
+        return new ImageSimpleInfo(image.getWidth(), image.getHeight(), w, h);
+    }
+
+    private static record ImageAndDelayTime(BufferedImage image, long delayTime) {
+    }
+
+    public static record ImageSimpleInfo(int width, int height, float widthScale, float heightScale) {
     }
 }

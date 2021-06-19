@@ -39,6 +39,7 @@ public class IKSGTextureUtil {
     private static final String[] imageData = {"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
     private static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
     public static final Map<String, String> URL_TEXTURES_INDEX = new HashMap<>();
+    private static final Set<String> LOADING_URLS = new HashSet<>();
 
     public static ResourceLocation getPlayerSkinTexture(UUID uuid) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid);
@@ -96,13 +97,28 @@ public class IKSGTextureUtil {
         return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
     }
 
+    public static ResourceLocation getNativeTextureAsync(UUID id, InputStream stream, ResourceLocation other) {
+        if (NATIVE_TEXTURES.containsKey(id))
+            return NATIVE_TEXTURES.get(id);
+
+        ResourceLocation location = other != null ? other : MissingTextureAtlasSprite.getLocation();
+        NATIVE_TEXTURES.put(id, location);
+
+        NTextureLoadThread btlt = new NTextureLoadThread(id, stream);
+        btlt.start();
+        return location;
+    }
 
     public static ResourceLocation getNativeTexture(UUID id, InputStream stream) {
         if (NATIVE_TEXTURES.containsKey(id))
             return NATIVE_TEXTURES.get(id);
 
+        return getNativeTextureOnly(id, stream);
+    }
+
+    private static ResourceLocation getNativeTextureOnly(UUID id, InputStream stream) {
+
         ResourceLocation location = new ResourceLocation("missingno");
-        NATIVE_TEXTURES.put(id, location);
 
         byte[] data = null;
         String format = null;
@@ -191,16 +207,38 @@ public class IKSGTextureUtil {
         }
     }
 
-    public static ResourceLocation getURLTexture(String url) {
+    public static ResourceLocation getURLTextureAsync(String url, boolean cash, ResourceLocation other) {
+        ResourceLocation location = other != null ? other : MissingTextureAtlasSprite.getLocation();
+
+        if (LOADING_URLS.contains(url))
+            return location;
+
         if (URL_TEXTURES_UUIDS.containsKey(url))
             return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
 
+        LOADING_URLS.add(url);
+
+        UTextureLoadThread utlt = new UTextureLoadThread(url, cash);
+        utlt.start();
+
+        return location;
+    }
+
+    public static ResourceLocation getURLTexture(String url) {
+        if (URL_TEXTURES_UUIDS.containsKey(url))
+            return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
         return MissingTextureAtlasSprite.getLocation();
     }
 
     public static ResourceLocation getURLTexture(String url, boolean cash) throws IOException, SizeOverException {
         if (URL_TEXTURES_UUIDS.containsKey(url))
             return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
+        return getURLTextureOnly(url, cash);
+    }
+
+
+    private static ResourceLocation getURLTextureOnly(String url, boolean cash) throws IOException, SizeOverException {
+
 
         HttpURLConnection connection = IKSGURLUtil.getConnection(new URL(url));
 
@@ -253,12 +291,44 @@ public class IKSGTextureUtil {
         URL_TEXTURES_UUIDS.remove(url);
     }
 
-    public static ResourceLocation getWorldShareTexture(UUID id) {
-
-        return null;
-    }
-
     public static void freeTexture(ResourceLocation location) {
         OEClientExpectPlatform.freeTexture(location);
+    }
+
+    private static class UTextureLoadThread extends Thread {
+        private final String url;
+        private final boolean cash;
+
+        private UTextureLoadThread(String url, boolean cash) {
+            this.url = url;
+            this.cash = cash;
+            this.setName("URL Texture Loader");
+        }
+
+        @Override
+        public void run() {
+            try {
+                getURLTexture(url, cash);
+                LOADING_URLS.remove(url);
+            } catch (IOException | SizeOverException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static class NTextureLoadThread extends Thread {
+        private final UUID uuid;
+        private final InputStream stream;
+
+        private NTextureLoadThread(UUID uuid, InputStream stream) {
+            this.uuid = uuid;
+            this.stream = stream;
+            this.setName("Native Texture Loader");
+        }
+
+        @Override
+        public void run() {
+            getNativeTextureOnly(uuid, stream);
+        }
     }
 }
