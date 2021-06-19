@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Environment(EnvType.CLIENT)
 public class IKSGTextureUtil {
@@ -88,7 +89,7 @@ public class IKSGTextureUtil {
             };
         }
 
-        String name = IKSGPlayerUtil.getNameByUUIDNoSync(uuid);
+        String name = IKSGPlayerUtil.getNameByUUIDASync(uuid);
 
         if (!IKSGPlayerUtil.getFakePlayerName().equals(name)) {
             return getPlayerTexture(type, name);
@@ -118,7 +119,7 @@ public class IKSGTextureUtil {
 
     private static ResourceLocation getNativeTextureOnly(UUID id, InputStream stream) {
 
-        ResourceLocation location = new ResourceLocation("missingno");
+        AtomicReference<ResourceLocation> location = new AtomicReference<>(MissingTextureAtlasSprite.getLocation());
 
         byte[] data = null;
         String format = null;
@@ -179,8 +180,8 @@ public class IKSGTextureUtil {
                     }
 
                 }
+                mc.submit(() -> location.set(mc.getTextureManager().register("native_texture", new DynamicGifTexture(mss, nis)))).get();
 
-                location = Minecraft.getInstance().getTextureManager().register("native_texture", new DynamicGifTexture(mss, nis));
                 nonNomalDynamicTexture = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -190,14 +191,14 @@ public class IKSGTextureUtil {
         if (!nonNomalDynamicTexture) {
             try {
                 NativeImage ni = NativeImage.read(new ByteArrayInputStream(data));
-                location = Minecraft.getInstance().getTextureManager().register("native_texture", new DynamicTexture(ni));
+                mc.submit(() -> location.set(mc.getTextureManager().register("native_texture", new DynamicTexture(ni)))).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        NATIVE_TEXTURES.put(id, location);
-        return location;
+        NATIVE_TEXTURES.put(id, location.get());
+        return location.get();
     }
 
     public static void freeNativeTexture(UUID id) {
@@ -289,6 +290,7 @@ public class IKSGTextureUtil {
     public static void freeURLTexture(String url) {
         freeNativeTexture(URL_TEXTURES_UUIDS.get(url));
         URL_TEXTURES_UUIDS.remove(url);
+        LOADING_URLS.remove(url);
     }
 
     public static void freeTexture(ResourceLocation location) {

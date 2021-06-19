@@ -78,6 +78,6 @@ public class IKSGClientUtil {
         if (mc.player.connection.getPlayerInfo(uuid) != null) {
             return mc.player.connection.getPlayerInfo(uuid).getProfile().getName();
         }
-        return IKSGPlayerUtil.getNameByUUIDNoSync(uuid);
+        return IKSGPlayerUtil.getNameByUUIDASync(uuid);
     }
 }

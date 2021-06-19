@@ -89,13 +89,13 @@ public class IKSGPlayerUtil {
             UUID_PLAYERNAMES.put(uuid, name);
             return name;
         } catch (Exception ex) {
-            ex.printStackTrace();
+
         }
         UUID_PLAYERNAMES.put(uuid, FAKE_PLAYERNAME);
         return FAKE_PLAYERNAME;
     }
 
-    public static String getNameByUUIDNoSync(UUID uuid) {
+    public static String getNameByUUIDASync(UUID uuid) {
         if (UUID_PLAYERNAMES.containsKey(uuid))
             return UUID_PLAYERNAMES.get(uuid);
 
