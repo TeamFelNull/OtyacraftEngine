@@ -1,10 +1,11 @@
 package red.felnull.otyacraftengine.api;
 
-import red.felnull.otyacraftengine.api.event.OEEvent;
-
-
 public interface IHandler {
-    void accept(OEEvent ev);
+    Object accept(Object ev);
 
-    boolean canAccept(OEEvent ev);
+    boolean canAccept(Object t, Class<?> r);
+
+    Class<?> getHandlerClass();
+
+    Class<?> getReturnClass();
 }

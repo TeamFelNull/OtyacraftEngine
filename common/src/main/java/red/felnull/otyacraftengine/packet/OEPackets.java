@@ -13,18 +13,19 @@ import red.felnull.otyacraftengine.util.IKSGPacketUtil;
 
 public class OEPackets {
     public static void init() {
-        IKSGPacketUtil.registerSendToClientPacket(ClientTileEntitySyncMessage.class, new ClientBlockEntitySyncMessageHandler());
-        IKSGPacketUtil.registerSendToClientPacket(BlockEntityInstructionReturnMessage.class, new BlockEntityInstructionReturnMessageHandler());
-        IKSGPacketUtil.registerSendToClientPacket(SimpleSendToClientMessage.class, new SimpleSendToClientMessageHandler());
+        IKSGPacketUtil.registerSendToClientPacket(ClientTileEntitySyncMessage.class, ClientTileEntitySyncMessage::new, new ClientBlockEntitySyncMessageHandler());
+        IKSGPacketUtil.registerSendToClientPacket(BlockEntityInstructionReturnMessage.class, BlockEntityInstructionReturnMessage::new, new BlockEntityInstructionReturnMessageHandler());
+        IKSGPacketUtil.registerSendToClientPacket(SimpleSendToClientMessage.class, SimpleSendToClientMessage::new, new SimpleSendToClientMessageHandler());
 
-        IKSGPacketUtil.registerSendToServerPacket(BlockEntityInstructionMessage.class, new BlockEntityInstructionMessageHandler());
-        IKSGPacketUtil.registerSendToServerPacket(WorldShareUploadMessage.class, new WorldShareUploadMessageHandler());
-        IKSGPacketUtil.registerSendToServerPacket(SimpleSendToServerMessage.class, new SimpleSendToServerMessageHandler());
+        IKSGPacketUtil.registerSendToServerPacket(BlockEntityInstructionMessage.class, BlockEntityInstructionMessage::new, new BlockEntityInstructionMessageHandler());
+        IKSGPacketUtil.registerSendToServerPacket(WorldShareUploadMessage.class, WorldShareUploadMessage::new, new WorldShareUploadMessageHandler());
+        IKSGPacketUtil.registerSendToServerPacket(SimpleSendToServerMessage.class, SimpleSendToServerMessage::new, new SimpleSendToServerMessageHandler());
 
         OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
+
         if (api.isTestMode()) {
-            IKSGPacketUtil.registerSendToClientPacket(ClientTestMessage.class, new ClientTestMessageHandler());
-            IKSGPacketUtil.registerSendToServerPacket(ServerTestMessage.class, new ServerTestMessageHandler());
+            IKSGPacketUtil.registerSendToClientPacket(ClientTestMessage.class, ClientTestMessage::new, new ClientTestMessageHandler());
+            IKSGPacketUtil.registerSendToServerPacket(ServerTestMessage.class, ServerTestMessage::new, new ServerTestMessageHandler());
         }
     }
 }

@@ -5,39 +5,40 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.chunk.LevelChunk;
+import red.felnull.otyacraftengine.api.OEHandlerBus;
 import red.felnull.otyacraftengine.impl.OEPacketExpectPlatform;
 import red.felnull.otyacraftengine.packet.IPacketMessage;
 import red.felnull.otyacraftengine.packet.IPacketMessageClientHandler;
 import red.felnull.otyacraftengine.packet.IPacketMessageServerHandler;
 
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class IKSGPacketUtil {
-    public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> message, IPacketMessageClientHandler<MSG> handler) {
-        OEPacketExpectPlatform.registerSendToClientPacket(message, IPacketMessage::encode, n -> {
-            try {
-                MSG pm = message.newInstance();
-                pm.decode(n);
-                return pm;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }, handler);
+    public static <MSG extends IPacketMessage> void registerSendToClientPacket(Class<MSG> messageType, Supplier<MSG> message, IPacketMessageClientHandler<MSG>... handlers) {
+        OEPacketExpectPlatform.registerSendToClientPacket(messageType, IPacketMessage::encode, n -> {
+            MSG pm = message.get();
+            pm.decode(n);
+            return pm;
+        }, (message1, handler) -> {
+            boolean handlerFlg = Arrays.stream(handlers).filter(n -> n.reversiveMessage(message1, handler)).findAny().isPresent();
+            boolean evFlg = OEHandlerBus.postReturnHandler(message1, Boolean.class).stream().allMatch(n -> n);
+            return handlerFlg && evFlg;
+        });
     }
 
-    public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> message, IPacketMessageServerHandler<MSG> handler) {
-        OEPacketExpectPlatform.registerSendToServerPacket(message, IPacketMessage::encode, n -> {
-            try {
-                MSG pm = message.newInstance();
-                pm.decode(n);
-                return pm;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }, handler);
+    public static <MSG extends IPacketMessage> void registerSendToServerPacket(Class<MSG> messageType, Supplier<MSG> message, IPacketMessageServerHandler<MSG>... handlers) {
+        OEPacketExpectPlatform.registerSendToServerPacket(messageType, IPacketMessage::encode, n -> {
+            MSG pm = message.get();
+            pm.decode(n);
+            return pm;
+        }, (message1, player, handler) -> {
+            boolean handlerFlg = Arrays.stream(handlers).filter(n -> n.reversiveMessage(message1, player, handler)).findAny().isPresent();
+            boolean evFlg = OEHandlerBus.postReturnHandler(message1, Boolean.class).stream().allMatch(n -> n);
+            return handlerFlg && evFlg;
+        });
     }
 
     public static <MSG extends IPacketMessage> void sendToServerPacket(MSG message) {

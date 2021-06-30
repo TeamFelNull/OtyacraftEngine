@@ -21,7 +21,7 @@ public class OtyacraftEngine {
     private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
 
     public static void init() {
-        LOGGER.info("Initialize");
+       LOGGER.info("Initialize");
         long startTime = System.currentTimeMillis();
         OERegistries.init(api);
         OEPackets.init();

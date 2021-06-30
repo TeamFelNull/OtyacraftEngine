@@ -26,6 +26,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "OtyacraftEngine-fabric-refmap.json"
+  }
 }
