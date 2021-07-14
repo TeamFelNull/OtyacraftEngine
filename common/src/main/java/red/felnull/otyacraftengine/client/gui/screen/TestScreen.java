@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.TextComponent;
 import red.felnull.otyacraftengine.client.util.IKSGRenderUtil;
 import red.felnull.otyacraftengine.client.util.IKSGTextureUtil;
+import red.felnull.otyacraftengine.util.IKSGColorUtil;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ public class TestScreen extends IkisugiScreen {
     @Override
     public void render(PoseStack poseStack, int i, int j, float f) {
         renderBackground(poseStack);
-        IKSGRenderUtil.drawBindTextuer(IKSGTextureUtil.getURLTextureAsync(url, true, null), poseStack, 10, 10, 0, 0, width / 2, height / 2, width / 2, height / 2);
+        IKSGRenderUtil.drawColorTexture(IKSGTextureUtil.getURLTextureAsync(url, true, null), poseStack, 10, 10, 0, 0, width / 2, height / 2, width / 2, height / 2, IKSGColorUtil.toSRGB(0x114514));
+        IKSGRenderUtil.drawPlayerFace(poseStack, "MoriMori_0317_jp", 0, 0, 10);
         //IKSGRenderUtil.drawPlayerFase(poseStack, UUID.fromString("0f286fc2-0c86-42d5-8518-c306cad74f03"), 0, 0, Math.max(i, j));
         super.render(poseStack, i, j, f);
     }

@@ -81,27 +81,27 @@ public abstract class FixedButtonsList<T> extends AbstractWidget implements IIki
 
         boolean hv = isHoveredScrollBar();
 
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x, y, xTexStart + (hv ? 9 : 0), yTexStart, 9, 3, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x, y, xTexStart + (hv ? 9 : 0), yTexStart, 9, 3, wTex, hTex);
         int bsct = (height - 6) / 16;
         for (int i = 0; i < bsct; i++) {
-            IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x, y + 3 + (i * 16), xTexStart + (hv ? 9 : 0), yTexStart + 3, 9, 16, wTex, hTex);
+            IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x, y + 3 + (i * 16), xTexStart + (hv ? 9 : 0), yTexStart + 3, 9, 16, wTex, hTex);
         }
         int bsam = (height - 6) % 16;
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x, y + 3 + (bsct * 16), xTexStart + (hv ? 9 : 0), yTexStart + 3, 9, bsam, wTex, hTex);
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x, y + height - 3, xTexStart + (hv ? 9 : 0), yTexStart + 19, 9, 3, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x, y + 3 + (bsct * 16), xTexStart + (hv ? 9 : 0), yTexStart + 3, 9, bsam, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x, y + height - 3, xTexStart + (hv ? 9 : 0), yTexStart + 19, 9, 3, wTex, hTex);
 
         int barHeight = getBarHeight();
         float barY = ((height - 2) - barHeight) * scrollAmount;
 
 
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x + 1, y + 1 + barY, xTexStart + (hv ? 7 : 0), yTexStart + 22, 7, 3, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x + 1, y + 1 + barY, xTexStart + (hv ? 7 : 0), yTexStart + 22, 7, 3, wTex, hTex);
         int ssct = (barHeight - 6) / 14;
         for (int i = 0; i < ssct; i++) {
-            IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x + 1, y + 4 + (i * 14) + barY, xTexStart + (hv ? 7 : 0), yTexStart + 25, 7, 14, wTex, hTex);
+            IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x + 1, y + 4 + (i * 14) + barY, xTexStart + (hv ? 7 : 0), yTexStart + 25, 7, 14, wTex, hTex);
         }
         int ssam = (barHeight - 6) % 14;
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x + 1, y + 4 + (ssct * 14) + barY, xTexStart + (hv ? 7 : 0), yTexStart + 25, 7, ssam, wTex, hTex);
-        IKSGRenderUtil.drawBindTextuer(resourceLocation, poseStack, x + 1, y + 1 + barHeight - 3 + barY, xTexStart + (hv ? 7 : 0), yTexStart + 39, 7, 3, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x + 1, y + 4 + (ssct * 14) + barY, xTexStart + (hv ? 7 : 0), yTexStart + 25, 7, ssam, wTex, hTex);
+        IKSGRenderUtil.drawTexture(resourceLocation, poseStack, x + 1, y + 1 + barHeight - 3 + barY, xTexStart + (hv ? 7 : 0), yTexStart + 39, 7, 3, wTex, hTex);
     }
 
 

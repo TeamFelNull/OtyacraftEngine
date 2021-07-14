@@ -54,7 +54,9 @@ public class IKSGItemUtil {
         return iteme;
     }
 
-    public static void spawnItemEntity(ItemStack item, Level level, double x, double y, double z) {
-        level.addFreshEntity(createItemEntity(item, level, x, y, z));
+    public static ItemEntity spawnItemEntity(ItemStack item, Level level, double x, double y, double z) {
+        ItemEntity entity = createItemEntity(item, level, x, y, z);
+        level.addFreshEntity(entity);
+        return entity;
     }
 }
