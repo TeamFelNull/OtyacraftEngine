@@ -27,9 +27,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         float val = (float) (System.currentTimeMillis() % 3000) / 3000f * 360f;  // blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
-    //    IKSGRenderUtil.poseRotateX(poseStack, val);
-     //   IKSGRenderUtil.poseRotateY(poseStack, val);
-    //    IKSGRenderUtil.poseRotateZ(poseStack, val);
+        IKSGRenderUtil.poseRotateX(poseStack, val);
+        IKSGRenderUtil.poseRotateY(poseStack, val);
+        IKSGRenderUtil.poseRotateZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         testRender(blockEntity, partialTicks, poseStack, multiBufferSource, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
@@ -43,11 +43,11 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         //   IKSGRenderUtil.renderSpritePanel(BEACON_LOCATION, poseStack, multiBufferSource, -1, 0, 0, 0, 180, 0, pix * 10.5f, pix * 7.5f, 0, 0, 199, 122, 199, 122, combinedOverlayIn, combinedLightIn);
         //IKSGRenderUtil.renderFluid(Fluids.WATER, blockEntity.getLevel(), blockEntity.getBlockPos(), poseStack, multiBufferSource, 0.5d, pix * 1, pix * 1, pix * 3, pix * 14f, pix * 14f, combinedLightIn, combinedOverlayIn);
 
-        //   IKSGRenderUtil.renderFluid(Fluids.WATER, poseStack, multiBufferSource, 1d, pix * 3, pix * 1, pix * 3, pix * 10, pix * 14, combinedLightIn, combinedOverlayIn);
+        // IKSGRenderUtil.renderFluid(Fluids.WATER, poseStack, multiBufferSource, 1d, pix * 3, pix * 1, pix * 3, pix * 10, pix * 14, combinedLightIn, combinedOverlayIn);
         /*BakedModel model = IKSGRenderUtil.getBakedModel(new ResourceLocation(OtyacraftEngine.MODID, "base/test"));
         VertexConsumer ivb = multiBufferSource.getBuffer(Sheets.solidBlockSheet());
         IKSGRenderUtil.renderColorBakedModel(poseStack, ivb, null, model, combinedLightIn, combinedOverlayIn, new Random().nextInt(0xFFFFFF));*/
 
-        IKSGRenderUtil.renderPlayerFaceSprite(poseStack, multiBufferSource, "MoriMori_0317_jp", 0, 0, 0, 0, 0, 0, 1, combinedLightIn, combinedOverlayIn);
+        IKSGRenderUtil.renderPlayerFaceSpriteSides(poseStack, multiBufferSource, "toranpfan6433", 0, 0, 0, 0, 0, 0, 1, combinedLightIn, combinedOverlayIn);
     }
 }
