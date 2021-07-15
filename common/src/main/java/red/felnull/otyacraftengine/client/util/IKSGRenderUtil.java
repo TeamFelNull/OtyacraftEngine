@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -46,6 +47,99 @@ import java.util.UUID;
 public class IKSGRenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
+
+    /**
+     * 文字スプライトを描画
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param text              文字
+     * @param x                 X
+     * @param y                 Y
+     * @param z                 Z
+     */
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字スプライトを描画
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param text              文字
+     * @param x                 X
+     * @param y                 Y
+     * @param z                 Z
+     */
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        poseStack.popPose();
+    }
+
+    /**
+     * 中央ぞろえ文字描画
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(SRGB)
+     * @since 2.0
+     */
+    public static void drawCenterText(PoseStack poseStack, Component text, float x, float y, int color) {
+        mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
+    }
+
+    /**
+     * 文字描画
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         X
+     * @param y         Y
+     * @param color     色(SRGB)
+     * @since 2.0
+     */
+    public static void drawText(PoseStack poseStack, Component text, float x, float y, int color) {
+        mc.font.draw(poseStack, text, x, y, color);
+    }
+
+
+    /**
+     * 中央ぞろえ文字描画
+     *
+     * @param poseStack PoseStack
+     * @param str       文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(SRGB)
+     * @since 2.0
+     */
+    public static void drawCenterText(PoseStack poseStack, String str, float x, float y, int color) {
+        mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+    }
+
+    /**
+     * 文字描画
+     *
+     * @param poseStack PoseStack
+     * @param str       文字
+     * @param x         X
+     * @param y         Y
+     * @param color     色(SRGB)
+     * @since 2.0
+     */
+    public static void drawText(PoseStack poseStack, String str, float x, float y, int color) {
+        mc.font.draw(poseStack, str, x, y, color);
+    }
 
     /**
      * GUI上でUUIDから取得したプレイヤーの顔を描画する
@@ -885,5 +979,4 @@ public class IKSGRenderUtil {
         drawColorTexture(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH, color);
         poseStack.popPose();
     }
-
 }

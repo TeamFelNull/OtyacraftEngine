@@ -33,6 +33,12 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * テクスチャ関係
+ *
+ * @author MORIMORI0317
+ * @since 1.0
+ */
 @Environment(EnvType.CLIENT)
 public class IKSGTextureUtil {
     private static final Minecraft mc = Minecraft.getInstance();
@@ -42,30 +48,76 @@ public class IKSGTextureUtil {
     public static final Map<String, String> URL_TEXTURES_INDEX = new HashMap<>();
     private static final Set<String> LOADING_URLS = new HashSet<>();
 
+    /**
+     * UUIDからプレイヤースキンテクスチャ取得
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤースキンテクスチャID
+     * @since 2.0
+     */
     public static ResourceLocation getPlayerSkinTexture(UUID uuid) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid);
     }
 
+    /**
+     * UUIDからプレイヤーマントテクスチャ取得
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーマントテクスチャID
+     * @since 2.0
+     */
     public static ResourceLocation getPlayerCapeTexture(UUID uuid) {
         return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, uuid);
     }
 
+    /**
+     * UUIDからプレイヤーエリトラテクスチャ取得
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーエリトラテクスチャID
+     * @since 2.0
+     */
     public static ResourceLocation getPlayerElytraTexture(UUID uuid) {
         return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, uuid);
     }
 
+    /**
+     * 名前からプレイヤースキンテクスチャ取得
+     *
+     * @param name プレイヤー名
+     * @return プレイヤースキンテクスチャID
+     */
     public static ResourceLocation getPlayerSkinTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
     }
 
+    /**
+     * 名前からプレイヤーマントテクスチャ取得
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーマントテクスチャID
+     */
     public static ResourceLocation getPlayerCapeTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, name);
     }
 
+    /**
+     * 名前からプレイヤーエリトラテクスチャ取得
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーエリトラテクスチャID
+     */
     public static ResourceLocation getPlayerElytraTexture(String name) {
         return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, name);
     }
 
+    /**
+     * 名前からプレイヤーテクスチャ取得
+     *
+     * @param type テクスチャタイプ
+     * @param name プレイヤー名
+     * @return プレイヤーテクスチャ
+     */
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, String name) {
         if (mc.player != null && mc.player.connection.getPlayerInfo(name) != null) {
             return switch (type) {
@@ -80,6 +132,14 @@ public class IKSGTextureUtil {
         return faselocation;
     }
 
+    /**
+     * UUIDからプレイヤーテクスチャ取得
+     *
+     * @param type テクスチャタイプ
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーテクスチャ
+     * @since 2.0
+     */
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, UUID uuid) {
         if (mc.player != null && mc.player.connection.getPlayerInfo(uuid) != null) {
             return switch (type) {

@@ -3,6 +3,7 @@ package red.felnull.otyacraftengine.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.blockentity.TestBlockEntity;
@@ -27,9 +28,9 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         float val = (float) (System.currentTimeMillis() % 3000) / 3000f * 360f;  // blockEntity.currentValue + (5 * Math.min(partialTicks, 1)); //IKSGRenderUtil.partialTicksMisalignment(blockEntity.currentValue, blockEntity.preCurrentValue, partialTicks);
-        IKSGRenderUtil.poseRotateX(poseStack, val);
-        IKSGRenderUtil.poseRotateY(poseStack, val);
-        IKSGRenderUtil.poseRotateZ(poseStack, val);
+        //    IKSGRenderUtil.poseRotateX(poseStack, val);
+        //    IKSGRenderUtil.poseRotateY(poseStack, val);
+        //     IKSGRenderUtil.poseRotateZ(poseStack, val);
         poseStack.translate(-0.5f, -0.5f, -0.5f);
         testRender(blockEntity, partialTicks, poseStack, multiBufferSource, combinedLightIn, combinedOverlayIn);
         poseStack.popPose();
@@ -48,6 +49,8 @@ public class TestRenderer extends IkisugiBlockEntityRenderer<TestBlockEntity> {
         VertexConsumer ivb = multiBufferSource.getBuffer(Sheets.solidBlockSheet());
         IKSGRenderUtil.renderColorBakedModel(poseStack, ivb, null, model, combinedLightIn, combinedOverlayIn, new Random().nextInt(0xFFFFFF));*/
 
-        IKSGRenderUtil.renderPlayerFaceSpriteSides(poseStack, multiBufferSource, "toranpfan6433", 0, 0, 0, 0, 0, 0, 1, combinedLightIn, combinedOverlayIn);
+        //IKSGRenderUtil.renderPlayerFaceSpriteSides(poseStack, multiBufferSource, "MoriMori_0317_jp", 0, 0, 0, 0, 0, 0, 1, combinedLightIn, combinedOverlayIn);
+        IKSGRenderUtil.renderCenterTextSprite(poseStack, multiBufferSource, new TextComponent("MoriMori_0317_jp"), 0f, 0f, 0f, 1, 0, 0);
+
     }
 }

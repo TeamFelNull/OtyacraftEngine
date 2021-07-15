@@ -80,4 +80,12 @@ public class IKSGClientUtil {
         }
         return IKSGPlayerUtil.getNameByUUIDASync(uuid);
     }
+
+    public static String getPlayerNameByUUID(UUID uuid, String other) {
+        return getPlayerNameByUUID(uuid).equals(IKSGPlayerUtil.getFakePlayerName()) ? other : getPlayerNameByUUID(uuid);
+    }
+
+    public static String getPlayerNameNonFake(UUID uuid) {
+        return getPlayerNameByUUID(uuid, uuid.toString());
+    }
 }
