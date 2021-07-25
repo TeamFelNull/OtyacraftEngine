@@ -9,9 +9,9 @@ public class IkisugiItem extends Item implements IIkisugibleItem {
         super(properties);
     }
 
-
     @Override
     public ResourceLocation getRegistryName() {
         return Registry.ITEM.getKey(this);
     }
+
 }

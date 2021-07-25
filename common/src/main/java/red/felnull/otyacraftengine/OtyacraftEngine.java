@@ -13,6 +13,7 @@ import red.felnull.otyacraftengine.data.save.OEWorldData;
 import red.felnull.otyacraftengine.fluid.TestFluid;
 import red.felnull.otyacraftengine.item.TestItem;
 import red.felnull.otyacraftengine.packet.OEPackets;
+import red.felnull.otyacraftengine.util.IKSGStringUtil;
 
 public class OtyacraftEngine {
     public static final Logger LOGGER = LogManager.getLogger(OtyacraftEngine.class);
@@ -21,34 +22,7 @@ public class OtyacraftEngine {
     private static final OtyacraftEngineAPI api = OtyacraftEngineAPI.getInstance();
 
     public static void init() {
-
-        String logo = """                             
-                                     ==     =-                   
-                                     ==    ==                    
-                               ==    ========     =-             
-                                =============== -=               
-                               :==================               
-                           ==+=====================   =           #####   ######   ##  ##     ##       ####   ######     ##     #######  ###### 
-                            ==========================           ##   ##  # ## #   ##  ##    ####     ##  ##   ##  ##   ####     ##   #  # ## # 
-                            ==========     ==========            ##   ##    ##     ##  ##   ##  ##   ##        ##  ##  ##  ##    ## #      ##   
-                        +  =========         ========+           ##   ##    ##      ####    ##  ##   ##        #####   ##  ##    ####      ##   
-                        -+=========           ========++++       ##   ##    ##       ##     ######   ##        ## ##   ######    ## #      ##   
-                          ========+           +========+.        ##   ##    ##       ##     ##  ##    ##  ##   ##  ##  ##  ##    ##        ##   
-                          +=======*           *=======*           #####    ####     ####    ##  ##     ####   #### ##  ##  ##   ####      ####  
-                          ========*           +=======*               
-                       *+=-========           =========                       #######  ##   ##    ####    ####    ##   ##  #######
-                           =========         ========= +=                      ##   #  ###  ##   ##  ##    ##     ###  ##   ##   #
-                           -=========.     -=========                          ## #    #### ##  ##         ##     #### ##   ## #
-                          :=========================-                          ####    ## ####  ##         ##     ## ####   ####
-                          =   =======================-                         ## #    ##  ###  ##  ###    ##     ##  ###   ## #
-                               ==================    -                         ##   #  ##   ##   ##  ##    ##     ##   ##   ##   #
-                               =================+                             #######  ##   ##    #####   ####    ##   ##  #######
-                              =.    ========   .=          
-                                    =     ==                     
-                                   *=     =+                
-                """;
-
-        LOGGER.info(logo);
+        LOGGER.info(IKSGStringUtil.getLogoASCIIArt());
         LOGGER.info("Initialize");
         long startTime = System.currentTimeMillis();
         OERegistries.init(api);

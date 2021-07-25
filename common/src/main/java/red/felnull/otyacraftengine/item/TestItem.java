@@ -6,14 +6,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.api.OEHandlerBus;
 import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
+
+import java.util.Optional;
 
 ;
 
@@ -33,7 +35,6 @@ public class TestItem extends Item {
     }
 
 
-
     public static Item TEST_ITEM;
     public static Item TEST_TANK_ITEM;
 
@@ -47,5 +48,12 @@ public class TestItem extends Item {
 
         IKSGRegistryUtil.replaceFood(Items.DIAMOND, Foods.APPLE);
         IKSGRegistryUtil.registerCompostable(0.5f, Items.DIAMOND);
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
+        return Optional.of(new IkisugiTooltipComponent() {
+
+        });
     }
 }

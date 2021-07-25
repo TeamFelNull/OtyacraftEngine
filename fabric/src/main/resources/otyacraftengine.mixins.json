@@ -22,6 +22,7 @@
     "client.MinecraftMixin",
     "client.ModelManagerMixin",
     "client.MouseHandlerMixin",
+    "client.ScreenMixin",
     "client.SubtitleMixin"
   ],
   "injectors": {
