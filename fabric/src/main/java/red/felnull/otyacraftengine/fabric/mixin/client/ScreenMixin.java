@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import red.felnull.otyacraftengine.client.util.IKSGClientUtil;
-import red.felnull.otyacraftengine.item.IkisugiTooltipComponent;
+import red.felnull.otyacraftengine.item.tooltip.IkisugiTooltipComponent;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +34,7 @@ public abstract class ScreenMixin {
             ci.cancel();
         }
     }
+
+
+
 }

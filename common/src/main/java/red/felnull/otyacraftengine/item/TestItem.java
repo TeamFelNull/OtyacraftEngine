@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import red.felnull.otyacraftengine.OtyacraftEngine;
+import red.felnull.otyacraftengine.item.tooltip.TestTooltipComponent;
 import red.felnull.otyacraftengine.util.IKSGRegistryUtil;
 
 import java.util.Optional;
@@ -52,8 +53,6 @@ public class TestItem extends Item {
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
-        return Optional.of(new IkisugiTooltipComponent() {
-
-        });
+        return Optional.of(new TestTooltipComponent());
     }
 }

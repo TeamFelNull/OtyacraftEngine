@@ -10,9 +10,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,11 +18,13 @@ import net.minecraft.world.phys.Vec3;
 import red.felnull.otyacraftengine.client.impl.OEClientExpectPlatform;
 import red.felnull.otyacraftengine.client.renderer.CustomBlockEntityWithoutLevelRenderer;
 import red.felnull.otyacraftengine.client.renderer.item.ICustomBEWLRenderer;
-import red.felnull.otyacraftengine.item.IkisugiItem;
-import red.felnull.otyacraftengine.item.IkisugiTooltipComponent;
+import red.felnull.otyacraftengine.item.tooltip.IkisugiTooltipComponent;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -95,8 +95,8 @@ public class IKSGClientUtil {
         return getPlayerNameByUUID(uuid, uuid.toString());
     }
 
-    public static void registerClientToolTip(Class<? extends IkisugiTooltipComponent> cls, Function<IkisugiTooltipComponent, ClientTooltipComponent> clientToolTip) {
-        CONVERTERS.put(cls, clientToolTip);
+    public static <T extends IkisugiTooltipComponent> void registerClientToolTip(Class<T> cls, Function<T, ClientTooltipComponent> clientToolTip) {
+        CONVERTERS.put(cls, (Function<IkisugiTooltipComponent, ClientTooltipComponent>) clientToolTip);
     }
 
     public static ClientTooltipComponent createIkisugiToolTip(IkisugiTooltipComponent component) {
