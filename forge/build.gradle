@@ -8,22 +8,21 @@ configurations {
 
 architectury {
     platformSetupLoomIde()
-    fabric()
+    forge()
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-   
-    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+ 
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
-    developmentFabric(project(path: ":common", configuration: "dev")) {
+    developmentForge(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
         transitive = false
     }
 }
@@ -31,12 +30,14 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }
 
 shadowJar {
+    exclude "fabric.mod.json"
+
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
@@ -44,7 +45,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    classifier "forge"
 }
 
 jar {
@@ -59,9 +60,9 @@ sourcesJar {
 
 publishing {
     publications {
-        mavenFabric(MavenPublication) {
+        mavenForge(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
-           
+         
             artifact(remapJar) {
                 classifier null
             }
@@ -71,7 +72,8 @@ publishing {
         }
     }
 
+    
     repositories {
-       
+      
     }
 }

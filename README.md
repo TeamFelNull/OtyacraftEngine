@@ -1,4 +1,4 @@
 # OtyacraftEngine(minecraft mod)
-My mod integration library.
+Felnull integration mod library.
 
 https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine
