@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.felnull.otyacraftengine.fabric.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "TestMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
