@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "dev.felnull.otyacraftengine.fabric.OtyacraftEngineFabric"
+    ],
+    "client": [
+      "dev.felnull.otyacraftengine.fabric.client.OtyacraftEngineClientFabric"
     ]
   },
   "depends": {
@@ -28,5 +31,9 @@
   },
   "custom": {
     "modmenu:api": true
-  }
+  },
+  "mixins": [
+    "otyacraftengine.mixins.json"
+  ],
+  "accessWidener": "otyacraftengine.accesswidener"
 }

@@ -3,17 +3,20 @@ plugins {
 }
 
 configurations {
-    shadowCommon 
+    shadowCommon
 }
 
 architectury {
     platformSetupLoomIde()
     forge()
 }
-
+repositories {
+    maven { url = "https://dvs1.progwml6.com/files/maven/" }
+    maven { url = "https://modmaven.dev/" }
+}
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
- 
+
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
     implementation(project(path: ":common", configuration: "dev")) {
@@ -25,6 +28,9 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
         transitive = false
     }
+
+
+
 }
 
 processResources {
@@ -62,7 +68,7 @@ publishing {
     publications {
         mavenForge(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
-         
+
             artifact(remapJar) {
                 classifier null
             }
@@ -72,8 +78,8 @@ publishing {
         }
     }
 
-    
+
     repositories {
-      
+
     }
 }
