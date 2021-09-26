@@ -44,7 +44,7 @@ import java.util.UUID;
  */
 @Environment(EnvType.CLIENT)
 public class OERenderUtil {
-    private static final Minecraft mc = Minecraft.getInstance();
+    private static final Minecraft MC = Minecraft.getInstance();
     private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
 
     /**
@@ -61,7 +61,7 @@ public class OERenderUtil {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        MC.font.drawInBatch(text, ((float) -MC.font.width(text) / 2f) + textX, -MC.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
         poseStack.popPose();
     }
 
@@ -79,7 +79,7 @@ public class OERenderUtil {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        MC.font.drawInBatch(text, textX, -MC.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
         poseStack.popPose();
     }
 
@@ -94,7 +94,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawCenterText(PoseStack poseStack, Component text, float x, float y, int color) {
-        mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
+        MC.font.draw(poseStack, text, x - ((float) MC.font.width(text) / 2f), y, color);
     }
 
     /**
@@ -108,7 +108,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawText(PoseStack poseStack, Component text, float x, float y, int color) {
-        mc.font.draw(poseStack, text, x, y, color);
+        MC.font.draw(poseStack, text, x, y, color);
     }
 
 
@@ -123,7 +123,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawCenterText(PoseStack poseStack, String str, float x, float y, int color) {
-        mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+        MC.font.draw(poseStack, str, x - ((float) MC.font.width(str) / 2f), y, color);
     }
 
     /**
@@ -137,7 +137,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawText(PoseStack poseStack, String str, float x, float y, int color) {
-        mc.font.draw(poseStack, str, x, y, color);
+        MC.font.draw(poseStack, str, x, y, color);
     }
 
     /**
@@ -149,8 +149,8 @@ public class OERenderUtil {
      * @param y         Y
      * @since 2.0
      */
-  /*  public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y) {
-        drawPlayerFace(poseStack, uuid, x, y, 8);
+   /* public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y) {
+        drawPlayerFace(poseStack, uuid, x, y);
     }*/
 
     /**
@@ -459,9 +459,9 @@ public class OERenderUtil {
      * @param combinedOverlayIn combinedOverlayIn
      */
     public static void renderBlockBakedModel(BlockAndTintGetter getter, BakedModel model, BlockState state, BlockPos pos, PoseStack poseStack, VertexConsumer consumer, boolean checkSides, Random randomIn, long rand, int combinedOverlayIn) {
-        BlockRenderDispatcher brd = Minecraft.getInstance().getBlockRenderer();
-        ModelBlockRenderer bmr = brd.getModelRenderer();
-        bmr.tesselateBlock(getter, model, state, pos, poseStack, consumer, checkSides, randomIn, rand, combinedOverlayIn);
+        BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
+        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
+        modelBlockRenderer.tesselateBlock(getter, model, state, pos, poseStack, consumer, checkSides, randomIn, rand, combinedOverlayIn);
     }
 
     /**
@@ -509,9 +509,9 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static BakedModel getBlockBakedModel(ModelResourceLocation modelResourceLocation) {
-        BlockRenderDispatcher blockrendererdispatcher = mc.getBlockRenderer();
-        ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
-        return modelmanager.getModel(modelResourceLocation);
+        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
+        ModelManager modelManager = blockRenderDispatcher.getBlockModelShaper().getModelManager();
+        return modelManager.getModel(modelResourceLocation);
     }
 
     /**
@@ -526,9 +526,9 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void renderBakedModel(PoseStack poseStack, VertexConsumer vertexConsumer, BlockState state, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
-        BlockRenderDispatcher brd = mc.getBlockRenderer();
-        ModelBlockRenderer bmr = brd.getModelRenderer();
-        bmr.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
+        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
+        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
+        modelBlockRenderer.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
     }
 
     /**
@@ -545,12 +545,12 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void renderColorBakedModel(PoseStack poseStack, VertexConsumer vertexConsumer, BlockState state, BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
-        BlockRenderDispatcher brd = mc.getBlockRenderer();
-        ModelBlockRenderer bmr = brd.getModelRenderer();
+        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
+        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
-        bmr.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, r, g, b, combinedLight, combinedOverlay);
+        modelBlockRenderer.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, r, g, b, combinedLight, combinedOverlay);
     }
 
     /**
@@ -606,7 +606,7 @@ public class OERenderUtil {
      */
     public static void renderPlayerFaceSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, String name, float x, float y, float z, float pitch, float yaw, float roll, float size, int combinedLightIn, int combinedOverlayIn) {
         float sc = size / 8f;
-        ////     renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        //     renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
         //      renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
     }
 
@@ -834,7 +834,7 @@ public class OERenderUtil {
 
     private static void renderFluid(Fluid fluid, int color, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
    /*     ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
-        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
         float r = (float) IKSGColorUtil.getRed(color) / 255f;
         float g = (float) IKSGColorUtil.getGreen(color) / 255f;
         float b = (float) IKSGColorUtil.getBlue(color) / 255f;
@@ -867,7 +867,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void renderApple(PoseStack poseStack, MultiBufferSource mbs, int combinedLightIn, int combinedOverlayIn) {
-        mc.getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, mbs, 0);
+        MC.getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, mbs, 0);
     }
 
     /**
@@ -947,7 +947,7 @@ public class OERenderUtil {
      */
     public static void drawBlockAtlasTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
         poseStack.pushPose();
-        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
         float brit = size / 16f;
         float bariW = 16384 / (float) sprite.getWidth() * brit;
         float bariH = 16384 / (float) sprite.getHeight() * brit;
@@ -972,7 +972,7 @@ public class OERenderUtil {
      */
     public static void drawBlockAtlasColorTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY, int color) {
         poseStack.pushPose();
-        TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
+        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
         float brit = size / 16f;
         float bariW = 16384 / (float) sprite.getWidth() * brit;
         float bariH = 16384 / (float) sprite.getHeight() * brit;
