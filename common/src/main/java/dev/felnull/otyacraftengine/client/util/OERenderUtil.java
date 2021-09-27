@@ -295,6 +295,7 @@ public class OERenderUtil {
         RenderSystem.disableBlend();
         poseStack.popPose();*/
     }
+
     private static void fBlit(PoseStack poseStack, float ix, float iy, float tsx, float tsy, float tw, float th, float tssx, float tssy) {
         Matrix4f matrix4f = poseStack.last().pose();
         float x = ix;
@@ -927,8 +928,8 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawFluid(Fluid fluid, int color, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
-     //   ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
-    //    drawBlockAtlasColorTexture(location, poseStack, x, y, size, startX, startY, endX, endY, color);
+        //   ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
+        //    drawBlockAtlasColorTexture(location, poseStack, x, y, size, startX, startY, endX, endY, color);
     }
 
     /**
@@ -976,7 +977,7 @@ public class OERenderUtil {
         float brit = size / 16f;
         float bariW = 16384 / (float) sprite.getWidth() * brit;
         float bariH = 16384 / (float) sprite.getHeight() * brit;
-     //   drawColorTexture(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH, color);
+        //   drawColorTexture(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH, color);
         poseStack.popPose();
     }
 }
