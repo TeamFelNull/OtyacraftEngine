@@ -29,7 +29,7 @@ dependencies {
         transitive = false
     }
 
-
+    implementation files("../libs/FelNullJavaLibrary-1.0.jar");
 
 }
 

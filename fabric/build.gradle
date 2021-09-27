@@ -32,6 +32,8 @@ dependencies {
     }
 
     modApi "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+
+    implementation files("../libs/FelNullJavaLibrary-1.0.jar");
 }
 
 processResources {
