@@ -4,9 +4,6 @@ plugins {
 
 configurations {
     shadowCommon
-
-    shadowIn
-    implementation.extendsFrom(shadowIn)
 }
 
 architectury {
@@ -31,8 +28,8 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
         transitive = false
     }
-
-    implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    forgeDependencies("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
+    shadowCommon("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
 }
 shadowJar {
     configurations = [project.configurations.shadow]
