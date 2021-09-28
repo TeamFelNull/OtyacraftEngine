@@ -4,6 +4,9 @@ plugins {
 
 configurations {
     shadowCommon
+
+    shadowIn
+    implementation.extendsFrom(shadowIn)
 }
 
 architectury {
@@ -29,10 +32,13 @@ dependencies {
         transitive = false
     }
 
-    implementation files("../libs/FelNullJavaLibrary-1.0.jar");
-
+    implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
 }
-
+shadowJar {
+    configurations = [project.configurations.shadow]
+    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
+    relocate 'dokata', 'dev.felnull.otyacraftengine.libs.dokata'
+}
 processResources {
     inputs.property "version", project.version
 

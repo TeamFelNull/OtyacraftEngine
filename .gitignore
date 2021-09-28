@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,forgegradle,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,forgegradle,gradle
 
+.architectury-transformer
 ### ForgeGradle ###
 # Minecraft client/server files
 run/
