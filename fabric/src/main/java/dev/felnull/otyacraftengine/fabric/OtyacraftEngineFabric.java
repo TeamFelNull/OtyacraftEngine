@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftengine.fabric;
 
-import dev.felnull.fnjl.util.FNDokataUtil;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import net.fabricmc.api.ModInitializer;
 

@@ -9,6 +9,12 @@ import java.util.Map;
 public class OEClientUtil {
     protected static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
 
+    /**
+     * クライアントでプレイヤープロフィールを取得する
+     *
+     * @param name プレイヤー名
+     * @return プロフィール
+     */
     public static GameProfile getClientPlayerProfile(String name) {
         if (PLAYER_PROFILES.containsKey(name))
             return PLAYER_PROFILES.get(name);

@@ -1,21 +1,108 @@
 package dev.felnull.otyacraftengine.client.util;
 
+import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.blaze3d.platform.NativeImage;
+import dev.felnull.fnjl.util.FNImageUtil;
+import dev.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
 import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class OETextureUtil {
     private static final Minecraft mc = Minecraft.getInstance();
+    protected static final Map<UUID, ResourceLocation> NATIVE_TEXTURES = new HashMap<>();
     private static final Map<UUID, String> UUID_PLAYER_NAMES = new HashMap<>();
 
+    /**
+     * UUIDからプレイヤースキンテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤースキンテクスチャID
+     * @since 2.0
+     */
+    public static ResourceLocation getPlayerSkinTexture(UUID uuid) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid);
+    }
+
+    /**
+     * UUIDからプレイヤーマントテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーマントテクスチャID
+     * @since 2.0
+     */
+    public static ResourceLocation getPlayerCapeTexture(UUID uuid) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, uuid);
+    }
+
+    /**
+     * UUIDからプレイヤーエリトラテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーエリトラテクスチャID
+     * @since 2.0
+     */
+    public static ResourceLocation getPlayerElytraTexture(UUID uuid) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, uuid);
+    }
+
+    /**
+     * 名前からプレイヤースキンテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param name プレイヤー名
+     * @return プレイヤースキンテクスチャID
+     */
+    public static ResourceLocation getPlayerSkinTexture(String name) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name);
+    }
+
+    /**
+     * 名前からプレイヤーマントテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーマントテクスチャID
+     */
+    public static ResourceLocation getPlayerCapeTexture(String name) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, name);
+    }
+
+    /**
+     * 名前からプレイヤーエリトラテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーエリトラテクスチャID
+     */
+    public static ResourceLocation getPlayerElytraTexture(String name) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, name);
+    }
+
+    /**
+     * 名前からプレイヤーテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param type テクスチャタイプ
+     * @param name プレイヤー名
+     * @return プレイヤーテクスチャロケーション
+     */
     @Nullable
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, String name) {
         if (name == null)
@@ -32,6 +119,15 @@ public class OETextureUtil {
         return tex != null ? mc.getSkinManager().registerTexture(tex, type) : type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(Player.createPlayerUUID(gameProfile)) : null;
     }
 
+    /**
+     * UUIDからプレイヤーテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param type テクスチャタイプ
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーテクスチャロケーション
+     * @since 2.0
+     */
     public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, UUID uuid) {
         if (mc.player != null && mc.player.connection.getPlayerInfo(uuid) != null) {
             return switch (type) {
@@ -54,5 +150,56 @@ public class OETextureUtil {
         }
 
         return getPlayerTexture(type, name);
+    }
+
+    public static ResourceLocation getNativeTextureAsyncLoad(UUID id, InputStream stream) {
+        if (NATIVE_TEXTURES.containsKey(id))
+            return NATIVE_TEXTURES.get(id);
+
+        return MissingTextureAtlasSprite.getLocation();
+    }
+
+    public static ResourceLocation getNativeTexture(UUID id, InputStream stream) {
+        if (NATIVE_TEXTURES.containsKey(id))
+            return NATIVE_TEXTURES.get(id);
+
+        var tex = loadNativeTexture(id, stream);
+        NATIVE_TEXTURES.put(id, tex);
+        return tex;
+    }
+
+    private static ResourceLocation loadNativeTexture(UUID id, InputStream stream) {
+        try {
+            byte[] data = stream.readAllBytes();
+            GifDecoder decoder = new GifDecoder();
+            boolean gifFlg = decoder.read(new ByteArrayInputStream(data)) == 0;
+            AtomicReference<ResourceLocation> tex = new AtomicReference<>();
+            if (!gifFlg) {
+                NativeImage ni = NativeImage.read(new ByteArrayInputStream(data));
+                mc.submit(() -> tex.set(mc.getTextureManager().register("native_texture", new DynamicTexture(ni)))).get();
+            } else {
+                DynamicGifTexture.ImageFrame[] frames = new DynamicGifTexture.ImageFrame[decoder.getFrameCount()];
+                long duration = 0;
+                for (int i = 0; i < decoder.getFrameCount(); i++) {
+                    frames[i] = new DynamicGifTexture.ImageFrame(NativeImage.read(FNImageUtil.toInputStream(decoder.getFrame(i), "png")), decoder.getDelay(i));
+                    duration += decoder.getDelay(i);
+                }
+                long finalDuration = duration;
+                mc.submit(() -> tex.set(mc.getTextureManager().register("native_texture", new DynamicGifTexture(finalDuration, frames)))).get();
+            }
+            return tex.get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return MissingTextureAtlasSprite.getLocation();
+    }
+    public static void freeNativeTexture(UUID id) {
+        if (NATIVE_TEXTURES.containsKey(id)) {
+            freeTexture(NATIVE_TEXTURES.get(id));
+            NATIVE_TEXTURES.remove(id);
+        }
+    }
+    public static void freeTexture(ResourceLocation location) {
+     //   OEClientExpectPlatform.freeTexture(location);
     }
 }

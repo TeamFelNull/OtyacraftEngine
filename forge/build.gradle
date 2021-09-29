@@ -30,11 +30,15 @@ dependencies {
     }
     forgeDependencies("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
     shadowCommon("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
+
+    forgeDependencies 'com.madgag:animated-gif-lib:1.4'
+    shadowCommon 'com.madgag:animated-gif-lib:1.4'
 }
 shadowJar {
     configurations = [project.configurations.shadow]
     relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
     relocate 'dokata', 'dev.felnull.otyacraftengine.libs.dokata'
+    relocate 'com', 'dev.felnull.otyacraftengine.libs.com'
 }
 processResources {
     inputs.property "version", project.version

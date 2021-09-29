@@ -5,56 +5,49 @@ import com.mojang.blaze3d.platform.NativeImage;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.Tickable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class DynamicGifTexture extends DynamicTexture implements Tickable {
-    private static final Logger LOGGER = LogManager.getLogger(DynamicGifTexture.class);
-    private final NativeImage[] images;
-    private final long[] durations;
+    private final ImageFrame[] frames;
     private final long duration;
-    private int count;
-    private int lastCount;
+    private int last;
 
-    public DynamicGifTexture(long[] durations, NativeImage... nativeImages) {
-        super(nativeImages[0]);
-        this.images = nativeImages;
-        this.durations = durations;
-
-        long d = 0;
-        for (long duration : durations) {
-            d += duration;
-        }
-        this.duration = d;
+    public DynamicGifTexture(long duration, ImageFrame... frames) {
+        super(frames[0].image());
+        this.duration = duration;
+        this.frames = frames;
     }
 
     @Override
     public void tick() {
-        count = 0;
-        long tm = System.currentTimeMillis() % duration;
-        long al = 0;
-        for (int i = 0; i < durations.length; i++) {
-            count = i;
-            if (al > tm)
-                break;
-            al += durations[i];
-        }
-
-        if (lastCount != count) {
-            OEClientExpectPlatform.setNonClosePixels(this, images[count]);
+        int ct = Math.toIntExact(getFrameByTime(System.currentTimeMillis() % duration));
+        if (ct != last) {
+            OEClientExpectPlatform.setNonClosePixels(this, frames[ct].image());
             upload();
-            lastCount = count;
+            last = ct;
         }
+    }
+
+    private int getFrameByTime(long time) {
+        long dr = 0;
+        for (int i = 0; i < frames.length; i++) {
+            if (dr <= time && dr + frames[i].delay > time)
+                return i;
+            dr += frames[i].delay;
+        }
+        return 0;
     }
 
     @Override
     public void close() {
         super.close();
-        if (images != null) {
-            for (NativeImage image : images) {
+        if (frames != null) {
+            for (ImageFrame image : frames) {
                 if (image != null)
-                    image.close();
+                    image.image().close();
             }
         }
+    }
+
+    public static record ImageFrame(NativeImage image, long delay) {
     }
 }
