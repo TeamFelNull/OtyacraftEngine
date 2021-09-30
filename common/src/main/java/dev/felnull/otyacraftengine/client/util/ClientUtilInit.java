@@ -3,7 +3,6 @@ package dev.felnull.otyacraftengine.client.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.felnull.otyacraftengine.util.OEPaths;
-import net.minecraft.client.Minecraft;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClientUtilInit {
-    private static final Minecraft mc = Minecraft.getInstance();
     private static final Gson GSON = new Gson();
 
     public static void init() {
