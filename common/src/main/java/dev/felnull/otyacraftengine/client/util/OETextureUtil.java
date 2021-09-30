@@ -3,10 +3,13 @@ package dev.felnull.otyacraftengine.client.util;
 import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
+import dev.felnull.fnjl.util.FNDataUtil;
 import dev.felnull.fnjl.util.FNImageUtil;
+import dev.felnull.fnjl.util.FNURLUtil;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.util.OEPaths;
 import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -17,9 +20,12 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,13 +36,19 @@ public class OETextureUtil {
     protected static final List<UUID> LOAD_TEXTURES = new ArrayList<>();
     protected static ResourceLocation LOADING_ICON;
     private static final Map<UUID, String> UUID_PLAYER_NAMES = new HashMap<>();
+    protected static final Map<String, String> URL_FILENAME_INDEX = new HashMap<>();
+    protected static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
 
-
+    /**
+     * ロード中アイコンを取得
+     *
+     * @return ロケーション
+     */
     public static ResourceLocation getLoadingIcon() {
         if (LOADING_ICON == null) {
             ResourceManager rm = mc.getResourceManager();
             try {
-                LOADING_ICON = OETextureUtil.loadNativeTexture(UUID.randomUUID(), rm.getResource(new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading.gif")).getInputStream(), MissingTextureAtlasSprite.getLocation()).location();
+                LOADING_ICON = OETextureUtil.loadNativeTexture(rm.getResource(new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading.gif")).getInputStream(), MissingTextureAtlasSprite.getLocation()).location();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -170,14 +182,80 @@ public class OETextureUtil {
         return getPlayerTexture(type, name);
     }
 
+    public static ResourceLocation getURLTexture(String url, boolean cash, ResourceLocation failureTexture) {
+        if (URL_TEXTURES_UUIDS.containsKey(url))
+            return getNativeTexture(URL_TEXTURES_UUIDS.get(url), null);
+
+        UUID id = UUID.randomUUID();
+        TextureLoadResult tx = loadURLTexture(id, url, cash, failureTexture);
+        URL_TEXTURES_UUIDS.put(url, id);
+        NATIVE_TEXTURES.put(id, tx);
+        return tx.location();
+    }
+
+    private static TextureLoadResult loadURLTexture(UUID uuid, String url, boolean cash, ResourceLocation failureTexture) {
+        try {
+            InputStream stream;
+            byte[] md5 = FNDataUtil.createMD5Hash(url.getBytes(StandardCharsets.UTF_8));
+            String identification = Base64.getEncoder().encodeToString(md5);
+            Path oep = OEPaths.getClientOEFolderPath().resolve("url_textures");
+            if (URL_FILENAME_INDEX.containsKey(identification) && oep.resolve(URL_FILENAME_INDEX.get(identification)).toFile().exists()) {
+                stream = new BufferedInputStream(new FileInputStream(oep.resolve(URL_FILENAME_INDEX.get(identification)).toFile()));
+            } else {
+                HttpURLConnection connection = FNURLUtil.getConnection(new URL(url));
+                long length = connection.getContentLengthLong();
+                long max = 1024L * 1024L;
+                if (length > max)
+                    throw new IOException("Size Over: " + max + "byte" + " current: " + length + "byte");
+                if (cash) {
+                    byte[] data = connection.getInputStream().readAllBytes();
+                    UUID uid = UUID.randomUUID();
+                    Files.write(oep.resolve(uid.toString()), data);
+                    URL_FILENAME_INDEX.put(identification, uid.toString());
+                    stream = new ByteArrayInputStream(data);
+                } else {
+                    stream = connection.getInputStream();
+                }
+            }
+            return loadNativeTexture(stream, failureTexture);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new TextureLoadResult(failureTexture, true);
+    }
+
+    /**
+     * 非同期でネイティブテクスチャを取得する
+     *
+     * @param id     テクスチャ管理ID
+     * @param stream リソース
+     * @return テクスチャID
+     */
     public static ResourceLocation getNativeTextureAsyncLoad(UUID id, InputStream stream) {
         return getNativeTextureAsyncLoad(id, stream, MissingTextureAtlasSprite.getLocation());
     }
 
+    /**
+     * 非同期でネイティブテクスチャを取得する
+     *
+     * @param id             テクスチャ管理ID
+     * @param stream         リソース
+     * @param failureTexture 読み込み失敗時のテクスチャ
+     * @return テクスチャID
+     */
     public static ResourceLocation getNativeTextureAsyncLoad(UUID id, InputStream stream, ResourceLocation failureTexture) {
         return getNativeTextureAsyncLoad(id, stream, getLoadingIcon(), failureTexture);
     }
 
+    /**
+     * 非同期でネイティブテクスチャを取得する
+     *
+     * @param id             テクスチャ管理ID
+     * @param stream         リソース
+     * @param loadTexture    ロード中のテクスチャ
+     * @param failureTexture 読み込み失敗時のテクスチャ
+     * @return テクスチャID
+     */
     public static ResourceLocation getNativeTextureAsyncLoad(UUID id, InputStream stream, ResourceLocation loadTexture, ResourceLocation failureTexture) {
         if (NATIVE_TEXTURES.containsKey(id))
             return NATIVE_TEXTURES.get(id).location();
@@ -187,7 +265,7 @@ public class OETextureUtil {
 
         CompletableFuture.runAsync(() -> {
             LOAD_TEXTURES.add(id);
-            var tex = loadNativeTexture(id, stream, failureTexture);
+            var tex = loadNativeTexture(stream, failureTexture);
             mc.submit(() -> {
                 NATIVE_TEXTURES.put(id, tex);
                 LOAD_TEXTURES.remove(id);
@@ -197,20 +275,35 @@ public class OETextureUtil {
         return loadTexture;
     }
 
+    /**
+     * 非同期でネイティブテクスチャを取得する
+     *
+     * @param id     テクスチャ管理ID
+     * @param stream リソース
+     * @return テクスチャID
+     */
     public static ResourceLocation getNativeTexture(UUID id, InputStream stream) {
         return getNativeTexture(id, stream, MissingTextureAtlasSprite.getLocation());
     }
 
+    /**
+     * 非同期でネイティブテクスチャを取得する
+     *
+     * @param id             テクスチャ管理ID
+     * @param stream         リソース
+     * @param failureTexture 読み込み失敗時のテクスチャ
+     * @return テクスチャID
+     */
     public static ResourceLocation getNativeTexture(UUID id, InputStream stream, ResourceLocation failureTexture) {
         if (NATIVE_TEXTURES.containsKey(id))
             return NATIVE_TEXTURES.get(id).location();
 
-        var tex = loadNativeTexture(id, stream, failureTexture);
+        var tex = loadNativeTexture(stream, failureTexture);
         NATIVE_TEXTURES.put(id, tex);
         return tex.location();
     }
 
-    protected static TextureLoadResult loadNativeTexture(UUID id, InputStream stream, ResourceLocation failureTexture) {
+    protected static TextureLoadResult loadNativeTexture(InputStream stream, ResourceLocation failureTexture) {
         try {
             byte[] data = stream.readAllBytes();
             GifDecoder decoder = new GifDecoder();
@@ -236,6 +329,11 @@ public class OETextureUtil {
         return new TextureLoadResult(failureTexture, true);
     }
 
+    /**
+     * ネイティブテクスチャを開放する
+     *
+     * @param id テクスチャ管理ID
+     */
     public static void freeNativeTexture(UUID id) {
         if (NATIVE_TEXTURES.containsKey(id)) {
             if (!NATIVE_TEXTURES.get(id).failure())
@@ -244,10 +342,15 @@ public class OETextureUtil {
         }
     }
 
+    /**
+     * テクスチャを開放する
+     *
+     * @param location テクスチャID
+     */
     public static void freeTexture(ResourceLocation location) {
         OEClientExpectPlatform.freeTexture(location);
     }
 
-    protected static record TextureLoadResult(ResourceLocation location, boolean failure) {
+    private static record TextureLoadResult(ResourceLocation location, boolean failure) {
     }
 }
