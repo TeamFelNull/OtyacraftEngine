@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class OEURLUtils {
+public class OEURLUtil {
     private static final Gson GSON = new Gson();
 
     public static JsonObject getJson(URL url) throws IOException {

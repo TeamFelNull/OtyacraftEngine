@@ -15,7 +15,7 @@ public class OEPlayerUtil {
     @Nullable
     public static String getNameByUUID(UUID uuid) {
         try {
-            JsonObject jo = OEURLUtils.getJson(new URL(String.format(UUID_PLAYER_URL, uuid.toString())));
+            JsonObject jo = OEURLUtil.getJson(new URL(String.format(UUID_PLAYER_URL, uuid.toString())));
             return jo.get("name").getAsString();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -26,7 +26,7 @@ public class OEPlayerUtil {
 
     public static CompletableFuture<Void> getNameByUUIDAsync(UUID id, Consumer<String> name) {
         try {
-            return OEURLUtils.getJsonAsync(new URL(String.format(UUID_PLAYER_URL, id.toString())), n -> {
+            return OEURLUtil.getJsonAsync(new URL(String.format(UUID_PLAYER_URL, id.toString())), n -> {
                 String na = null;
                 try {
                     na = n.get("name").getAsString();
