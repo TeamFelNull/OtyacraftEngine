@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
+import dev.felnull.fnjl.util.FNColorUtil;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -26,19 +27,18 @@ public class IKSGColorUtil {
             TextFormatting.YELLOW,
             TextFormatting.WHITE};
 
+    @Deprecated
     public static String convertIntegerFromColorCode(int n) {
-        String ahex = Integer.toHexString(n);
-        String hex = "";
-        for (int i = 0; i < 6 - ahex.length(); i++) {
-            hex += "0";
-        }
-        hex += ahex;
-        return hex;
+        return FNColorUtil.getStringHexColor(n);
     }
 
     public static TextFormatting convertTextFormattingFromColorCode(int n) {
-        String hex = convertIntegerFromColorCode(n);
-        return convertTextFormattingFromColorCode(hex);
+        int[] cols = new int[TextFormattingColors.length];
+        for (int i = 0; i < TextFormattingColors.length; i++) {
+            cols[i] = TextFormattingColors[i].getColor();
+        }
+        int col = FNColorUtil.getApproximateColor(n, cols);
+        return TextFormatting.AQUA;
     }
 
     public static TextFormatting convertTextFormattingFromColorCode(String hex) {

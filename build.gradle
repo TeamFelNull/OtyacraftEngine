@@ -10,6 +10,7 @@ buildscript {
 }
 plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
@@ -70,6 +71,10 @@ def getDate() {
     return new Date().format('yyyyMMddHHmm')
 }
 
+configurations {
+    shadow
+    implementation.extendsFrom(shadow)
+}
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://dvs1.progwml6.com/files/maven/" }//JEI
@@ -81,7 +86,16 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${fgl_version}")
+    shadow 'dev.felnull:felnull-java-library:1.2'
 }
+
+shadowJar {
+    classifier ''
+    project.configurations.shadow.setTransitive(true);
+    configurations = [project.configurations.shadow]
+    relocate 'dev', 'red.felnull.otyacraftengine.libs.dev'
+}
+
 tasks.withType(AbstractCompile)*.options*.encoding = tasks.withType(GroovyCompile)*.groovyOptions*.encoding = 'UTF-8'
 ext.themanifest = {
     attributes([
@@ -112,7 +126,11 @@ artifacts {
     archives devJar
     archives sourceJar
 }
-
+afterEvaluate {
+    reobf {
+        shadowJar { mappings = tasks.reobfJar.mappings }
+    }
+}
 publishing {
     publications {
         mavenJava(MavenPublication) {
