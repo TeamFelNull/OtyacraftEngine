@@ -23,7 +23,7 @@ public class IKSGNBTUtil {
     }
 
     public static CompoundNBT writeStringMap(CompoundNBT tag, Map<String, String> map) {
-        map.forEach((n, m) -> tag.putString(n, m));
+        map.forEach(tag::putString);
         return tag;
     }
 
@@ -34,7 +34,7 @@ public class IKSGNBTUtil {
     }
 
     public static CompoundNBT writeNBTMap(CompoundNBT tag, Map<String, CompoundNBT> map) {
-        map.forEach((n, m) -> tag.put(n, m));
+        map.forEach(tag::put);
         return tag;
     }
 
@@ -44,7 +44,7 @@ public class IKSGNBTUtil {
         for (int i = 0; i < listnbt.size(); ++i) {
             CompoundNBT compoundnbt = listnbt.getCompound(i);
             int j = compoundnbt.getByte("Slot") & 255;
-            if (j >= 0 && j < list.size()) {
+            if (j < list.size()) {
                 list.set(j, ItemStack.read(compoundnbt));
                 ints.add(j);
             }
@@ -68,7 +68,7 @@ public class IKSGNBTUtil {
     }
 
     public static List<String> readStringList(CompoundNBT tag) {
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
         for (int i = 0; i < tag.keySet().size(); i++) {
             list.add(tag.getString(String.valueOf(i)));
         }

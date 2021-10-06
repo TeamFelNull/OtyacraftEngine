@@ -25,8 +25,8 @@ public class ClientConfig {
         public ConfigLoder(ForgeConfigSpec.Builder builder) {
             OtyacraftEngine.LOGGER.info("Loading Client Config");
             builder.push("ToolTip");
-            ToolTipModName = builder.define("Show ModName", true);
-            ToolTipTag = builder.define("Show Tag", true);
+            ToolTipModName = builder.define("Show ModName", false);
+            ToolTipTag = builder.define("Show Tag", false);
             ToolTipTagKey = builder.define("Show Tag Key", "key.sprint");
             ToolTipDetailedInformation = builder.define("Show DetailedInformation", true);
             ToolTipDetailedInformationKey = builder.define("Show DetailedInformation Key", "key.sneak");

@@ -1,8 +1,10 @@
 package red.felnull.otyacraftengine.client.util;
 
 import com.google.common.collect.Maps;
+import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import dev.felnull.fnjl.util.FNImageUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
@@ -15,16 +17,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.client.data.URLImageTextureLoder;
+import red.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPlayerUtil;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 public class IKSGTextureUtil {
+    private static final Minecraft mc = Minecraft.getInstance();
     private static final ResourceLocation LOADING_1 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_1.png");
     private static final ResourceLocation LOADING_2 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_2.png");
     private static final ResourceLocation LOADING_3 = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/loading_icon/loading_3.png");
@@ -33,7 +38,6 @@ public class IKSGTextureUtil {
     public static final ResourceLocation TEXTUER_NOTFINED = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/textuer_not_find.png");
 
     public static int loadingPaatune;
-    private static final Minecraft mc = Minecraft.getInstance();
     private static final Map<byte[], ResourceLocation> PICTUER_BYTE_LOCATION = Maps.newHashMap();
 
     public static ResourceLocation getPlayerSkinTexture(String name) {
@@ -67,17 +71,33 @@ public class IKSGTextureUtil {
         if (PICTUER_BYTE_LOCATION.containsKey(data)) {
             return PICTUER_BYTE_LOCATION.get(data);
         }
-        ResourceLocation imagelocation = new ResourceLocation(OtyacraftEngine.MODID, "pictuer/" + UUID.randomUUID().toString());
+        ResourceLocation imagelocation = new ResourceLocation(OtyacraftEngine.MODID, "pictuer/" + UUID.randomUUID());
         try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(data);
-            NativeImage NI = NativeImage.read(bis);
-            Minecraft.getInstance().textureManager.loadTexture(imagelocation, new DynamicTexture(NI));
+            DynamicTexture texture = loadImageTexture(data);
+            mc.runAsync(() -> mc.textureManager.loadTexture(imagelocation, texture)).get();
             PICTUER_BYTE_LOCATION.put(data, imagelocation);
             return imagelocation;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    private static DynamicTexture loadImageTexture(byte[] data) throws IOException {
+        GifDecoder decoder = new GifDecoder();
+        if (decoder.read(new ByteArrayInputStream(data)) == GifDecoder.STATUS_OK) {
+            DynamicGifTexture.ImageFrame[] frames = new DynamicGifTexture.ImageFrame[decoder.getFrameCount()];
+            long duration = 0;
+            for (int i = 0; i < decoder.getFrameCount(); i++) {
+                frames[i] = new DynamicGifTexture.ImageFrame(NativeImage.read(FNImageUtil.toInputStream(decoder.getFrame(i), "png")), decoder.getDelay(i));
+                duration += decoder.getDelay(i);
+            }
+            return new DynamicGifTexture(duration, frames);
+        } else {
+            ByteArrayInputStream bis = new ByteArrayInputStream(data);
+            NativeImage NI = NativeImage.read(bis);
+            return new DynamicTexture(NI);
+        }
     }
 
     public static ResourceLocation getLoadingIconTextuer() {

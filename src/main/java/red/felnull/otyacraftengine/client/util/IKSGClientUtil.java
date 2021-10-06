@@ -11,6 +11,7 @@ import net.minecraft.world.storage.SaveFormat;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IRegistryDelegate;
+import org.lwjgl.glfw.GLFW;
 import red.felnull.otyacraftengine.asm.DeobfNames;
 import red.felnull.otyacraftengine.client.handler.ClientHandler;
 import red.felnull.otyacraftengine.util.IKSGReflectionUtil;
@@ -42,19 +43,20 @@ public class IKSGClientUtil {
     }
 
     public static boolean isKeyInput(KeyBinding key, boolean nulltrue) {
-
         if (key == null)
             return nulltrue;
-
-        return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), key.getKeyBinding().getKey().getKeyCode());
+        int code = key.getKeyBinding().getKey().getKeyCode();
+        if (GLFW.GLFW_MOUSE_BUTTON_8 >= code)
+            return nulltrue;
+        return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), code);
     }
 
     public static KeyBinding getKeyBind(String name) {
         KeyBinding[] binds = Minecraft.getInstance().gameSettings.keyBindings;
 
-        Optional<KeyBinding> k = Arrays.asList(binds).stream().filter(n -> n.getKeyDescription().equals(name)).findFirst();
+        Optional<KeyBinding> k = Arrays.stream(binds).filter(n -> n.getKeyDescription().equals(name)).findFirst();
 
-        return k.isPresent() ? k.get() : null;
+        return k.orElse(null);
     }
 
     public static UUID getCurrentWorldUUID() {

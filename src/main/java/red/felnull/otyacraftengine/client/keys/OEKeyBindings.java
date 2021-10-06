@@ -6,11 +6,11 @@ import org.lwjgl.glfw.GLFW;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 
 public class OEKeyBindings {
-    public static KeyBinding TEST = createKeyBind("test", GLFW.GLFW_KEY_M);
+    //public static KeyBinding TEST = createKeyBind("test", GLFW.GLFW_KEY_M);
     public static KeyBinding IN_GAME_FILE_MANAGER = createKeyBind("in_game_file_manager", GLFW.GLFW_KEY_O);
 
     public static void init() {
-        registerKey(TEST);
+   //     registerKey(TEST);
         //   registerKey(IN_GAME_FILE_MANAGER);
     }
 

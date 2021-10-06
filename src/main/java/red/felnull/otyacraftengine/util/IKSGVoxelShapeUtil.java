@@ -5,6 +5,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,26 +44,15 @@ public class IKSGVoxelShapeUtil {
     }
 
     public static VoxelShape allOr(VoxelShape... shapes) {
-        if (shapes.length == 1)
-            return shapes[0];
-        List<VoxelShape> shapesll = new ArrayList<VoxelShape>();
-        VoxelShape fristV = null;
-        boolean isFrist = false;
-        for (VoxelShape box : shapes) {
-            if (!isFrist) {
-                isFrist = true;
-                fristV = box;
-            } else {
-                shapesll.add(box);
-            }
-        }
-        return VoxelShapes.or(fristV, shapesll.toArray(new VoxelShape[1]));
+        return VoxelShapes.or(shapes[0], ArrayUtils.remove(shapes, 0));
     }
 
     public static VoxelShape translate(VoxelShape shape, double x, double y, double z) {
-        List<VoxelShape> shapes = new ArrayList<VoxelShape>();
-        shape.toBoundingBoxList().forEach(n -> shapes.add(VoxelShapes.create(n.offset(1f / 16f * x, 1f / 16f * y, 1f / 16f * z))));
-        return allOr(shapes.toArray(new VoxelShape[1]));
+        VoxelShape[] shapes = {};
+        for (AxisAlignedBB aabb : shape.toBoundingBoxList()) {
+            shapes = ArrayUtils.add(shapes, VoxelShapes.create(aabb.offset(1d / 16d * x, 1d / 16d * y, 1d / 16d * z)));
+        }
+        return allOr(shapes);
     }
 
     public static VoxelShape rotate90(VoxelShape shape) {

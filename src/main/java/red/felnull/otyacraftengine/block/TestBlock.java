@@ -1,23 +1,6 @@
 package red.felnull.otyacraftengine.block;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import red.felnull.otyacraftengine.OtyacraftEngine;
-import red.felnull.otyacraftengine.util.IKSGVoxelShapeUtil;
-
+/*
 //@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestBlock extends Block {
     public static final Block TEST = new TestBlock(AbstractBlock.Properties.create(Material.ANVIL).hardnessAndResistance(1f, 1f)).setRegistryName(new ResourceLocation(OtyacraftEngine.MODID, "test_block"));
@@ -51,4 +34,4 @@ public class TestBlock extends Block {
         VoxelShape test = X_AXIS_AABB;
         return IKSGVoxelShapeUtil.rotate90(test);
     }
-}
+}*/

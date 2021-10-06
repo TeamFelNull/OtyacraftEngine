@@ -35,9 +35,9 @@ public class IKSGServerUtil {
      * @param uuid PlayerUUID
      * @return Boolean value of the result
      */
+    @Deprecated
     public static boolean isOnlinePlayer(String uuid) {
-        List<ServerPlayerEntity> playes = getOnlinePlayers();
-        return playes.stream().anyMatch(n -> IKSGPlayerUtil.getUUID(n).equals(uuid));
+        return getMinecraftServer().getPlayerList().getPlayerByUUID(UUID.fromString(uuid)) != null;
     }
 
     /**

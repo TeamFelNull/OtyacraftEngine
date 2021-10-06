@@ -3,14 +3,9 @@ package red.felnull.otyacraftengine.util;
 import net.minecraft.util.math.BlockPos;
 
 public class IKSGMath {
+    @Deprecated
     public static int convertStringToInteger(String name) {
-        int n = 0;
-        int m = 0;
-        for (char c : name.toCharArray()) {
-            m++;
-            n = n + (int) c * m;
-        }
-        return n;
+        return name.hashCode();
     }
 
     public static int averageInt(int... n) {
@@ -48,84 +43,84 @@ public class IKSGMath {
         r /= n.length;
         return r;
     }
-
+@Deprecated
     public static int positiveInt(int n) {
         int r = n;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static float positiveFloat(float n) {
         float r = n;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static long positiveLong(long n) {
         long r = n;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static double positiveDouble(double n) {
         double r = n;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static int negativeInt(int n) {
         int r = n;
         if (r > 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static float negativeFloat(float n) {
         float r = n;
         if (r > 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static long negativeLong(long n) {
         long r = n;
         if (r > 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static double negativeDouble(double n) {
         double r = n;
         if (r > 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static int differenceInt(int n1, int n2) {
         int r = n1 - n2;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static float differenceFloat(float n1, float n2) {
         float r = n1 - n2;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static long differenceLong(long n1, long n2) {
         long r = n1 - n2;
         if (r < 0)
             r *= -1;
         return r;
     }
-
+    @Deprecated
     public static double differenceDouble(double n1, double n2) {
         double r = n1 - n2;
         if (r < 0)

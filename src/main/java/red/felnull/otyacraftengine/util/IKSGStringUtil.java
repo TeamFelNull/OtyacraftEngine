@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.util;
 
+import dev.felnull.fnjl.util.FNStringUtil;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
 public class IKSGStringUtil {
-
+    @Deprecated
     public static String getIntArryString(int[] ints) {
         return StringUtils.join(ints, ":");
     }
@@ -20,11 +21,13 @@ public class IKSGStringUtil {
         return String.valueOf(chars);
     }
 
+    @Deprecated
     public static String getTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return timestamp.toString();
     }
 
+    @Deprecated
     public static String slipString(String name, boolean left, int slipc) {
         String st = name;
         for (int c = 0; c < slipc; c++) {
@@ -33,16 +36,12 @@ public class IKSGStringUtil {
         return st;
     }
 
+    @Deprecated
     public static String getExtension(String name) {
-
-        String[] filenames = name.split(Pattern.quote("."));
-        if (filenames.length != 1) {
-            return filenames[filenames.length - 1];
-        }
-
-        return "";
+        return FNStringUtil.getExtension(name);
     }
 
+    @Deprecated
     public static String deleteExtension(String name) {
 
         String[] filenames = name.split(Pattern.quote("."));
@@ -50,43 +49,44 @@ public class IKSGStringUtil {
         if (filenames.length == 1)
             return name;
 
-        String oname = name.substring(0, name.length() - filenames[filenames.length - 1].length() - 1);
-
-        return oname;
+        return name.substring(0, name.length() - filenames[filenames.length - 1].length() - 1);
     }
 
+    @Deprecated
     public static String slipString(String name, boolean left) {
 
-        String outst = "";
+        StringBuilder outst = new StringBuilder();
 
         char[] oc = name.toCharArray();
         if (left) {
             for (int c = 0; c < oc.length; c++) {
 
                 if (c != oc.length - 1)
-                    outst += oc[c + 1];
+                    outst.append(oc[c + 1]);
                 else
-                    outst += oc[0];
+                    outst.append(oc[0]);
             }
         } else {
             for (int c = -1; c < oc.length; c++) {
 
                 if (c == -1) {
-                    outst += oc[oc.length - 1];
+                    outst.append(oc[oc.length - 1]);
                 } else {
                     if (c != oc.length - 1)
-                        outst += oc[c];
+                        outst.append(oc[c]);
                 }
             }
         }
-        return outst;
+        return outst.toString();
     }
 
+    @Deprecated
     public static String characterLimit(Minecraft mc, String st, int leth) {
         return characterLimit(mc, st, leth, true);
 
     }
 
+    @Deprecated
     public static String characterLimit(Minecraft mc, String st, int leth, boolean isdot) {
 
         if (mc.fontRenderer.getStringWidth(st) <= leth)
@@ -98,9 +98,9 @@ public class IKSGStringUtil {
 
         char[] sc = st.toCharArray();
 
-        for (int c = 0; c < sc.length; c++) {
+        for (char value : sc) {
             String stm = sto;
-            sto += sc[c];
+            sto += value;
             if (mc.fontRenderer.getStringWidth(sto) >= stle) {
 
                 return isdot ? stm + "..." : stm;
@@ -110,23 +110,16 @@ public class IKSGStringUtil {
         return sto;
     }
 
+    @Deprecated
     public static String getByteDisplay(int bytec) {
-
-        if (bytec < 1024) {
-            return bytec + " Byte";
-        } else if (bytec < 1024 * 1024) {
-            return deleteLastZero(IKSGMath.roundDown(bytec / 1024, 2)) + " KB";
-        } else {
-            return deleteLastZero(IKSGMath.roundDown((float) bytec / 1024 / 1024, 2)) + " MB";
-        }
+        return FNStringUtil.getByteDisplay(bytec);
     }
 
     public static String deleteLastZero(float f) {
 
-        if (String.valueOf(f).substring(String.valueOf(f).length() - 1).equals("0")) {
+        if (String.valueOf(f).endsWith("0")) {
 
-            if (String.valueOf(f).substring(String.valueOf(f).length() - 2, String.valueOf(f).length() - 1)
-                    .equals(".")) {
+            if (String.valueOf(f).charAt(String.valueOf(f).length() - 2) == '.') {
                 return String.valueOf(f).substring(0, String.valueOf(f).length() - 2);
             }
 
@@ -137,6 +130,7 @@ public class IKSGStringUtil {
 
     }
 
+    @Deprecated
     public static String getPercentage(int all, int cont) {
 
         return Math.round(((float) cont / (float) all) * 100) + " %";
@@ -160,17 +154,17 @@ public class IKSGStringUtil {
 
     public static String getZeroOnNumber(int zerocont, int num) {
 
-        String out = "";
+        StringBuilder out = new StringBuilder();
 
         String numst = String.valueOf(num);
 
         for (int c = 0; c < zerocont - numst.length(); c++) {
-            out += "0";
+            out.append("0");
         }
 
-        out += numst;
+        out.append(numst);
 
-        return out;
+        return out.toString();
     }
 
     public static String cutForBack(String text, int num) {

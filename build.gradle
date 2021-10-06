@@ -9,17 +9,16 @@ buildscript {
     }
 }
 plugins {
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-if (System.getenv('curesforgeapikey') == null || "${curesfg_id}" == "0")
-    version = "${mod_version}-pre${getDate()}"
-else
-    version = "${mod_version}"
+//if (System.getenv('curesforgeapikey') == null || "${curesfg_id}" == "0")
+//    version = "${mod_version}-pre${getDate()}"
+//else
+version = "${mod_version}"
 
 group = "${mod_group}"
 archivesBaseName = "${mod_name}-${mc_version}"
@@ -86,14 +85,16 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${fgl_version}")
-    shadow 'dev.felnull:felnull-java-library:1.2'
+    shadow 'dev.felnull:felnull-java-library:1.5'
+    shadow 'com.madgag:animated-gif-lib:1.4'
 }
 
 shadowJar {
     classifier ''
     project.configurations.shadow.setTransitive(true);
     configurations = [project.configurations.shadow]
-    relocate 'dev', 'red.felnull.otyacraftengine.libs.dev'
+    relocate 'dev.felnull.fnjl', 'red.felnull.otyacraftengine.libs.dev.felnull.fnjl'
+    relocate 'com.madgag.gif', 'red.felnull.otyacraftengine.libs.com.madgag.gif'
 }
 
 tasks.withType(AbstractCompile)*.options*.encoding = tasks.withType(GroovyCompile)*.groovyOptions*.encoding = 'UTF-8'
@@ -107,9 +108,6 @@ ext.themanifest = {
             "Implementation-Vendor"   : "${mod_vendor}",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     ])
-}
-jar {
-    manifest themanifest
 }
 jar.finalizedBy('reobfJar')
 task devJar(type: Jar) {
@@ -134,33 +132,37 @@ afterEvaluate {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = 'otyacraftengine'
             artifact jar
-            artifact devJar
-            artifact sourceJar
+            pom {
+                name = 'OtyacraftEngine'
+                description = 'My mod integration library.'
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'MORIMORI0317'
+                        name = 'MORIMORI0317'
+                    }
+                    developer {
+                        id = 'FelNull'
+                        name = 'TeamFelNull'
+                        email = 'teamfelnull@m.servg.red'
+                    }
+                }
+            }
         }
     }
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-    }
-}
-if (System.getenv('curesforgeapikey') != null && "${curesfg_id}" != "0") {
-    curseforge {
-        apiKey = System.getenv('curesforgeapikey')
-        project {
-            id = "${curesfg_id}"
-            changelog = ""
-            releaseType = "${releasetype}"
-            addGameVersion "${mc_version}"
-            mainArtifact(jar) {
-                displayName = "${mod_name}-${mc_version}-${mod_version}"
-            }
-            addArtifact(devJar) {
-                displayName = "${mod_name}-${mc_version}-${mod_version}-dev"
-            }
-            addArtifact(sourceJar) {
-                displayName = "${mod_name}-${mc_version}-${mod_version}-source"
+            url "https://maven.morimori0317.net/"
+            credentials {
+                username = System.getenv('mavenname')
+                password = System.getenv('mavenpassword')
             }
         }
     }

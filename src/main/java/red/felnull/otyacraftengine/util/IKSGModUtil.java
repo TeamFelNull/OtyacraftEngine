@@ -10,10 +10,8 @@ import java.util.Random;
 
 public class IKSGModUtil {
     public static String getModVersion(String modid) {
-
         try {
-            return ModList.get().getModContainerById(modid)
-                    .map(modContainer -> modContainer.getModInfo().getVersion()).orElse(null).toString();
+            return ModList.get().getModContainerById(modid).map(modContainer -> modContainer.getModInfo().getVersion()).orElse(null).toString();
         } catch (Exception e) {
             return "Error!!";
         }
@@ -22,9 +20,7 @@ public class IKSGModUtil {
 
     public static String getModName(String modid) {
         try {
-            return ModList.get().getModContainerById(modid)
-                    .map(modContainer -> modContainer.getModInfo().getDisplayName())
-                    .orElse(StringUtils.capitalize(modid));
+            return ModList.get().getModContainerById(modid).map(modContainer -> modContainer.getModInfo().getDisplayName()).orElse(StringUtils.capitalize(modid));
         } catch (Exception e) {
             return "Error!!";
         }

@@ -7,7 +7,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import red.felnull.otyacraftengine.OtyacraftEngine;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
 import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;

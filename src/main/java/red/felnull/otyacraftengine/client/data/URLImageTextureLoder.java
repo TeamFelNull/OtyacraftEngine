@@ -2,9 +2,10 @@ package red.felnull.otyacraftengine.client.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import dev.felnull.fnjl.util.FNDataUtil;
+import dev.felnull.fnjl.util.FNURLUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -14,10 +15,9 @@ import red.felnull.otyacraftengine.util.IKSGFileLoadUtil;
 import red.felnull.otyacraftengine.util.IKSGPathUtil;
 import red.felnull.otyacraftengine.util.IKSGPictuerUtil;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -166,12 +166,11 @@ public class URLImageTextureLoder {
             String name = UUID.randomUUID().toString();
             Path texPath = CASH_PATH.resolve("cash").resolve(name);
             try {
-                URL imageURL = new URL(urldata.getURL());
-                BufferedImage image = ImageIO.read(imageURL);
+                byte[] data = FNDataUtil.streamToByteArray(FNURLUtil.getStream(new URL(urldata.getURL())));
                 if (urldata.isDecidedSuze())
-                    image = IKSGPictuerUtil.resize(image, urldata.getWidth(), urldata.getHeight());
+                    data = IKSGPictuerUtil.resize(data, urldata.getWidth(), urldata.getHeight());
                 IKSGFileLoadUtil.createFolder(texPath.getParent());
-                ImageIO.write(image, "png", texPath.toFile());
+                Files.write(texPath, data);
             } catch (Exception e) {
                 e.printStackTrace();
                 URLImageTextureLoder.instance().PICTUER_URL_LOCATION.put(urldata, IKSGTextureUtil.TEXTUER_NOTFINED);

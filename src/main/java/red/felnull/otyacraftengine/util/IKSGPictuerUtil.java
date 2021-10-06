@@ -1,7 +1,10 @@
 package red.felnull.otyacraftengine.util;
 
+import com.madgag.gif.fmsware.AnimatedGifEncoder;
+import com.madgag.gif.fmsware.GifDecoder;
+import dev.felnull.fnjl.util.FNImageUtil;
+
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class IKSGPictuerUtil {
+    @Deprecated
     public static BufferedImage getBffImage(Path path) {
         File picfile = path.toFile();
         if (picfile.exists() && picfile != null) {
@@ -19,10 +23,10 @@ public class IKSGPictuerUtil {
             } catch (IOException e) {
             }
         }
-
         return null;
     }
 
+    @Deprecated
     public static BufferedImage geBfftImage(byte[] bytes) {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         try {
@@ -33,22 +37,36 @@ public class IKSGPictuerUtil {
         }
     }
 
+    @Deprecated
     public static byte[] geByteImage(BufferedImage image) {
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);
-            baos.flush();
-            byte[] imgebyte = baos.toByteArray();
-            baos.close();
-            return imgebyte;
-        } catch (Exception e) {
+            return FNImageUtil.toByteArray(image, "png");
+        } catch (Exception ignored) {
         }
         return null;
     }
 
+    @Deprecated
     public static BufferedImage resize(BufferedImage image, int width, int height) {
-        BufferedImage outImage = new BufferedImage(width, height, image.getType());
-        outImage.createGraphics().drawImage(image.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING), 0, 0, width, height, null);
-        return outImage;
+        return FNImageUtil.resize(image, width, height);
+    }
+
+    public static byte[] resize(byte[] image, int width, int height) throws IOException {
+        GifDecoder decoder = new GifDecoder();
+        if (decoder.read(new ByteArrayInputStream(image)) == GifDecoder.STATUS_OK) {
+            AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            encoder.start(baos);
+            for (int i = 0; i < decoder.getFrameCount(); i++) {
+                encoder.setDelay(decoder.getDelay(i));
+                encoder.addFrame(decoder.getFrame(i));
+            }
+            encoder.finish();
+            byte[] data = baos.toByteArray();
+            baos.close();
+            return data;
+        } else {
+            return FNImageUtil.toByteArray(FNImageUtil.resize(ImageIO.read(new ByteArrayInputStream(image)), width, height), "png");
+        }
     }
 }

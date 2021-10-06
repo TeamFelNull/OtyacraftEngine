@@ -4,8 +4,6 @@ import dev.felnull.fnjl.util.FNColorUtil;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class IKSGColorUtil {
@@ -33,68 +31,39 @@ public class IKSGColorUtil {
     }
 
     public static TextFormatting convertTextFormattingFromColorCode(int n) {
-        int[] cols = new int[TextFormattingColors.length];
-        for (int i = 0; i < TextFormattingColors.length; i++) {
-            cols[i] = TextFormattingColors[i].getColor();
-        }
-        int col = FNColorUtil.getApproximateColor(n, cols);
-        return TextFormatting.AQUA;
+        return FNColorUtil.getApproximateColorObject(n, TextFormattingColors, TextFormatting::getColor);
     }
 
+    @Deprecated
     public static TextFormatting convertTextFormattingFromColorCode(String hex) {
-        Comparator<TextFormatting> compiler = Comparator.comparingInt(n -> difference(convertIntegerFromColorCode(n.getColor()), hex));
-        return Arrays.stream(TextFormattingColors).min(compiler).get();
-    }
-
-    public static int[] convertRGBFromColorCode(String hex) {
-        char[] ch = hex.toCharArray();
-        char[] r = {ch[0], ch[1]};
-        char[] g = {ch[2], ch[3]};
-        char[] b = {ch[4], ch[5]};
-        int[] rgb = new int[3];
-        rgb[0] = Integer.parseInt(new String(r), 16);
-        rgb[1] = Integer.parseInt(new String(g), 16);
-        rgb[2] = Integer.parseInt(new String(b), 16);
-        return rgb;
-    }
-
-    public static int difference(String color1, String color2) {
-        int[] rgb1 = convertRGBFromColorCode(color1);
-        int[] rgb2 = convertRGBFromColorCode(color2);
-        int rd = IKSGMath.differenceInt(rgb1[0], rgb2[0]);
-        int gd = IKSGMath.differenceInt(rgb1[1], rgb2[1]);
-        int bd = IKSGMath.differenceInt(rgb1[2], rgb2[2]);
-        return IKSGMath.averageInt(rd, gd, bd);
+        return convertTextFormattingFromColorCode(Integer.parseInt(hex, 16));
     }
 
     public static int[] convertRGBFromColorCode(int n) {
-        String hex = convertIntegerFromColorCode(n);
-        return convertRGBFromColorCode(hex);
+        int[] rgb = new int[3];
+        rgb[0] = FNColorUtil.getRed(n);
+        rgb[1] = FNColorUtil.getGreen(n);
+        rgb[2] = FNColorUtil.getBlue(n);
+        return rgb;
     }
 
+    @Deprecated
+    public static int[] convertRGBFromColorCode(String hex) {
+        return convertRGBFromColorCode(Integer.parseInt(hex, 16));
+    }
+
+    @Deprecated
+    public static int difference(String color1, String color2) {
+        return (int) FNColorUtil.getColorDistance(Integer.parseInt(color1, 16), Integer.parseInt(color2, 16));
+    }
+
+    @Deprecated
     public static String convertColorCodeFromRGB(int r, int g, int b) {
-
-        String hex = "";
-        if (convertIntegerFromColorCode(r).toCharArray().length != 1)
-            hex += String.valueOf(convertIntegerFromColorCode(r).toCharArray());
-        else
-            hex += "0" + String.valueOf(convertIntegerFromColorCode(r).toCharArray());
-
-        if (convertIntegerFromColorCode(g).toCharArray().length != 1)
-            hex += String.valueOf(convertIntegerFromColorCode(g).toCharArray());
-        else
-            hex += "0" + String.valueOf(convertIntegerFromColorCode(g).toCharArray());
-
-        if (convertIntegerFromColorCode(b).toCharArray().length != 1)
-            hex += String.valueOf(convertIntegerFromColorCode(b).toCharArray());
-        else
-            hex += "0" + String.valueOf(convertIntegerFromColorCode(b).toCharArray());
-
-        return hex;
+        return FNColorUtil.getStringHexColor(FNColorUtil.getHexColor(r, g, b));
     }
 
     public static String average(String... color) {
-        List<int[]> clorcord = new ArrayList<int[]>();
+        List<int[]> clorcord = new ArrayList<>();
         for (String cl : color) {
             clorcord.add(convertRGBFromColorCode(cl));
         }

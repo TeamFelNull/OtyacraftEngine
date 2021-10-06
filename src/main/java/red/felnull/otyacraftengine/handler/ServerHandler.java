@@ -19,7 +19,6 @@ import red.felnull.otyacraftengine.api.event.common.ResponseEvent;
 import red.felnull.otyacraftengine.api.event.server.StraddleChunkEvent;
 import red.felnull.otyacraftengine.api.event.server.WorldDataEvent;
 import red.felnull.otyacraftengine.api.registries.OERegistries;
-import red.felnull.otyacraftengine.client.data.ReceiveTextureLoder;
 import red.felnull.otyacraftengine.data.ReceiveTextureManager;
 import red.felnull.otyacraftengine.data.ServerDataSendReservation;
 import red.felnull.otyacraftengine.data.ServerDataSender;

@@ -1,11 +1,11 @@
 package red.felnull.otyacraftengine.util;
 
+import dev.felnull.fnjl.util.FNDataUtil;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import red.felnull.otyacraftengine.OtyacraftEngine;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.CopyOption;
@@ -16,13 +16,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class IKSGFileLoadUtil {
+    @Deprecated
     public static void createFolder(Path path) {
         if (path == null)
             return;
-
         path.toFile().mkdirs();
     }
 
+    @Deprecated
     public static byte[] fileBytesReader(Path path) {
         try {
             return Files.readAllBytes(path);
@@ -32,10 +33,12 @@ public class IKSGFileLoadUtil {
         }
     }
 
+    @Deprecated
     public static boolean deleteFile(Path path) {
         return deleteFile(path.toFile());
     }
 
+    @Deprecated
     public static boolean deleteFile(File file) {
         return file.delete();
     }
@@ -110,6 +113,7 @@ public class IKSGFileLoadUtil {
         }
     }
 
+    @Deprecated
     public static byte[] getCheckSumByte(File file) throws IOException, NoSuchAlgorithmException {
         InputStream fis = new FileInputStream(file);
         byte[] buffer = new byte[1024];
@@ -129,6 +133,7 @@ public class IKSGFileLoadUtil {
         return ByteBuffer.wrap(getCheckSumByte(file)).getInt();
     }
 
+    @Deprecated
     public static void fileBytesWriter(byte[] bytedatas, Path path) {
         createFolder(path.getParent());
         try {
@@ -138,49 +143,42 @@ public class IKSGFileLoadUtil {
         }
     }
 
+    @Deprecated
     public static void fileCopyWriter(Path src, Path target, CopyOption... options) throws IOException {
         Files.copy(src, target, options);
     }
 
+    @Deprecated
     public static void fileURLWriter(URL url, Path target, CopyOption... options) throws IOException {
         fileInputStreamWriter(url.openStream(), target, options);
     }
 
+    @Deprecated
     public static void fileInputStreamWriter(InputStream stream, Path target, CopyOption... options) throws IOException {
         Files.copy(new BufferedInputStream(stream), target, options);
     }
 
+    @Deprecated
     public static void fileBytesWriterProgress(byte[] data, Path target, IProgressListener listener) throws IOException {
         fileInputStreamWriterProgress(new ByteArrayInputStream(data), target, data.length, listener);
     }
 
+    @Deprecated
     public static void fileCopyWriterProgress(Path src, Path target, IProgressListener listener) throws IOException {
-        fileInputStreamWriterProgress(new FileInputStream(src.toFile()), target, src.toFile().length(), listener);
+        FNDataUtil.fileCopyToProgress(src.toFile(), target.toFile(), n -> listener.progressListener((float) n.getProgress()));
     }
 
+    @Deprecated
     public static void fileURLWriterProgress(URL url, Path target, IProgressListener listener) throws IOException {
-        HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
-        fileInputStreamWriterProgress(httpConnection.getInputStream(), target, httpConnection.getContentLength(), listener);
+        FNDataUtil.fileDownloadToProgress(url, target.toFile(), n -> listener.progressListener((float) n.getProgress()));
     }
 
+    @Deprecated
     public static void fileInputStreamWriterProgress(InputStream streama, Path target, long size, IProgressListener listener) throws IOException {
-        //https://stackoverflow.com/questions/22273045/java-getting-download-progress
-        BufferedInputStream stream = new BufferedInputStream(streama);
-        FileOutputStream fos = new FileOutputStream(target.toFile());
-        BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
-        byte[] data = new byte[1024];
-        long downloadedFileSize = 0;
-        int x = 0;
-        while ((x = stream.read(data, 0, 1024)) >= 0) {
-            downloadedFileSize += x;
-            float progress = (float) downloadedFileSize / (float) size;
-            listener.progressListener(progress);
-            bout.write(data, 0, x);
-        }
-        bout.close();
-        stream.close();
+        FNDataUtil.fileWriteToProgress(streama, size, target.toFile(), writeProgressListener -> listener.progressListener((float) writeProgressListener.getProgress()));
     }
 
+    @Deprecated
     public interface IProgressListener {
         void progressListener(float progress);
     }
