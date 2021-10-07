@@ -59,7 +59,7 @@ public class IKSGPictuerUtil {
             encoder.start(baos);
             for (int i = 0; i < decoder.getFrameCount(); i++) {
                 encoder.setDelay(decoder.getDelay(i));
-                encoder.addFrame(decoder.getFrame(i));
+                encoder.addFrame(FNImageUtil.resize(decoder.getFrame(i), width, height));
             }
             encoder.finish();
             byte[] data = baos.toByteArray();
@@ -67,6 +67,24 @@ public class IKSGPictuerUtil {
             return data;
         } else {
             return FNImageUtil.toByteArray(FNImageUtil.resize(ImageIO.read(new ByteArrayInputStream(image)), width, height), "png");
+        }
+    }
+
+    public static int getWidth(byte[] image) throws IOException {
+        GifDecoder decoder = new GifDecoder();
+        if (decoder.read(new ByteArrayInputStream(image)) == GifDecoder.STATUS_OK) {
+            return (int) decoder.getFrameSize().getWidth();
+        } else {
+            return ImageIO.read(new ByteArrayInputStream(image)).getWidth();
+        }
+    }
+
+    public static int getHeight(byte[] image) throws IOException {
+        GifDecoder decoder = new GifDecoder();
+        if (decoder.read(new ByteArrayInputStream(image)) == GifDecoder.STATUS_OK) {
+            return (int) decoder.getFrameSize().getHeight();
+        } else {
+            return ImageIO.read(new ByteArrayInputStream(image)).getHeight();
         }
     }
 }
