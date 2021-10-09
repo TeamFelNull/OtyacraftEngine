@@ -15,11 +15,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-//if (System.getenv('curesforgeapikey') == null || "${curesfg_id}" == "0")
-//    version = "${mod_version}-pre${getDate()}"
-//else
 version = "${mod_version}"
-
 group = "${mod_group}"
 archivesBaseName = "${mod_name}-${mc_version}"
 
@@ -65,38 +61,37 @@ minecraft {
         }
     }
 }
-
-def getDate() {
-    return new Date().format('yyyyMMddHHmm')
-}
-
-configurations {
-    shadow
-    implementation.extendsFrom(shadow)
-}
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://dvs1.progwml6.com/files/maven/" }//JEI
     maven { url = "https://modmaven.k-4u.nl" }//JEI
     maven { url "https://maven.latmod.com/" }//FGL
 }
+configurations {
+    shadowIn
+    implementation.extendsFrom(shadowIn)
+}
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${fgl_version}")
-    shadow 'dev.felnull:felnull-java-library:1.8'
-    shadow 'com.madgag:animated-gif-lib:1.4'
+    shadowIn 'dev.felnull:felnull-java-library:1.8'
+    shadowIn 'com.madgag:animated-gif-lib:1.4'
 }
 
 shadowJar {
     classifier ''
-    project.configurations.shadow.setTransitive(true);
-    configurations = [project.configurations.shadow]
+    project.configurations.shadowIn.setTransitive(true);
+    configurations = [project.configurations.shadowIn]
     relocate 'dev.felnull.fnjl', 'red.felnull.otyacraftengine.libs.dev.felnull.fnjl'
     relocate 'com.madgag.gif', 'red.felnull.otyacraftengine.libs.com.madgag.gif'
 }
-
+afterEvaluate {
+    reobf {
+        shadowJar { mappings = tasks.reobfJar.mappings }
+    }
+}
 tasks.withType(AbstractCompile)*.options*.encoding = tasks.withType(GroovyCompile)*.groovyOptions*.encoding = 'UTF-8'
 ext.themanifest = {
     attributes([
@@ -108,6 +103,9 @@ ext.themanifest = {
             "Implementation-Vendor"   : "${mod_vendor}",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     ])
+}
+jar {
+    manifest themanifest
 }
 jar.finalizedBy('reobfJar')
 task devJar(type: Jar) {
@@ -123,11 +121,6 @@ task sourceJar(type: Jar) {
 artifacts {
     archives devJar
     archives sourceJar
-}
-afterEvaluate {
-    reobf {
-        shadowJar { mappings = tasks.reobfJar.mappings }
-    }
 }
 publishing {
     publications {

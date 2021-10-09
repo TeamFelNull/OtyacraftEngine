@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.StreamSupport;
 
 public class IKSGPlayerUtil {
-    public static final String FAKE_UUID = "11451419-1981-0364-364931-000000000000";
+    public static final String FAKE_UUID = "5EBB1E27-142C-4108-9472-6B65DEF8FF21";
     public static final String FAKE_PLAYERNAME = "UnknowOfUnknowInUnknowFromUnknow";
     protected static final Map<String, GameProfile> PLAYERGAMEPROFILES = new HashMap<>();
     protected static final Map<String, String> PLAYERSKINURLS = new HashMap<>();

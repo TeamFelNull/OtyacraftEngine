@@ -147,22 +147,25 @@ public class ReceiveTextureLoder {
                             return isRecentlyUpdateble(location, str[3]);
                         }
                 ).forEach((n) -> {
-                    String[] str = n.getKey().split(":");
-                    ResourceLocation location = new ResourceLocation(str[1], str[2]);
-                    if (!checkblemap.containsKey(location))
-                        checkblemap.put(location, new HashMap<>());
-                    int sha = 0;
-                    if (!n.getValue().equals(IKSGTextureUtil.TEXTUER_NOTFINED)) {
-                        File texFile = CASH_PATH.resolve("cash").resolve(INDEX.get(n.getKey())).toFile();
-                        if (texFile.exists()) {
-                            try {
-                                sha = IKSGFileLoadUtil.getCheckSum(texFile);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                    checkblemap.get(location).put(str[3], sha);
+                   try {
+                       String[] str = n.getKey().split(":");
+                       ResourceLocation location = new ResourceLocation(str[1], str[2]);
+                       if (!checkblemap.containsKey(location))
+                           checkblemap.put(location, new HashMap<>());
+                       int sha = 0;
+                       if (!n.getValue().equals(IKSGTextureUtil.TEXTUER_NOTFINED)) {
+                           File texFile = CASH_PATH.resolve("cash").resolve(INDEX.get(n.getKey())).toFile();
+                           if (texFile.exists()) {
+                               try {
+                                   sha = IKSGFileLoadUtil.getCheckSum(texFile);
+                               } catch (Exception ex) {
+                                   ex.printStackTrace();
+                               }
+                           }
+                       }
+                       checkblemap.get(location).put(str[3], sha);
+                   }catch (Exception ignored){
+                   }
                 });
             } else {
                 INDEX.entrySet().stream().filter((n) -> n.getKey().split(":")[0].equals(IKSGClientUtil.getCurrentWorldUUID().toString())).forEach((n) -> {
