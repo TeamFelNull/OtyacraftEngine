@@ -1,5 +1,6 @@
 package red.felnull.otyacraftengine.item;
 
+
 /*
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TestItem extends Item {
@@ -19,10 +20,9 @@ public class TestItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         if (worldIn.isRemote) {
-            playerIn.sendStatusMessage(new StringTextComponent(IKSGDokataUtil.getHonkide()), false);
+            playerIn.sendStatusMessage(new StringTextComponent(FNURLUtil.getUserAgent()), false);
         }
         return ActionResult.func_233538_a_(itemstack, worldIn.isRemote());
     }
 
-}
-*/
+}*/

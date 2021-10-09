@@ -85,7 +85,7 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${fgl_version}")
-    shadow 'dev.felnull:felnull-java-library:1.6'
+    shadow 'dev.felnull:felnull-java-library:1.8'
     shadow 'com.madgag:animated-gif-lib:1.4'
 }
 
