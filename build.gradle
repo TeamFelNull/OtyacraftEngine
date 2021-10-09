@@ -159,7 +159,7 @@ publishing {
     }
     repositories {
         maven {
-            url "https://maven.morimori0317.net/"
+            url "https://maven.felnull.dev/"
             credentials {
                 username = System.getenv('mavenname')
                 password = System.getenv('mavenpassword')
