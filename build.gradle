@@ -218,8 +218,8 @@ if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '
             addArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.mod_version}-dev.jar")) {
                 displayName = "${project.mod_name}-${project.mc_version}-${project.mod_version}-${project.loader_type}-dev"
             }
-            addArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.mod_version}-sources.jar")) {
-                displayName = "${project.mod_name}-${project.mc_version}-${project.mod_version}-${project.loader_type}-sources"
+            addArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.mod_version}-source.jar")) {
+                displayName = "${project.mod_name}-${project.mc_version}-${project.mod_version}-${project.loader_type}-source"
             }
         }
     }
