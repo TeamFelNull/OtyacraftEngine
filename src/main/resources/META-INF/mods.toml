@@ -12,3 +12,6 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine"
 credits="TeamFelNull"
 authors="MORIMORI0317" 
 description="Thank you for downloading!\nThis mod is my mod integration library."
+
+[modproperties.otyacraftengine]
+catalogueImageIcon="logo_cube.png"

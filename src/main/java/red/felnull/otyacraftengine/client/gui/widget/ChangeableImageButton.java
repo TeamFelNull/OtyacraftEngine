@@ -26,7 +26,7 @@ public class ChangeableImageButton extends ImageButton {
     }
 
     public ChangeableImageButton(int xIn, int yIn, int widthIn, int heightIn, int xTexStartIn, int yTexStartIn, int yDiffTextIn, ResourceLocation p_i232261_8_, int p_i232261_9_, int p_i232261_10_, IPressable p_i232261_11_, ITextComponent p_i232261_12_) {
-        super(xIn, yIn, widthIn, heightIn, xTexStartIn, yTexStartIn, yDiffTextIn, null, p_i232261_9_, p_i232261_10_, p_i232261_11_, p_i232261_12_);
+        super(xIn, yIn, widthIn, heightIn, xTexStartIn, yTexStartIn, yDiffTextIn, p_i232261_8_, p_i232261_9_, p_i232261_10_, p_i232261_11_, p_i232261_12_);
         this.textureWidth = p_i232261_9_;
         this.textureHeight = p_i232261_10_;
         this.xTexStart = xTexStartIn;
