@@ -1,10 +1,8 @@
 package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.felnull.fnjl.util.FNFontUtil;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +19,7 @@ public class TestItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        player.displayClientMessage(new TextComponent(FNFontUtil.getSystemFontName()), false);
+
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 
