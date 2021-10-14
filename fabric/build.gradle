@@ -36,6 +36,7 @@ dependencies {
 
     shadowCommon "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     shadowCommon 'com.madgag:animated-gif-lib:1.4'
+    shadowCommon 'de.javagl:obj:0.3.0'
 }
 shadowJar {
     configurations = [project.configurations.shadow]
