@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.client.handler;
 
+import dev.felnull.otyacraftengine.api.event.client.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.fabric.client.model.OBJLoader;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.model.ModelProviderContext;
@@ -15,10 +16,14 @@ public class ModelResourceHandler implements ModelResourceProvider {
 
     @Override
     public @Nullable UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
-        //if (FabricOBJLoaderEvent.LOAD.invoker().load(resourceId).isTrue()) {
-        System.out.println(resourceId);
-        OBJLoader.getInstance().loadModel(new ResourceLocation(resourceId.getNamespace(), "models/" + resourceId.getPath()));
-        //  }
+        try {
+            if (FabricOBJLoaderEvent.LOAD.invoker().load(resourceId).isTrue()) {
+                System.out.println(resourceId);
+                return OBJLoader.getInstance().loadModel(new ResourceLocation(resourceId.getNamespace(), "models/" + resourceId.getPath()));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return null;
     }
 

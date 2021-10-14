@@ -18,7 +18,6 @@ public class TestClientHandler {
     public static void init() {
         ClientRawInputEvent.KEY_PRESSED.register(TestClientHandler::onKeyPressed);
         FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad);
-      //  FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad2);
         KeyMappingRegistry.register(TEST_KEY);
     }
 
@@ -34,8 +33,4 @@ public class TestClientHandler {
             return EventResult.interruptTrue();
         return EventResult.pass();
     }
-
-   // public static EventResult onFabricOBJLoad2(ResourceLocation location) {
-   //     return EventResult.pass();
-  //  }
 }
