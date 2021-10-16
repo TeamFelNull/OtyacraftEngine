@@ -16,6 +16,6 @@ import java.util.List;
 public class TestMixin {
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
     private void getTooltipLines(Player player, TooltipFlag tooltipFlag, CallbackInfoReturnable<List<Component>> cir) {
-        cir.getReturnValue().add(new TextComponent("test"));
+    //    cir.getReturnValue().add(new TextComponent("test"));
     }
 }
