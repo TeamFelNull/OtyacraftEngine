@@ -42,7 +42,7 @@ shadowJar {
     configurations = [project.configurations.shadow]
     relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
     relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
-
+    relocate 'de.javagl', 'dev.felnull.otyacraftengine.libs.de.javagl'
 }
 processResources {
     inputs.property "version", project.version
@@ -60,7 +60,8 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    baseName = "${rootProject.archives_base_name}-${project.name}"
+    classifier null
 }
 
 jar {
@@ -75,7 +76,7 @@ sourcesJar {
 
 publishing {
     publications {
-        mavenCommon(MavenPublication) {
+        mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             artifact(remapJar)
             artifact(sourcesJar) {
