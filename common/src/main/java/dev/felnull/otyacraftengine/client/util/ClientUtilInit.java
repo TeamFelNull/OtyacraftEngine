@@ -33,6 +33,9 @@ public class ClientUtilInit {
 
     public static void clear() {
         OEClientUtil.PLAYER_PROFILES.clear();
+        OEClientUtil.PLAYER_NAME_UUIDS.clear();
+        OEClientUtil.LOADING_PLAYER_NAMES.clear();
+
         List<UUID> ids = new ArrayList<>(OETextureUtil.NATIVE_TEXTURES.keySet());
         for (UUID id : ids) {
             OETextureUtil.freeNativeTexture(id);

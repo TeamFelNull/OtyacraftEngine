@@ -30,7 +30,10 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
-    
+        maven {
+            name = "FelNull"
+            url = "https://maven.felnull.dev/"
+        }
     }
 
     tasks.withType(JavaCompile) {

@@ -1,10 +1,10 @@
 package dev.felnull.otyacraftengine.util;
 
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -12,19 +12,18 @@ import java.util.function.Consumer;
 public class OEPlayerUtil {
     private static final String UUID_PLAYER_URL = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
 
-    @Nullable
-    public static String getNameByUUID(UUID uuid) {
+    public static Optional<String> getNameByUUID(UUID uuid) {
         try {
             JsonObject jo = OEURLUtil.getJson(new URL(String.format(UUID_PLAYER_URL, uuid.toString())));
-            return jo.get("name").getAsString();
+            String name = jo.get("name").getAsString();
+            return Optional.ofNullable(name);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
-
-    public static CompletableFuture<Void> getNameByUUIDAsync(UUID id, Consumer<String> name) {
+    public static CompletableFuture<Void> getNameByUUIDAsync(UUID id, Consumer<Optional<String>> name) {
         try {
             return OEURLUtil.getJsonAsync(new URL(String.format(UUID_PLAYER_URL, id.toString())), n -> {
                 String na = null;
@@ -33,7 +32,7 @@ public class OEPlayerUtil {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                name.accept(na);
+                name.accept(Optional.ofNullable(na));
             });
         } catch (MalformedURLException e) {
             e.printStackTrace();

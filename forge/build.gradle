@@ -19,6 +19,9 @@ dependencies {
 
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
+    modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
+    modApi "net.morimori0317:bettertaskbar-forge:1.0"
+
     implementation(project(path: ":common", configuration: "dev")) {
         transitive = false
     }
@@ -106,7 +109,7 @@ publishing {
         maven {
             url "https://maven.felnull.dev/"
             credentials {
-                username = "${project.maven_put_name}" != '' ? "${project.maven_put_name}" : System.getenv('mavenname')
+                username = "felnull"
                 password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
             }
         }

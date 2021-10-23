@@ -13,7 +13,7 @@
     "sources": "https://github.com/TeamFelnull/OtyacraftEngine"
   },
   "license": "GNU LGPLv3",
-  "icon": "assets/examplemod/icon.png",
+  "icon": "assets/otyacraftengine/logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -21,6 +21,9 @@
     ],
     "client": [
       "dev.felnull.otyacraftengine.fabric.client.OtyacraftEngineClientFabric"
+    ],
+    "modmenu": [
+      "dev.felnull.otyacraftengine.fabric.integration.ModMenuIntegration"
     ]
   },
   "depends": {

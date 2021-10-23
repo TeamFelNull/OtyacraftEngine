@@ -173,7 +173,7 @@ public class OETextureUtil {
         if (name == null) {
             UUID_PLAYER_NAMES.put(uuid, "");
             OEPlayerUtil.getNameByUUIDAsync(uuid, n -> mc.submit(() -> {
-                UUID_PLAYER_NAMES.put(uuid, n != null ? n : uuid.toString());
+                UUID_PLAYER_NAMES.put(uuid, n.orElse(uuid.toString()));
             }));
             return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
         } else if (name.isEmpty()) {

@@ -1,0 +1,10 @@
+{
+  "_comment.k": "Key",
+  "key.categories.otyacraftengine": "Otyacraft Engine",
+  "key.otyacraftengine.test": "テスト",
+  "_comment.c": "Config",
+  "text.autoconfig.otyacraftengine.title": "Otyacraft Engineの設定",
+  "text.autoconfig.otyacraftengine.option.testMode": "テストモード",
+  "text.autoconfig.otyacraftengine.option.debugMode": "デバッグモード",
+  "_comment.la": "Last"
+}

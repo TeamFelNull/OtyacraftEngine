@@ -4,36 +4,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import dev.felnull.fnjl.util.FNColorUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluid;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -44,9 +28,7 @@ import java.util.UUID;
  */
 @Environment(EnvType.CLIENT)
 public class OERenderUtil {
-    private static final Minecraft MC = Minecraft.getInstance();
-    private static final Map<ResourceLocation, BakedModel> BAKED_MODELS = new HashMap<>();
-
+    private static final Minecraft mc = Minecraft.getInstance();
     /**
      * 文字スプライトを描画
      *
@@ -61,7 +43,7 @@ public class OERenderUtil {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        MC.font.drawInBatch(text, ((float) -MC.font.width(text) / 2f) + textX, -MC.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
         poseStack.popPose();
     }
 
@@ -79,7 +61,7 @@ public class OERenderUtil {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        MC.font.drawInBatch(text, textX, -MC.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
         poseStack.popPose();
     }
 
@@ -90,27 +72,12 @@ public class OERenderUtil {
      * @param text      文字
      * @param x         中央X
      * @param y         Y
-     * @param color     色(SRGB)
+     * @param color     色(ARGB)
      * @since 2.0
      */
     public static void drawCenterText(PoseStack poseStack, Component text, float x, float y, int color) {
-        MC.font.draw(poseStack, text, x - ((float) MC.font.width(text) / 2f), y, color);
+        mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
     }
-
-    /**
-     * 文字描画
-     *
-     * @param poseStack PoseStack
-     * @param text      文字
-     * @param x         X
-     * @param y         Y
-     * @param color     色(SRGB)
-     * @since 2.0
-     */
-    public static void drawText(PoseStack poseStack, Component text, float x, float y, int color) {
-        MC.font.draw(poseStack, text, x, y, color);
-    }
-
 
     /**
      * 中央ぞろえ文字描画
@@ -119,25 +86,11 @@ public class OERenderUtil {
      * @param str       文字
      * @param x         中央X
      * @param y         Y
-     * @param color     色(SRGB)
+     * @param color     色(ARGB)
      * @since 2.0
      */
     public static void drawCenterText(PoseStack poseStack, String str, float x, float y, int color) {
-        MC.font.draw(poseStack, str, x - ((float) MC.font.width(str) / 2f), y, color);
-    }
-
-    /**
-     * 文字描画
-     *
-     * @param poseStack PoseStack
-     * @param str       文字
-     * @param x         X
-     * @param y         Y
-     * @param color     色(SRGB)
-     * @since 2.0
-     */
-    public static void drawText(PoseStack poseStack, String str, float x, float y, int color) {
-        MC.font.draw(poseStack, str, x, y, color);
+        mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
     }
 
     /**
@@ -149,9 +102,9 @@ public class OERenderUtil {
      * @param y         Y
      * @since 2.0
      */
-   /* public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y) {
-        drawPlayerFace(poseStack, uuid, x, y);
-    }*/
+    public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y) {
+        drawPlayerFace(poseStack, uuid, x, y, 8);
+    }
 
     /**
      * GUI上でUUIDから取得したプレイヤーの顔を描画する
@@ -164,7 +117,7 @@ public class OERenderUtil {
      * @param size      サイズ
      * @since 2.0
      */
-  /*  public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y, float size) {
+    public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y, float size) {
         poseStack.pushPose();
         float sc = size / 8f;
         ResourceLocation plskin = OETextureUtil.getPlayerSkinTexture(uuid);
@@ -172,7 +125,6 @@ public class OERenderUtil {
         drawTexture(plskin, poseStack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
         poseStack.popPose();
     }
-*/
 
     /**
      * GUI上で名前から取得したプレイヤーの顔を描画する
@@ -182,9 +134,9 @@ public class OERenderUtil {
      * @param x         X
      * @param y         Y
      */
-   /* public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y) {
+    public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y) {
         drawPlayerFace(poseStack, name, x, y, 8);
-    }*/
+    }
 
     /**
      * GUI上で名前から取得したプレイヤーの顔を描画する
@@ -197,14 +149,14 @@ public class OERenderUtil {
      * @param size      サイズ
      * @since 2.0
      */
-   /* public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y, float size) {
+    public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y, float size) {
         poseStack.pushPose();
         float sc = size / 8f;
-        ResourceLocation plskin = IKSGTextureUtil.getPlayerSkinTexture(name);
+        ResourceLocation plskin = OETextureUtil.getPlayerSkinTexture(name);
         drawTexture(plskin, poseStack, x, y, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
         drawTexture(plskin, poseStack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
         poseStack.popPose();
-    }*/
+    }
 
     /**
      * GUI上でテクスチャを描画する
@@ -260,7 +212,7 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawColorTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, int color) {
-        //       drawColorTexture(location, poseStack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256, 256, color);
+        drawColorTexture(location, poseStack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256, 256, color);
     }
 
     /**
@@ -280,10 +232,10 @@ public class OERenderUtil {
      * @since 2.0
      */
     public static void drawColorTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight, float textureSizeX, float textureSizeY, int color) {
-   /*     float r = (float) IKSGColorUtil.getRed(color) / 255f;
-        float g = (float) IKSGColorUtil.getGreen(color) / 255f;
-        float b = (float) IKSGColorUtil.getBlue(color) / 255f;
-        float a = (float) IKSGColorUtil.getAlpha(color) / 255f;
+        float r = (float) FNColorUtil.getRed(color) / 255f;
+        float g = (float) FNColorUtil.getGreen(color) / 255f;
+        float b = (float) FNColorUtil.getBlue(color) / 255f;
+        float a = (float) FNColorUtil.getAlpha(color) / 255f;
         poseStack.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -293,7 +245,7 @@ public class OERenderUtil {
         fBlit(poseStack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, textureSizeX, textureSizeY);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
-        poseStack.popPose();*/
+        poseStack.popPose();
     }
 
     private static void fBlit(PoseStack poseStack, float ix, float iy, float tsx, float tsy, float tw, float th, float tssx, float tssy) {
@@ -420,152 +372,6 @@ public class OERenderUtil {
     }
 
     /**
-     * ModelBakeryを取得
-     *
-     * @return ModelBakery
-     * @since 2.0
-     */
-  /*  public static ModelBakery getModelBakery() {
-        return OEClientExpectPlatform.getModelBakery();
-    }*/
-
-    /**
-     * BakedModelを取得
-     *
-     * @param location ID
-     * @return BakedModel
-     */
- /*   public static BakedModel getBakedModel(ResourceLocation location) {
-
-        if (BAKED_MODELS.containsKey(location))
-            return BAKED_MODELS.get(location);
-
-        BakedModel model = getModelBakery().bake(location, BlockModelRotation.X0_Y0);
-        BAKED_MODELS.put(location, model);
-        return model;
-    }*/
-
-    /**
-     * ブロック状態でBakedModelを描画する
-     *
-     * @param getter            BlockAndTintGetter
-     * @param model             描画するモデル
-     * @param state             ブロックステート
-     * @param pos               場所
-     * @param poseStack         PoseStack
-     * @param consumer          VertexConsumer
-     * @param checkSides        checkSides
-     * @param randomIn          Random
-     * @param rand              rand
-     * @param combinedOverlayIn combinedOverlayIn
-     */
-    public static void renderBlockBakedModel(BlockAndTintGetter getter, BakedModel model, BlockState state, BlockPos pos, PoseStack poseStack, VertexConsumer consumer, boolean checkSides, Random randomIn, long rand, int combinedOverlayIn) {
-        BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
-        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
-        modelBlockRenderer.tesselateBlock(getter, model, state, pos, poseStack, consumer, checkSides, randomIn, rand, combinedOverlayIn);
-    }
-
-    /**
-     * ブロック状態でBakedModelを描画する
-     *
-     * @param getter            BlockAndTintGetter
-     * @param model             描画するモデル
-     * @param state             ブロックステート
-     * @param pos               場所
-     * @param poseStack         PoseStack
-     * @param consumer          VertexConsumer
-     * @param randomIn          Random
-     * @param combinedOverlayIn combinedOverlayIn
-     */
-    public static void renderBlockBakedModel(BlockAndTintGetter getter, BakedModel model, BlockState state, BlockPos pos, PoseStack poseStack, VertexConsumer consumer, Random randomIn, int combinedOverlayIn) {
-        renderBlockBakedModel(getter, model, state, pos, poseStack, consumer, false, randomIn, 0, combinedOverlayIn);
-    }
-
-    /**
-     * ブロック状態でBakedModelを描画する
-     *
-     * @param model             描画するモデル
-     * @param poseStack         PoseStack
-     * @param consumer          VertexConsumer
-     * @param combinedOverlayIn combinedOverlayIn
-     * @param blockentity       ブロックエンティティ
-     */
-    public static void renderBlockBakedModel(BakedModel model, PoseStack poseStack, VertexConsumer consumer, int combinedOverlayIn, BlockEntity blockentity) {
-        renderBlockBakedModel(blockentity.getLevel(), model, blockentity.getBlockState(), blockentity.getBlockPos(), poseStack, consumer, blockentity.getLevel().random, combinedOverlayIn);
-    }
-
-    /*
-    Mth.lerp
-        public static float partialTicksMisalignment(float val, float prevVal, float partialTicks) {
-            RemotePlayer pl=null;
-            return val + (prevVal - val) * 1;
-        }
-    */
-
-    /**
-     * BakedModelを取得
-     *
-     * @param modelResourceLocation ID;
-     * @return BakedModel
-     * @since 2.0
-     */
-    public static BakedModel getBlockBakedModel(ModelResourceLocation modelResourceLocation) {
-        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
-        ModelManager modelManager = blockRenderDispatcher.getBlockModelShaper().getModelManager();
-        return modelManager.getModel(modelResourceLocation);
-    }
-
-    /**
-     * BakedModelを描画
-     *
-     * @param poseStack       PoseStack
-     * @param vertexConsumer  VertexConsumer
-     * @param state           ブロックステート
-     * @param bakedModel      モデル
-     * @param combinedLight   CombinedLight
-     * @param combinedOverlay CombinedOverlay
-     * @since 2.0
-     */
-    public static void renderBakedModel(PoseStack poseStack, VertexConsumer vertexConsumer, BlockState state, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
-        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
-        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
-        modelBlockRenderer.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
-    }
-
-    /**
-     * 着色してBakedModelを描画
-     * モデルファイルのテクスチャ指定にtintindexが必要、詳しくは葉ブロックのモデルjson参照
-     *
-     * @param poseStack       PoseStack
-     * @param vertexConsumer  VertexConsumer
-     * @param state           ブロックステート
-     * @param bakedModel      モデル
-     * @param combinedLight   CombinedLight
-     * @param combinedOverlay CombinedOverlay
-     * @param color           色
-     * @since 2.0
-     */
-    public static void renderColorBakedModel(PoseStack poseStack, VertexConsumer vertexConsumer, BlockState state, BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
-        BlockRenderDispatcher blockRenderDispatcher = MC.getBlockRenderer();
-        ModelBlockRenderer modelBlockRenderer = blockRenderDispatcher.getModelRenderer();
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
-        modelBlockRenderer.renderModel(poseStack.last(), vertexConsumer, state, bakedModel, r, g, b, combinedLight, combinedOverlay);
-    }
-
-    /**
-     * テクスチャからレンダータイプ取得
-     *
-     * @param locationIn テクスチャ
-     * @return レンダータイプ
-     * @since 2.0
-     */
-    public static RenderType getTextureRenderType(ResourceLocation locationIn) {
-        return RenderType.text(locationIn);
-    }
-
-    /**
      * UUIDから取得したプレイヤーの顔スプライトを描画する
      *
      * @param poseStack         PoseStack
@@ -584,8 +390,8 @@ public class OERenderUtil {
      */
     public static void renderPlayerFaceSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, UUID uuid, float x, float y, float z, float pitch, float yaw, float roll, float size, int combinedLightIn, int combinedOverlayIn) {
         float sc = size / 8f;
-        //      renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //       renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
     }
 
     /**
@@ -607,8 +413,8 @@ public class OERenderUtil {
      */
     public static void renderPlayerFaceSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, String name, float x, float y, float z, float pitch, float yaw, float roll, float size, int combinedLightIn, int combinedOverlayIn) {
         float sc = size / 8f;
-        //     renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //      renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
     }
 
     /**
@@ -630,9 +436,9 @@ public class OERenderUtil {
      */
     public static void renderPlayerFaceSpriteSides(PoseStack poseStack, MultiBufferSource multiBufferSource, UUID uuid, float x, float y, float z, float pitch, float yaw, float roll, float size, int combinedLightIn, int combinedOverlayIn) {
         float sc = size / 8f;
-        //    renderTextureSpriteSides(IKSGTextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //     renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //     renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x + 1f, y, z - (Mth.EPSILON * 2), pitch, yaw + 180, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSpriteSides(OETextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(uuid), poseStack, multiBufferSource, x + 1f, y, z - (Mth.EPSILON * 2), pitch, yaw + 180, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
     }
 
     /**
@@ -654,9 +460,9 @@ public class OERenderUtil {
      */
     public static void renderPlayerFaceSpriteSides(PoseStack poseStack, MultiBufferSource multiBufferSource, String name, float x, float y, float z, float pitch, float yaw, float roll, float size, int combinedLightIn, int combinedOverlayIn) {
         float sc = size / 8f;
-        //   renderTextureSpriteSides(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //    renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
-        //    renderTextureSprite(IKSGTextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x + 1f, y, z - (Mth.EPSILON * 2), pitch, yaw + 180, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSpriteSides(OETextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z, pitch, yaw, roll, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x, y, z + Mth.EPSILON, pitch, yaw, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        renderTextureSprite(OETextureUtil.getPlayerSkinTexture(name), poseStack, multiBufferSource, x + 1f, y, z - (Mth.EPSILON * 2), pitch, yaw + 180, roll, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
     }
 
     /**
@@ -720,7 +526,7 @@ public class OERenderUtil {
         poseRotateY(poseStack, yaw);
         poseRotateX(poseStack, pitch);
         poseRotateZ(poseStack, roll);
-        VertexConsumer vc = multiBufferSource.getBuffer(getTextureRenderType(location));
+        VertexConsumer vc = multiBufferSource.getBuffer(RenderType.text(location));
         float wst = texStartX / texSizeW;
         float wft = texFinishX / texSizeW + wst;
         float hst = texStartY / texSizeH;
@@ -762,222 +568,7 @@ public class OERenderUtil {
         renderTextureSprite(location, poseStack, multiBufferSource, x + 1f, y, z - Mth.EPSILON, pitch, yaw + 180, roll, w, h, texStartX, texStartY, texFinishX, texFinishY, texSizeW, texSizeH, combinedLightIn, combinedOverlayIn);
     }
 
-
-    @Deprecated
-    private static void renderTextureSpriteOld(TextureAtlasSprite sprite, PoseStack poseStack, MultiBufferSource multiBufferSource, float x, float y, float z, float r, float g, float b, float a, float pitch, float yaw, float roll, float w, float h, float texStartX, float texStartY, float texFinishX, float texFinishY, int combinedOverlayIn, int combinedLightIn) {
-        poseStack.pushPose();
-        poseStack.translate(x, y, z);
-        poseRotateY(poseStack, yaw);
-        poseRotateX(poseStack, pitch);
-        poseRotateZ(poseStack, roll);
-        VertexConsumer vc = multiBufferSource.getBuffer(RenderType.text(sprite.atlas().location()));
-
-        PoseStack.Pose pose = poseStack.last();
-        vertex(vc, pose, 0, 0, 0, texStartX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
-        vertex(vc, pose, w, 0, 0, texFinishX, texStartY, r, g, b, a, combinedOverlayIn, combinedLightIn);
-        vertex(vc, pose, w, h, 0, texFinishX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
-        vertex(vc, pose, 0, h, 0, texStartX, texFinishY, r, g, b, a, combinedOverlayIn, combinedLightIn);
-        poseStack.popPose();
-    }
-
     private static void vertex(VertexConsumer builder, PoseStack.Pose pose, float x, float y, float z, float u, float v, float r, float g, float b, float a, int combinedOverlayIn, int combinedLightIn) {
         builder.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(combinedOverlayIn).uv2(combinedLightIn).normal(pose.normal(), 0f, 0f, 0f).endVertex();
-    }
-
-    /**
-     * 液体を描画する
-     *
-     * @param fluid             液体
-     * @param getter            BlockAndTintGetter
-     * @param pos               BlockPos
-     * @param poseStack         PoseStack
-     * @param mbs               MultiBufferSource
-     * @param parsent           液体の満たされてる量
-     * @param x                 X
-     * @param y                 Y
-     * @param z                 Z
-     * @param w                 幅
-     * @param h                 高さ
-     * @param combinedLightIn   CombinedLightIn
-     * @param combinedOverlayIn CombinedOverlayIn
-     * @since 2.0
-     */
-    public static void renderFluid(Fluid fluid, BlockAndTintGetter getter, BlockPos pos, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
-        //   if (fluid instanceof IIkisugibleFluid) {
-        //        if (getter != null && pos != null)
-        //             renderFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getWorldColor(getter, pos), poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
-        //         else
-        //            renderFluid(fluid, poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
-        //    }
-    }
-
-    /**
-     * 液体を描画する
-     *
-     * @param fluid             液体
-     * @param poseStack         PoseStack
-     * @param mbs               MultiBufferSource
-     * @param parsent           液体の満たされてる量
-     * @param x                 X
-     * @param y                 Y
-     * @param z                 Z
-     * @param w                 幅
-     * @param h                 高さ
-     * @param combinedLightIn   CombinedLightIn
-     * @param combinedOverlayIn CombinedOverlayIn
-     * @since 2.0
-     */
-    public static void renderFluid(Fluid fluid, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
-        //     if (fluid instanceof IIkisugibleFluid) {
-        //         renderFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getColor(), poseStack, mbs, parsent, x, y, z, w, h, combinedLightIn, combinedOverlayIn);
-        //      }
-    }
-
-    private static void renderFluid(Fluid fluid, int color, PoseStack poseStack, MultiBufferSource mbs, double parsent, float x, float y, float z, float w, float h, int combinedLightIn, int combinedOverlayIn) {
-   /*     ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
-        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
-        float r = (float) IKSGColorUtil.getRed(color) / 255f;
-        float g = (float) IKSGColorUtil.getGreen(color) / 255f;
-        float b = (float) IKSGColorUtil.getBlue(color) / 255f;
-        float a = 1;//(float) IKSGColorUtil.getAlpha(color) / 255f;
-
-        float hight = (float) (h * parsent);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x, y + hight, z + w, r, g, b, a, -90, 0, 0, w, w, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x, y, z, r, g, b, a, -270, 0, 0, w, w, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * h), combinedOverlayIn, combinedLightIn);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x + w, y, z, r, g, b, a, 0, 180, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x, y, z, r, g, b, a, 0, 270, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x + w, y, z + w, r, g, b, a, 0, 90, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
-
-        IKSGRenderUtil.renderTextureSpriteOld(sprite, poseStack, mbs, x, y, z + w, r, g, b, a, 0, 0, 0, w, hight, sprite.getU(16d * x), sprite.getV(16d * y), sprite.getU(16d * x + 16d * w), sprite.getV(16d * y + 16d * hight), combinedOverlayIn, combinedLightIn);
-  */
-    }
-
-    /**
-     * リンゴを描画するだけ
-     * テスト用
-     *
-     * @param poseStack         PoseStack
-     * @param mbs               MultiBufferSource
-     * @param combinedLightIn   CombinedLightIn
-     * @param combinedOverlayIn CombinedOverlayIn
-     * @since 2.0
-     */
-    public static void renderApple(PoseStack poseStack, MultiBufferSource mbs, int combinedLightIn, int combinedOverlayIn) {
-        MC.getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, poseStack, mbs, 0);
-    }
-
-    /**
-     * GUI上に液体を描画する
-     *
-     * @param fluid     液体
-     * @param getter    BlockAndTintGetter
-     * @param pos       BlockPos
-     * @param poseStack PoseStack
-     * @param x         X
-     * @param y         Y
-     * @param size      サイズ
-     * @param startX    開始位置X
-     * @param startY    開始位置Y
-     * @param endX      終了位置X
-     * @param endY      終了位置Y
-     * @since 2.0
-     */
-    public static void drawFluid(Fluid fluid, BlockAndTintGetter getter, BlockPos pos, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
-      /*  if (fluid instanceof IIkisugibleFluid) {
-            if (getter != null && pos != null)
-                drawFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getWorldColor(getter, pos), poseStack, x, y, size, startX, startY, endX, endY);
-            else
-                drawFluid(fluid, poseStack, x, y, size, startX, startY, endX, endY);
-        }*/
-    }
-
-    /**
-     * @param fluid     液体
-     * @param poseStack PoseStack
-     * @param x         X
-     * @param y         Y
-     * @param size      サイズ
-     * @param startX    開始位置X
-     * @param startY    開始位置Y
-     * @param endX      終了位置X
-     * @param endY      終了位置Y
-     * @since 2.0
-     */
-    public static void drawFluid(Fluid fluid, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
-       /*if (fluid instanceof IIkisugibleFluid) {
-            drawFluid(fluid, ((IIkisugibleFluid) fluid).getProperties().getColor(), poseStack, x, y, size, startX, startY, endX, endY);
-        }*/
-    }
-
-    /**
-     * @param fluid     液体
-     * @param color     色
-     * @param poseStack PoseStack
-     * @param x         X
-     * @param y         Y
-     * @param size      サイズ
-     * @param startX    開始位置X
-     * @param startY    開始位置Y
-     * @param endX      終了位置X
-     * @param endY      終了位置Y
-     * @since 2.0
-     */
-    public static void drawFluid(Fluid fluid, int color, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
-        //   ResourceLocation location = ((IIkisugibleFluid) fluid).getProperties().getStillTexture();
-        //    drawBlockAtlasColorTexture(location, poseStack, x, y, size, startX, startY, endX, endY, color);
-    }
-
-    /**
-     * GUI上にブロックアトラスを描画する
-     *
-     * @param location  テクスチャID
-     * @param poseStack PoseStack
-     * @param x         X
-     * @param y         Y
-     * @param size      サイズ
-     * @param startX    開始位置X
-     * @param startY    開始位置Y
-     * @param endX      終了位置X
-     * @param endY      終了位置Y
-     * @since 2.0
-     */
-    public static void drawBlockAtlasTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY) {
-        poseStack.pushPose();
-        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
-        float brit = size / 16f;
-        float bariW = 16384 / (float) sprite.getWidth() * brit;
-        float bariH = 16384 / (float) sprite.getHeight() * brit;
-        drawTexture(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH);
-        poseStack.popPose();
-    }
-
-    /**
-     * GUI上に着色したブロックアトラスを描画する
-     *
-     * @param location  テクスチャID
-     * @param poseStack PoseStack
-     * @param x         X
-     * @param y         Y
-     * @param size      サイズ
-     * @param startX    開始位置X
-     * @param startY    開始位置Y
-     * @param endX      終了位置X
-     * @param endY      終了位置Y
-     * @param color     色
-     * @since 2.0
-     */
-    public static void drawBlockAtlasColorTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float size, float startX, float startY, float endX, float endY, int color) {
-        poseStack.pushPose();
-        TextureAtlasSprite sprite = MC.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
-        float brit = size / 16f;
-        float bariW = 16384 / (float) sprite.getWidth() * brit;
-        float bariH = 16384 / (float) sprite.getHeight() * brit;
-        //   drawColorTexture(InventoryMenu.BLOCK_ATLAS, poseStack, x, y, sprite.getU(16 * startY) * bariW, sprite.getV(16 * startX) * bariH, sprite.getU(16d * endX) * bariW - sprite.getU(16 * startY) * bariW, sprite.getV(16d * endY) * bariH - sprite.getV(16 * startX) * bariH, bariW, bariH, color);
-        poseStack.popPose();
     }
 }

@@ -20,6 +20,10 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
 
+        if (!level.isClientSide()) {
+
+        }
+
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 

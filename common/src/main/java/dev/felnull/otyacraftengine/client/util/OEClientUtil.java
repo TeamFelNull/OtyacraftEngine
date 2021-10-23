@@ -1,13 +1,21 @@
 package dev.felnull.otyacraftengine.client.util;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.blaze3d.platform.InputConstants;
+import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.util.OEPlayerUtil;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import org.lwjgl.glfw.GLFW;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class OEClientUtil {
     protected static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
+    protected static final Map<UUID, String> PLAYER_NAME_UUIDS = new HashMap<>();
+    protected static final List<UUID> LOADING_PLAYER_NAMES = new ArrayList<>();
+    private static final Minecraft mc = Minecraft.getInstance();
 
     /**
      * クライアントでプレイヤープロフィールを取得する
@@ -23,5 +31,40 @@ public class OEClientUtil {
         PLAYER_PROFILES.put(name, gp);
         SkullBlockEntity.updateGameprofile(gp, n -> PLAYER_PROFILES.put(name, n));
         return gp;
+    }
+
+    public static boolean isKeyInput(int keyCode) {
+        if (keyCode < GLFW.GLFW_MOUSE_BUTTON_1)
+            return false;
+
+        long winID = Minecraft.getInstance().getWindow().getWindow();
+
+        if (keyCode <= GLFW.GLFW_MOUSE_BUTTON_8)
+            return GLFW.glfwGetMouseButton(winID, keyCode) == 1;
+
+        return InputConstants.isKeyDown(winID, keyCode);
+    }
+
+    public static boolean isKeyInput(KeyMapping keyCode) {
+        return isKeyInput(OEClientExpectPlatform.getKey(keyCode).getValue());
+    }
+
+    public static Optional<String> getPlayerNameByUUID(UUID uuid) {
+        if (mc.player.connection.getPlayerInfo(uuid) != null)
+            return Optional.of(mc.player.connection.getPlayerInfo(uuid).getProfile().getName());
+
+        if (PLAYER_NAME_UUIDS.containsKey(uuid))
+            return Optional.of(PLAYER_NAME_UUIDS.get(uuid));
+
+        if (LOADING_PLAYER_NAMES.contains(uuid))
+            return Optional.empty();
+
+        LOADING_PLAYER_NAMES.contains(uuid);
+        OEPlayerUtil.getNameByUUIDAsync(uuid, n -> mc.submit(() -> {
+            PLAYER_NAME_UUIDS.put(uuid, n.orElse(null));
+            LOADING_PLAYER_NAMES.remove(uuid);
+        }));
+
+        return Optional.empty();
     }
 }

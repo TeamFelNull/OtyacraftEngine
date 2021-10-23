@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[37,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/TeamFelnull/OtyacraftEngine/issues"
 license = "GNU LGPLv3"
 
 [[mods]]
@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Otyacraft Engine"
 authors = "MORIMORI0317"
 description = '''This mod is an integrated library used by FelNull developers.\nThe Ikisugi MOD...'''
-#logoFile = ""
+logoFile = "logo.png"
 
 [[dependencies.otyacraftengine]]
 modId = "forge"
