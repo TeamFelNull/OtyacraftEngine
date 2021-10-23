@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.util;
 
+import dev.felnull.otyacraftengine.data.ITAGSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -56,5 +57,15 @@ public class OENbtUtil {
         readList(tag, name, entries, reader, num);
         map.clear();
         entries.forEach(n -> map.put(n.getKey(), n.getValue()));
+    }
+
+    public static <T extends ITAGSerializable> CompoundTag writeSerializable(CompoundTag tag, String name, T serializable) {
+        tag.put(name, serializable.save(new CompoundTag()));
+        return tag;
+    }
+
+    public static <T extends ITAGSerializable> T readSerializable(CompoundTag tag, String name, T serializable) {
+        serializable.load(tag.getCompound(name));
+        return serializable;
     }
 }
