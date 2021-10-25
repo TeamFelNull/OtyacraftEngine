@@ -16,7 +16,6 @@ public class OtyacraftEngine {
     public static void init() {
         LOGGER.info(OEStringUtil.getLogoASCIIArt());
         OEPackets.init();
-
         if (CONFIG.testMode)
             testInit();
     }
