@@ -3,9 +3,12 @@ package dev.felnull.otyacraftengine.client.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.util.OELangUtil;
 import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import org.lwjgl.glfw.GLFW;
 
@@ -18,6 +21,7 @@ public class OEClientUtil {
     private static final Minecraft mc = Minecraft.getInstance();
 
     /**
+     * "
      * クライアントでプレイヤープロフィールを取得する
      *
      * @param name プレイヤー名
@@ -64,7 +68,33 @@ public class OEClientUtil {
             PLAYER_NAME_UUIDS.put(uuid, n.orElse(null));
             LOADING_PLAYER_NAMES.remove(uuid);
         }));
-
         return Optional.empty();
+    }
+
+    public static LanguageInfo getLanguageByGoogleCode(String googleCode) {
+        var str = OELangUtil.getLangIdByGoogleCode(googleCode);
+        if (str.isPresent())
+            return mc.getLanguageManager().getLanguage(str.get());
+
+        for (LanguageInfo language : mc.getLanguageManager().getLanguages()) {
+            if (language.getCode().split("_")[0].equals(googleCode))
+                return language;
+        }
+
+        return mc.getLanguageManager().getLanguage(LanguageManager.DEFAULT_LANGUAGE_CODE);
+    }
+
+    public static String getGoogleCodeByLanguage(LanguageInfo language) {
+        var lng = OELangUtil.getGoogleCodeByLangId(language.getCode());
+        if (lng.isPresent())
+            return lng.get();
+
+        String name = language.getCode().split("_")[0];
+        for (String lang : OELangUtil.googleLangCodes) {
+            if (lang.equals(name))
+                return lang;
+        }
+
+        return "en";
     }
 }
