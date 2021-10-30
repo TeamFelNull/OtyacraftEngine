@@ -2,6 +2,9 @@ package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.gui.subtitle.ICustomTimeSubtitle;
+import dev.felnull.otyacraftengine.client.util.OEClientUtil;
+import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,8 +23,10 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
 
-        if (!level.isClientSide()) {
-
+        if (level.isClientSide()) {
+            var sub = new SubtitleOverlay.Subtitle(player.getDisplayName(), player.position());
+            ((ICustomTimeSubtitle) sub).setCustomTime(10000);
+            OEClientUtil.addSubtitle(sub, false);
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);

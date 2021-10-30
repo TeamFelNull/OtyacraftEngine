@@ -3,6 +3,8 @@ accessible field net/minecraft/client/renderer/texture/DynamicTexture pixels Lco
 accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
 accessible field net/minecraft/client/renderer/texture/TextureManager byPath Ljava/util/Map;
 accessible field net/minecraft/client/renderer/texture/TextureManager tickableTextures Ljava/util/Set;
+accessible field net/minecraft/client/gui/Gui subtitleOverlay Lnet/minecraft/client/gui/components/SubtitleOverlay;
+accessible field net/minecraft/client/gui/components/SubtitleOverlay subtitles Ljava/util/List;
 
 accessible method net/minecraft/client/renderer/texture/TextureManager safeClose (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V
 accessible method net/minecraft/client/renderer/block/model/ItemTransforms$Deserializer <init> ()V

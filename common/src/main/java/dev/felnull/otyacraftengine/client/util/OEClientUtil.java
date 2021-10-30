@@ -2,11 +2,13 @@ package dev.felnull.otyacraftengine.client.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.felnull.otyacraftengine.client.gui.subtitle.IDynamicSubtitle;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import dev.felnull.otyacraftengine.util.OELangUtil;
 import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
@@ -37,6 +39,12 @@ public class OEClientUtil {
         return gp;
     }
 
+    /**
+     * キーが押されているか
+     *
+     * @param keyCode キーコード
+     * @return 押されているか
+     */
     public static boolean isKeyInput(int keyCode) {
         if (keyCode < GLFW.GLFW_MOUSE_BUTTON_1)
             return false;
@@ -49,10 +57,22 @@ public class OEClientUtil {
         return InputConstants.isKeyDown(winID, keyCode);
     }
 
+    /**
+     * キーが押されているか
+     *
+     * @param keyCode キー
+     * @return 押されているか
+     */
     public static boolean isKeyInput(KeyMapping keyCode) {
         return isKeyInput(OEClientExpectPlatform.getKey(keyCode).getValue());
     }
 
+    /**
+     * プレイヤーをUUIDから取得
+     *
+     * @param uuid プレイヤーUUID
+     * @return 名前
+     */
     public static Optional<String> getPlayerNameByUUID(UUID uuid) {
         if (mc.player.connection.getPlayerInfo(uuid) != null)
             return Optional.of(mc.player.connection.getPlayerInfo(uuid).getProfile().getName());
@@ -71,6 +91,12 @@ public class OEClientUtil {
         return Optional.empty();
     }
 
+    /**
+     * GoogleLangCodeから言語に変換
+     *
+     * @param googleCode GoogleLangCode
+     * @return 言語
+     */
     public static LanguageInfo getLanguageByGoogleCode(String googleCode) {
         var str = OELangUtil.getLangIdByGoogleCode(googleCode);
         if (str.isPresent())
@@ -84,6 +110,12 @@ public class OEClientUtil {
         return mc.getLanguageManager().getLanguage(LanguageManager.DEFAULT_LANGUAGE_CODE);
     }
 
+    /**
+     * 言語からGoogleLangCodeへ変換
+     *
+     * @param language 言語
+     * @return GoogleLangCode
+     */
     public static String getGoogleCodeByLanguage(LanguageInfo language) {
         var lng = OELangUtil.getGoogleCodeByLangId(language.getCode());
         if (lng.isPresent())
@@ -97,4 +129,19 @@ public class OEClientUtil {
 
         return "en";
     }
+
+    public static void addSubtitle(SubtitleOverlay.Subtitle subtitle, boolean duplicate) {
+        var subs = OEClientExpectPlatform.getSubtitles();
+        if (!duplicate) {
+            for (SubtitleOverlay.Subtitle sub : subs) {
+                if (sub.getText().equals(subtitle.getText())) {
+                    sub.refresh(subtitle.getLocation());
+                    ((IDynamicSubtitle) sub).setDynamicLocation(((IDynamicSubtitle) subtitle).getDynamicLocation());
+                    return;
+                }
+            }
+        }
+        subs.add(subtitle);
+    }
+
 }

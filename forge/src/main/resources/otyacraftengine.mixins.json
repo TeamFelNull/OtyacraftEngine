@@ -1,10 +1,8 @@
 {
   "required": true,
-  "package": "dev.felnull.otyacraftengine.fabric.mixin",
+  "minVersion": "0.8",
+  "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_16",
-  "mixins": [
-    "TestMixin"
-  ],
   "client": [
     "client.SubtitleMixin"
   ],

@@ -5,7 +5,11 @@ plugins {
 configurations {
     shadowCommon
 }
-
+loom {
+    forge {
+        mixinConfig "otyacraftengine.mixins.json"
+    }
+}
 architectury {
     platformSetupLoomIde()
     forge()
