@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine;
 
+import dev.felnull.otyacraftengine.block.TestBlock;
+import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import dev.felnull.otyacraftengine.item.TestItem;
 import dev.felnull.otyacraftengine.net.OEPackets;
 import dev.felnull.otyacraftengine.util.OEStringUtil;
@@ -22,6 +24,8 @@ public class OtyacraftEngine {
 
     public static void testInit() {
         TestItem.init();
+        TestBlock.init();
+        TestBlockEntity.init();
     }
 
 }
