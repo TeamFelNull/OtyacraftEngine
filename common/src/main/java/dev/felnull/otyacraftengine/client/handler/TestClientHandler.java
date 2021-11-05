@@ -5,8 +5,6 @@ import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.api.event.client.FabricOBJLoaderEvent;
-import dev.felnull.otyacraftengine.client.util.OEClientUtil;
-import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +20,7 @@ public class TestClientHandler {
     }
 
     public static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
-     //   System.out.println(OEClientUtil.isKeyInput(OEClientExpectPlatform.getKey(TEST_KEY).getValue()));
+        //   System.out.println(OEClientUtil.isKeyInput(OEClientExpectPlatform.getKey(TEST_KEY).getValue()));
         //  if (keyCode == OEClientExpectPlatform.getKey(TEST_KEY).getValue()) {
         //      client.setScreen(new TestScreen());
         //  }

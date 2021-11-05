@@ -6,6 +6,7 @@
     "TestMixin"
   ],
   "client": [
+    "client.LevelRendererMixin",
     "client.SubtitleMixin"
   ],
   "injectors": {

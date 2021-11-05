@@ -17,10 +17,8 @@ public class ModelResourceHandler implements ModelResourceProvider {
     @Override
     public @Nullable UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
         try {
-            if (FabricOBJLoaderEvent.LOAD.invoker().load(resourceId).isTrue()) {
-                System.out.println(resourceId);
+            if (FabricOBJLoaderEvent.LOAD.invoker().load(resourceId).isTrue())
                 return OBJLoader.getInstance().loadModel(new ResourceLocation(resourceId.getNamespace(), "models/" + resourceId.getPath()));
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

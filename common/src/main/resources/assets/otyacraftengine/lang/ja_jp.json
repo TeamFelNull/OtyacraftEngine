@@ -4,7 +4,10 @@
   "key.otyacraftengine.test": "テスト",
   "_comment.c": "Config",
   "text.autoconfig.otyacraftengine.title": "Otyacraft Engineの設定",
+  "text.autoconfig.iammusicplayer.category.debug": "デバッグ",
   "text.autoconfig.otyacraftengine.option.testMode": "テストモード",
-  "text.autoconfig.otyacraftengine.option.debugMode": "デバッグモード",
+  "text.autoconfig.otyacraftengine.option.highlightVoxelShape": "VoxelShapeを強調表示",
+  "text.autoconfig.otyacraftengine.option.showTagTooltip": "ツールチップでタグを表示する",
+  "text.autoconfig.otyacraftengine.option.showModNameTooltip": "ツールチップでMOD名を表示する",
   "_comment.la": "Last"
 }

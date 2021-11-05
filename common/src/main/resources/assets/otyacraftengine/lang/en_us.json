@@ -1,10 +1,13 @@
 {
-    "_comment.k": "Key",
-    "key.categories.otyacraftengine": "Otyacraft Engine",
-    "key.otyacraftengine.test": "Test",
-    "_comment.c": "Config",
-    "text.autoconfig.otyacraftengine.title": "Otyacraft Engine Config",
-    "text.autoconfig.otyacraftengine.option.testMode": "Test Mode",
-    "text.autoconfig.otyacraftengine.option.debugMode": "Debug Mode",
-    "_comment.la": "Last"
+  "_comment.k": "Key",
+  "key.categories.otyacraftengine": "Otyacraft Engine",
+  "key.otyacraftengine.test": "Test",
+  "_comment.c": "Config",
+  "text.autoconfig.otyacraftengine.title": "Otyacraft Engine Config",
+  "text.autoconfig.iammusicplayer.category.debug": "Debug",
+  "text.autoconfig.otyacraftengine.option.testMode": "Test Mode",
+  "text.autoconfig.otyacraftengine.option.highlightVoxelShape": "Highlight VoxelShape",
+  "text.autoconfig.otyacraftengine.option.showTagTooltip": "Show tag tooltip",
+  "text.autoconfig.otyacraftengine.option.showModNameTooltip": "Show mod name tooltip",
+  "_comment.la": "Last"
 }

@@ -1,6 +1,9 @@
 package dev.felnull.otyacraftengine.util;
 
 import com.google.gson.JsonObject;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,4 +43,19 @@ public class OEPlayerUtil {
         return CompletableFuture.completedFuture(null);
     }
 
+    public static void giveItem(Player player, ItemStack stack) {
+        if (!player.addItem(stack))
+            player.drop(stack, false, true);
+    }
+
+    public static void changeOrGiveItem(Player player, InteractionHand hand, ItemStack stack) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        if (!player.getAbilities().instabuild)
+            heldItem.shrink(1);
+        if (heldItem.isEmpty()) {
+            player.setItemInHand(hand, stack);
+        } else {
+            giveItem(player, stack);
+        }
+    }
 }

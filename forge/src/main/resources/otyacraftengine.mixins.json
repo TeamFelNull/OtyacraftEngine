@@ -4,6 +4,7 @@
   "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
+    "client.LevelRendererMixin",
     "client.SubtitleMixin"
   ],
   "injectors": {

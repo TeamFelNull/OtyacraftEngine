@@ -2,9 +2,8 @@ package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.gui.subtitle.ICustomTimeSubtitle;
-import dev.felnull.otyacraftengine.client.util.OEClientUtil;
-import net.minecraft.client.gui.components.SubtitleOverlay;
+import dev.felnull.otyacraftengine.util.OEItemUtil;
+import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 public class TestItem extends Item {
@@ -23,10 +23,8 @@ public class TestItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
 
-        if (level.isClientSide()) {
-            var sub = new SubtitleOverlay.Subtitle(player.getDisplayName(), player.position());
-            ((ICustomTimeSubtitle) sub).setCustomTime(10000);
-            OEClientUtil.addSubtitle(sub, false);
+        if (!level.isClientSide()) {
+          //  OEItemUtil.divideItemStack(new ItemStack(Items.APPLE), 114514).forEach(n -> OEPlayerUtil.giveItem(player, n));
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
