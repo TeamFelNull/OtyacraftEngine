@@ -3,8 +3,10 @@ package dev.felnull.otyacraftengine.block;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
+import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -16,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +51,7 @@ public class TestBlock extends HorizontalDirectionalEntityBlock {
             return RenderShape.MODEL;
         }
     */
-    private static final VoxelShape shape = Shapes.block(); //OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "sample"));
+    private static final VoxelShape shape = OEVoxelShapeUtil.rotateBoxY90(OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "sample")));
 
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {

@@ -1,9 +1,10 @@
 package dev.felnull.otyacraftengine.util;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dev.felnull.otyacraftengine.block.IIkisugiVoxelShape;
+import dev.felnull.otyacraftengine.block.IkisugiVoxelShape;
+import dev.felnull.otyacraftengine.block.RotateAngledAxis;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * VoxelShapeを簡単に移動や回転をできるようにする
@@ -152,7 +155,23 @@ public class OEVoxelShapeUtil {
      * @return 合体したVoxelShape
      */
     public static VoxelShape uniteBox(VoxelShape... shapes) {
-        return Shapes.or(shapes[0], ArrayUtils.remove(shapes, 0));
+        var shape = Shapes.or(shapes[0], ArrayUtils.remove(shapes, 0));
+        return IkisugiVoxelShape.getInstance().unite(shape, shapes);
+    }
+
+    /**
+     * VoxelShapeを合体する
+     *
+     * @param shapes 合わせるVoxelShape
+     * @return 合体したVoxelShape
+     */
+    public static VoxelShape uniteBox(List<VoxelShape> shapes) {
+        if (shapes.isEmpty())
+            return Shapes.empty();
+        List<VoxelShape> shapesCp = new ArrayList<>(shapes);
+        var voxelShape = shapesCp.remove(0);
+        var shape = shapesCp.stream().reduce(voxelShape, Shapes::or);
+        return IkisugiVoxelShape.getInstance().unite(shape, shapes.stream().map(n -> (IIkisugiVoxelShape) n).toList());
     }
 
     /**
@@ -170,7 +189,24 @@ public class OEVoxelShapeUtil {
         for (AABB aabb : shape.toAabbs()) {
             shapes = ArrayUtils.add(shapes, Shapes.create(aabb.move(1d / 16d * x, 1d / 16d * y, 1d / 16d * z)));
         }
-        return uniteBox(shapes);
+        var ushape = uniteBox(shapes);
+        return IkisugiVoxelShape.getInstance().move(ushape, (IIkisugiVoxelShape) shape, x, y, z);
+    }
+
+    /**
+     * VoxelShapeを指定した角度に回転する
+     *
+     * @param shape      回転するVoxelShape
+     * @param angledAxis 角度
+     * @return 回転したVoxelShape
+     */
+    public static VoxelShape rotateBox(VoxelShape shape, RotateAngledAxis angledAxis) {
+        VoxelShape[] shapes = {};
+        for (AABB aabb : shape.toAabbs()) {
+            shapes = ArrayUtils.add(shapes, Shapes.create(angledAxis.convertAABB(aabb)));
+        }
+        var ushape = uniteBox(shapes);
+        return IkisugiVoxelShape.getInstance().rotate(ushape, (IIkisugiVoxelShape) shape, angledAxis);
     }
 
     /**
@@ -180,11 +216,7 @@ public class OEVoxelShapeUtil {
      * @return 回転したVoxelShape
      */
     public static VoxelShape rotateBoxY90(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(aabb.minZ, aabb.minY, 1 - aabb.minX, aabb.maxZ, aabb.maxY, 1 - aabb.maxX)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.Y90);
     }
 
     /**
@@ -194,11 +226,7 @@ public class OEVoxelShapeUtil {
      * @return 回転したVoxelShape
      */
     public static VoxelShape rotateBoxY180(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(1 - aabb.minX, aabb.minY, 1 - aabb.minZ, 1 - aabb.maxX, aabb.maxY, 1 - aabb.maxZ)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.Y180);
     }
 
     /**
@@ -208,11 +236,7 @@ public class OEVoxelShapeUtil {
      * @return 回転したVoxelShape
      */
     public static VoxelShape rotateBoxY270(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : rotateBoxY180(shape).toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(aabb.minZ, aabb.minY, 1 - aabb.minX, aabb.maxZ, aabb.maxY, 1 - aabb.maxX)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.Y270);
     }
 
     /**
@@ -223,11 +247,7 @@ public class OEVoxelShapeUtil {
      * @since 2.0
      */
     public static VoxelShape rotateBoxX90(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(aabb.minY, aabb.minX, aabb.minZ, aabb.maxY, aabb.maxX, aabb.maxZ)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.X90);
     }
 
     /**
@@ -238,11 +258,7 @@ public class OEVoxelShapeUtil {
      * @since 2.0
      */
     public static VoxelShape rotateBoxX180(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(1 - aabb.minX, 1 - aabb.minY, aabb.minZ, 1 - aabb.maxX, 1 - aabb.maxY, aabb.maxZ)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.X180);
     }
 
     /**
@@ -253,11 +269,7 @@ public class OEVoxelShapeUtil {
      * @since 2.0
      */
     public static VoxelShape rotateBoxX270(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : rotateBoxY180(shape).toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(1 - aabb.minY, aabb.minX, aabb.minZ, 1 - aabb.maxY, aabb.maxX, aabb.maxZ)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.X270);
     }
 
     /**
@@ -268,11 +280,7 @@ public class OEVoxelShapeUtil {
      * @since 2.0
      */
     public static VoxelShape rotateBoxZ90(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(aabb.minX, aabb.minZ, aabb.minY, aabb.maxX, aabb.maxZ, aabb.maxY)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.Z90);
     }
 
     /**
@@ -283,11 +291,7 @@ public class OEVoxelShapeUtil {
      * @since 2.0
      */
     public static VoxelShape rotateBoxZ180(VoxelShape shape) {
-        VoxelShape[] shapes = {};
-        for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(new AABB(aabb.minX, 1 - aabb.minY, 1 - aabb.minZ, aabb.maxX, 1 - aabb.maxY, 1 - aabb.maxZ)));
-        }
-        return uniteBox(shapes);
+        return rotateBox(shape, RotateAngledAxis.Z180);
     }
 
     /**
@@ -306,21 +310,11 @@ public class OEVoxelShapeUtil {
         };
     }
 
-    public static VoxelShape getShapeFromJson(JsonObject shapeJ) {
-        VoxelShape[] shapes = null;
-        for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
-            JsonArray ja = jshape.getAsJsonArray();
-            VoxelShape shape = makeBox(ja.get(0).getAsDouble(), ja.get(1).getAsDouble(), ja.get(2).getAsDouble(), ja.get(3).getAsDouble(), ja.get(4).getAsDouble(), ja.get(5).getAsDouble());
-            shapes = ArrayUtils.add(shapes, shape);
-        }
-        return uniteBox(shapes);
-    }
-
     public static VoxelShape getShapeFromResource(ResourceLocation location) {
         InputStream stream = OEVoxelShapeUtil.class.getResourceAsStream("/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
         if (stream == null) {
             return makeBox(16, 16, 16, 16, 16, 16);
         }
-        return getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
+        return IkisugiVoxelShape.getInstance().getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
     }
 }
