@@ -2,21 +2,25 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
 configurations {
+    common
     shadowCommon
+    shadowIn
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    forgeDependencies.extendsFrom shadowIn
 }
 loom {
     forge {
         mixinConfig "otyacraftengine.mixins.json"
     }
-}
-architectury {
-    platformSetupLoomIde()
-    forge()
-}
-repositories {
-    maven { url = "https://dvs1.progwml6.com/files/maven/" }
-    maven { url = "https://modmaven.dev/" }
 }
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
@@ -26,32 +30,25 @@ dependencies {
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
     modApi "net.morimori0317:bettertaskbar-forge:1.0"
 
-    implementation(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    developmentForge(project(path: ":common", configuration: "dev")) {
-        transitive = false
-    }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
-        transitive = false
-    }
-    forgeDependencies("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
-    shadowCommon("dev.felnull:felnull-java-library:${rootProject.felnull_version}")
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    forgeDependencies 'com.madgag:animated-gif-lib:1.4'
-    shadowCommon 'com.madgag:animated-gif-lib:1.4'
+    shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    shadowIn 'com.madgag:animated-gif-lib:1.4'
 }
-shadowJar {
-    configurations = [project.configurations.shadow]
-    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
-    relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
-}
+
 processResources {
     inputs.property "version", project.version
 
     filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowIn]
+    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
 }
 
 shadowJar {
@@ -64,7 +61,6 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    baseName = "${rootProject.archives_base_name}-${project.name}"
     classifier null
 }
 
@@ -77,6 +73,13 @@ sourcesJar {
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }
 }
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
 publishing {
     publications {
         mavenForge(MavenPublication) {

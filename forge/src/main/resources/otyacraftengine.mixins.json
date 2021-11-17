@@ -7,6 +7,9 @@
     "client.LevelRendererMixin",
     "client.SubtitleMixin"
   ],
+  "mixins": [
+    "VoxelShapeMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

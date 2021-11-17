@@ -41,7 +41,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "renderShape", at = @At("HEAD"), cancellable = true)
     private static void renderShape(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, float r, float g, float b, float a, CallbackInfo ci) {
-        if (!OtyacraftEngine.CONFIG.fastVoxelShapeRender) return;
+        if (!OtyacraftEngine.CONFIG.ikisugiVoxelShape) return;
         if (((IIkisugiVoxelShape) voxelShape).getEdges() == null) return;
         ci.cancel();
         var pose = poseStack.last();

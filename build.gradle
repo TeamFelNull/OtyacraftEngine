@@ -16,6 +16,7 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+
         mappings loom.officialMojangMappings()
     }
 }
@@ -31,7 +32,7 @@ allprojects {
 
     repositories {
         maven {
-            name = "FelNull"
+            name = "felnull maven"
             url = "https://maven.felnull.dev/"
         }
     }

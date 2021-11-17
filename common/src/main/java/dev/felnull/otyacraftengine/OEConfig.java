@@ -9,7 +9,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 @Config.Gui.Background(OtyacraftEngine.MODID + ":textures/gui/config_background.png")
 public class OEConfig implements ConfigData {
 
-    public boolean fastVoxelShapeRender = true;
+    public boolean ikisugiVoxelShape = true;
 
     @ConfigEntry.Gui.RequiresRestart
     @ConfigEntry.Category("debug")
