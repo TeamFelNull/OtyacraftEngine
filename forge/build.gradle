@@ -16,6 +16,7 @@ configurations {
     developmentForge.extendsFrom common
 
     forgeDependencies.extendsFrom shadowIn
+    shadowCommon.extendsFrom shadowIn
 }
 loom {
     forge {
@@ -61,6 +62,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    archiveBaseName = "${rootProject.archives_base_name}-${project.name}"
     classifier null
 }
 

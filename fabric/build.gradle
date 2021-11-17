@@ -15,18 +15,19 @@ minecraft {
 
 configurations {
     common
-    shadowCommon 
+    shadowCommon
     shadowIn
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
     implementation.extendsFrom shadowIn
+    shadowCommon.extendsFrom shadowIn
 }
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    
+
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
@@ -40,7 +41,6 @@ dependencies {
     shadowIn 'com.madgag:animated-gif-lib:1.4'
     shadowIn 'de.javagl:obj:0.3.0'
 }
-
 processResources {
     inputs.property "version", project.version
 
@@ -48,12 +48,14 @@ processResources {
         expand "version": project.version
     }
 }
+
 shadowJar {
     configurations = [project.configurations.shadowIn]
     relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
     relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
     relocate 'de.javagl', 'dev.felnull.otyacraftengine.libs.de.javagl'
 }
+
 shadowJar {
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
@@ -62,6 +64,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    archiveBaseName = "${rootProject.archives_base_name}-${project.name}"
     classifier null
 }
 
@@ -84,7 +87,7 @@ components.java {
 publishing {
     publications {
         mavenFabric(MavenPublication) {
-           artifactId = rootProject.archives_base_name + "-" + project.name
+            artifactId = rootProject.archives_base_name + "-" + project.name
             artifact(remapJar)
             artifact(sourcesJar) {
                 builtBy remapSourcesJar
@@ -114,7 +117,7 @@ publishing {
     }
 
     repositories {
-         maven {
+        maven {
             url "https://maven.felnull.dev/"
             credentials {
                 username = "felnull"
