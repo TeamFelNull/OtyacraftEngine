@@ -2,6 +2,8 @@ package dev.felnull.otyacraftengine.impl.client.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.NativeImage;
+import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
+import dev.felnull.otyacraftengine.forge.client.renderer.ItemRendererRegisterFG;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SubtitleOverlay;
@@ -10,6 +12,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.Tickable;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 
 import java.util.List;
 
@@ -36,5 +39,9 @@ public class OEClientExpectPlatformImpl {
 
     public static List<SubtitleOverlay.Subtitle> getSubtitles() {
         return mc.gui.subtitleOverlay.subtitles;
+    }
+
+    public static void registerItemRenderer(ItemLike item, BEWLItemRenderer renderer) {
+        ItemRendererRegisterFG.register(item, renderer);
     }
 }

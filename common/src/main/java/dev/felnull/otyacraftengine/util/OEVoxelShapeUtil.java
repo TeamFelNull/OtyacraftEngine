@@ -317,4 +317,21 @@ public class OEVoxelShapeUtil {
         }
         return IkisugiVoxelShape.getInstance().getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
     }
+
+    public static DirectionVoxelShapes makeAllDirection(VoxelShape shape) {
+        return new DirectionVoxelShapes(shape, rotateBoxDirection(shape, Direction.SOUTH), rotateBoxDirection(shape, Direction.EAST), rotateBoxDirection(shape, Direction.WEST));
+    }
+
+    public static record DirectionVoxelShapes(VoxelShape north, VoxelShape south, VoxelShape east, VoxelShape west) {
+        public VoxelShape getShape(Direction direction) {
+            return switch (direction) {
+                case SOUTH -> south;
+                case EAST -> east;
+                case WEST -> west;
+                default -> north;
+            };
+        }
+
+    }
+
 }

@@ -11,6 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +31,7 @@ import java.util.UUID;
 @Environment(EnvType.CLIENT)
 public class OERenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
+
     /**
      * 文字スプライトを描画
      *
@@ -570,5 +573,26 @@ public class OERenderUtil {
 
     private static void vertex(VertexConsumer builder, PoseStack.Pose pose, float x, float y, float z, float u, float v, float r, float g, float b, float a, int combinedOverlayIn, int combinedLightIn) {
         builder.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(combinedOverlayIn).uv2(combinedLightIn).normal(pose.normal(), 0f, 0f, 0f).endVertex();
+    }
+
+    public static BakedModel getModel(ModelResourceLocation location) {
+        return mc.getModelManager().getModel(location);
+    }
+
+    public static BakedModel getBlockModel(BlockState state) {
+        return mc.getModelManager().getBlockModelShaper().getBlockModel(state);
+    }
+
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
+        var bmr = mc.getBlockRenderer().getModelRenderer();
+        bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
+    }
+
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
+        var bmr = mc.getBlockRenderer().getModelRenderer();
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, r, g, b, combinedLight, combinedOverlay);
     }
 }
