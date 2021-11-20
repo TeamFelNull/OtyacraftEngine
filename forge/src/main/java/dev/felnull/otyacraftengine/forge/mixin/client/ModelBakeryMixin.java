@@ -1,14 +1,12 @@
-package dev.felnull.otyacraftengine.fabric.mixin.client;
+package dev.felnull.otyacraftengine.forge.mixin.client;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,8 +34,8 @@ public abstract class ModelBakeryMixin {
     @Final
     private Map<ResourceLocation, UnbakedModel> unbakedCache;
 
-    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", shift = At.Shift.AFTER, ordinal = 3))
-    private void init(ResourceManager resourceManager, BlockColors blockColors, ProfilerFiller profilerFiller, int i, CallbackInfo ci) {
+    @Inject(method = "processLoading", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", shift = At.Shift.AFTER, ordinal = 3))
+    private void processLoading(ProfilerFiller arg, int i, CallbackInfo ci) {
         SpecialModelLoader.getInstance().load(this::loadTopLevel);
     }
 

@@ -26,7 +26,7 @@ public class TestItemRenderer implements BEWLItemRenderer {
             var pos = new BlockPos(Minecraft.getInstance().player.position()).below();
             // var model = OERenderUtil.getBlockModel(Minecraft.getInstance().level.getBlockState(pos));
             // var model = OERenderUtil.getModel(new ModelResourceLocation(new ResourceLocation("apple"), "inventory"));
-            var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "test_model"));
+            var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
             int col = BiomeColors.getAverageGrassColor(Minecraft.getInstance().level, pos);
             OERenderUtil.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.cutoutBlockSheet()), model, light, overlay, col);
         }
