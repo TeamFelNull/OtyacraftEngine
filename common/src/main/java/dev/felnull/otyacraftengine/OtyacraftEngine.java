@@ -16,7 +16,7 @@ public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
 
     public static void init() {
-        LOGGER.info(OEStringUtil.getLogoASCIIArt());
+        LOGGER.info("\n" + OEStringUtil.getLogoASCIIArt());
         OEPackets.init();
         if (CONFIG.testMode)
             testInit();

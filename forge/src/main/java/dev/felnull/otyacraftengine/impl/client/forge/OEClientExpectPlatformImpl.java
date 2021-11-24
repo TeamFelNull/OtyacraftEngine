@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.Tickable;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 
@@ -43,5 +45,9 @@ public class OEClientExpectPlatformImpl {
 
     public static void registerItemRenderer(ItemLike item, BEWLItemRenderer renderer) {
         ItemRendererRegisterFG.register(item, renderer);
+    }
+
+    public static void bakeryLoadTopLevel(ModelBakery bakery, ModelResourceLocation location) {
+        bakery.loadTopLevel(location);
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -185,9 +186,9 @@ public class OEVoxelShapeUtil {
      * @return 移動し終わったあとのVoxelShape
      */
     public static VoxelShape moveBox(VoxelShape shape, double x, double y, double z) {
-        VoxelShape[] shapes = {};
+        List<VoxelShape> shapes = new ArrayList<>();
         for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(aabb.move(1d / 16d * x, 1d / 16d * y, 1d / 16d * z)));
+            shapes.add(Shapes.create(aabb.move(1d / 16d * x, 1d / 16d * y, 1d / 16d * z)));
         }
         var ushape = uniteBox(shapes);
         return IkisugiVoxelShape.getInstance().move(ushape, (IIkisugiVoxelShape) shape, x, y, z);
@@ -201,9 +202,9 @@ public class OEVoxelShapeUtil {
      * @return 回転したVoxelShape
      */
     public static VoxelShape rotateBox(VoxelShape shape, RotateAngledAxis angledAxis) {
-        VoxelShape[] shapes = {};
+        List<VoxelShape> shapes = new ArrayList<>();
         for (AABB aabb : shape.toAabbs()) {
-            shapes = ArrayUtils.add(shapes, Shapes.create(angledAxis.convertAABB(aabb)));
+            shapes.add(Shapes.create(angledAxis.convertAABB(aabb)));
         }
         var ushape = uniteBox(shapes);
         return IkisugiVoxelShape.getInstance().rotate(ushape, (IIkisugiVoxelShape) shape, angledAxis);
@@ -315,6 +316,7 @@ public class OEVoxelShapeUtil {
         if (stream == null) {
             return makeBox(16, 16, 16, 16, 16, 16);
         }
+        stream = new BufferedInputStream(stream);
         return IkisugiVoxelShape.getInstance().getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
     }
 

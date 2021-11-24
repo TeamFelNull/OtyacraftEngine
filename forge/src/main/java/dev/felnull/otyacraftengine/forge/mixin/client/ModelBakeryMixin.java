@@ -36,7 +36,7 @@ public abstract class ModelBakeryMixin {
 
     @Inject(method = "processLoading", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", shift = At.Shift.AFTER, ordinal = 3))
     private void processLoading(ProfilerFiller arg, int i, CallbackInfo ci) {
-        SpecialModelLoader.getInstance().load(this::loadTopLevel);
+        SpecialModelLoader.getInstance().load((ModelBakery) (Object) this);
     }
 
     @Inject(method = "loadModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/ResourceLocation;<init>(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 1), cancellable = true)

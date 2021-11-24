@@ -1,14 +1,15 @@
 package dev.felnull.otyacraftengine.client.model;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class SpecialModelLoader {
@@ -29,7 +30,7 @@ public class SpecialModelLoader {
         return mc.getModelManager().getModel(new ModelResourceLocation(resourceLocation, OtyacraftEngine.MODID + "_default"));
     }
 
-    public synchronized void load(Consumer<ModelResourceLocation> loader) {
-        LOCATIONS.forEach(loader);
+    public synchronized void load(ModelBakery bakery) {
+        LOCATIONS.forEach(n -> OEClientExpectPlatform.bakeryLoadTopLevel(bakery, n));
     }
 }
