@@ -5,7 +5,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class OEBaseEntityBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
@@ -54,6 +58,23 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
             }
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
+    }
+
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        } else {
+            this.openContainer(level, blockPos, player, blockState, blockHitResult.getDirection());
+            return InteractionResult.CONSUME;
+        }
+    }
+
+    protected void openContainer(Level level, BlockPos blockPos, Player player, BlockState blockState, Direction direction) {
+        if (level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity container) {
+            player.openMenu(container);
+        }
     }
 
     @Override

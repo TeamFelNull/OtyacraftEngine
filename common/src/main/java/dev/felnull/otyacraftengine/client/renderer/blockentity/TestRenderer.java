@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-public class TestRenderer implements BlockEntityRenderer<TestBlockEntity> {
-    public TestRenderer(BlockEntityRendererProvider.Context context) {
+public class TestRenderer extends AbstractBlockEntityRenderer<TestBlockEntity> {
 
+    public TestRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override

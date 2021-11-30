@@ -312,10 +312,17 @@ public class OEVoxelShapeUtil {
     }
 
     public static VoxelShape getShapeFromResource(ResourceLocation location) {
-        InputStream stream = OEVoxelShapeUtil.class.getResourceAsStream("/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
-        if (stream == null) {
-            return makeBox(16, 16, 16, 16, 16, 16);
-        }
+        return getShapeFromResource(location, OEVoxelShapeUtil.class);
+    }
+
+    public static VoxelShape getShapeFromResource(ResourceLocation location, Class<?> classLoader) {
+        InputStream stream = classLoader.getResourceAsStream("/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
+
+        if (stream == null)
+            stream = ClassLoader.getSystemResourceAsStream("/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
+
+        if (stream == null)
+            return Shapes.block();
         stream = new BufferedInputStream(stream);
         return IkisugiVoxelShape.getInstance().getShapeFromJson(gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), JsonObject.class));
     }
@@ -333,7 +340,6 @@ public class OEVoxelShapeUtil {
                 default -> north;
             };
         }
-
     }
 
 }
