@@ -1,9 +1,12 @@
 package dev.felnull.otyacraftengine.util;
 
 import com.google.gson.JsonObject;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,4 +61,9 @@ public class OEPlayerUtil {
             giveItem(player, stack);
         }
     }
+
+    public static void doPlayers(LevelChunk chunk, Consumer<ServerPlayer> playerConsumer) {
+        ((ServerChunkCache) chunk.getLevel().getChunkSource()).chunkMap.getPlayers(chunk.getPos(), false).forEach(playerConsumer);
+    }
+
 }

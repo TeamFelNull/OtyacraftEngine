@@ -122,4 +122,6 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);
     }
+
+
 }
