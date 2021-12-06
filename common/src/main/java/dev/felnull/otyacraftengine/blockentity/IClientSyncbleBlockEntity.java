@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.blockentity;
 
 import dev.architectury.networking.NetworkManager;
-import dev.felnull.otyacraftengine.net.OEPackets;
+import dev.felnull.otyacraftengine.networking.OEPackets;
 import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -15,8 +15,7 @@ public interface IClientSyncbleBlockEntity {
         if (blockEntity instanceof IClientSyncbleBlockEntity syncble) {
             LevelChunk lch = (LevelChunk) blockEntity.getLevel().getChunk(blockEntity.getBlockPos());
             OEPlayerUtil.doPlayers(lch, player -> {
-                CompoundTag tag = new CompoundTag();
-                tag = syncble.getSyncData(player, tag);
+                CompoundTag tag = syncble.getSyncData(player, new CompoundTag());
                 if (tag != null) {
                     ResourceLocation bereg = Registry.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
                     NetworkManager.sendToPlayer(player, OEPackets.BLOCK_ENTITY_SYNC, new OEPackets.BlockEntitySyncMessage(blockEntity.getLevel().dimension().location(), blockEntity.getBlockPos(), bereg, tag).toFBB());

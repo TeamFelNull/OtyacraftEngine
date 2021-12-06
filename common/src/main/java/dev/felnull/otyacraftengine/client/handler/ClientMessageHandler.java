@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.client.handler;
 
 import dev.architectury.networking.NetworkManager;
 import dev.felnull.otyacraftengine.blockentity.IClientSyncbleBlockEntity;
-import dev.felnull.otyacraftengine.net.OEPackets;
+import dev.felnull.otyacraftengine.networking.OEPackets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 

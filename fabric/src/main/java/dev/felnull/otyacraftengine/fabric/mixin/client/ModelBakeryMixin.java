@@ -24,9 +24,6 @@ import java.util.Objects;
 @Mixin(ModelBakery.class)
 public abstract class ModelBakeryMixin {
     @Shadow
-    protected abstract void loadTopLevel(ModelResourceLocation modelResourceLocation);
-
-    @Shadow
     protected abstract BlockModel loadBlockModel(ResourceLocation resourceLocation) throws IOException;
 
     @Shadow

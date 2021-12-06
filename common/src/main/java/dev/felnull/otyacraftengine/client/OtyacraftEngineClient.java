@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
 import dev.felnull.otyacraftengine.client.renderer.blockentity.TestRenderer;
 import dev.felnull.otyacraftengine.client.renderer.item.TestItemRenderer;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
+import dev.felnull.otyacraftengine.networking.OEPackets;
 import net.minecraft.resources.ResourceLocation;
 
 public class OtyacraftEngineClient {
@@ -17,6 +18,8 @@ public class OtyacraftEngineClient {
 
         if (OtyacraftEngine.CONFIG.testMode)
             testInit();
+
+        OEPackets.clientInit();
     }
 
     public static void testInit() {

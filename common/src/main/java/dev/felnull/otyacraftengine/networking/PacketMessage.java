@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.net;
+package dev.felnull.otyacraftengine.networking;
 
 import net.minecraft.network.FriendlyByteBuf;
 

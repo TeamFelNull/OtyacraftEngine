@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.net;
+package dev.felnull.otyacraftengine.networking;
 
 import dev.architectury.networking.NetworkManager;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
@@ -14,6 +14,10 @@ public class OEPackets {
     public static final ResourceLocation BLOCK_ENTITY_SYNC = new ResourceLocation(OtyacraftEngine.MODID, "block_entity_sync");
 
     public static void init() {
+
+    }
+
+    public static void clientInit() {
         if (OtyacraftEngine.CONFIG.testMode)
             NetworkManager.registerReceiver(NetworkManager.s2c(), TEST, (friendlyByteBuf, packetContext) -> ClientMessageHandler.onTestMessage(new TestMessage(friendlyByteBuf), packetContext));
 
