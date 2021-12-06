@@ -3,6 +3,7 @@
   "package": "dev.felnull.otyacraftengine.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "LivingEntityMixin",
     "VoxelShapeMixin"
   ],
   "client": [
