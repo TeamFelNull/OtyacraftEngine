@@ -29,4 +29,5 @@ public interface IClientSyncbleBlockEntity {
     void onSync(CompoundTag tag);
 
     void sync();
+
 }

@@ -10,5 +10,6 @@
   "text.autoconfig.otyacraftengine.option.highlightVoxelShape": "Highlight VoxelShape",
   "text.autoconfig.otyacraftengine.option.showTagTooltip": "Show tag tooltip",
   "text.autoconfig.otyacraftengine.option.showModNameTooltip": "Show mod name tooltip",
+  "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShape",
   "_comment.la": "Last"
 }

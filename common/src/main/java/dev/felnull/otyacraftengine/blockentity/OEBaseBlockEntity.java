@@ -8,13 +8,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class OEBaseBlockEntity extends BlockEntity implements IClientSyncbleBlockEntity {
+
     protected OEBaseBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
     @Override
     public CompoundTag getSyncData(ServerPlayer player, CompoundTag tag) {
-
         return null;
     }
 
@@ -26,4 +26,5 @@ public abstract class OEBaseBlockEntity extends BlockEntity implements IClientSy
     public void sync() {
         IClientSyncbleBlockEntity.syncBlockEntity(this);
     }
+
 }

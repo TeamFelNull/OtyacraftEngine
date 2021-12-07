@@ -31,6 +31,7 @@ import java.util.UUID;
 @Environment(EnvType.CLIENT)
 public class OERenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
+    public static final float MIN_BREADTH = 1.0E-3F;
 
     /**
      * 文字スプライトを描画

@@ -7,7 +7,8 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements IClientSyncbleBlockEntity {
+public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements IClientSyncbleBlockEntity, IInstructionBlockEntity {
+
     protected OEBaseContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -19,10 +20,21 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public void onSync(CompoundTag tag) {
+
     }
 
     @Override
     public void sync() {
         IClientSyncbleBlockEntity.syncBlockEntity(this);
+    }
+
+    @Override
+    public CompoundTag onInstruction(ServerPlayer player, String name, int num, CompoundTag data) {
+        return null;
+    }
+
+    @Override
+    public boolean canInstructionWith(ServerPlayer player, String name, int num, CompoundTag data) {
+        return stillValid(player);
     }
 }

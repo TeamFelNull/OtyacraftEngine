@@ -1,8 +1,11 @@
 package dev.felnull.otyacraftengine.block;
 
+import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
+import dev.felnull.otyacraftengine.util.OEMenuUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -66,15 +69,14 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
-            this.openContainer(level, blockPos, player, blockState, blockHitResult.getDirection());
+            this.openContainer(level, blockPos, (ServerPlayer) player, blockState, blockHitResult.getDirection());
             return InteractionResult.CONSUME;
         }
     }
 
-    protected void openContainer(Level level, BlockPos blockPos, Player player, BlockState blockState, Direction direction) {
-        if (level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity container) {
-            player.openMenu(container);
-        }
+    protected void openContainer(Level level, BlockPos blockPos, ServerPlayer player, BlockState blockState, Direction direction) {
+        if (level.getBlockEntity(blockPos) instanceof OEBaseContainerBlockEntity oeBaseContainerBlock)
+            OEMenuUtil.openMenu(player, oeBaseContainerBlock, blockPos, oeBaseContainerBlock.getContainerSize());
     }
 
     @Override

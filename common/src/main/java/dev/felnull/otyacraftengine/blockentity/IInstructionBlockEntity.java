@@ -1,0 +1,10 @@
+package dev.felnull.otyacraftengine.blockentity;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+
+public interface IInstructionBlockEntity {
+    CompoundTag onInstruction(ServerPlayer player, String name, int num, CompoundTag data);
+
+    boolean canInstructionWith(ServerPlayer player, String name, int num, CompoundTag data);
+}

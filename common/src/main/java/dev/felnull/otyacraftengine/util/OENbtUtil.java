@@ -48,13 +48,13 @@ public class OENbtUtil {
         return writeList(tag, name, new ArrayList<>(map.entrySet()), writer);
     }
 
-    public static <T, M> void readMap(CompoundTag tag, String name, Map<T, M> map, Function<Tag, T> readerKey, Function<Tag, M> readerEntry, int num) {
+    public static <T, M> void readMap(CompoundTag tag, String name, Map<T, M> map, Function<Tag, T> readerKey, Function<Tag, M> readerEntry) {
         List<Map.Entry<T, M>> entries = new ArrayList<>();
         Function<Tag, Map.Entry<T, M>> reader = n -> {
             CompoundTag it = (CompoundTag) n;
             return new AbstractMap.SimpleEntry<>(readerKey.apply(it.get("K")), readerEntry.apply(it.get("E")));
         };
-        readList(tag, name, entries, reader, num);
+        readList(tag, name, entries, reader, 10);
         map.clear();
         entries.forEach(n -> map.put(n.getKey(), n.getValue()));
     }
@@ -67,5 +67,13 @@ public class OENbtUtil {
     public static <T extends ITAGSerializable> T readSerializable(CompoundTag tag, String name, T serializable) {
         serializable.load(tag.getCompound(name));
         return serializable;
+    }
+
+    public static CompoundTag writeMap(CompoundTag tag, String name, Map<UUID, CompoundTag> map) {
+        return writeMap(tag, name, map, NbtUtils::createUUID, n -> n);
+    }
+
+    public static void readMap(CompoundTag tag, String name, Map<UUID, CompoundTag> map) {
+        readMap(tag, name, map, NbtUtils::loadUUID, n -> (CompoundTag) n);
     }
 }
