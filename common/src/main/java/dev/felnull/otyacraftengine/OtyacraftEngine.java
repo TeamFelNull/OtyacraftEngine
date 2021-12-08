@@ -2,6 +2,8 @@ package dev.felnull.otyacraftengine;
 
 import dev.felnull.otyacraftengine.block.TestBlock;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
+import dev.felnull.otyacraftengine.data.OEWorldData;
+import dev.felnull.otyacraftengine.handler.ServerHandler;
 import dev.felnull.otyacraftengine.item.TestItem;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import dev.felnull.otyacraftengine.util.OEStringUtil;
@@ -17,9 +19,15 @@ public class OtyacraftEngine {
 
     public static void init() {
         LOGGER.info("\n" + OEStringUtil.getLogoASCIIArt());
+        ServerHandler.init();
         OEPackets.init();
-        if (CONFIG.testMode)
+        OEWorldData.init();
+        if (isTestMode())
             testInit();
+    }
+
+    public static boolean isTestMode() {
+        return CONFIG.testMode;
     }
 
     public static void testInit() {
