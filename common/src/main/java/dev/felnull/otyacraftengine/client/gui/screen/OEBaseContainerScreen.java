@@ -66,4 +66,11 @@ public abstract class OEBaseContainerScreen<T extends OEBaseContainerMenu> exten
     public UUID getInstructionID() {
         return id;
     }
+
+    @Override
+    public boolean mouseDragged(double d, double e, int i, double f, double g) {
+        boolean flag1 = super.mouseDragged(d, e, i, f, g);
+        boolean flag2 = this.getFocused() != null && this.isDragging() && i == 0 && this.getFocused().mouseDragged(d, e, i, f, g);
+        return flag1 & flag2;
+    }
 }
