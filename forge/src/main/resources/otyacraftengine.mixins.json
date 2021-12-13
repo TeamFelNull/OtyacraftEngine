@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.felnull.otyacraftengine.forge.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "client.BlockEntityWithoutLevelRendererMixin",
+    "client.LevelRendererMixin",
+    "client.ModelBakeryMixin",
+    "client.SubtitleMixin"
+  ],
+  "mixins": [
+    "LivingEntityMixin",
+    "MinecraftServerMixin",
+    "VoxelShapeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,126 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common
+    shadowCommon
+    shadowIn
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    forgeDependencies.extendsFrom shadowIn
+    shadowCommon.extendsFrom shadowIn
+}
+loom {
+    forge {
+        mixinConfig "otyacraftengine.mixins.json"
+    }
+}
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
+    modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
+    modApi "net.morimori0317:bettertaskbar-forge:1.0"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    shadowIn 'com.madgag:animated-gif-lib:1.4'
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowIn]
+    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    archiveBaseName = "${rootProject.archives_base_name}-${project.name}"
+    classifier null
+}
+
+jar {
+    classifier "dev"
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifact(remapJar)
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+            pom {
+                name = 'OtyacraftEngine'
+                description = 'My mod integration library.'
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'MORIMORI0317'
+                        name = 'MORIMORI0317'
+                    }
+                    developer {
+                        id = 'FelNull'
+                        name = 'TeamFelNull'
+                        email = 'teamfelnull@m.servg.red'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://maven.felnull.dev/"
+            credentials {
+                username = "felnull"
+                password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
+            }
+        }
+    }
+}

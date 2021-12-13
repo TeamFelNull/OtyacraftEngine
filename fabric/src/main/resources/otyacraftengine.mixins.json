@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "dev.felnull.otyacraftengine.fabric.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "LivingEntityMixin",
+    "MinecraftServerMixin",
+    "VoxelShapeMixin"
+  ],
+  "client": [
+    "client.LevelRendererMixin",
+    "client.ModelBakeryMixin",
+    "client.SubtitleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
