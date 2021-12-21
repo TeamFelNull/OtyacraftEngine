@@ -70,6 +70,30 @@ public class OERenderUtil {
     }
 
     /**
+     * 幅を固定して文字を描画
+     * 幅に入りきらないと縮小し描画される
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @param width     幅
+     */
+    public static void drawFixedWidthText(PoseStack poseStack, String text, float x, float y, int color, float width) {
+        int size = mc.font.width(text);
+        poseStack.pushPose();
+        if (size > width) {
+            float scale = width / size;
+            x /= scale;
+            y /= scale;
+            poseScaleAll(poseStack, scale);
+        }
+        mc.font.draw(poseStack, text, x, y, color);
+        poseStack.popPose();
+    }
+
+    /**
      * 中央ぞろえ文字描画
      *
      * @param poseStack PoseStack

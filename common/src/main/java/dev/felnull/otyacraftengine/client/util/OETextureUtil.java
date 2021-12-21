@@ -3,7 +3,6 @@ package dev.felnull.otyacraftengine.client.util;
 import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
-import dev.felnull.fnjl.math.FNVec2d;
 import dev.felnull.fnjl.util.FNDataUtil;
 import dev.felnull.fnjl.util.FNImageUtil;
 import dev.felnull.fnjl.util.FNMath;
@@ -350,11 +349,18 @@ public class OETextureUtil {
         return loadTexture;
     }
 
-    public static FNVec2d getTextureScale(ResourceLocation location) {
-        if (mc.getTextureManager().getTexture(location) instanceof DynamicTexture texture) {
+    /**
+     * テクスチャのスケールを取得
+     *
+     * @param location テクスチャロケーション
+     * @return スケール
+     */
+    public static TextureScale getTextureScale(ResourceLocation location) {
+        if (location != null && mc.getTextureManager().getTexture(location) instanceof DynamicTexture texture) {
             int w = texture.getPixels().getWidth();
             int h = texture.getPixels().getHeight();
-            return FNMath.scale(w, h);
+            var sc = FNMath.scale(w, h);
+            return new TextureScale(sc.getX(), sc.getY());
         }
         return null;
     }
@@ -438,5 +444,8 @@ public class OETextureUtil {
     }
 
     private static record TextureLoadResult(ResourceLocation location, boolean failure) {
+    }
+
+    public static record TextureScale(double w, double h) {
     }
 }
