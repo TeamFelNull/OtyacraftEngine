@@ -2,6 +2,8 @@ package dev.felnull.otyacraftengine.util;
 
 import dev.felnull.fnjl.os.OSs;
 import dev.felnull.fnjln.FNNativeFileChooser;
+import dev.felnull.fnjln.FNNativeFont;
+import dev.felnull.fnjln.FNNativeSpecialFolder;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFWNativeWin32;
 
@@ -10,6 +12,38 @@ import java.nio.file.Path;
 
 public class FNJLNativeWrapper {
     private static final Minecraft mc = Minecraft.getInstance();
+
+    public static Path getFontFolder() {
+        return FNNativeSpecialFolder.getFonts();
+    }
+
+    public static Path getMyPicturesFolder() {
+        return FNNativeSpecialFolder.getMyPictures();
+    }
+
+    public static Path getMyVideoFolder() {
+        return FNNativeSpecialFolder.getMyVideo();
+    }
+
+    public static Path getMyMusicFolder() {
+        return FNNativeSpecialFolder.getMyMusic();
+    }
+
+    public static Path getDesktopFolder() {
+        return FNNativeSpecialFolder.getDesktop();
+    }
+
+    public static boolean isSupportSpecialFolder() {
+        return FNNativeSpecialFolder.isSupport();
+    }
+
+    public static boolean isSupportSystemFont() {
+        return FNNativeFont.isSupport();
+    }
+
+    public static String getSystemFont() {
+        return FNNativeFont.getSystemFontName();
+    }
 
     public static boolean isSupportNativeFileChooser() {
         return FNNativeFileChooser.isSupport();
