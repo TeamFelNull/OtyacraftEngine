@@ -35,6 +35,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    shadowIn "dev.felnull:felnull-java-library-native:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
 }
 
@@ -48,7 +49,9 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowIn]
-    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl'
+    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl') {
+        exclude 'dev.felnull.fnjln.**'
+    }
     relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
 }
 

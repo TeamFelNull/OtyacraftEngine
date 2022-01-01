@@ -42,6 +42,25 @@ public class OERenderUtil {
      * @param x                 X
      * @param y                 Y
      * @param z                 Z
+     * @param color             色
+     */
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字スプライトを描画
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param text              文字
+     * @param x                 X
+     * @param y                 Y
+     * @param z                 Z
      */
     public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
         poseStack.pushPose();
@@ -60,12 +79,55 @@ public class OERenderUtil {
      * @param x                 X
      * @param y                 Y
      * @param z                 Z
+     * @param color             色
+     */
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字スプライトを描画
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param text              文字
+     * @param x                 X
+     * @param y                 Y
+     * @param z                 Z
      */
     public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
         mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        poseStack.popPose();
+    }
+
+    /**
+     * 幅を固定して文字を描画
+     * 幅に入りきらないと縮小し描画される
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @param width     幅
+     */
+    public static void drawFixedWidthText(PoseStack poseStack, Component text, float x, float y, int color, float width) {
+        int size = mc.font.width(text);
+        poseStack.pushPose();
+        if (size > width) {
+            float scale = width / size;
+            x /= scale;
+            y /= scale;
+            poseScaleAll(poseStack, scale);
+        }
+        mc.font.draw(poseStack, text, x, y, color);
         poseStack.popPose();
     }
 

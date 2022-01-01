@@ -53,15 +53,15 @@ public class TestBlock extends HorizontalDirectionalEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.MODEL;
+        return RenderShape.INVISIBLE;
     }
 
     private static final VoxelShape shape = OEVoxelShapeUtil.rotateBoxY90(OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "sample")));
 
-    @Override
+    /*@Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return shape;
-    }
+    }*/
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {

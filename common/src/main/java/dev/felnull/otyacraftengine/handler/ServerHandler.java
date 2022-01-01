@@ -8,7 +8,7 @@ import net.minecraft.server.MinecraftServer;
 public class ServerHandler {
     public static void init() {
         LifecycleEvent.SERVER_STARTING.register(ServerHandler::onServerStarting);
-        LifecycleEvent.SERVER_STOPPING.register(ServerHandler::onServerStop);
+        LifecycleEvent.SERVER_STOPPED.register(ServerHandler::onServerStopped);
         MoreLifecycleEvent.SERVER_SAVING.register(ServerHandler::onServerSave);
     }
 
@@ -16,7 +16,7 @@ public class ServerHandler {
         WorldDataManager.getInstance().load(server);
     }
 
-    private static void onServerStop(MinecraftServer server) {
+    private static void onServerStopped(MinecraftServer server) {
         WorldDataManager.getInstance().unload();
     }
 

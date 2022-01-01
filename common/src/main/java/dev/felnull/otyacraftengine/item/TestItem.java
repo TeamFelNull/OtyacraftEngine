@@ -27,6 +27,13 @@ public class TestItem extends Item implements IEquipmentItem {
         ItemStack stack = player.getItemInHand(interactionHand);
 
         if (level.isClientSide()) {
+           /* try {
+                var img = FNURLUtil.getStream(new URL("https://cdn.discordapp.com/attachments/887769442019323924/892670356358324264/pinki.gif")).readAllBytes();
+                var simg = OEImageUtil.reductionSize(img, 3145728L);
+                Files.write(Paths.get("test.gif"), simg);
+            } catch (Exception ex) {
+                player.displayClientMessage(new TextComponent(ex.getLocalizedMessage()), false);
+            }*/
 /*            var edge = OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "music_manager"));
             var shape = OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "music_manager_simpl"));
             var genShape = TentativeVoxelShapeGenerator.generate(shape, edge);

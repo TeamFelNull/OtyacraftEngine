@@ -2,10 +2,14 @@ package dev.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
+import dev.felnull.otyacraftengine.util.FNJLNativeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 public class TestScreen extends Screen {
@@ -22,6 +26,19 @@ public class TestScreen extends Screen {
         }
     }
 
+    @Override
+    protected void init() {
+        super.init();
+        addRenderableWidget(new Button(0, 0, 10, 10, new TextComponent("TEST"), n -> {
+            FNJLNativeWrapper.FileChooserFlagWrapper flagWrapper = new FNJLNativeWrapper.FileChooserFlagWrapper().fileMustExist(true).readOnly(true);
+            File[] files = FNJLNativeWrapper.openNativeFileChooser("TEST", Paths.get("."), flagWrapper, new FNJLNativeWrapper.FileChooserFilterWrapper("All file"));
+            if (files != null) {
+                for (File file : files) {
+                    System.out.println(file.getAbsolutePath());
+                }
+            }
+        }));
+    }
 
     @Override
     public void render(PoseStack poseStack, int x, int y, float f) {
