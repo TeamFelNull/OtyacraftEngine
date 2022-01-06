@@ -44,11 +44,11 @@ public class OERenderUtil {
      * @param z                 Z
      * @param color             色
      */
-    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color) {
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color, int combinedLightIn) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -62,11 +62,11 @@ public class OERenderUtil {
      * @param y                 Y
      * @param z                 Z
      */
-    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int combinedLightIn) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -81,11 +81,11 @@ public class OERenderUtil {
      * @param z                 Z
      * @param color             色
      */
-    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color) {
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color, int combinedLightIn) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -99,11 +99,11 @@ public class OERenderUtil {
      * @param y                 Y
      * @param z                 Z
      */
-    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY) {
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int combinedLightIn) {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, 0);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 

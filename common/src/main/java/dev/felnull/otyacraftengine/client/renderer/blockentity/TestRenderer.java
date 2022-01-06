@@ -16,7 +16,7 @@ public class TestRenderer extends AbstractBlockEntityRenderer<TestBlockEntity> {
 
     @Override
     public void render(TestBlockEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
-        OERenderUtil.renderTextSprite(poseStack, multiBufferSource, new TextComponent("TEST"), 0, 0, 0, 1f, 0, 0, 0xFF0000FF);
+        OERenderUtil.renderTextSprite(poseStack, multiBufferSource, new TextComponent("TEST"), 0, 0, 0, 1f, 0, 0, 0xFF0000FF, i);
         //     Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, i, j, poseStack, multiBufferSource, 0);
         //      var vc = multiBufferSource.getBuffer(RenderType.lines());
         //      LevelRenderer.renderVoxelShape(poseStack, vc, Blocks.ANVIL.defaultBlockState().getShape(blockEntity.getLevel(), blockEntity.getBlockPos()), 0, 0, 0, 0, 0, 0, 0);

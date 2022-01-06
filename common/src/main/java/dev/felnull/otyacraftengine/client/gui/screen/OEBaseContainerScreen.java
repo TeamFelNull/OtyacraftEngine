@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.inventory.OEBaseContainerMenu;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
@@ -72,5 +74,30 @@ public abstract class OEBaseContainerScreen<T extends OEBaseContainerMenu> exten
         boolean flag1 = super.mouseDragged(d, e, i, f, g);
         boolean flag2 = this.getFocused() != null && this.isDragging() && i == 0 && this.getFocused().mouseDragged(d, e, i, f, g);
         return flag1 & flag2;
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        for (GuiEventListener child : children()) {
+            if (child instanceof EditBox editBox) {
+                editBox.tick();
+            }
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int i, int j, int k) {
+        if (i == 256)
+            mc.player.closeContainer();
+
+        for (GuiEventListener child : children()) {
+            if (child instanceof EditBox editBox) {
+                if (editBox.keyPressed(i, j, k) || editBox.canConsumeInput())
+                    return true;
+            }
+        }
+
+        return super.keyPressed(i, j, k);
     }
 }
