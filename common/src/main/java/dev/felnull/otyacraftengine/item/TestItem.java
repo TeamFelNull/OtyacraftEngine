@@ -2,8 +2,10 @@ package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -42,6 +44,8 @@ public class TestItem extends Item implements IEquipmentItem {
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
+            var uu = OEPlayerUtil.getUUIDByName("MoriMori_0317_jp");
+            player.displayClientMessage(new TextComponent(uu.toString()), false);
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);

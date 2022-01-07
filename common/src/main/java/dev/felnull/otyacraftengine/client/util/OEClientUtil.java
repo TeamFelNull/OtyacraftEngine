@@ -78,7 +78,7 @@ public class OEClientUtil {
             return Optional.of(mc.player.connection.getPlayerInfo(uuid).getProfile().getName());
 
         if (PLAYER_NAME_UUIDS.containsKey(uuid))
-            return Optional.of(PLAYER_NAME_UUIDS.get(uuid));
+            return Optional.ofNullable(PLAYER_NAME_UUIDS.get(uuid));
 
         if (LOADING_PLAYER_NAMES.contains(uuid))
             return Optional.empty();
@@ -130,6 +130,12 @@ public class OEClientUtil {
         return "en";
     }
 
+    /**
+     * 字幕を追加
+     *
+     * @param subtitle  字幕
+     * @param duplicate 　複製可能か
+     */
     public static void addSubtitle(SubtitleOverlay.Subtitle subtitle, boolean duplicate) {
         var subs = OEClientExpectPlatform.getSubtitles();
         if (!duplicate) {
