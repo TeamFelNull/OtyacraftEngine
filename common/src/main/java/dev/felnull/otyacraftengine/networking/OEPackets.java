@@ -5,7 +5,6 @@ import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.handler.ClientMessageHandler;
 import dev.felnull.otyacraftengine.handler.ServerMessageHandler;
 import io.netty.buffer.Unpooled;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -32,22 +31,18 @@ public class OEPackets {
 
     public static class BlockEntityInstructionMessage implements PacketMessage {
         public final UUID instructionScreenID;
-        public final ResourceLocation dimension;
-        public final BlockPos pos;
-        public final ResourceLocation beName;
+        public final BlockEntityExistence blockEntityExistence;
         public final String name;
         public final int num;
         public final CompoundTag data;
 
         public BlockEntityInstructionMessage(FriendlyByteBuf bf) {
-            this(bf.readUUID(), bf.readResourceLocation(), bf.readBlockPos(), bf.readResourceLocation(), bf.readUtf(), bf.readInt(), bf.readNbt());
+            this(bf.readUUID(), BlockEntityExistence.readFBB(bf), bf.readUtf(), bf.readInt(), bf.readNbt());
         }
 
-        public BlockEntityInstructionMessage(UUID instructionScreenID, ResourceLocation dimension, BlockPos pos, ResourceLocation beName, String name, int num, CompoundTag data) {
+        public BlockEntityInstructionMessage(UUID instructionScreenID, BlockEntityExistence blockEntityExistence, String name, int num, CompoundTag data) {
             this.instructionScreenID = instructionScreenID;
-            this.dimension = dimension;
-            this.pos = pos;
-            this.beName = beName;
+            this.blockEntityExistence = blockEntityExistence;
             this.name = name;
             this.num = num;
             this.data = data;
@@ -57,9 +52,7 @@ public class OEPackets {
         public FriendlyByteBuf toFBB() {
             FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
             buf.writeUUID(instructionScreenID);
-            buf.writeResourceLocation(dimension);
-            buf.writeBlockPos(pos);
-            buf.writeResourceLocation(beName);
+            blockEntityExistence.writeFBB(buf);
             buf.writeUtf(name);
             buf.writeInt(num);
             buf.writeNbt(data);
@@ -68,28 +61,22 @@ public class OEPackets {
     }
 
     public static class BlockEntitySyncMessage implements PacketMessage {
-        public final ResourceLocation dimension;
-        public final BlockPos pos;
-        public final ResourceLocation beName;
+        public final BlockEntityExistence blockEntityExistence;
         public final CompoundTag syncedData;
 
         public BlockEntitySyncMessage(FriendlyByteBuf bf) {
-            this(bf.readResourceLocation(), bf.readBlockPos(), bf.readResourceLocation(), bf.readNbt());
+            this(BlockEntityExistence.readFBB(bf), bf.readNbt());
         }
 
-        public BlockEntitySyncMessage(ResourceLocation dimension, BlockPos pos, ResourceLocation beName, CompoundTag syncedData) {
-            this.dimension = dimension;
-            this.pos = pos;
-            this.beName = beName;
+        public BlockEntitySyncMessage(BlockEntityExistence blockEntityExistence, CompoundTag syncedData) {
+            this.blockEntityExistence = blockEntityExistence;
             this.syncedData = syncedData;
         }
 
         @Override
         public FriendlyByteBuf toFBB() {
             FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-            buf.writeResourceLocation(dimension);
-            buf.writeBlockPos(pos);
-            buf.writeResourceLocation(beName);
+            blockEntityExistence.writeFBB(buf);
             buf.writeNbt(syncedData);
             return buf;
         }
