@@ -37,8 +37,7 @@ public class OEPlayerUtil {
                 String na = null;
                 try {
                     na = n.get("id").getAsString();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
                 uuid.accept(Optional.of(FNStringUtil.fromNoHyphenStringToUUID(na)));
             });
@@ -53,8 +52,7 @@ public class OEPlayerUtil {
             JsonObject jo = OEURLUtil.getJson(new URL(String.format(UUID_BY_NAME_URL, uuid.toString())));
             String name = jo.get("name").getAsString();
             return Optional.ofNullable(name);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ignored) {
         }
         return Optional.empty();
     }
@@ -65,13 +63,11 @@ public class OEPlayerUtil {
                 String na = null;
                 try {
                     na = n.get("name").getAsString();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
                 }
                 name.accept(Optional.ofNullable(na));
             });
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException ignored) {
         }
         return CompletableFuture.completedFuture(null);
     }
