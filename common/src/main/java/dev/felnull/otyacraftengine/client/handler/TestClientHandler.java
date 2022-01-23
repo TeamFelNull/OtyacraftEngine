@@ -23,7 +23,7 @@ public class TestClientHandler {
     public static void init() {
         ClientRawInputEvent.KEY_PRESSED.register(TestClientHandler::onKeyPressed);
         FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad);
-        RenderPlayerEvent.RENDER_HAND.register(TestClientHandler::renderHand);
+        RenderPlayerEvent.RENDER_HAND.register(TestClientHandler::onRenderHand);
         KeyMappingRegistry.register(TEST_KEY);
     }
 
@@ -41,7 +41,8 @@ public class TestClientHandler {
         return EventResult.pass();
     }
 
-    public static void renderHand(PoseStack poseStack, MultiBufferSource multiBufferSource, InteractionHand hand, int packedLight, float partialTicks, float interpolatedPitch, float swingProgress, float equipProgress, ItemStack stack) {
-        System.out.println("FCOH");
+    public static EventResult onRenderHand(PoseStack poseStack, MultiBufferSource multiBufferSource, InteractionHand hand, int packedLight, float partialTicks, float interpolatedPitch, float swingProgress, float equipProgress, ItemStack stack) {
+        //   return stack.getItem() instanceof EnderEyeItem ? EventResult.interruptFalse() : EventResult.interruptTrue();
+        return EventResult.pass();
     }
 }

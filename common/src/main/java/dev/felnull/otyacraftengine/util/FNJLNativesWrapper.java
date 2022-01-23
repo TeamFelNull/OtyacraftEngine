@@ -1,63 +1,63 @@
 package dev.felnull.otyacraftengine.util;
 
 import dev.felnull.fnjl.os.OSs;
-import dev.felnull.fnjln.FNNativeFileChooser;
-import dev.felnull.fnjln.FNNativeFont;
-import dev.felnull.fnjln.FNNativeSpecialFolder;
+import dev.felnull.fnjln.FNNativesFileChooser;
+import dev.felnull.fnjln.FNNativesFont;
+import dev.felnull.fnjln.FNNativesSpecialFolder;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFWNativeWin32;
 
 import java.io.File;
 import java.nio.file.Path;
 
-public class FNJLNativeWrapper {
+public class FNJLNativesWrapper {
     private static final Minecraft mc = Minecraft.getInstance();
 
     public static Path getFontFolder() {
-        return FNNativeSpecialFolder.getFonts();
+        return FNNativesSpecialFolder.getFonts();
     }
 
     public static Path getMyPicturesFolder() {
-        return FNNativeSpecialFolder.getMyPictures();
+        return FNNativesSpecialFolder.getMyPictures();
     }
 
     public static Path getMyVideoFolder() {
-        return FNNativeSpecialFolder.getMyVideo();
+        return FNNativesSpecialFolder.getMyVideo();
     }
 
     public static Path getMyMusicFolder() {
-        return FNNativeSpecialFolder.getMyMusic();
+        return FNNativesSpecialFolder.getMyMusic();
     }
 
     public static Path getDesktopFolder() {
-        return FNNativeSpecialFolder.getDesktop();
+        return FNNativesSpecialFolder.getDesktop();
     }
 
     public static boolean isSupportSpecialFolder() {
-        return FNNativeSpecialFolder.isSupport();
+        return FNNativesSpecialFolder.isSupport();
     }
 
     public static boolean isSupportSystemFont() {
-        return FNNativeFont.isSupport();
+        return FNNativesFont.isSupport();
     }
 
     public static String getSystemFont() {
-        return FNNativeFont.getSystemFontName();
+        return FNNativesFont.getSystemFontName();
     }
 
     public static boolean isSupportNativeFileChooser() {
-        return FNNativeFileChooser.isSupport();
+        return FNNativesFileChooser.isSupport();
     }
 
     public static File[] openNativeFileChooser(String title, Path initDir, FileChooserFlagWrapper flagWrapper, FileChooserFilterWrapper... filters) {
-        FNNativeFileChooser.Filter[] nfilters = null;
+        FNNativesFileChooser.Filter[] nfilters = null;
         if (filters != null) {
-            nfilters = new FNNativeFileChooser.Filter[filters.length];
+            nfilters = new FNNativesFileChooser.Filter[filters.length];
             for (int i = 0; i < filters.length; i++) {
                 nfilters[i] = filters[i].filter;
             }
         }
-        var nfc = new FNNativeFileChooser(title, flagWrapper != null ? flagWrapper.flag : null, nfilters);
+        var nfc = new FNNativesFileChooser(title, flagWrapper != null ? flagWrapper.flag : null, nfilters);
         nfc.setInitialDirectory(initDir);
         if (OSs.isWindows())
             return nfc.openWindow(GLFWNativeWin32.glfwGetWin32Window(mc.getWindow().getWindow()));
@@ -65,7 +65,7 @@ public class FNJLNativeWrapper {
     }
 
     public static class FileChooserFlagWrapper {
-        private final FNNativeFileChooser.Flag flag = new FNNativeFileChooser.Flag();
+        private final FNNativesFileChooser.Flag flag = new FNNativesFileChooser.Flag();
 
         public FileChooserFlagWrapper allowMultiSelect(boolean allow) {
             this.flag.allowMultiSelect(allow);
@@ -104,10 +104,10 @@ public class FNJLNativeWrapper {
     }
 
     public static class FileChooserFilterWrapper {
-        private final FNNativeFileChooser.Filter filter;
+        private final FNNativesFileChooser.Filter filter;
 
         public FileChooserFilterWrapper(String description, String... extension) {
-            this.filter = new FNNativeFileChooser.Filter(description, extension);
+            this.filter = new FNNativesFileChooser.Filter(description, extension);
         }
     }
 }

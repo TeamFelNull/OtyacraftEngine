@@ -4,8 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
@@ -22,13 +23,22 @@ public class TestRenderer extends AbstractBlockEntityRenderer<TestBlockEntity> {
         //     Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, i, j, poseStack, multiBufferSource, 0);
         //      var vc = multiBufferSource.getBuffer(RenderType.lines());
         //      LevelRenderer.renderVoxelShape(poseStack, vc, Blocks.ANVIL.defaultBlockState().getShape(blockEntity.getLevel(), blockEntity.getBlockPos()), 0, 0, 0, 0, 0, 0, 0);
-        var model = OERenderUtil.getBlockModel(Blocks.ANVIL.defaultBlockState());
-        var vc = multiBufferSource.getBuffer(RenderType.solid());
+        var model = OERenderUtil.getBlockModel(Blocks.STONE.defaultBlockState());
+        var vc = multiBufferSource.getBuffer(Sheets.cutoutBlockSheet());
         poseStack.pushPose();
         float rot = Mth.lerp(f, blockEntity.getOldRoted(), blockEntity.getRoted());
-        poseStack.translate(0.5f, 0, 0.5f);
+
+        if (Minecraft.getInstance().level.getBlockState(blockEntity.getBlockPos().below()).getBlock() == Blocks.ANVIL) {
+            rot = blockEntity.getRoted();
+        } else if (Minecraft.getInstance().level.getBlockState(blockEntity.getBlockPos().below()).getBlock() == Blocks.DIAMOND_BLOCK) {
+            rot = Mth.lerp(f, blockEntity.getRoted() - 3, blockEntity.getRoted());
+        }
+        poseStack.translate(0.5f, 0.5f, 0.5f);
+        OERenderUtil.poseRotateX(poseStack, rot);
         OERenderUtil.poseRotateY(poseStack, rot);
-        poseStack.translate(-0.5f, 0, -0.5f);
+        OERenderUtil.poseRotateZ(poseStack, rot);
+
+        poseStack.translate(-0.5f, -0.5f, -0.5f);
         OERenderUtil.renderModel(poseStack, vc, model, i, j);
         poseStack.popPose();
     }

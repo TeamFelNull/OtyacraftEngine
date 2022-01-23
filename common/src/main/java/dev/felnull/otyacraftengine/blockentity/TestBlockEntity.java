@@ -41,24 +41,24 @@ public class TestBlockEntity extends OEBaseBlockEntity {
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, TestBlockEntity blockEntity) {
+        blockEntity.oldRoted = blockEntity.roted;
+        blockEntity.roted += 3;
+
         if (!level.isClientSide()) {
-            blockEntity.roted += 30;
             blockEntity.sync();
-        } else {
-            blockEntity.oldRoted = blockEntity.roted;
         }
     }
 
     @Override
     public CompoundTag getSyncData(ServerPlayer player, CompoundTag tag) {
-        tag.putFloat("roted", roted);
+        //  tag.putFloat("roted", roted);
         //   tag.putFloat("oldRoted", oldRoted);
         return tag;
     }
 
     @Override
     public void onSync(CompoundTag tag) {
-        this.roted = tag.getFloat("roted");
+        // this.roted = tag.getFloat("roted");
         //   this.oldRoted = tag.getFloat("oldRoted");
     }
 }

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.fnjl.util.FNColorUtil;
+import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -681,5 +682,9 @@ public class OERenderUtil {
         float g = (float) (color >> 8 & 255) / 255.0F;
         float b = (float) (color & 255) / 255.0F;
         bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, r, g, b, combinedLight, combinedOverlay);
+    }
+
+    public static float getPartialTicks() {
+        return mc.isPaused() ? OEClientExpectPlatform.getPausePartialTick() : mc.getFrameTime();
     }
 }

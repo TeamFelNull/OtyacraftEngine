@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine;
 
-import dev.felnull.fnjln.FelNullJavaLibraryNative;
+import dev.felnull.fnjln.FelNullJavaLibraryNatives;
 import dev.felnull.otyacraftengine.block.TestBlock;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import dev.felnull.otyacraftengine.data.OEWorldData;
@@ -23,7 +23,7 @@ public class OtyacraftEngine {
     public static void init() {
         File libFile = new File(MODID);
         libFile.mkdirs();
-        FelNullJavaLibraryNative.init(libFile.toPath());
+        FelNullJavaLibraryNatives.init(libFile.toPath());
 
         LOGGER.info("\n" + OEStringUtil.getLogoASCIIArt());
         ServerHandler.init();

@@ -38,7 +38,7 @@ dependencies {
     modApi "net.morimori0317:bettertaskbar-fabric:1.0"
 
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
-    shadowIn "dev.felnull:felnull-java-library-native:${rootProject.felnull_version}"
+    shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
     shadowIn 'de.javagl:obj:0.3.0'
 }

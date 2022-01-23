@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.ItemStack;
 
 public class TestItemRenderer implements BEWLItemRenderer {
@@ -20,7 +21,7 @@ public class TestItemRenderer implements BEWLItemRenderer {
     }
 
     @Override
-    public void render(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
+    public void render(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource multiBufferSource, float f, int light, int overlay) {
         //   Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.APPLE), transformType, light, overlay, poseStack, multiBufferSource, 0);
         if (Minecraft.getInstance().player != null) {
             var pos = new BlockPos(Minecraft.getInstance().player.position()).below();
@@ -29,6 +30,7 @@ public class TestItemRenderer implements BEWLItemRenderer {
             var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
             int col = BiomeColors.getAverageGrassColor(Minecraft.getInstance().level, pos);
             OERenderUtil.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.cutoutBlockSheet()), model, light, overlay, col);
+
         }
     }
 }

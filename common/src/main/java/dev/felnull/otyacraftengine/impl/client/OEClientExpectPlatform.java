@@ -45,4 +45,8 @@ public class OEClientExpectPlatform {
         throw new AssertionError();
     }
 
+    @ExpectPlatform
+    public static float getPausePartialTick() {
+        throw new AssertionError();
+    }
 }

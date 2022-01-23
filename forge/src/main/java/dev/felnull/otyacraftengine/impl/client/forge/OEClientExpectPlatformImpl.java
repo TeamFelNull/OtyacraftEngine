@@ -50,4 +50,8 @@ public class OEClientExpectPlatformImpl {
     public static void bakeryLoadTopLevel(ModelBakery bakery, ModelResourceLocation location) {
         bakery.loadTopLevel(location);
     }
+
+    public static float getPausePartialTick() {
+        return mc.pausePartialTick;
+    }
 }

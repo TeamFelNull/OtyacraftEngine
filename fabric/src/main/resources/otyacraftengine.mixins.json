@@ -8,6 +8,7 @@
     "VoxelShapeMixin"
   ],
   "client": [
+    "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
     "client.ModelBakeryMixin",
     "client.SubtitleMixin"

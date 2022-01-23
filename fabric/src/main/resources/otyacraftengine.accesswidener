@@ -6,6 +6,7 @@ accessible field net/minecraft/client/renderer/texture/TextureManager tickableTe
 accessible field net/minecraft/client/gui/Gui subtitleOverlay Lnet/minecraft/client/gui/components/SubtitleOverlay;
 accessible field net/minecraft/client/gui/components/SubtitleOverlay subtitles Ljava/util/List;
 accessible field net/minecraft/world/item/MobBucketItem type Lnet/minecraft/world/entity/EntityType;
+accessible field net/minecraft/client/Minecraft pausePartialTick F
 
 accessible method net/minecraft/client/renderer/texture/TextureManager safeClose (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V
 accessible method net/minecraft/client/renderer/block/model/ItemTransforms$Deserializer <init> ()V

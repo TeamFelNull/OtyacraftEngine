@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.forge.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.forge.client.renderer.ItemRendererRegisterFG;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,7 +18,7 @@ public class BlockEntityWithoutLevelRendererMixin {
     private void renderByItem(ItemStack stack, ItemTransforms.TransformType mode, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, CallbackInfo info) {
         var renderer = ItemRendererRegisterFG.getRenderer(stack.getItem());
         if (renderer != null) {
-            renderer.render(stack, mode, matrices, vertexConsumers, light, overlay);
+            renderer.render(stack, mode, matrices, vertexConsumers, OERenderUtil.getPartialTicks(), light, overlay);
             info.cancel();
         }
     }
