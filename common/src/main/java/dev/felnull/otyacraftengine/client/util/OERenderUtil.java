@@ -12,12 +12,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -686,5 +690,58 @@ public class OERenderUtil {
 
     public static float getPartialTicks() {
         return mc.isPaused() ? OEClientExpectPlatform.getPausePartialTick() : mc.getFrameTime();
+    }
+
+    public static void renderPlayerArm(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {
+        boolean bl = arm != HumanoidArm.LEFT;
+        var pr = (PlayerRenderer) mc.getEntityRenderDispatcher().getRenderer(mc.player);
+        RenderSystem.setShaderTexture(0, mc.player.getSkinTextureLocation());
+        if (bl) {
+            pr.renderRightHand(poseStack, multiBufferSource, light, mc.player);
+        } else {
+            pr.renderLeftHand(poseStack, multiBufferSource, light, mc.player);
+        }
+    }
+
+    public static void posePlayerArm(PoseStack poseStack, HumanoidArm arm, float swingProgress, float equipProgress) {
+        boolean bl = arm != HumanoidArm.LEFT;
+        float h = bl ? 1.0F : -1.0F;
+        float j = Mth.sqrt(swingProgress);
+        float k = -0.3F * Mth.sin(j * Mth.PI);
+        float l = 0.4F * Mth.sin(j * Mth.TWO_PI);
+        float m = -0.4F * Mth.sin(swingProgress * Mth.PI);
+
+        poseStack.translate(h * (k + 0.64000005F), l + -0.6F + equipProgress * -0.6F, m + -0.71999997F);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * 45.0F));
+        float n = Mth.sin(swingProgress * swingProgress * Mth.PI);
+        float o = Mth.sin(j * Mth.PI);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * o * 70.0F));
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(h * n * -20.0F));
+        poseStack.translate(h * -1.0F, 3.5999999046325684D, 3.5D);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(h * 120.0F));
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(200.0F));
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * -135.0F));
+        poseStack.translate(h * 5.6F, 0.0D, 0.0D);
+    }
+
+    public static void renderHandItem(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, ItemStack stack, int light) {
+        boolean handFlg = arm == HumanoidArm.RIGHT;
+        mc.getItemInHandRenderer().renderItem(mc.player, stack, handFlg ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !handFlg, poseStack, multiBufferSource, light);
+    }
+
+    public static void poseHandItem(PoseStack poseStack, HumanoidArm arm, float swingProgress, float equipProgress) {
+        boolean handFlg = arm == HumanoidArm.RIGHT;
+        float s = -0.4F * Mth.sin(Mth.sqrt(swingProgress) * Mth.PI);
+        float r = 0.2F * Mth.sin(Mth.sqrt(swingProgress) * Mth.TWO_PI);
+        float l = -0.2F * Mth.sin(swingProgress * Mth.PI);
+        int t = handFlg ? 1 : -1;
+        poseStack.translate((float) t * s, r, l);
+        poseStack.translate((float) t * 0.56F, -0.52F + equipProgress * -0.6F, -0.7200000286102295D);
+        float g = Mth.sin(swingProgress * swingProgress * Mth.PI);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) t * (45.0F + g * -20.0F)));
+        float h = Mth.sin(Mth.sqrt(swingProgress) * Mth.PI);
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees((float) t * h * -20.0F));
+        poseStack.mulPose(Vector3f.XP.rotationDegrees(h * -80.0F));
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) t * -45.0F));
     }
 }

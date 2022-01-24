@@ -5,6 +5,7 @@ import dev.felnull.otyacraftengine.block.TestBlock;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import dev.felnull.otyacraftengine.data.OEWorldData;
 import dev.felnull.otyacraftengine.handler.ServerHandler;
+import dev.felnull.otyacraftengine.handler.TestServerHandler;
 import dev.felnull.otyacraftengine.item.TestItem;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import dev.felnull.otyacraftengine.util.OEStringUtil;
@@ -38,6 +39,7 @@ public class OtyacraftEngine {
     }
 
     public static void testInit() {
+        TestServerHandler.init();
         TestItem.init();
         TestBlock.init();
         TestBlockEntity.init();

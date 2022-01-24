@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "client": [
     "client.BlockEntityWithoutLevelRendererMixin",
+    "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
     "client.ModelBakeryMixin",
     "client.SubtitleMixin"
