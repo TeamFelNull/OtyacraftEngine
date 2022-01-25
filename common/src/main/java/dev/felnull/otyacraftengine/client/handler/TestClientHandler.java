@@ -9,15 +9,12 @@ import dev.felnull.otyacraftengine.api.event.client.ClientEvent;
 import dev.felnull.otyacraftengine.api.event.client.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.api.event.client.RenderPlayerEvent;
 import dev.felnull.otyacraftengine.client.gui.screen.TestScreen;
-import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
@@ -65,11 +62,11 @@ public class TestClientHandler {
     }
 
     public static EventResult changeHandHeight(InteractionHand hand, ItemStack oldStack, ItemStack newStack) {
-        if (oldStack.getItem() instanceof EnderEyeItem && newStack.getItem() instanceof EnderEyeItem) {
+       /* if (oldStack.getItem() == newStack.getItem()) {
             if (oldStack.getDisplayName().getString().equals(newStack.getDisplayName().getString())) {
                 return EventResult.interruptFalse();
             }
-        }
+        }*/
         return EventResult.pass();
     }
 }
