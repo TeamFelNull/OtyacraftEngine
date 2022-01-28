@@ -7,7 +7,7 @@ import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.api.event.client.ClientEvent;
 import dev.felnull.otyacraftengine.api.event.client.FabricOBJLoaderEvent;
-import dev.felnull.otyacraftengine.api.event.client.RenderPlayerEvent;
+import dev.felnull.otyacraftengine.api.event.client.MoreRenderEvent;
 import dev.felnull.otyacraftengine.client.gui.screen.TestScreen;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
@@ -25,7 +25,7 @@ public class TestClientHandler {
     public static void init() {
         ClientRawInputEvent.KEY_PRESSED.register(TestClientHandler::onKeyPressed);
         FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad);
-        RenderPlayerEvent.RENDER_HAND.register(TestClientHandler::onRenderHand);
+        MoreRenderEvent.RENDER_ITEM_IN_HAND.register(TestClientHandler::onRenderHand);
         ClientEvent.CHANGE_HAND_HEIGHT.register(TestClientHandler::changeHandHeight);
         KeyMappingRegistry.register(TEST_KEY);
     }

@@ -744,4 +744,8 @@ public class OERenderUtil {
         poseStack.mulPose(Vector3f.XP.rotationDegrees(h * -80.0F));
         poseStack.mulPose(Vector3f.YP.rotationDegrees((float) t * -45.0F));
     }
+
+    public static float getParSecond(long loopTime) {
+        return (float) (System.currentTimeMillis() % loopTime) / (float) loopTime;
+    }
 }
