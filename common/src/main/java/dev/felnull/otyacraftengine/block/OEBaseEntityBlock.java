@@ -1,9 +1,11 @@
 package dev.felnull.otyacraftengine.block;
 
+import dev.felnull.otyacraftengine.blockentity.ItemDroppedBlockEntity;
 import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
 import dev.felnull.otyacraftengine.util.OEMenuUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -22,16 +24,22 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public abstract class OEBaseEntityBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+    public static final ResourceLocation CONTENTS = new ResourceLocation("contents");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private boolean analogOutput;
 
@@ -52,12 +60,17 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
     @Override
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         if (!blockState.is(blockState2.getBlock())) {
-            if (level.getBlockEntity(blockPos) instanceof Container container) {
+            var be = level.getBlockEntity(blockPos);
+            if (be instanceof Container container) {
                 if (level instanceof ServerLevel) {
                     Containers.dropContents(level, blockPos, container);
                 }
                 if (analogOutput)
                     level.updateNeighbourForOutputSignal(blockPos, this);
+            }
+            if (be instanceof ItemDroppedBlockEntity itemDroppedBlock) {
+                if (!itemDroppedBlock.isRetainDrop())
+                    Containers.dropContents(level, blockPos, itemDroppedBlock.getDroppedItems());
             }
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
@@ -125,5 +138,18 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
         builder.add(WATERLOGGED);
     }
 
-
+    @Override
+    public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
+        BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof ItemDroppedBlockEntity icbe) {
+            if (icbe.isRetainDrop()) {
+                builder = builder.withDynamicDrop(CONTENTS, (lootContext, consumer) -> {
+                    for (int i = 0; i < icbe.getDroppedItems().size(); ++i) {
+                        consumer.accept(icbe.getDroppedItems().get(i));
+                    }
+                });
+            }
+        }
+        return super.getDrops(blockState, builder);
+    }
 }
