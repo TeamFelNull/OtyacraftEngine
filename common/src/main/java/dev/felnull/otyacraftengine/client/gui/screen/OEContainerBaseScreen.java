@@ -2,38 +2,29 @@ package dev.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.inventory.OEBaseContainerMenu;
+import dev.felnull.otyacraftengine.inventory.OEBaseMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.UUID;
 
-public abstract class OEBaseContainerScreen<T extends OEBaseContainerMenu> extends AbstractContainerScreen<T> implements IInstructionBEScreen {
-    private static final Minecraft mc = Minecraft.getInstance();
+public abstract class OEContainerBaseScreen<T extends OEBaseMenu> extends AbstractContainerScreen<T> implements IInstructionScreen {
+    protected static final Minecraft mc = Minecraft.getInstance();
     protected final UUID id = UUID.randomUUID();
     protected int bgTextureWidth = 256;
     protected int bgTextureHeight = 256;
 
-    public OEBaseContainerScreen(T abstractContainerMenu, Inventory inventory, Component component) {
+    public OEContainerBaseScreen(T abstractContainerMenu, Inventory inventory, Component component) {
         super(abstractContainerMenu, inventory, component);
     }
 
-    public BlockEntity getBlockEntity() {
-        return mc.level.getBlockEntity(getBlockPos());
-    }
-
-    public BlockPos getBlockPos() {
-        return getMenu().getPos();
-    }
 
     @Override
     public void render(PoseStack poseStack, int i, int j, float f) {
@@ -54,20 +45,6 @@ public abstract class OEBaseContainerScreen<T extends OEBaseContainerMenu> exten
 
     protected abstract ResourceLocation getBackGrandTexture();
 
-    @Override
-    public void instruction(String name, int num, CompoundTag data) {
-        IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, num, data);
-    }
-
-    @Override
-    public void onInstructionReturn(String name, int num, CompoundTag data) {
-
-    }
-
-    @Override
-    public UUID getInstructionID() {
-        return id;
-    }
 
     @Override
     public boolean mouseDragged(double d, double e, int i, double f, double g) {
@@ -99,5 +76,15 @@ public abstract class OEBaseContainerScreen<T extends OEBaseContainerMenu> exten
         }
 
         return super.keyPressed(i, j, k);
+    }
+
+    @Override
+    public void onInstructionReturn(String name, int num, CompoundTag data) {
+
+    }
+
+    @Override
+    public UUID getInstructionID() {
+        return id;
     }
 }

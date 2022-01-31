@@ -89,7 +89,7 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
 
     protected void openContainer(Level level, BlockPos blockPos, ServerPlayer player, BlockState blockState, Direction direction) {
         if (level.getBlockEntity(blockPos) instanceof OEBaseContainerBlockEntity oeBaseContainerBlock)
-            OEMenuUtil.openMenu(player, oeBaseContainerBlock, blockPos, oeBaseContainerBlock.getContainerSize());
+            OEMenuUtil.openBlockMenu(player, oeBaseContainerBlock, blockPos, oeBaseContainerBlock.getContainerSize());
     }
 
     @Override

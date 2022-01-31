@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.data.OEWorldData;
 import dev.felnull.otyacraftengine.handler.ServerHandler;
 import dev.felnull.otyacraftengine.handler.TestServerHandler;
 import dev.felnull.otyacraftengine.item.TestItem;
+import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import dev.felnull.otyacraftengine.util.OEStringUtil;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -30,6 +31,7 @@ public class OtyacraftEngine {
         ServerHandler.init();
         OEPackets.init();
         OEWorldData.init();
+        PlayerItemLocations.init();
         if (isTestMode())
             testInit();
     }

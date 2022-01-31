@@ -10,17 +10,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.UUID;
 
-public interface IInstructionBEScreen {
-    UUID getInstructionID();
-
+public interface IInstructionBEScreen extends IInstructionScreen {
     public static void instructionBlockEntity(IInstructionBEScreen screen, BlockEntity blockEntity, String name, int num, CompoundTag data) {
         if (Minecraft.getInstance().screen == screen && blockEntity instanceof IInstructionBlockEntity) {
             var mc = Minecraft.getInstance();
             NetworkManager.sendToServer(OEPackets.BLOCK_ENTITY_INSTRUCTION, new OEPackets.BlockEntityInstructionMessage(screen.getInstructionID(), BlockEntityExistence.getByBlockEntity(blockEntity), name, num, data).toFBB());
         }
     }
-
-    void instruction(String name, int num, CompoundTag data);
-
-    void onInstructionReturn(String name, int num, CompoundTag data);
 }
