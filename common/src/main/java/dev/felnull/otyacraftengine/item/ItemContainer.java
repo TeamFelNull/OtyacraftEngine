@@ -79,7 +79,7 @@ public class ItemContainer implements Container {
 
     @Override
     public boolean stillValid(Player player) {
-        return valid.apply(player) && location.getItem(player) == itemStack;
+        return !itemStack.isEmpty() && valid.apply(player) && location.getItem(player) == itemStack;
     }
 
     @Override
@@ -119,7 +119,11 @@ public class ItemContainer implements Container {
     }
 
     public static MenuProvider createMenuProvider(ItemStack stack, IPlayerItemLocation location, int size, String tagName, MenuFactory factory) {
-        var con = new ItemContainer(stack, location, size, tagName, player -> location.getItem(player) == stack);
+        var con = new ItemContainer(stack, location, size, tagName, player -> {
+            if (location.getItem(player).isEmpty() || stack.isEmpty())
+                return false;
+            return location.getItem(player) == stack;
+        });
         return new SimpleMenuProvider((i, inventory, player1) -> factory.createMenu(i, inventory, con, BlockPos.ZERO, stack, location), stack.getHoverName());
     }
 
