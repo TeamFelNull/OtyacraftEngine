@@ -17,4 +17,9 @@ public abstract class OEBEBaseMenu extends OEBaseMenu {
     public BlockPos getPos() {
         return pos;
     }
+
+    @Override
+    public boolean isBlock() {
+        return true;
+    }
 }

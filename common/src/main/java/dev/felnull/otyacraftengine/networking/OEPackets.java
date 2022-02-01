@@ -16,9 +16,12 @@ public class OEPackets {
     public static final ResourceLocation BLOCK_ENTITY_SYNC = new ResourceLocation(OtyacraftEngine.MODID, "block_entity_sync");
     public static final ResourceLocation BLOCK_ENTITY_INSTRUCTION = new ResourceLocation(OtyacraftEngine.MODID, "block_entity_instruction");
     public static final ResourceLocation BLOCK_ENTITY_INSTRUCTION_RETURN = new ResourceLocation(OtyacraftEngine.MODID, "block_entity_instruction_return");
+    public static final ResourceLocation ITEM_INSTRUCTION = new ResourceLocation(OtyacraftEngine.MODID, "item_instruction");
+    public static final ResourceLocation ITEM_INSTRUCTION_RETURN = new ResourceLocation(OtyacraftEngine.MODID, "item_instruction_return");
 
     public static void init() {
         NetworkManager.registerReceiver(NetworkManager.c2s(), BLOCK_ENTITY_INSTRUCTION, (friendlyByteBuf, packetContext) -> ServerMessageHandler.onBlockEntityInstructionMessage(new BlockEntityInstructionMessage(friendlyByteBuf), packetContext));
+        NetworkManager.registerReceiver(NetworkManager.c2s(), ITEM_INSTRUCTION, (friendlyByteBuf, packetContext) -> ServerMessageHandler.onItemInstructionMessage(new ItemInstructionMessage(friendlyByteBuf), packetContext));
     }
 
     public static void clientInit() {
@@ -27,6 +30,38 @@ public class OEPackets {
 
         NetworkManager.registerReceiver(NetworkManager.s2c(), BLOCK_ENTITY_SYNC, (friendlyByteBuf, packetContext) -> ClientMessageHandler.onBlockEntitySyncMessage(new BlockEntitySyncMessage(friendlyByteBuf), packetContext));
         NetworkManager.registerReceiver(NetworkManager.s2c(), BLOCK_ENTITY_INSTRUCTION_RETURN, (friendlyByteBuf, packetContext) -> ClientMessageHandler.onBlockEntityInstructionReturn(new BlockEntityInstructionMessage(friendlyByteBuf), packetContext));
+        NetworkManager.registerReceiver(NetworkManager.s2c(), ITEM_INSTRUCTION_RETURN, (friendlyByteBuf, packetContext) -> ClientMessageHandler.onItemInstructionReturn(new ItemInstructionMessage(friendlyByteBuf), packetContext));
+    }
+
+    public static class ItemInstructionMessage implements PacketMessage {
+        public final UUID instructionScreenID;
+        public final ItemExistence itemExistence;
+        public final String name;
+        public final int num;
+        public final CompoundTag data;
+
+        public ItemInstructionMessage(FriendlyByteBuf bf) {
+            this(bf.readUUID(), ItemExistence.readFBB(bf), bf.readUtf(), bf.readInt(), bf.readNbt());
+        }
+
+        public ItemInstructionMessage(UUID instructionScreenID, ItemExistence itemExistence, String name, int num, CompoundTag data) {
+            this.instructionScreenID = instructionScreenID;
+            this.itemExistence = itemExistence;
+            this.name = name;
+            this.num = num;
+            this.data = data;
+        }
+
+        @Override
+        public FriendlyByteBuf toFBB() {
+            FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+            buf.writeUUID(instructionScreenID);
+            itemExistence.writeFBB(buf);
+            buf.writeUtf(name);
+            buf.writeInt(num);
+            buf.writeNbt(data);
+            return buf;
+        }
     }
 
     public static class BlockEntityInstructionMessage implements PacketMessage {

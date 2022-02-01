@@ -1,7 +1,6 @@
 package dev.felnull.otyacraftengine.client.gui.screen;
 
 import dev.felnull.otyacraftengine.inventory.OEItemBaseMenu;
-import dev.felnull.otyacraftengine.item.ItemContainer;
 import dev.felnull.otyacraftengine.item.location.IPlayerItemLocation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,9 +13,7 @@ public abstract class OEItemContainerBaseScreen<T extends OEItemBaseMenu> extend
     }
 
     public ItemStack getItem() {
-        if (getMenu().getContainer() instanceof ItemContainer container)
-            return container.getItemStack();
-        return ItemStack.EMPTY;
+        return getMenu().getItemStack(mc.player);
     }
 
     public IPlayerItemLocation getItemLocation() {
@@ -25,6 +22,6 @@ public abstract class OEItemContainerBaseScreen<T extends OEItemBaseMenu> extend
 
     @Override
     public void instruction(String name, int num, CompoundTag data) {
-        IInstructionItemScreen.instructionItem(this, getItem(), name, num, data);
+        IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, num, data);
     }
 }

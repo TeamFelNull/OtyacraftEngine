@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.client.gui.screen;
 
 import dev.felnull.otyacraftengine.inventory.OEItemBEBaseMenu;
-import dev.felnull.otyacraftengine.item.ItemContainer;
+import dev.felnull.otyacraftengine.item.location.IPlayerItemLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -24,13 +24,15 @@ public abstract class OEItemBEContainerBaseScreen<T extends OEItemBEBaseMenu> ex
     }
 
     public ItemStack getItem() {
-        if (getMenu().getContainer() instanceof ItemContainer container)
-            return container.getItemStack();
-        return ItemStack.EMPTY;
+        return getMenu().getItemStack(mc.player);
     }
 
     public BlockPos getBlockPos() {
         return getMenu().getPos();
+    }
+
+    public IPlayerItemLocation getItemLocation() {
+        return menu.getLocation();
     }
 
     @Override
@@ -38,7 +40,7 @@ public abstract class OEItemBEContainerBaseScreen<T extends OEItemBEBaseMenu> ex
         if (isBlock()) {
             IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, num, data);
         } else {
-            IInstructionItemScreen.instructionItem(this, getItem(), name, num, data);
+            IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, num, data);
         }
     }
 }

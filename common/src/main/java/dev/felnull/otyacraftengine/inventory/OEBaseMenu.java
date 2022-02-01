@@ -1,10 +1,12 @@
 package dev.felnull.otyacraftengine.inventory;
 
-import dev.felnull.otyacraftengine.item.ItemContainer;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +41,10 @@ public abstract class OEBaseMenu extends AbstractContainerMenu {
         this.container.stopOpen(player);
     }
 
+    protected boolean isActiveOffHandSlot() {
+        return false;
+    }
+
     public Container getContainer() {
         return container;
     }
@@ -47,6 +53,12 @@ public abstract class OEBaseMenu extends AbstractContainerMenu {
         if (x >= 0 && y >= 0) {
             IntStream.range(0, 3).forEach(k -> IntStream.range(0, 9).forEach(i1 -> this.addSlot(new Slot(playerInventory, i1 + k * 9 + 9, x + i1 * 18, y + k * 18))));
             IntStream.range(0, 9).forEach(l -> this.addSlot(new Slot(playerInventory, l, x + l * 18, y + 58)));
+            if (isActiveOffHandSlot())
+                this.addSlot(new Slot(playerInventory, Inventory.SLOT_OFFHAND, x + 166, y + 58) {
+                    public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                        return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+                    }
+                });
         }
     }
 
@@ -105,7 +117,5 @@ public abstract class OEBaseMenu extends AbstractContainerMenu {
         return slots.stream().filter(n -> n.container != getPlayerInventory()).collect(Collectors.toList());
     }
 
-    public boolean isBlock() {
-        return !(getContainer() instanceof ItemContainer);
-    }
+    abstract public boolean isBlock();
 }
