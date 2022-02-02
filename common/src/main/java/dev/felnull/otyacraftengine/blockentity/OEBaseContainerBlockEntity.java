@@ -28,8 +28,10 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public void onSync(CompoundTag tag) {
-        if (getItems() != null)
+        if (getItems() != null) {
+            getItems().clear();
             ContainerHelper.loadAllItems(tag, getItems());
+        }
     }
 
     @Override
