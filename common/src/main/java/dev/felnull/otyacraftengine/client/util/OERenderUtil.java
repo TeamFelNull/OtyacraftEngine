@@ -748,4 +748,21 @@ public class OERenderUtil {
     public static float getParSecond(long loopTime) {
         return (float) (System.currentTimeMillis() % loopTime) / (float) loopTime;
     }
+
+    public static String getWidthString(String text, float maxWidth, String exit) {
+        int wh = mc.font.width(text);
+        if (maxWidth >= wh)
+            return text;
+        int exwh = mc.font.width(exit);
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : text.toCharArray()) {
+            sb.append(c);
+            if (mc.font.width(sb.toString()) > maxWidth - exwh)
+                break;
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(exit);
+        return sb.toString();
+    }
 }
