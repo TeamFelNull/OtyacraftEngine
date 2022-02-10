@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements IClientSyncbleBlockEntity, IInstructionBlockEntity, ItemDroppedBlockEntity {
 
@@ -19,19 +20,14 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public CompoundTag getSyncData(ServerPlayer player, CompoundTag tag) {
-        if (getItems() != null) {
-            ContainerHelper.saveAllItems(tag, getItems());
-            return tag;
-        }
-        return null;
+        ContainerHelper.saveAllItems(tag, getItems());
+        return tag;
     }
 
     @Override
     public void onSync(CompoundTag tag) {
-        if (getItems() != null) {
-            getItems().clear();
-            ContainerHelper.loadAllItems(tag, getItems());
-        }
+        getItems().clear();
+        ContainerHelper.loadAllItems(tag, getItems());
     }
 
     @Override
@@ -49,47 +45,37 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
         return stillValid(player);
     }
 
+    @NotNull
     abstract public NonNullList<ItemStack> getItems();
 
     @Override
     public int getContainerSize() {
-        if (getItems() == null)
-            return 0;
         return getItems().size();
     }
 
     @Override
     public boolean isEmpty() {
-        if (getItems() == null)
-            return true;
+
         return getItems().stream().allMatch(ItemStack::isEmpty);
     }
 
     @Override
     public ItemStack getItem(int i) {
-        if (getItems() == null)
-            return null;
         return getItems().get(i);
     }
 
     @Override
     public ItemStack removeItem(int i, int j) {
-        if (getItems() == null)
-            return null;
         return ContainerHelper.removeItem(getItems(), i, j);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int i) {
-        if (getItems() == null)
-            return null;
         return ContainerHelper.takeItem(getItems(), i);
     }
 
     @Override
     public void setItem(int i, ItemStack stack) {
-        if (getItems() == null)
-            return;
         ItemStack itemstack = getItems().get(i);
         boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);
         getItems().set(i, stack);
@@ -109,22 +95,18 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public void clearContent() {
-        if (getItems() == null)
-            return;
         getItems().clear();
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (getItems() != null)
-            ContainerHelper.loadAllItems(tag, getItems());
+        ContainerHelper.loadAllItems(tag, getItems());
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
-        if (getItems() != null)
-            ContainerHelper.saveAllItems(tag, getItems());
+        ContainerHelper.saveAllItems(tag, getItems());
         return super.save(tag);
     }
 
@@ -134,8 +116,6 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public NonNullList<ItemStack> getDroppedItems() {
-        if (getItems() == null)
-            return null;
         return getItems();
     }
 }

@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.handler;
+package dev.felnull.otyacraftengine.server.handler;
 
 import dev.architectury.networking.NetworkManager;
 import dev.felnull.otyacraftengine.blockentity.IInstructionBlockEntity;
@@ -15,7 +15,7 @@ public class ServerMessageHandler {
             if (!message.blockEntityExistence.check(player.getLevel()))
                 return;
             var ibe = (IInstructionBlockEntity) player.getLevel().getBlockEntity(message.blockEntityExistence.blockPos());
-            if (ibe.canInstructionWith(player, message.name, message.num, message.data)) {
+            if (ibe != null && ibe.canInstructionWith(player, message.name, message.num, message.data)) {
                 CompoundTag retag = ibe.onInstruction(player, message.name, message.num, message.data);
                 if (retag != null)
                     NetworkManager.sendToPlayer(player, OEPackets.BLOCK_ENTITY_INSTRUCTION_RETURN, new OEPackets.BlockEntityInstructionMessage(message.instructionScreenID, message.blockEntityExistence, message.name, message.num, retag).toFBB());

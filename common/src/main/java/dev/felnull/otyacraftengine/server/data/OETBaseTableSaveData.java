@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.data;
+package dev.felnull.otyacraftengine.server.data;
 
 import dev.felnull.otyacraftengine.util.OENbtUtil;
 import net.minecraft.nbt.CompoundTag;

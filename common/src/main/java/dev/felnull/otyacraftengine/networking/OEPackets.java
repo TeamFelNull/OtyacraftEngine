@@ -3,7 +3,7 @@ package dev.felnull.otyacraftengine.networking;
 import dev.architectury.networking.NetworkManager;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.handler.ClientMessageHandler;
-import dev.felnull.otyacraftengine.handler.ServerMessageHandler;
+import dev.felnull.otyacraftengine.server.handler.ServerMessageHandler;
 import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

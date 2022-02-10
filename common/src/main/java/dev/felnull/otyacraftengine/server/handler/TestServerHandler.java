@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.handler;
+package dev.felnull.otyacraftengine.server.handler;
 
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.server.level.ServerLevel;
