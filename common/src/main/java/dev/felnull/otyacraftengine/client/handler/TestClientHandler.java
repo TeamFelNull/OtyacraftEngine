@@ -12,9 +12,14 @@ import dev.felnull.otyacraftengine.client.gui.screen.TestScreen;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.KillCommand;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
@@ -27,6 +32,7 @@ public class TestClientHandler {
         FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad);
         MoreRenderEvent.RENDER_ITEM_IN_HAND.register(TestClientHandler::onRenderHand);
         ClientEvent.CHANGE_HAND_HEIGHT.register(TestClientHandler::changeHandHeight);
+        ClientEvent.POSE_HUMANOID_ARM.register(TestClientHandler::poseHumanoidArm);
         KeyMappingRegistry.register(TEST_KEY);
     }
 
@@ -66,6 +72,15 @@ public class TestClientHandler {
             if (oldStack.getDisplayName().getString().equals(newStack.getDisplayName().getString())) {
                 return EventResult.interruptFalse();
             }
+        }*/
+        return EventResult.pass();
+    }
+
+    public static EventResult poseHumanoidArm(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity) {
+       /* if (hand == InteractionHand.MAIN_HAND && livingEntity.getMainHandItem().is(Items.BOW)) {
+            model.rightArm.xRot = (float) (-OERenderUtil.getParSecond(1000) * Math.PI);
+            model.leftArm.xRot = (float) (-(1f - OERenderUtil.getParSecond(1000)) * Math.PI);
+            return EventResult.interruptFalse();
         }*/
         return EventResult.pass();
     }

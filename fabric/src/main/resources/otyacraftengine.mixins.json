@@ -8,6 +8,7 @@
     "VoxelShapeMixin"
   ],
   "client": [
+    "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
     "client.ModelBakeryMixin",
