@@ -57,6 +57,10 @@ public class RadioButton extends AbstractButton implements IOEBaseComponent {
         this.onPress.accept(this);
     }
 
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     public boolean selected() {
         return this.selected;
     }
