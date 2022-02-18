@@ -5,11 +5,12 @@
   "compatibilityLevel": "JAVA_16",
   "client": [
     "client.BlockEntityWithoutLevelRendererMixin",
+    "client.HumanoidModelMixin",
+    "client.ItemInHandLayerMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
     "client.ModelBakeryMixin",
-    "client.SubtitleMixin",
-    "client.HumanoidModelMixin"
+    "client.SubtitleMixin"
   ],
   "mixins": [
     "LivingEntityMixin",

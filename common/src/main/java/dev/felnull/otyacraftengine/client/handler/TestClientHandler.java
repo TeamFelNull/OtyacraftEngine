@@ -12,14 +12,15 @@ import dev.felnull.otyacraftengine.client.gui.screen.TestScreen;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.commands.KillCommand;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
@@ -34,6 +35,7 @@ public class TestClientHandler {
         ClientEvent.CHANGE_HAND_HEIGHT.register(TestClientHandler::changeHandHeight);
         ClientEvent.POSE_HUMANOID_ARM.register(TestClientHandler::poseHumanoidArm);
         KeyMappingRegistry.register(TEST_KEY);
+        MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(TestClientHandler::renderArmWithItem);
     }
 
     public static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
@@ -80,6 +82,24 @@ public class TestClientHandler {
        /* if (hand == InteractionHand.MAIN_HAND && livingEntity.getMainHandItem().is(Items.BOW)) {
             model.rightArm.xRot = (float) (-OERenderUtil.getParSecond(1000) * Math.PI);
             model.leftArm.xRot = (float) (-(1f - OERenderUtil.getParSecond(1000)) * Math.PI);
+            return EventResult.interruptFalse();
+        }*/
+        return EventResult.pass();
+    }
+
+    public static EventResult renderArmWithItem(ItemInHandLayer<? extends LivingEntity, ? extends EntityModel<?>> layer, LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+        /*if (itemStack.is(Items.APPLE)) {
+            poseStack.pushPose();
+            ModelPart modelPart = ((HeadedModel) layer.getParentModel()).getHead();
+            float f = modelPart.xRot;
+            modelPart.xRot = Mth.clamp(modelPart.xRot, -0.5235988F, 1.5707964F);
+            modelPart.translateAndRotate(poseStack);
+            modelPart.xRot = f;
+            CustomHeadLayer.translateToHead(poseStack, false);
+            boolean bl = humanoidArm == HumanoidArm.LEFT;
+            poseStack.translate((bl ? -2.5F : 2.5F) / 16.0F, -0.0625D, 0.0D);
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(livingEntity, itemStack, ItemTransforms.TransformType.HEAD, false, poseStack, multiBufferSource, i);
+            poseStack.popPose();
             return EventResult.interruptFalse();
         }*/
         return EventResult.pass();
