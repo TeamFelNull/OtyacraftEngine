@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;

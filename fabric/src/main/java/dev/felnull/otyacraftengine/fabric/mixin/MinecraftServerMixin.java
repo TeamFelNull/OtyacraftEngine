@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.mixin;
 
-import dev.felnull.otyacraftengine.api.event.common.MoreLifecycleEvent;
+import dev.felnull.otyacraftengine.event.MoreLifecycleEvent;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

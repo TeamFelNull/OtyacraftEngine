@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.forge.mixin.client;
 
 
-import dev.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientHooks;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;

@@ -1,14 +1,10 @@
 package dev.felnull.otyacraftengine;
 
 import dev.felnull.fnjln.FelNullJavaLibraryNatives;
-import dev.felnull.otyacraftengine.block.TestBlock;
-import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
-import dev.felnull.otyacraftengine.server.data.OEWorldData;
-import dev.felnull.otyacraftengine.server.handler.ServerHandler;
-import dev.felnull.otyacraftengine.server.handler.TestServerHandler;
-import dev.felnull.otyacraftengine.item.TestItem;
 import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
 import dev.felnull.otyacraftengine.networking.OEPackets;
+import dev.felnull.otyacraftengine.server.data.OEWorldData;
+import dev.felnull.otyacraftengine.server.handler.ServerHandler;
 import dev.felnull.otyacraftengine.util.OEStringUtil;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
@@ -33,18 +29,10 @@ public class OtyacraftEngine {
         OEWorldData.init();
         PlayerItemLocations.init();
         if (isTestMode())
-            testInit();
+            TestInit.init();
     }
 
     public static boolean isTestMode() {
         return CONFIG.testMode;
     }
-
-    public static void testInit() {
-        TestServerHandler.init();
-        TestItem.init();
-        TestBlock.init();
-        TestBlockEntity.init();
-    }
-
 }

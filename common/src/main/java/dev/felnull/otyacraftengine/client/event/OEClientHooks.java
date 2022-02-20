@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.api.event.client;
+package dev.felnull.otyacraftengine.client.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;

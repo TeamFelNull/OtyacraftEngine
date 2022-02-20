@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.forge.mixin.client;
 
-import dev.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.world.InteractionHand;

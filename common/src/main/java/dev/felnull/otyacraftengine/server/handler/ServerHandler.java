@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.server.handler;
 
 import dev.architectury.event.events.common.LifecycleEvent;
-import dev.felnull.otyacraftengine.api.event.common.MoreLifecycleEvent;
+import dev.felnull.otyacraftengine.event.MoreLifecycleEvent;
 import dev.felnull.otyacraftengine.server.data.WorldDataManager;
 import net.minecraft.server.MinecraftServer;
 

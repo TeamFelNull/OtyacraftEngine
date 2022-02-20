@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.forge.client.handler;
 
-import dev.felnull.otyacraftengine.api.event.client.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientHooks;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

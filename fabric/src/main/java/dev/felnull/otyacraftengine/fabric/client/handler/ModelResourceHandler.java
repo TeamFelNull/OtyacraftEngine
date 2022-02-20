@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.client.handler;
 
-import dev.felnull.otyacraftengine.api.event.client.FabricOBJLoaderEvent;
+import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.fabric.client.model.OBJLoader;
 import net.fabricmc.fabric.api.client.model.*;
 import net.minecraft.client.resources.model.ModelResourceLocation;

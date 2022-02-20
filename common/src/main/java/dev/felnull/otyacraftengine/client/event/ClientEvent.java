@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.api.event.client;
+package dev.felnull.otyacraftengine.client.event;
 
 import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
