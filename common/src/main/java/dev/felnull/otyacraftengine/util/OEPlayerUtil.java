@@ -17,12 +17,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class OEPlayerUtil {
-    private static final String UUID_BY_NAME_URL = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
-    private static final String NAME_BY_UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s";
+    public static final String NAME_BY_UUID_URL = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
+    public static final String UUID_BY_NAME_URL = "https://api.mojang.com/users/profiles/minecraft/%s";
 
     public static Optional<UUID> getUUIDByName(String name) {
         try {
-            JsonObject jo = OEURLUtil.getJson(new URL(String.format(NAME_BY_UUID_URL, name)));
+            JsonObject jo = OEURLUtil.getJson(new URL(String.format(UUID_BY_NAME_URL, name)));
             String uuidstr = jo.get("id").getAsString();
             return Optional.of(FNStringUtil.fromNoHyphenStringToUUID(uuidstr));
         } catch (Exception ex) {
@@ -33,13 +33,13 @@ public class OEPlayerUtil {
 
     public static CompletableFuture<Void> getUUIDByNameAsync(String name, Consumer<Optional<UUID>> uuid) {
         try {
-            return OEURLUtil.getJsonAsync(new URL(String.format(NAME_BY_UUID_URL, name)), n -> {
+            return OEURLUtil.getJsonAsync(new URL(String.format(UUID_BY_NAME_URL, name)), n -> {
                 String na = null;
                 try {
                     na = n.get("id").getAsString();
                 } catch (Exception ignored) {
                 }
-                uuid.accept(Optional.of(FNStringUtil.fromNoHyphenStringToUUID(na)));
+                uuid.accept(na == null ? Optional.empty() : Optional.of(FNStringUtil.fromNoHyphenStringToUUID(na)));
             });
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
@@ -49,7 +49,7 @@ public class OEPlayerUtil {
 
     public static Optional<String> getNameByUUID(UUID uuid) {
         try {
-            JsonObject jo = OEURLUtil.getJson(new URL(String.format(UUID_BY_NAME_URL, uuid.toString())));
+            JsonObject jo = OEURLUtil.getJson(new URL(String.format(NAME_BY_UUID_URL, uuid.toString())));
             String name = jo.get("name").getAsString();
             return Optional.ofNullable(name);
         } catch (Exception ignored) {
@@ -59,7 +59,7 @@ public class OEPlayerUtil {
 
     public static CompletableFuture<Void> getNameByUUIDAsync(UUID id, Consumer<Optional<String>> name) {
         try {
-            return OEURLUtil.getJsonAsync(new URL(String.format(UUID_BY_NAME_URL, id.toString())), n -> {
+            return OEURLUtil.getJsonAsync(new URL(String.format(NAME_BY_UUID_URL, id.toString())), n -> {
                 String na = null;
                 try {
                     na = n.get("name").getAsString();

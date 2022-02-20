@@ -2,10 +2,9 @@ package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.util.OEPlayerUtil;
+import dev.felnull.otyacraftengine.client.util.OEClientUtil;
 import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,6 +15,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.UUID;
 
 public class TestItem extends Item implements IEquipmentItem {
     public TestItem(Properties properties) {
@@ -29,23 +30,11 @@ public class TestItem extends Item implements IEquipmentItem {
         ItemStack stack = player.getItemInHand(interactionHand);
 
         if (level.isClientSide()) {
-           /* try {
-                var img = FNURLUtil.getStream(new URL("https://cdn.discordapp.com/attachments/887769442019323924/892670356358324264/pinki.gif")).readAllBytes();
-                var simg = OEImageUtil.reductionSize(img, 3145728L);
-                Files.write(Paths.get("test.gif"), simg);
-            } catch (Exception ex) {
-                player.displayClientMessage(new TextComponent(ex.getLocalizedMessage()), false);
-            }*/
-/*            var edge = OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "music_manager"));
-            var shape = OEVoxelShapeUtil.getShapeFromResource(new ResourceLocation(OtyacraftEngine.MODID, "music_manager_simpl"));
-            var genShape = TentativeVoxelShapeGenerator.generate(shape, edge);
-            try {
-                Files.writeString(Paths.get("genmodel.json"), new Gson().toJson(genShape));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-            var uu = OEPlayerUtil.getUUIDByName("MoriMori_0317_jp");
-            player.displayClientMessage(new TextComponent(uu.toString()), false);
+            var ui = player.getGameProfile().getName();
+            for (int i = 0; i < 30; i++) {
+                var tx = OEClientUtil.getPlayerUUIDByName(UUID.randomUUID().toString());
+                System.out.println(tx);
+            }
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);

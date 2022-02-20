@@ -3,23 +3,25 @@ package dev.felnull.otyacraftengine.client.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.client.gui.subtitle.IDynamicSubtitle;
+import dev.felnull.otyacraftengine.client.loader.PlayerInfoManager;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import dev.felnull.otyacraftengine.util.OELangUtil;
-import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.SubtitleOverlay;
 import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class OEClientUtil {
     protected static final Map<String, GameProfile> PLAYER_PROFILES = new HashMap<>();
-    protected static final Map<UUID, String> PLAYER_NAME_UUIDS = new HashMap<>();
-    protected static final List<UUID> LOADING_PLAYER_NAMES = new ArrayList<>();
     private static final Minecraft mc = Minecraft.getInstance();
 
     /**
@@ -73,22 +75,24 @@ public class OEClientUtil {
      * @param uuid プレイヤーUUID
      * @return 名前
      */
-    public static Optional<String> getPlayerNameByUUID(UUID uuid) {
-        if (mc.player.connection.getPlayerInfo(uuid) != null)
-            return Optional.of(mc.player.connection.getPlayerInfo(uuid).getProfile().getName());
+    public static Optional<String> getPlayerNameByUUID(@NotNull UUID uuid) {
+        var pi = mc.player.connection.getPlayerInfo(uuid);
+        if (pi != null)
+            return Optional.of(pi.getProfile().getName());
+        return PlayerInfoManager.getInstance().getNameByUUID(uuid);
+    }
 
-        if (PLAYER_NAME_UUIDS.containsKey(uuid))
-            return Optional.ofNullable(PLAYER_NAME_UUIDS.get(uuid));
-
-        if (LOADING_PLAYER_NAMES.contains(uuid))
-            return Optional.empty();
-
-        LOADING_PLAYER_NAMES.contains(uuid);
-        OEPlayerUtil.getNameByUUIDAsync(uuid, n -> mc.submit(() -> {
-            PLAYER_NAME_UUIDS.put(uuid, n.orElse(null));
-            LOADING_PLAYER_NAMES.remove(uuid);
-        }));
-        return Optional.empty();
+    /**
+     * プレイヤーのUUIDを名前から取得
+     *
+     * @param name プレイヤー名
+     * @return uuid
+     */
+    public static Optional<UUID> getPlayerUUIDByName(@NotNull String name) {
+        var pi = mc.player.connection.getPlayerInfo(name);
+        if (pi != null)
+            return Optional.of(pi.getProfile().getId());
+        return PlayerInfoManager.getInstance().getUUIDByName(name);
     }
 
     /**
