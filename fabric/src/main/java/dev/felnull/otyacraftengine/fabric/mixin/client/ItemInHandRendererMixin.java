@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.client.event.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -33,7 +33,7 @@ public abstract class ItemInHandRendererMixin {
 
     @Redirect(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderArmWithItem(Lnet/minecraft/client/player/AbstractClientPlayer;FFLnet/minecraft/world/InteractionHand;FLnet/minecraft/world/item/ItemStack;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
     private void injected(ItemInHandRenderer instance, AbstractClientPlayer abstractClientPlayer, float f, float g, InteractionHand interactionHand, float h, ItemStack itemStack, float i, PoseStack poseStack, MultiBufferSource multiBufferSource, int j) {
-        if (OEClientHooks.onRenderHand(poseStack, multiBufferSource, interactionHand, j, f, g, h, i, itemStack))
+        if (OEClientEventHooks.onRenderHand(poseStack, multiBufferSource, interactionHand, j, f, g, h, i, itemStack))
             renderArmWithItem(abstractClientPlayer, f, g, interactionHand, h, itemStack, i, poseStack, multiBufferSource, j);
     }
 
@@ -41,12 +41,12 @@ public abstract class ItemInHandRendererMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isHandsBusy()Z"))
     private void tick(CallbackInfo ci) {
         var mitem = minecraft.player.getMainHandItem();
-        if (!OEClientHooks.onChangeHandHeight(InteractionHand.MAIN_HAND, this.mainHandItem, mitem)) {
+        if (!OEClientEventHooks.onChangeHandHeight(InteractionHand.MAIN_HAND, this.mainHandItem, mitem)) {
             this.mainHandItem = mitem;
         }
 
         var oitem = minecraft.player.getOffhandItem();
-        if (!OEClientHooks.onChangeHandHeight(InteractionHand.OFF_HAND, this.offHandItem, oitem)) {
+        if (!OEClientEventHooks.onChangeHandHeight(InteractionHand.OFF_HAND, this.offHandItem, oitem)) {
             this.offHandItem = oitem;
         }
     }

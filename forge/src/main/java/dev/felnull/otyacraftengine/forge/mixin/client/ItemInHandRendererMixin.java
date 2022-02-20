@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.forge.mixin.client;
 
-import dev.felnull.otyacraftengine.client.event.OEClientHooks;
+import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.world.InteractionHand;
@@ -25,12 +25,12 @@ public class ItemInHandRendererMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isHandsBusy()Z"))
     private void tick(CallbackInfo ci) {
         var mitem = minecraft.player.getMainHandItem();
-        if (!OEClientHooks.onChangeHandHeight(InteractionHand.MAIN_HAND, this.mainHandItem, mitem)) {
+        if (!OEClientEventHooks.onChangeHandHeight(InteractionHand.MAIN_HAND, this.mainHandItem, mitem)) {
             this.mainHandItem = mitem;
         }
 
         var oitem = minecraft.player.getOffhandItem();
-        if (!OEClientHooks.onChangeHandHeight(InteractionHand.OFF_HAND, this.offHandItem, oitem)) {
+        if (!OEClientEventHooks.onChangeHandHeight(InteractionHand.OFF_HAND, this.offHandItem, oitem)) {
             this.offHandItem = oitem;
         }
     }
