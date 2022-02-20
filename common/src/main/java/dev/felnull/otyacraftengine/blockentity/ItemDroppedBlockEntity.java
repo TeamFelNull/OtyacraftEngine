@@ -9,4 +9,10 @@ public interface ItemDroppedBlockEntity {
     default public boolean isRetainDrop() {
         return false;
     }
+
+    default public ItemStack createRetainDropItem() {
+        return ItemStack.EMPTY;
+    }
+
+    public boolean isRetainEmpty();
 }

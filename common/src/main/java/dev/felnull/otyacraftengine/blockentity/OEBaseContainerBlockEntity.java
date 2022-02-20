@@ -55,7 +55,6 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
 
     @Override
     public boolean isEmpty() {
-
         return getItems().stream().allMatch(ItemStack::isEmpty);
     }
 
@@ -117,5 +116,10 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
     @Override
     public NonNullList<ItemStack> getDroppedItems() {
         return getItems();
+    }
+
+    @Override
+    public boolean isRetainEmpty() {
+        return isEmpty();
     }
 }

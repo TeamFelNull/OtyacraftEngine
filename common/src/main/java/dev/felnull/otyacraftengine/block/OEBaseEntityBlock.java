@@ -13,6 +13,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -61,21 +62,41 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         if (!blockState.is(blockState2.getBlock())) {
             var be = level.getBlockEntity(blockPos);
-            if (be instanceof Container container) {
-                if (level instanceof ServerLevel) {
+            if (level instanceof ServerLevel) {
+                if (be instanceof ItemDroppedBlockEntity itemDroppedBlock) {
+                    if (!itemDroppedBlock.isRetainDrop())
+                        Containers.dropContents(level, blockPos, itemDroppedBlock.getDroppedItems());
+                } else if (be instanceof Container container) {
                     Containers.dropContents(level, blockPos, container);
                 }
-                if (analogOutput)
-                    level.updateNeighbourForOutputSignal(blockPos, this);
             }
-            if (be instanceof ItemDroppedBlockEntity itemDroppedBlock) {
-                if (!itemDroppedBlock.isRetainDrop())
-                    Containers.dropContents(level, blockPos, itemDroppedBlock.getDroppedItems());
-            }
+            if (be instanceof Container && analogOutput)
+                level.updateNeighbourForOutputSignal(blockPos, this);
+
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
 
+
+    @Override
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        var be = level.getBlockEntity(blockPos);
+        if (be instanceof ItemDroppedBlockEntity itemDroppedBlock && itemDroppedBlock.isRetainDrop()) {
+            if (!level.isClientSide && player.isCreative() && !itemDroppedBlock.isRetainEmpty()) {
+                var itemStack = itemDroppedBlock.createRetainDropItem();
+
+                if (be instanceof BaseContainerBlockEntity named) {
+                    if (named.hasCustomName())
+                        itemStack.setHoverName(named.getCustomName());
+                }
+
+                ItemEntity itemEntity = new ItemEntity(level, (double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D, itemStack);
+                itemEntity.setDefaultPickUpDelay();
+                level.addFreshEntity(itemEntity);
+            }
+        }
+        super.playerWillDestroy(level, blockPos, blockState, player);
+    }
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
@@ -141,15 +162,8 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock implements Simpl
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof ItemDroppedBlockEntity icbe) {
-            if (icbe.isRetainDrop()) {
-                builder = builder.withDynamicDrop(CONTENTS, (lootContext, consumer) -> {
-                    for (int i = 0; i < icbe.getDroppedItems().size(); ++i) {
-                        consumer.accept(icbe.getDroppedItems().get(i));
-                    }
-                });
-            }
-        }
+        if (blockEntity instanceof ItemDroppedBlockEntity icbe && icbe.isRetainDrop())
+            return List.of(icbe.createRetainDropItem());
         return super.getDrops(blockState, builder);
     }
 }
