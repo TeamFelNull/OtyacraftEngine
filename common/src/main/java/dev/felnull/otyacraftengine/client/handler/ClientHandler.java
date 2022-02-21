@@ -5,6 +5,7 @@ import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.loader.PlayerInfoManager;
+import dev.felnull.otyacraftengine.client.loader.URLTextureManager;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
 import dev.felnull.otyacraftengine.util.OEItemUtil;
 import dev.felnull.otyacraftengine.util.OETagUtil;
@@ -30,13 +31,17 @@ public class ClientHandler {
     }
 
     private static void onJoin(LocalPlayer localPlayer) {
-        ClientUtilInit.clear();
-        PlayerInfoManager.getInstance().reload();
+        onReset();
     }
 
     private static void onQuit(LocalPlayer localPlayer) {
+        onReset();
+    }
+
+    private static void onReset() {
         ClientUtilInit.clear();
         PlayerInfoManager.getInstance().reload();
+        URLTextureManager.getInstance().reload();
     }
 
     private static void onTooltip(ItemStack itemStack, List<Component> list, TooltipFlag tooltipFlag) {

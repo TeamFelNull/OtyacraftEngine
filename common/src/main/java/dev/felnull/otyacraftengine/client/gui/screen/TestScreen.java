@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.gui.components.RadioButton;
+import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 
@@ -48,6 +49,7 @@ public class TestScreen extends Screen {
         this.renderBackground(poseStack);
         super.render(poseStack, x, y, f);
 
+        OERenderUtil.drawPlayerFace(poseStack, UUID.fromString("0f286fc2-0c86-42d5-8518-c306cad74f03"), 0, 0, height);
 
         //   OERenderUtil.drawText(poseStack, OETextureUtil.getPlayerTexture(MinecraftProfileTexture.Type.SKIN,UUID.fromString("5c751dd1-0882-4f31-ad61-c4ee928c4595")), x, y, 0xFFFFFF);
   /*      var tex = OETextureUtil.getURLTextureAsyncLoad("https://cdn.discordapp.com/attachments/887769442019323924/888494682492010519/gabaana_dadhi.png", true);

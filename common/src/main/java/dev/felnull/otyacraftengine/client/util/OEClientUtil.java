@@ -76,9 +76,11 @@ public class OEClientUtil {
      * @return 名前
      */
     public static Optional<String> getPlayerNameByUUID(@NotNull UUID uuid) {
-        var pi = mc.player.connection.getPlayerInfo(uuid);
-        if (pi != null)
-            return Optional.of(pi.getProfile().getName());
+        if (mc.player != null) {
+            var pi = mc.player.connection.getPlayerInfo(uuid);
+            if (pi != null)
+                return Optional.of(pi.getProfile().getName());
+        }
         return PlayerInfoManager.getInstance().getNameByUUID(uuid);
     }
 

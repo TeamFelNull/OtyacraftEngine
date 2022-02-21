@@ -12,5 +12,6 @@
   "text.autoconfig.otyacraftengine.option.showTagTooltip": "Show tag tooltip",
   "text.autoconfig.otyacraftengine.option.showModNameTooltip": "Show mod name tooltip",
   "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShape",
+  "text.autoconfig.otyacraftengine.option.maxURLTextureLoadThreadCount": "URL texture load thread max count",
   "_comment.la": "Last"
 }

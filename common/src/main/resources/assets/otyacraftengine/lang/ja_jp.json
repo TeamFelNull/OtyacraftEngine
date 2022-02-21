@@ -11,5 +11,6 @@
   "text.autoconfig.otyacraftengine.option.showTagTooltip": "ツールチップでタグを表示する",
   "text.autoconfig.otyacraftengine.option.showModNameTooltip": "ツールチップでMOD名を表示する",
   "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShapeを有効化",
+  "text.autoconfig.otyacraftengine.option.maxURLTextureLoadThreadCount": "URLテクスチャ読み込みスレッド最大数",
   "_comment.la": "Last"
 }

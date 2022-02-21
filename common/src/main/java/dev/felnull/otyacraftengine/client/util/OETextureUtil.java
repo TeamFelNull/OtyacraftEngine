@@ -11,7 +11,6 @@ import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import dev.felnull.otyacraftengine.util.OEPaths;
-import dev.felnull.otyacraftengine.util.OEPlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -19,6 +18,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -36,7 +36,6 @@ public class OETextureUtil {
     protected static final Map<UUID, TextureLoadResult> NATIVE_TEXTURES = new HashMap<>();
     protected static final List<UUID> LOAD_TEXTURES = new ArrayList<>();
     protected static ResourceLocation LOADING_ICON;
-    private static final Map<UUID, String> UUID_PLAYER_NAMES = new HashMap<>();
     protected static final Map<String, String> URL_FILENAME_INDEX = new HashMap<>();
     protected static final Map<String, UUID> URL_TEXTURES_UUIDS = new HashMap<>();
     protected static final List<String> URL_LOAD_TEXTURES = new ArrayList<>();
@@ -136,15 +135,15 @@ public class OETextureUtil {
      * @return プレイヤーテクスチャロケーション
      */
     @Nullable
-    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, String name) {
-        if (name == null)
-            return null;
-        if (mc.player != null && mc.player.connection.getPlayerInfo(name) != null) {
-            return switch (type) {
-                case SKIN -> mc.player.connection.getPlayerInfo(name).getSkinLocation();
-                case CAPE -> mc.player.connection.getPlayerInfo(name).getCapeLocation();
-                case ELYTRA -> mc.player.connection.getPlayerInfo(name).getElytraLocation();
-            };
+    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, @NotNull String name) {
+        if (mc.player != null) {
+            var pl = mc.player.connection.getPlayerInfo(name);
+            if (pl != null)
+                return switch (type) {
+                    case SKIN -> pl.getSkinLocation();
+                    case CAPE -> pl.getCapeLocation();
+                    case ELYTRA -> pl.getElytraLocation();
+                };
         }
         var gameProfile = OEClientUtil.getClientPlayerProfile(name);
         var tex = mc.getSkinManager().getInsecureSkinInformation(gameProfile).get(type);
@@ -160,28 +159,17 @@ public class OETextureUtil {
      * @return プレイヤーテクスチャロケーション
      * @since 2.0
      */
-    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, UUID uuid) {
-        if (mc.player != null && mc.player.connection.getPlayerInfo(uuid) != null) {
-            return switch (type) {
-                case SKIN -> mc.player.connection.getPlayerInfo(uuid).getSkinLocation();
-                case CAPE -> mc.player.connection.getPlayerInfo(uuid).getCapeLocation();
-                case ELYTRA -> mc.player.connection.getPlayerInfo(uuid).getElytraLocation();
-            };
+    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, @NotNull UUID uuid) {
+        if (mc.player != null) {
+            var pl = mc.player.connection.getPlayerInfo(uuid);
+            if (pl != null)
+                return switch (type) {
+                    case SKIN -> pl.getSkinLocation();
+                    case CAPE -> pl.getCapeLocation();
+                    case ELYTRA -> pl.getElytraLocation();
+                };
         }
-
-        String name = UUID_PLAYER_NAMES.get(uuid);
-
-        if (name == null) {
-            UUID_PLAYER_NAMES.put(uuid, "");
-            OEPlayerUtil.getNameByUUIDAsync(uuid, n -> mc.submit(() -> {
-                UUID_PLAYER_NAMES.put(uuid, n.orElse(uuid.toString()));
-            }));
-            return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
-        } else if (name.isEmpty()) {
-            return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
-        }
-
-        return getPlayerTexture(type, name);
+        return OEClientUtil.getPlayerNameByUUID(uuid).map(n -> getPlayerTexture(type, n)).orElseGet(() -> type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null);
     }
 
     /**

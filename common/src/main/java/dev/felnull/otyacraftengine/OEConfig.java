@@ -11,6 +11,8 @@ public class OEConfig implements ConfigData {
 
     public boolean ikisugiVoxelShape = true;
 
+    //public int maxURLTextureLoadThreadCount = 5;
+
     @ConfigEntry.Gui.RequiresRestart
     @ConfigEntry.Category("debug")
     public boolean testMode = false;
