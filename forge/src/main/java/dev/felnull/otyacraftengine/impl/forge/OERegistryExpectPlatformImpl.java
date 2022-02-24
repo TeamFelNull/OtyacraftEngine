@@ -38,10 +38,10 @@ public class OERegistryExpectPlatformImpl {
     }
 
     public static VillagerTrades.ItemListing createTradeEmeraldForItems(ItemLike item, int cost, int maxUses, int villagerXp) {
-        return new VillagerTrades.EmeraldForItems(item,cost,maxUses,villagerXp);
+        return new VillagerTrades.EmeraldForItems(item, cost, maxUses, villagerXp);
     }
 
     public static VillagerTrades.ItemListing createTradeItemsForEmeralds(ItemStack itemStack, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
-        return new VillagerTrades.ItemsForEmeralds(itemStack,emeraldCost,numberOfItems,maxUses,villagerXp);
+        return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
     }
 }

@@ -1,7 +1,6 @@
 package dev.felnull.otyacraftengine.impl.fabric;
 
 import com.google.common.collect.ImmutableSet;
-import dev.architectury.registry.level.entity.trade.TradeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
 import net.fabricmc.fabric.mixin.object.builder.PointOfInterestTypeAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -41,10 +40,10 @@ public class OERegistryExpectPlatformImpl {
     }
 
     public static VillagerTrades.ItemListing createTradeEmeraldForItems(ItemLike item, int cost, int maxUses, int villagerXp) {
-        return new VillagerTrades.EmeraldForItems(item,cost,maxUses,villagerXp);
+        return new VillagerTrades.EmeraldForItems(item, cost, maxUses, villagerXp);
     }
 
     public static VillagerTrades.ItemListing createTradeItemsForEmeralds(ItemStack itemStack, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
-        return new VillagerTrades.ItemsForEmeralds(itemStack,emeraldCost,numberOfItems,maxUses,villagerXp);
+        return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
     }
 }
