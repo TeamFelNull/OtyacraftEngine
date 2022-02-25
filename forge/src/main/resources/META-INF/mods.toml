@@ -8,6 +8,7 @@ modId = "otyacraftengine"
 version = "${version}"
 displayName = "Otyacraft Engine"
 authors = "MORIMORI0317"
+credits = "FelNull developers"
 description = '''This mod is an integrated library used by FelNull developers.\nThe Ikisugi MOD...'''
 logoFile = "logo.png"
 
