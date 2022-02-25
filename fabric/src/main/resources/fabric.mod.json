@@ -10,10 +10,11 @@
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine",
-    "sources": "https://github.com/TeamFelnull/OtyacraftEngine"
+    "sources": "https://github.com/TeamFelnull/OtyacraftEngine",
+    "issues": "https://github.com/TeamFelnull/IamMusicPlayer/issues"
   },
   "license": "GNU LGPLv3",
-  "icon": "assets/otyacraftengine/logo.png",
+  "icon": "assets/otyacraftengine/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
