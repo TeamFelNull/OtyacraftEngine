@@ -22,7 +22,7 @@ publishing {
                   builtBy remapSourcesJar
               }*/
             from components.java
-            pom {
+          /*  pom {
                 name = 'OtyacraftEngine'
                 description = 'My mod integration library.'
                 licenses {
@@ -42,7 +42,7 @@ publishing {
                         email = 'teamfelnull@m.servg.red'
                     }
                 }
-            }
+            }*/
         }
     }
 
