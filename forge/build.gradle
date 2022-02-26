@@ -90,13 +90,12 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
-            artifactId = "${rootProject.archives_base_name}-${project.name}"
-            /* artifact(remapJar)
-           artifact(sourcesJar) {
-               builtBy remapSourcesJar
-           }*/
-            from components.java
-     /*       pom {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifact(remapJar)
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+            pom {
                 name = 'OtyacraftEngine'
                 description = 'My mod integration library.'
                 licenses {
@@ -116,7 +115,7 @@ publishing {
                         email = 'teamfelnull@m.servg.red'
                     }
                 }
-            }*/
+            }
         }
     }
 
@@ -129,47 +128,47 @@ publishing {
             }
         }
     }
+}
 
-    if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
-        curseforge {
-            apiKey = System.getenv('curesforgeapikey')
-            project {
-                id = "${rootProject.curesforge_id}"
-                changelog = ""
-                releaseType = "${rootProject.release_type}"
-                addGameVersion "${rootProject.minecraft_version}"
-                addGameVersion 'Java 16'
+if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
+    curseforge {
+        apiKey = System.getenv('curesforgeapikey')
+        project {
+            id = "${rootProject.curesforge_id}"
+            changelog = ""
+            releaseType = "${rootProject.release_type}"
+            addGameVersion "${rootProject.minecraft_version}"
+            addGameVersion 'Java 16'
 
-                mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
-                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge"
+            mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge"
 
-                    requiredDependency 'cloth-config-forge'
-                    requiredDependency 'architectury-forge'
-                }
+                requiredDependency 'cloth-config-forge'
+                requiredDependency 'architectury-forge'
+            }
 
-                addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-dev.jar")) {
-                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge-dev"
-                }
-                addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-source.jar")) {
-                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge-source"
-                }
+            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-dev.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge-dev"
+            }
+            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-source.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge-source"
             }
         }
     }
+}
 
-    if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
-        task publishModrinth(type: com.modrinth.minotaur.TaskModrinthUpload) {
+if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
+    task publishModrinth(type: com.modrinth.minotaur.TaskModrinthUpload) {
 
-            token = System.getenv('modrinthapikey')
-            projectId = "${rootProject.modrinth_id}"
-            versionName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge"
-            versionNumber = "${rootProject.minecraft_version}-${project.mod_version}-Forge"
-            uploadFile = file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")
-            versionType = "${project.release_type}".toUpperCase()
-            addGameVersion("${rootProject.minecraft_version}")
-            addLoader("forge")
-            addGameVersion "${rootProject.minecraft_version}"
-        }
-
+        token = System.getenv('modrinthapikey')
+        projectId = "${rootProject.modrinth_id}"
+        versionName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge"
+        versionNumber = "${rootProject.minecraft_version}-${project.mod_version}-Forge"
+        uploadFile = file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")
+        versionType = "${project.release_type}".toUpperCase()
+        addGameVersion("${rootProject.minecraft_version}")
+        addLoader("forge")
+        addGameVersion "${rootProject.minecraft_version}"
     }
+
 }
