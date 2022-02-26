@@ -141,11 +141,12 @@ curseforge {
             releaseType = "${rootProject.release_type}"
             addGameVersion "${rootProject.minecraft_version}"
             addGameVersion 'Java 16'
+            addGameVersion "Fabric"
 
             relations {
-                requiredDependency = 'fabric-api'
-                requiredDependency = 'cloth-config'
-                requiredDependency = 'architectury-fabric'
+                requiredDependency "fabric-api"
+                requiredDependency "cloth-config"
+                requiredDependency "architectury-fabric"
             }
 
             mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
