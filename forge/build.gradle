@@ -137,14 +137,14 @@ curseforge {
             id = "${rootProject.curesforge_id}"
             changelog = ""
             releaseType = "${rootProject.release_type}"
-            addGameVersion "${rootProject.minecraft_version}"
-            addGameVersion 'Java 16'
+            addGameVersion = "${rootProject.minecraft_version}"
+            addGameVersion = 'Java 16'
 
             mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
                 displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Forge"
 
-                requiredDependency 'cloth-config-forge'
-                requiredDependency 'architectury-forge'
+                requiredDependency = 'cloth-config-forge'
+                requiredDependency = 'architectury-forge'
             }
 
             addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-dev.jar")) {
