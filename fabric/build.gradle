@@ -131,8 +131,9 @@ publishing {
         }
     }
 }
-if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
-    curseforge {
+
+curseforge {
+    if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
         apiKey = System.getenv('curesforgeapikey')
         project {
             id = "${rootProject.curesforge_id}"
@@ -159,11 +160,12 @@ if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '
                 uploadTask.dependsOn("build")
             }
         }
-        options {
-            forgeGradleIntegration = false
-        }
+    }
+    options {
+        forgeGradleIntegration = false
     }
 }
+
 
 if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
     task publishModrinth(type: com.modrinth.minotaur.TaskModrinthUpload) {

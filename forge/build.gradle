@@ -130,8 +130,8 @@ publishing {
     }
 }
 
-if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
-    curseforge {
+curseforge {
+    if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
         apiKey = System.getenv('curesforgeapikey')
         project {
             id = "${rootProject.curesforge_id}"
