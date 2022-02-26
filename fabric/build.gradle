@@ -156,8 +156,8 @@ curseforge {
             addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-dev.jar")) {
                 displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-dev"
             }
-            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-source.jar")) {
-                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-source"
+            addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-sources.jar")) {
+                displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-sources"
             }
             afterEvaluate {
                 uploadTask.dependsOn("build")
