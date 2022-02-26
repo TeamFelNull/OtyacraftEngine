@@ -144,6 +144,7 @@ publishing {
                 mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
                     displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric"
 
+                    requiredDependency 'fabric-api'
                     requiredDependency 'cloth-config'
                     requiredDependency 'architectury-fabric'
                 }
@@ -154,6 +155,12 @@ publishing {
                 addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-source.jar")) {
                     displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-source"
                 }
+                afterEvaluate {
+                    uploadTask.dependsOn("build")
+                }
+            }
+            options {
+                forgeGradleIntegration = false
             }
         }
     }
