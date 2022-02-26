@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine;
 
 import dev.felnull.fnjln.FelNullJavaLibraryNatives;
+import dev.felnull.otyacraftengine.advancement.OECriteriaTriggers;
 import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import dev.felnull.otyacraftengine.server.data.OEWorldData;
@@ -27,6 +28,7 @@ public class OtyacraftEngine {
         ServerHandler.init();
         OEPackets.init();
         OEWorldData.init();
+        OECriteriaTriggers.init();
         PlayerItemLocations.init();
         if (isTestMode())
             TestInit.init();

@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.forge.mixin.client;
+package dev.felnull.otyacraftengine.mixin.client;
 
 
 import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
@@ -16,14 +16,15 @@ public class HumanoidModelMixin<T extends LivingEntity> {
     @Inject(method = "poseRightArm", at = @At("HEAD"), cancellable = true)
     private void poseRightArm(T livingEntity, CallbackInfo ci) {
         var hand = livingEntity.getMainArm() == HumanoidArm.RIGHT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        if (!OEClientEventHooks.poseHumanoidArm(HumanoidArm.RIGHT, hand, (HumanoidModel<T>) (Object) this, livingEntity))
+        if (!OEClientEventHooks.onPoseHumanoidArm(HumanoidArm.RIGHT, hand, (HumanoidModel<T>) (Object) this, livingEntity))
             ci.cancel();
     }
 
     @Inject(method = "poseLeftArm", at = @At("HEAD"), cancellable = true)
     private void poseLeftArm(T livingEntity, CallbackInfo ci) {
         var hand = livingEntity.getMainArm() == HumanoidArm.LEFT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        if (!OEClientEventHooks.poseHumanoidArm(HumanoidArm.LEFT, hand, (HumanoidModel<T>) (Object) this, livingEntity))
+        if (!OEClientEventHooks.onPoseHumanoidArm(HumanoidArm.LEFT, hand, (HumanoidModel<T>) (Object) this, livingEntity))
             ci.cancel();
     }
 }
+

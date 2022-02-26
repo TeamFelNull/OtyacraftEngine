@@ -1,6 +1,6 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
 }
 
 architectury {
@@ -16,7 +16,6 @@ subprojects {
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-
         mappings loom.officialMojangMappings()
     }
 }
@@ -32,14 +31,14 @@ allprojects {
 
     repositories {
         maven {
-            name = "felnull maven"
+            name = "felnull"
             url = "https://maven.felnull.dev/"
         }
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 16
+        options.release = 17
     }
 
     java {

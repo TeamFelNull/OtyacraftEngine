@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "dev.felnull.otyacraftengine.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "client.HumanoidModelMixin",
+    "client.IntegratedServerMixin",
+    "client.ItemInHandLayerMixin",
+    "client.ItemInHandRendererMixin",
+    "client.LevelRendererMixin",
+    "client.ModelBakeryAccessor",
+    "client.SubtitleMixin"
+  ],
+  "mixins": [
+    "InventoryChangeTriggerMixin",
+    "LivingEntityMixin",
+    "MinecraftServerMixin",
+    "VoxelShapeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

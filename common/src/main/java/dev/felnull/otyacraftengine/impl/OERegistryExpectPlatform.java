@@ -42,14 +42,4 @@ public class OERegistryExpectPlatform {
     public static VillagerProfession createVillagerProfession(ResourceLocation name, PoiType jobPoiType, ImmutableSet<Item> requestedItems, ImmutableSet<Block> secondaryPoi, @Nullable SoundEvent workSound) {
         throw new AssertionError();
     }
-
-    @ExpectPlatform
-    public static VillagerTrades.ItemListing createTradeEmeraldForItems(ItemLike item, int cost, int maxUses, int villagerXp) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static VillagerTrades.ItemListing createTradeItemsForEmeralds(ItemStack itemStack, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
-        throw new AssertionError();
-    }
 }

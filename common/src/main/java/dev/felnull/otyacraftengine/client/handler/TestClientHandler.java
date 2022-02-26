@@ -36,6 +36,11 @@ public class TestClientHandler {
         ClientEvent.POSE_HUMANOID_ARM.register(TestClientHandler::poseHumanoidArm);
         KeyMappingRegistry.register(TEST_KEY);
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(TestClientHandler::renderArmWithItem);
+        ClientEvent.INTEGRATED_SERVER_PAUSE.register(TestClientHandler::onIntegratedPauseChange);
+    }
+
+    public static void onIntegratedPauseChange(boolean paused) {
+       // System.out.println(paused);
     }
 
     public static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {

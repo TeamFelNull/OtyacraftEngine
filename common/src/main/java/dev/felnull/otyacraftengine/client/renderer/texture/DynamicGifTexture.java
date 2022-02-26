@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.client.renderer.texture;
 
 
 import com.mojang.blaze3d.platform.NativeImage;
-import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.Tickable;
 
@@ -21,7 +20,8 @@ public class DynamicGifTexture extends DynamicTexture implements Tickable {
     public void tick() {
         int ct = Math.toIntExact(getFrameByTime(System.currentTimeMillis() % duration));
         if (ct != last) {
-            OEClientExpectPlatform.setNonClosePixels(this, frames[ct].image());
+
+            this.pixels = frames[ct].image();
             upload();
             last = ct;
         }

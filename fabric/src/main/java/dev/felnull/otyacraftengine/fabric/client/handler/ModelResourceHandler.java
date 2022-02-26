@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.client.handler;
 
-import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
+import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import dev.felnull.otyacraftengine.fabric.client.model.OBJLoader;
 import net.fabricmc.fabric.api.client.model.*;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -18,7 +18,7 @@ public class ModelResourceHandler implements ModelResourceProvider, ModelVariant
     @Override
     public @Nullable UnbakedModel loadModelResource(ResourceLocation resourceId, ModelProviderContext context) {
         try {
-            if (FabricOBJLoaderEvent.LOAD.invoker().load(resourceId).isTrue())
+            if (OEClientEventHooks.onFabricOBJLoader(resourceId))
                 return OBJLoader.getInstance().loadModel(new ResourceLocation(resourceId.getNamespace(), "models/" + resourceId.getPath()));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -29,7 +29,7 @@ public class ModelResourceHandler implements ModelResourceProvider, ModelVariant
     @Override
     public @Nullable UnbakedModel loadModelVariant(ModelResourceLocation modelId, ModelProviderContext context) throws ModelProviderException {
         try {
-            if (FabricOBJLoaderEvent.LOAD.invoker().load(modelId).isTrue())
+            if (OEClientEventHooks.onFabricOBJLoader(modelId))
                 return OBJLoader.getInstance().loadModel(new ResourceLocation(modelId.getNamespace(), "models/" + modelId.getPath()));
         } catch (Exception ex) {
             ex.printStackTrace();

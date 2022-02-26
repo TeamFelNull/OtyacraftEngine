@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.impl.fabric;
 
+import dev.felnull.otyacraftengine.fabric.mixin.MobBucketItemAccessor;
 import dev.felnull.otyacraftengine.fabric.tag.TagCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,6 @@ public class OEExpectPlatformImpl {
     }
 
     public static EntityType<?> getMobBucketEntity(MobBucketItem mobBucketItem) {
-        return mobBucketItem.type;
+        return ((MobBucketItemAccessor) mobBucketItem).getType();
     }
 }

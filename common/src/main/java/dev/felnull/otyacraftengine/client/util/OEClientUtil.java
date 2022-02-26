@@ -143,7 +143,7 @@ public class OEClientUtil {
      * @param duplicate 　複製可能か
      */
     public static void addSubtitle(SubtitleOverlay.Subtitle subtitle, boolean duplicate) {
-        var subs = OEClientExpectPlatform.getSubtitles();
+        var subs = mc.gui.subtitleOverlay.subtitles;
         if (!duplicate) {
             for (SubtitleOverlay.Subtitle sub : subs) {
                 if (sub.getText().equals(subtitle.getText())) {

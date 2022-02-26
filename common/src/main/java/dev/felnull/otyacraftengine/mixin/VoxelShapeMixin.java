@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.forge.mixin;
+package dev.felnull.otyacraftengine.mixin;
 
 import dev.felnull.otyacraftengine.block.IIkisugiVoxelShape;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -20,4 +20,3 @@ public class VoxelShapeMixin implements IIkisugiVoxelShape {
         EDGES = edges;
     }
 }
-

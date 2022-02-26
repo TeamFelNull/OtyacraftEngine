@@ -1,4 +1,5 @@
-package dev.felnull.otyacraftengine.forge.mixin.client;
+package dev.felnull.otyacraftengine.mixin.client;
+
 
 import dev.felnull.otyacraftengine.client.gui.subtitle.ICustomTimeSubtitle;
 import dev.felnull.otyacraftengine.client.gui.subtitle.IDynamicSubtitle;
@@ -50,4 +51,5 @@ public class SubtitleMixin implements IDynamicSubtitle, ICustomTimeSubtitle {
         cir.setReturnValue(cir.getReturnValue() - customTime);
     }
 }
+
 

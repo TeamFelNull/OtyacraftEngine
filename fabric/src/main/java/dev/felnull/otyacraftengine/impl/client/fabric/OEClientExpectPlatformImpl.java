@@ -22,37 +22,10 @@ import java.util.List;
 public class OEClientExpectPlatformImpl {
     private static final Minecraft mc = Minecraft.getInstance();
 
-    public static void setNonClosePixels(DynamicTexture texture, NativeImage image) {
-        texture.pixels = image;
-    }
-
     public static InputConstants.Key getKey(KeyMapping key) {
         return key.key;
     }
-
-    public static void freeTexture(ResourceLocation location) {
-        TextureManager textureManager = mc.getTextureManager();
-        AbstractTexture abstractTexture = textureManager.byPath.get(location);
-        if (abstractTexture != null) {
-            if (abstractTexture instanceof Tickable)
-                textureManager.tickableTextures.remove(abstractTexture);
-            textureManager.safeClose(location, abstractTexture);
-        }
-    }
-
-    public static List<SubtitleOverlay.Subtitle> getSubtitles() {
-        return mc.gui.subtitleOverlay.subtitles;
-    }
-
     public static void registerItemRenderer(ItemLike item, BEWLItemRenderer renderer) {
         BuiltinItemRendererRegistry.INSTANCE.register(item, (stack, mode, matrices, vertexConsumers, light, overlay) -> renderer.render(stack, mode, matrices, vertexConsumers, OERenderUtil.getPartialTicks(), light, overlay));
-    }
-
-    public static void bakeryLoadTopLevel(ModelBakery bakery, ModelResourceLocation location) {
-        bakery.loadTopLevel(location);
-    }
-
-    public static float getPausePartialTick() {
-        return mc.pausePartialTick;
     }
 }

@@ -9,11 +9,9 @@ import dev.felnull.fnjl.util.FNMath;
 import dev.felnull.fnjl.util.FNURLUtil;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
-import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import dev.felnull.otyacraftengine.util.OEPaths;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.*;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -428,7 +426,13 @@ public class OETextureUtil {
      * @param location テクスチャID
      */
     public static void freeTexture(ResourceLocation location) {
-        OEClientExpectPlatform.freeTexture(location);
+        TextureManager textureManager = mc.getTextureManager();
+        AbstractTexture abstractTexture = textureManager.byPath.get(location);
+        if (abstractTexture != null) {
+            if (abstractTexture instanceof Tickable)
+                textureManager.tickableTextures.remove(abstractTexture);
+            textureManager.safeClose(location, abstractTexture);
+        }
     }
 
     private static record TextureLoadResult(ResourceLocation location, boolean failure) {

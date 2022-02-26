@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public interface ClientEvent {
     Event<ChangeHandHeight> CHANGE_HAND_HEIGHT = EventFactory.createEventResult();
     Event<PoseHumanoidArm> POSE_HUMANOID_ARM = EventFactory.createEventResult();
+    Event<PauseChange> INTEGRATED_SERVER_PAUSE = EventFactory.createLoop();
 
     public interface ChangeHandHeight {
         EventResult changeHandHeight(InteractionHand hand, ItemStack oldStack, ItemStack newStack);
@@ -19,5 +20,9 @@ public interface ClientEvent {
 
     public interface PoseHumanoidArm {
         EventResult poseHumanoidArm(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity);
+    }
+
+    public interface PauseChange {
+        void onPauseChange(boolean paused);
     }
 }

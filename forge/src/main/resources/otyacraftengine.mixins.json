@@ -1,21 +1,12 @@
 {
   "required": true,
-  "minVersion": "0.8",
   "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "client.BlockEntityWithoutLevelRendererMixin",
-    "client.HumanoidModelMixin",
-    "client.ItemInHandLayerMixin",
-    "client.ItemInHandRendererMixin",
-    "client.LevelRendererMixin",
-    "client.ModelBakeryMixin",
-    "client.SubtitleMixin"
+    "client.ModelBakeryMixin"
   ],
   "mixins": [
-    "LivingEntityMixin",
-    "MinecraftServerMixin",
-    "VoxelShapeMixin"
+    "MobBucketItemAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.fnjl.util.FNColorUtil;
-import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -689,7 +688,7 @@ public class OERenderUtil {
     }
 
     public static float getPartialTicks() {
-        return mc.isPaused() ? OEClientExpectPlatform.getPausePartialTick() : mc.getFrameTime();
+        return mc.isPaused() ? mc.pausePartialTick : mc.getFrameTime();
     }
 
     public static void renderPlayerArm(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {

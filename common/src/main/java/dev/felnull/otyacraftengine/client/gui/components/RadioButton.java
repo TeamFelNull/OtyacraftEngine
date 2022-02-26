@@ -79,7 +79,7 @@ public class RadioButton extends AbstractButton implements IOEBaseComponent {
 
     @Override
     public void renderButton(PoseStack poseStack, int i, int j, float f) {
-        OERenderUtil.drawTexture(texture, poseStack, x, y, textureX + (this.isHovered() ? 20 : 0), textureY + (this.selected ? 20 : 0), textureWidth, textureHeight, textureSizeWidth, textureSizeHeight);
+        OERenderUtil.drawTexture(texture, poseStack, x, y, textureX + (this.isHoveredOrFocused() ? 20 : 0), textureY + (this.selected ? 20 : 0), textureWidth, textureHeight, textureSizeWidth, textureSizeHeight);
         this.renderBg(poseStack, mc, i, j);
         if (this.showLabel) {
             drawRdoString(poseStack, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);

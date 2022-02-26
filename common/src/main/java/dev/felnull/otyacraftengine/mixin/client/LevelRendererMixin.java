@@ -1,4 +1,5 @@
-package dev.felnull.otyacraftengine.forge.mixin.client;
+package dev.felnull.otyacraftengine.mixin.client;
+
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -24,9 +25,6 @@ public abstract class LevelRendererMixin {
 
     @Shadow
     private ClientLevel level;
-
-    @Shadow
-    private boolean needsUpdate;
 
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void renderHitOutline(PoseStack poseStack, VertexConsumer vertexConsumer, Entity entity, double d, double e, double f, BlockPos blockPos, BlockState blockState, CallbackInfo ci) {

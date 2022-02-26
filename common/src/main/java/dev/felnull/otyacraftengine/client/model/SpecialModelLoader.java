@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.client.model;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.mixin.client.ModelBakeryAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -31,6 +31,6 @@ public class SpecialModelLoader {
     }
 
     public synchronized void load(ModelBakery bakery) {
-        LOCATIONS.forEach(n -> OEClientExpectPlatform.bakeryLoadTopLevel(bakery, n));
+        LOCATIONS.forEach(n -> ((ModelBakeryAccessor) bakery).loadTopLevelInvoker(n));
     }
 }

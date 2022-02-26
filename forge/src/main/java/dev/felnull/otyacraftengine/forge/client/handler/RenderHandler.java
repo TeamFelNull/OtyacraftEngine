@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class RenderHandler {
     @SubscribeEvent
     public static void onRenderHand(RenderHandEvent e) {
-        if (!OEClientEventHooks.onRenderHand(e.getMatrixStack(), e.getBuffers(), e.getHand(), e.getLight(), e.getPartialTicks(), e.getInterpolatedPitch(), e.getSwingProgress(), e.getEquipProgress(), e.getItemStack()))
+        if (!OEClientEventHooks.onRenderHand(e.getPoseStack(), e.getMultiBufferSource(), e.getHand(), e.getPackedLight(), e.getPartialTicks(), e.getInterpolatedPitch(), e.getSwingProgress(), e.getEquipProgress(), e.getItemStack()))
             e.setCanceled(true);
     }
 }

@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.forge.mixin.client;
+package dev.felnull.otyacraftengine.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ItemInHandLayerMixin {
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void renderArmWithItem(LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
-        if (!OEClientEventHooks.renderArmWithItem((ItemInHandLayer<? extends LivingEntity, ? extends EntityModel<?>>) (Object) this, livingEntity, itemStack, transformType, humanoidArm, poseStack, multiBufferSource, i))
+        if (!OEClientEventHooks.onRenderArmWithItem((ItemInHandLayer<? extends LivingEntity, ? extends EntityModel<?>>) (Object) this, livingEntity, itemStack, transformType, humanoidArm, poseStack, multiBufferSource, i))
             ci.cancel();
     }
 }

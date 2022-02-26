@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.impl.forge;
 
+import dev.felnull.otyacraftengine.forge.mixin.MobBucketItemAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -22,6 +23,6 @@ public class OEExpectPlatformImpl {
     }
 
     public static EntityType<?> getMobBucketEntity(MobBucketItem mobBucketItem) {
-        return mobBucketItem.type;
+        return ((MobBucketItemAccessor) mobBucketItem).getFishTypeInvoker();
     }
 }

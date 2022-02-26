@@ -30,5 +30,4 @@ public class OtyacraftEngineClient {
         SpecialModelLoader.getInstance().registerLoadModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
 
     }
-
 }

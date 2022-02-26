@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.forge.mixin.client;
+package dev.felnull.otyacraftengine.mixin.client;
 
 import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import net.minecraft.client.Minecraft;

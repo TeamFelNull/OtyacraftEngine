@@ -1,15 +1,15 @@
 package dev.felnull.otyacraftengine.server.handler;
 
 import dev.architectury.event.events.common.LifecycleEvent;
-import dev.felnull.otyacraftengine.event.MoreLifecycleEvent;
 import dev.felnull.otyacraftengine.server.data.WorldDataManager;
+import dev.felnull.otyacraftengine.server.event.ServerEvent;
 import net.minecraft.server.MinecraftServer;
 
 public class ServerHandler {
     public static void init() {
         LifecycleEvent.SERVER_STARTING.register(ServerHandler::onServerStarting);
         LifecycleEvent.SERVER_STOPPED.register(ServerHandler::onServerStopped);
-        MoreLifecycleEvent.SERVER_SAVING.register(ServerHandler::onServerSave);
+        ServerEvent.SERVER_SAVING.register(ServerHandler::onServerSave);
     }
 
     private static void onServerStarting(MinecraftServer server) {

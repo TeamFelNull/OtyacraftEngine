@@ -104,7 +104,7 @@ public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseCompon
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        int k = this.getYImage(this.isHovered(bnum));
+        int k = this.getYImage(this.isHoveredOrFocused(bnum));
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
@@ -120,8 +120,8 @@ public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseCompon
         return list;
     }
 
-    public boolean isHovered(int lnum) {
-        return isHovered() && hoveredNumber == lnum && !isHoveredScrollBar;
+    public boolean isHoveredOrFocused(int lnum) {
+        return isHoveredOrFocused() && hoveredNumber == lnum && !isHoveredScrollBar;
     }
 
     public Component getMessage(int index) {
@@ -150,13 +150,13 @@ public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseCompon
     }
 
     public boolean isHoveredScrollBar() {
-        return isHovered() && isHoveredScrollBar;
+        return this.isHoveredOrFocused() && isHoveredScrollBar;
     }
 
     public void onPress(int num) {
         int cn = getCurrentFirstNumber() + num;
 
-        if (cn < list.size() && isHovered(num))
+        if (cn < list.size() && isHoveredOrFocused(num))
             onPress.onPressEntry(this, list.get(cn), cn, num);
     }
 

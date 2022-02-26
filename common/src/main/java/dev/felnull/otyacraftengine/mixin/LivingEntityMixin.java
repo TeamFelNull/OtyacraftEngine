@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.fabric.mixin;
+package dev.felnull.otyacraftengine.mixin;
 
 import dev.felnull.otyacraftengine.item.IEquipmentItem;
 import net.minecraft.world.entity.EquipmentSlot;

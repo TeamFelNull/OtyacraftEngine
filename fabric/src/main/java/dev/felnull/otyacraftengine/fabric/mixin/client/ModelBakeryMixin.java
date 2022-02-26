@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.mixin.client;
 
+
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
 import net.minecraft.client.color.block.BlockColors;
@@ -50,3 +51,4 @@ public abstract class ModelBakeryMixin {
         }
     }
 }
+
