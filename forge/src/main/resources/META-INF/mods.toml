@@ -8,9 +8,13 @@ modId = "otyacraftengine"
 version = "${version}"
 displayName = "Otyacraft Engine"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine"
+updateJSONURL = "https://raw.githubusercontent.com/TeamFelnull/OtyacraftEngine/master/version_check.json"
 authors = "MORIMORI0317"
 credits = "FelNull developers"
-description = '''This mod is an integrated library used by FelNull developers.\nThe Ikisugi MOD...'''
+description = '''
+This mod is an integrated library used by FelNull developers.
+The Ikisugi MOD...
+'''
 logoFile = "logo.png"
 
 [modproperties.otyacraftengine]

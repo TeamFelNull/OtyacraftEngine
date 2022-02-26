@@ -1,5 +1,7 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "1.2.1"
 }
 repositories {
     maven { url "https://maven.terraformersmc.com/releases/" }
@@ -126,6 +128,47 @@ publishing {
                 username = "felnull"
                 password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
             }
+        }
+    }
+
+    if (System.getenv('curesforgeapikey') != null && "${project.curesforge_id}" != '') {
+        curseforge {
+            apiKey = System.getenv('curesforgeapikey')
+            project {
+                id = "${rootProject.curesforge_id}"
+                changelog = ""
+                releaseType = "${rootProject.release_type}"
+                addGameVersion "${rootProject.minecraft_version}"
+                addGameVersion 'Java 16'
+
+                mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")) {
+                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric"
+
+                    requiredDependency 'cloth-config'
+                    requiredDependency 'architectury-fabric'
+                }
+
+                addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-dev.jar")) {
+                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-dev"
+                }
+                addArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.mod_version}-source.jar")) {
+                    displayName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric-source"
+                }
+            }
+        }
+    }
+
+    if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
+        task publishModrinth(type: com.modrinth.minotaur.TaskModrinthUpload) {
+            token = System.getenv('modrinthapikey')
+            projectId = "${rootProject.modrinth_id}"
+            versionName = "${rootProject.mod_display_name}-${rootProject.minecraft_version}-${project.mod_version}-Fabric"
+            versionNumber = "${rootProject.minecraft_version}-${project.mod_version}-Fabric"
+            uploadFile = file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}-${project.mod_version}.jar")
+            versionType = "${project.release_type}".toUpperCase()
+            addGameVersion("${rootProject.minecraft_version}")
+            addLoader("fabric")
+            addGameVersion "${rootProject.minecraft_version}"
         }
     }
 }
