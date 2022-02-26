@@ -89,15 +89,15 @@ components.java {
     }
 }
 
-
 publishing {
     publications {
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
-            artifact(remapJar)
+           /* artifact(remapJar)
             artifact(sourcesJar) {
                 builtBy remapSourcesJar
-            }
+            }*/
+            from components.java
             pom {
                 name = 'OtyacraftEngine'
                 description = 'My mod integration library.'

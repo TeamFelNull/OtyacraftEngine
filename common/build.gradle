@@ -17,10 +17,11 @@ publishing {
     publications {
         mavenCommon(MavenPublication) {
             artifactId = rootProject.archives_base_name
-            artifact remapJar
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
+            /* artifact(remapJar)
+              artifact(sourcesJar) {
+                  builtBy remapSourcesJar
+              }*/
+            from components.java
             pom {
                 name = 'OtyacraftEngine'
                 description = 'My mod integration library.'
