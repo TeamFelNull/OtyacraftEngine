@@ -137,8 +137,8 @@ curseforge {
             id = "${rootProject.curesforge_id}"
             changelog = ""
             releaseType = "${rootProject.release_type}"
-            addGameVersion = "${rootProject.minecraft_version}"
-            addGameVersion = 'Java 16'
+            addGameVersion "${rootProject.minecraft_version}"
+            addGameVersion 'Java 16'
 
             relations {
                 requiredDependency "cloth-config-forge"
