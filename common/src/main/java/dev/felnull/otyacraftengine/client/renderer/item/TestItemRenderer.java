@@ -6,7 +6,6 @@ import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.item.TestItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -27,9 +26,8 @@ public class TestItemRenderer implements BEWLItemRenderer {
             // var model = OERenderUtil.getBlockModel(Minecraft.getInstance().level.getBlockState(pos));
             // var model = OERenderUtil.getModel(new ModelResourceLocation(new ResourceLocation("apple"), "inventory"));
             var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
-            int col = BiomeColors.getAverageGrassColor(Minecraft.getInstance().level, pos);
-            OERenderUtil.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.cutoutBlockSheet()), model, light, overlay, col);
-
+            //  int col = BiomeColors.getAverageGrassColor(Minecraft.getInstance().level, pos);
+            OERenderUtil.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.cutoutBlockSheet()), model, light, overlay);
         }
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class OEMenuUtil {
     public static void openItemMenu(ServerPlayer player, MenuProvider provider, IPlayerItemLocation location, ItemStack stack, int inventorySize) {
+        if (player.isSpectator()) return;
         MenuRegistry.openExtendedMenu(player, provider, n -> {
             n.writeBoolean(true);
             n.writeNbt(location.toTag());
@@ -25,6 +26,7 @@ public class OEMenuUtil {
     }
 
     public static void openBlockMenu(ServerPlayer player, MenuProvider provider, BlockPos pos, int inventorySize) {
+        if (player.isSpectator()) return;
         MenuRegistry.openExtendedMenu(player, provider, n -> {
             n.writeBoolean(false);
             n.writeBlockPos(pos);

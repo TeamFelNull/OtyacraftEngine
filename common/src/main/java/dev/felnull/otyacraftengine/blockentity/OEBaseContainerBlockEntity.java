@@ -88,7 +88,7 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         if (this.level.getBlockEntity(this.worldPosition) != this)
             return false;
         return isUsableByPlayer(player);

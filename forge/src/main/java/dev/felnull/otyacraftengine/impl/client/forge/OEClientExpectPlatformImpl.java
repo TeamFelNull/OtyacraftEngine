@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.impl.client.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
+import dev.felnull.otyacraftengine.forge.client.renderer.ItemRendererRegisterFG;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.ItemLike;
@@ -14,6 +15,6 @@ public class OEClientExpectPlatformImpl {
     }
 
     public static void registerItemRenderer(ItemLike item, BEWLItemRenderer renderer) {
-        //temRendererRegisterFG.register(item, renderer);
+        ItemRendererRegisterFG.register(item, renderer);
     }
 }
