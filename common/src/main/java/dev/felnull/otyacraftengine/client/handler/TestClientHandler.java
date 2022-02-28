@@ -40,7 +40,7 @@ public class TestClientHandler {
     }
 
     public static void onIntegratedPauseChange(boolean paused) {
-       // System.out.println(paused);
+        // System.out.println(paused);
     }
 
     public static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {

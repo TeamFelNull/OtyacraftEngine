@@ -3,8 +3,8 @@
   "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "client.ModelBakeryMixin",
-    "client.BlockEntityWithoutLevelRendererMixin"
+    "client.BlockEntityWithoutLevelRendererMixin",
+    "client.ModelBakeryMixin"
   ],
   "mixins": [
     "MobBucketItemAccessor"

@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.fabric.mixin.client;
 
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
+import dev.felnull.otyacraftengine.client.entrypoint.OEClientEntryPointManager;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -34,9 +34,12 @@ public abstract class ModelBakeryMixin {
     @Final
     private Map<ResourceLocation, UnbakedModel> unbakedCache;
 
+    @Shadow
+    protected abstract void loadTopLevel(ModelResourceLocation modelResourceLocation);
+
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", shift = At.Shift.AFTER, ordinal = 3))
     private void init(ResourceManager resourceManager, BlockColors blockColors, ProfilerFiller profilerFiller, int i, CallbackInfo ci) {
-        SpecialModelLoader.getInstance().load((ModelBakery) (Object) this);
+        OEClientEntryPointManager.getInstance().call().onModelRegistry(location -> loadTopLevel(new ModelResourceLocation(location, OtyacraftEngine.MODID + "_default")));
     }
 
     @Inject(method = "loadModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/ResourceLocation;<init>(Ljava/lang/String;Ljava/lang/String;)V", ordinal = 1), cancellable = true)

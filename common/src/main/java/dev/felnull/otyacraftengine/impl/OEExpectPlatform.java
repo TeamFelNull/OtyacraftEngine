@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.block.Block;
 
+import java.util.List;
 import java.util.Set;
 
 public class OEExpectPlatform {
@@ -27,6 +28,11 @@ public class OEExpectPlatform {
 
     @ExpectPlatform
     public static EntityType<?> getMobBucketEntity(MobBucketItem mobBucketItem) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static <T> List<T> getEntryPoints(String name, Class<?> annotationClass, Class<T> interfaceClass) {
         throw new AssertionError();
     }
 }

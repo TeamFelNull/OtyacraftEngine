@@ -25,6 +25,9 @@
     ],
     "modmenu": [
       "dev.felnull.otyacraftengine.fabric.integration.ModMenuIntegration"
+    ],
+    "otyacraftengine_client": [
+      "dev.felnull.otyacraftengine.client.entrypoint.MyOEClientEntryPoint"
     ]
   },
   "mixins": [

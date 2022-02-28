@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
-import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,7 +25,7 @@ public class TestRenderer extends AbstractBlockEntityRenderer<TestBlockEntity> {
         //     Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.APPLE), ItemTransforms.TransformType.FIXED, i, j, poseStack, multiBufferSource, 0);
         //      var vc = multiBufferSource.getBuffer(RenderType.lines());
         //      LevelRenderer.renderVoxelShape(poseStack, vc, Blocks.ANVIL.defaultBlockState().getShape(blockEntity.getLevel(), blockEntity.getBlockPos()), 0, 0, 0, 0, 0, 0, 0);
-        var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));//OERenderUtil.getBlockModel(Blocks.STONE.defaultBlockState());
+        var model = OERenderUtil.getSpecialModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));//OERenderUtil.getBlockModel(Blocks.STONE.defaultBlockState());
         var vc = multiBufferSource.getBuffer(Sheets.cutoutBlockSheet());
         poseStack.pushPose();
         float rot = Mth.lerp(f, blockEntity.getOldRoted(), blockEntity.getRoted());

@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.model.SpecialModelLoader;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.item.TestItem;
 import net.minecraft.client.Minecraft;
@@ -25,7 +24,7 @@ public class TestItemRenderer implements BEWLItemRenderer {
             var pos = new BlockPos(Minecraft.getInstance().player.position()).below();
             // var model = OERenderUtil.getBlockModel(Minecraft.getInstance().level.getBlockState(pos));
             // var model = OERenderUtil.getModel(new ModelResourceLocation(new ResourceLocation("apple"), "inventory"));
-            var model = SpecialModelLoader.getInstance().getModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
+            var model = OERenderUtil.getSpecialModel(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
             //  int col = BiomeColors.getAverageGrassColor(Minecraft.getInstance().level, pos);
             OERenderUtil.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.cutoutBlockSheet()), model, light, overlay);
         }

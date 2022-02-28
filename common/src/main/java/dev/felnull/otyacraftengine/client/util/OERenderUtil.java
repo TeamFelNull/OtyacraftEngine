@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.fnjl.util.FNColorUtil;
+import dev.felnull.otyacraftengine.OtyacraftEngine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -763,5 +764,9 @@ public class OERenderUtil {
         sb.deleteCharAt(sb.length() - 1);
         sb.append(exit);
         return sb.toString();
+    }
+
+    public static BakedModel getSpecialModel(ResourceLocation resourceLocation) {
+        return mc.getModelManager().getModel(new ModelResourceLocation(resourceLocation, OtyacraftEngine.MODID + "_default"));
     }
 }

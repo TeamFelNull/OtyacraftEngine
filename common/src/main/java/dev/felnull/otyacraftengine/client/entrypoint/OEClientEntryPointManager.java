@@ -1,0 +1,40 @@
+package dev.felnull.otyacraftengine.client.entrypoint;
+
+import dev.felnull.otyacraftengine.client.model.ModelRegister;
+import dev.felnull.otyacraftengine.util.OEModUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+public class OEClientEntryPointManager {
+    private static final OEClientEntryPointManager INSTANCE = new OEClientEntryPointManager();
+    private final List<IOEClientEntryPoint> ENTRYS = new ArrayList<>();
+    private boolean inited;
+
+    public static OEClientEntryPointManager getInstance() {
+        return INSTANCE;
+    }
+
+    private void init() {
+        if (inited) return;
+        inited = true;
+        ENTRYS.addAll(OEModUtil.getEntryPoints("otyacraftengine_client", OEClientEntryPoint.class, IOEClientEntryPoint.class));
+    }
+
+    public IOEClientEntryPoint call() {
+        init();
+        return new IOEClientEntryPoint() {
+            @Override
+            public void onModelRegistry(ModelRegister register) {
+                consumer(n -> n.onModelRegistry(register));
+            }
+        };
+    }
+
+    private void consumer(Consumer<IOEClientEntryPoint> entryPointConsumer) {
+        for (IOEClientEntryPoint entry : ENTRYS) {
+            entryPointConsumer.accept(entry);
+        }
+    }
+}
