@@ -1,8 +1,10 @@
 package dev.felnull.otyacraftengine.client.entrypoint;
 
-import dev.felnull.otyacraftengine.client.model.ModelRegister;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.function.Consumer;
 
 public interface IOEClientEntryPoint {
-    default void onModelRegistry(ModelRegister register) {
+    default void onModelRegistry(Consumer<ResourceLocation> addModel) {
     }
 }

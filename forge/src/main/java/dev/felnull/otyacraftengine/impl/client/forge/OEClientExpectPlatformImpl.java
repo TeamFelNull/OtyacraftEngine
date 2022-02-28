@@ -5,6 +5,8 @@ import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
 import dev.felnull.otyacraftengine.forge.client.renderer.ItemRendererRegisterFG;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 
 public class OEClientExpectPlatformImpl {
@@ -16,5 +18,9 @@ public class OEClientExpectPlatformImpl {
 
     public static void registerItemRenderer(ItemLike item, BEWLItemRenderer renderer) {
         ItemRendererRegisterFG.register(item, renderer);
+    }
+
+    public static BakedModel getModel(ResourceLocation location) {
+        return mc.getModelManager().getModel(location);
     }
 }

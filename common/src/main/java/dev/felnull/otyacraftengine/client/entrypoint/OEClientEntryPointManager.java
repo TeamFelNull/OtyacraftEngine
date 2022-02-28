@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.client.entrypoint;
 
-import dev.felnull.otyacraftengine.client.model.ModelRegister;
 import dev.felnull.otyacraftengine.util.OEModUtil;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class OEClientEntryPointManager {
         init();
         return new IOEClientEntryPoint() {
             @Override
-            public void onModelRegistry(ModelRegister register) {
+            public void onModelRegistry(Consumer<ResourceLocation> register) {
                 consumer(n -> n.onModelRegistry(register));
             }
         };

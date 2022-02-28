@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.fnjl.util.FNColorUtil;
-import dev.felnull.otyacraftengine.OtyacraftEngine;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -667,13 +665,6 @@ public class OERenderUtil {
         builder.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(combinedOverlayIn).uv2(combinedLightIn).normal(pose.normal(), 0f, 0f, 0f).endVertex();
     }
 
-    public static BakedModel getModel(ModelResourceLocation location) {
-        return mc.getModelManager().getModel(location);
-    }
-
-    public static BakedModel getBlockModel(BlockState state) {
-        return mc.getModelManager().getBlockModelShaper().getBlockModel(state);
-    }
 
     public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
         var bmr = mc.getBlockRenderer().getModelRenderer();
@@ -766,7 +757,5 @@ public class OERenderUtil {
         return sb.toString();
     }
 
-    public static BakedModel getSpecialModel(ResourceLocation resourceLocation) {
-        return mc.getModelManager().getModel(new ModelResourceLocation(resourceLocation, OtyacraftEngine.MODID + "_default"));
-    }
+
 }
