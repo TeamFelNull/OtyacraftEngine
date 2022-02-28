@@ -44,6 +44,6 @@ public class ModelResourceHandler implements ModelResourceProvider, ModelVariant
 
     @Override
     public void provideExtraModels(ResourceManager manager, Consumer<ResourceLocation> out) {
-        OEClientEntryPointManager.getInstance().call().onModelRegistry(out::accept);
+        OEClientEntryPointManager.getInstance().call().onModelRegistry(out);
     }
 }
