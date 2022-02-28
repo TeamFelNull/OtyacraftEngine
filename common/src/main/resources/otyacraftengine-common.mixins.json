@@ -11,6 +11,7 @@
     "client.SubtitleMixin"
   ],
   "mixins": [
+    "EntityMixin",
     "InventoryChangeTriggerMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",

@@ -13,8 +13,12 @@ import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -156,4 +160,23 @@ public class OEClientUtil {
         subs.add(subtitle);
     }
 
+    @Nullable
+    public static File[] openFileChooser(String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects) {
+        var st = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, null, singleFilter, allowMultipleSelects);
+        if (st == null) return null;
+        try {
+            if (allowMultipleSelects) {
+                String[] sp = st.split("\\|");
+                File[] fl = new File[sp.length];
+                for (int i = 0; i < sp.length; i++) {
+                    fl[i] = new File(sp[i]);
+                }
+                return fl;
+            } else {
+                return new File[]{new File(st)};
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

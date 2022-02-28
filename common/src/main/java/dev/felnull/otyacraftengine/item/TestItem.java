@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.UUID;
+import java.util.Arrays;
 
 public class TestItem extends Item implements IEquipmentItem {
     public TestItem(Properties properties) {
@@ -30,11 +30,7 @@ public class TestItem extends Item implements IEquipmentItem {
         ItemStack stack = player.getItemInHand(interactionHand);
 
         if (level.isClientSide()) {
-            var ui = player.getGameProfile().getName();
-            for (int i = 0; i < 30; i++) {
-                var tx = OEClientUtil.getPlayerUUIDByName(UUID.randomUUID().toString());
-                System.out.println(tx);
-            }
+           // System.out.println(Arrays.toString(OEClientUtil.openFileChooser("TEST", null, "image files", false)));
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
