@@ -8,7 +8,6 @@
     "client.ItemInHandLayerMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
-    "client.ModelBakeryAccessor",
     "client.SubtitleMixin"
   ],
   "mixins": [
