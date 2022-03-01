@@ -72,6 +72,14 @@ public class ItemContainer implements Container {
             this.setChanged();
     }
 
+    public Function<Player, Boolean> getValid() {
+        return valid;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
     @Override
     public void setChanged() {
         saveItems();
@@ -91,6 +99,10 @@ public class ItemContainer implements Container {
     public void stopOpen(Player player) {
         Container.super.stopOpen(player);
         saveItems();
+    }
+
+    public NonNullList<ItemStack> getItems() {
+        return items;
     }
 
     public IPlayerItemLocation getLocation() {
