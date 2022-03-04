@@ -29,6 +29,7 @@ configurations {
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
@@ -59,7 +60,6 @@ shadowJar {
     relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
     relocate 'de.javagl', 'dev.felnull.otyacraftengine.libs.de.javagl'
 }
-
 shadowJar {
     exclude "architectury.common.json"
 
@@ -90,6 +90,7 @@ components.java {
         skip()
     }
 }
+
 
 publishing {
     publications {

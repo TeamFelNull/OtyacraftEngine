@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.blockentity;
 
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.block.TestBlock;
 import dev.felnull.otyacraftengine.inventory.TestMenu;
@@ -20,18 +21,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class TestBlockEntity extends OEBaseContainerBlockEntity {
     private static final NonNullList<ItemStack> ITEMS = NonNullList.withSize(0, ItemStack.EMPTY);
-    public static BlockEntityType<TestBlockEntity> TEST_BLOCKENTITY;
+    public static RegistrySupplier<BlockEntityType<TestBlockEntity>> TEST_BLOCKENTITY;
     private float roted;
     private float oldRoted;
 
     public TestBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(TEST_BLOCKENTITY, blockPos, blockState);
+        super(TEST_BLOCKENTITY.get(), blockPos, blockState);
     }
 
     public static void init() {
         DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES_REGISTER = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-        TEST_BLOCKENTITY = BlockEntityType.Builder.of(TestBlockEntity::new, TestBlock.TEST_BLOCK).build(null);
-        BLOCK_ENTITY_TYPES_REGISTER.register("test_block_entity", () -> TEST_BLOCKENTITY);
+        TEST_BLOCKENTITY = BLOCK_ENTITY_TYPES_REGISTER.register("test_block_entity", () -> BlockEntityType.Builder.of(TestBlockEntity::new, TestBlock.TEST_BLOCK.get()).build(null));
         BLOCK_ENTITY_TYPES_REGISTER.register();
     }
 
@@ -76,7 +76,7 @@ public class TestBlockEntity extends OEBaseContainerBlockEntity {
 
     @Override
     protected Component getDefaultName() {
-        return TestBlock.TEST_BLOCK.getName();
+        return TestBlock.TEST_BLOCK.get().getName();
     }
 
     @Override

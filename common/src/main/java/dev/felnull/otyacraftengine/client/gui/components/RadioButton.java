@@ -1,94 +1,69 @@
 package dev.felnull.otyacraftengine.client.gui.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.client.gui.components.base.IOEBaseComponent;
+import dev.felnull.otyacraftengine.client.gui.TextureSpecifyLocation;
+import dev.felnull.otyacraftengine.client.gui.components.base.OEBaseImageWidget;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
-import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@Deprecated
-public class RadioButton extends AbstractButton implements IOEBaseComponent {
-    private final boolean showLabel;
-    private final Supplier<RadioButton[]> group;
-    private final ResourceLocation texture;
-    private final int textureX;
-    private final int textureY;
-    private final int textureWidth;
-    private final int textureHeight;
-    private final int textureSizeWidth;
-    private final int textureSizeHeight;
+public class RadioButton extends OEBaseImageWidget {
+    @Nullable
     private final Consumer<RadioButton> onPress;
+    @NotNull
+    private final Supplier<Set<RadioButton>> group;
+    private boolean showLabel;
     private boolean selected;
 
-    public RadioButton(int x, int y, int w, int h, Component title, boolean selected, boolean showLabel, Supplier<RadioButton[]> group, Consumer<RadioButton> onPress) {
-        this(x, y, w, h, title, selected, showLabel, group, WIDGETS, 0, 0, 20, 20, 256, 256, onPress);
+    public RadioButton(int x, int y, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel) {
+        this(x, y, 20, 20, message, onPress, group, showLabel, new TextureSpecifyLocation(WIDGETS, 0, 0, 20, 20));
     }
 
-    public RadioButton(int x, int y, int w, int h, Component title, boolean selected, boolean showLabel, Supplier<RadioButton[]> group, ResourceLocation texture, int tx, int ty, int tw, int th, int tsX, int tsY, Consumer<RadioButton> onPress) {
-        super(x, y, w, h, title);
-        this.selected = selected;
-        this.showLabel = showLabel;
-        this.group = group;
-        this.texture = texture;
-        this.textureX = tx;
-        this.textureY = ty;
-        this.textureWidth = tw;
-        this.textureHeight = th;
-        this.textureSizeWidth = tsX;
-        this.textureSizeHeight = tsY;
+    public RadioButton(int x, int y, int width, int height, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel, @NotNull TextureSpecifyLocation texture) {
+        super(x, y, width, height, "radioButton", message, texture);
         this.onPress = onPress;
+        this.group = group;
+        this.showLabel = showLabel;
+    }
+
+    @Override
+    public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f) {
+        OERenderUtil.drawTexture(texture.location(), poseStack, x, y, texture.x() + (this.isHoveredOrFocused() ? 20 : 0), texture.y() + (this.selected ? 20 : 0), texture.width(), texture.height(), texture.sizeWidth(), texture.sizeHeight());
+        this.renderBg(poseStack, mc, i, j);
+        if (this.showLabel)
+            drawTextBase(poseStack, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override
     public void onPress() {
         this.selected = true;
-        var rdos = this.group.get();
-        for (RadioButton rdo : rdos) {
-            if (this != rdo) {
+        for (RadioButton rdo : group.get()) {
+            if (this != rdo)
                 rdo.selected = false;
-            }
         }
-        this.onPress.accept(this);
+        if (onPress != null)
+            this.onPress.accept(this);
+    }
+
+    public boolean isShowLabel() {
+        return showLabel;
+    }
+
+    public void setShowLabel(boolean showLabel) {
+        this.showLabel = showLabel;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public boolean selected() {
-        return this.selected;
-    }
-
-    @Override
-    public void updateNarration(NarrationElementOutput narrationElementOutput) {
-        narrationElementOutput.add(NarratedElementType.TITLE, this.createNarrationMessage());
-        if (this.active) {
-            if (this.isFocused()) {
-                narrationElementOutput.add(NarratedElementType.USAGE, new TranslatableComponent("narration.checkbox.usage.focused"));
-            } else {
-                narrationElementOutput.add(NarratedElementType.USAGE, new TranslatableComponent("narration.checkbox.usage.hovered"));
-            }
-        }
-    }
-
-    @Override
-    public void renderButton(PoseStack poseStack, int i, int j, float f) {
-        OERenderUtil.drawTexture(texture, poseStack, x, y, textureX + (this.isHoveredOrFocused() ? 20 : 0), textureY + (this.selected ? 20 : 0), textureWidth, textureHeight, textureSizeWidth, textureSizeHeight);
-        this.renderBg(poseStack, mc, i, j);
-        if (this.showLabel) {
-            drawRdoString(poseStack, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
-        }
-    }
-
-    public void drawRdoString(PoseStack poseStack, Component component, int i, int j, int k) {
-        drawString(poseStack, mc.font, component, i, j, k);
     }
 }

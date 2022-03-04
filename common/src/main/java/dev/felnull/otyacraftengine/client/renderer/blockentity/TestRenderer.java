@@ -47,6 +47,6 @@ public class TestRenderer extends AbstractBlockEntityRenderer<TestBlockEntity> {
     }
 
     public static void init() {
-        BlockEntityRendererRegistry.register(TestBlockEntity.TEST_BLOCKENTITY, TestRenderer::new);
+        BlockEntityRendererRegistry.register(TestBlockEntity.TEST_BLOCKENTITY.get(), TestRenderer::new);
     }
 }

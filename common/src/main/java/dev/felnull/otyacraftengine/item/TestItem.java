@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.item;
 
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
 import net.minecraft.core.Registry;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -33,12 +35,11 @@ public class TestItem extends Item implements IEquipmentItem {
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 
-    public static Item TEST_ITEM;
+    public static RegistrySupplier<Item> TEST_ITEM;
 
     public static void init() {
         DeferredRegister<Item> ITEM_REG = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
-        TEST_ITEM = new TestItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC));
-        ITEM_REG.register("test_item", () -> TEST_ITEM);
+        TEST_ITEM = ITEM_REG.register("test_item", () -> new TestItem(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
         ITEM_REG.register();
     }
 

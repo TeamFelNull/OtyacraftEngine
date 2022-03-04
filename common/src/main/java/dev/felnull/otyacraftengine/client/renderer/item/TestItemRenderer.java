@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class TestItemRenderer implements BEWLItemRenderer {
     public static void init() {
-        ItemRendererRegister.register(TestItem.TEST_ITEM, new TestItemRenderer());
+        ItemRendererRegister.register(TestItem.TEST_ITEM.getOrNull(), new TestItemRenderer());
     }
 
     @Override

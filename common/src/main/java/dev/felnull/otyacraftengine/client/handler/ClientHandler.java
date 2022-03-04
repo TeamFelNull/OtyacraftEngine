@@ -11,7 +11,6 @@ import dev.felnull.otyacraftengine.client.loader.URLTextureManager;
 import dev.felnull.otyacraftengine.client.renderer.GuiDebugRenderer;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
 import dev.felnull.otyacraftengine.util.OEItemUtil;
-import dev.felnull.otyacraftengine.util.OETagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -19,6 +18,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 
@@ -56,12 +56,11 @@ public class ClientHandler {
 
     private static void onTooltip(ItemStack itemStack, List<Component> list, TooltipFlag tooltipFlag) {
         if (itemStack.isEmpty()) return;
-        var item = itemStack.getItem();
 
         if (OtyacraftEngine.CONFIG.showTagTooltip) {
-            var itemTags = OETagUtil.getTags(item);
-            if (item instanceof BlockItem blockItem) {
-                var blockTags = OETagUtil.getTags(blockItem.getBlock());
+            var itemTags = itemStack.getTags().map(TagKey::location).toList();
+            if (itemStack.getItem() instanceof BlockItem blockItem) {
+                var blockTags = blockItem.getBlock().builtInRegistryHolder().tags().map(TagKey::location).toList();
                 Set<ResourceLocation> bothTags = new HashSet<>();
                 boolean firstItem = false;
                 boolean firstBlock = false;
@@ -106,7 +105,7 @@ public class ClientHandler {
             }
             var entityTypes = getEntityTypesByItem(itemStack);
             Set<ResourceLocation> entityTypeTags = new HashSet<>();
-            entityTypes.forEach(n -> entityTypeTags.addAll(OETagUtil.getTags(n)));
+            entityTypes.forEach(n -> entityTypeTags.addAll(n.builtInRegistryHolder().tags().map(TagKey::location).toList()));
             if (!entityTypeTags.isEmpty()) {
                 list.add(new TextComponent("Entity tags").withStyle(ChatFormatting.AQUA));
                 for (ResourceLocation tag : entityTypeTags) {
@@ -116,7 +115,7 @@ public class ClientHandler {
         }
 
         if (OtyacraftEngine.CONFIG.showModNameTooltip) {
-            var modid = Registry.ITEM.getKey(item);
+            var modid = Registry.ITEM.getKey(itemStack.getItem());
             list.add(new TextComponent(Platform.getMod(modid.getNamespace()).getName()).withStyle(ChatFormatting.DARK_GREEN));
         }
     }

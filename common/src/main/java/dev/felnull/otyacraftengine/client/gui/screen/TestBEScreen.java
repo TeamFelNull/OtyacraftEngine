@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.registry.menu.MenuRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.gui.components.RadioButtonV2;
+import dev.felnull.otyacraftengine.client.gui.components.RadioButton;
 import dev.felnull.otyacraftengine.inventory.TestMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -16,7 +16,7 @@ public class TestBEScreen extends OEBEContainerBaseScreen<TestMenu> {
     // private ContainerTab testContainerTab;
 
     public static void fInit() {
-        MenuRegistry.registerScreenFactory(TestMenu.TEST_MENU, TestBEScreen::new);
+        MenuRegistry.registerScreenFactory(TestMenu.TEST_MENU.get(), TestBEScreen::new);
     }
 
     public TestBEScreen(TestMenu abstractContainerMenu, Inventory inventory, Component component) {
@@ -32,7 +32,7 @@ public class TestBEScreen extends OEBEContainerBaseScreen<TestMenu> {
         super.init();
         //  this.addRenderableWidget(new ContainerTab(leftPos + imageWidth, topPos + 30, 30, 30, new TextComponent("TEST")));
 
-        this.addRenderableWidget(new RadioButtonV2(leftPos, topPos, new TextComponent("TEST V2"), null, ImmutableSet::of, true));
+        this.addRenderableWidget(new RadioButton(leftPos, topPos, new TextComponent("TEST V2"), null, ImmutableSet::of, true));
     }
 
     @Override

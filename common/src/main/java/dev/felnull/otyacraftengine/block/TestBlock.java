@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.block;
 
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.blockentity.TestBlockEntity;
 import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
@@ -37,16 +38,15 @@ public class TestBlock extends HorizontalDirectionalEntityBlock {
         super(properties);
     }
 
-    public static Block TEST_BLOCK;
+    public static RegistrySupplier<Block> TEST_BLOCK;
 
     public static void init() {
         DeferredRegister<Block> BLOCK_REG = DeferredRegister.create(OtyacraftEngine.MODID, Registry.BLOCK_REGISTRY);
         DeferredRegister<Item> ITEM_REG = DeferredRegister.create(OtyacraftEngine.MODID, Registry.ITEM_REGISTRY);
-        TEST_BLOCK = new TestBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL));
-        BLOCK_REG.register("test_block", () -> TEST_BLOCK);
-        ITEM_REG.register("test_block", () -> new BlockItem(TEST_BLOCK, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
-        ITEM_REG.register();
+        TEST_BLOCK = BLOCK_REG.register("test_block", () -> new TestBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL)));
         BLOCK_REG.register();
+        ITEM_REG.register("test_block", () -> new BlockItem(TEST_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+        ITEM_REG.register();
     }
 
     @Nullable
@@ -85,6 +85,6 @@ public class TestBlock extends HorizontalDirectionalEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return createTickerHelper(blockEntityType, TestBlockEntity.TEST_BLOCKENTITY, TestBlockEntity::tick);
+        return createTickerHelper(blockEntityType, TestBlockEntity.TEST_BLOCKENTITY.get(), TestBlockEntity::tick);
     }
 }

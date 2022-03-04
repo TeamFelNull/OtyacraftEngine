@@ -11,8 +11,8 @@ public class TestInit {
     public static void init() {
         TestServerHandler.init();
         TestCommonHandler.init();
-        TestItem.init();
         TestBlock.init();
+        TestItem.init();
         TestBlockEntity.init();
         TestMenu.init();
     }

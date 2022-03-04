@@ -38,12 +38,12 @@ public class TestScreen extends Screen {
                 }
             }
         }));*/
-        rdo1 = this.addRenderableWidget(new RadioButton(0, 0, 20, 20, new TextComponent("TEST1"), false, true, () -> new RadioButton[]{rdo1, rdo2}, n -> {
+       /* rdo1 = this.addRenderableWidget(new RadioButton(0, 0, 20, 20, new TextComponent("TEST1"), false, true, () -> new RadioButton[]{rdo1, rdo2}, n -> {
 
         }));
         rdo2 = this.addRenderableWidget(new RadioButton(0, 50, 20, 20, new TextComponent("TEST2"), false, true, () -> new RadioButton[]{rdo1, rdo2}, n -> {
 
-        }));
+        }));*/
     }
 
     @Override
