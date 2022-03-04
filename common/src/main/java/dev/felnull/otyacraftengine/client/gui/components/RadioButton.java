@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.client.gui.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.felnull.otyacraftengine.client.gui.components.base.IOEBaseComponent;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarratedElementType;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Deprecated
 public class RadioButton extends AbstractButton implements IOEBaseComponent {
     private final boolean showLabel;
     private final Supplier<RadioButton[]> group;

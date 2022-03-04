@@ -1,15 +1,19 @@
 package dev.felnull.otyacraftengine.client.handler;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.loader.PlayerInfoManager;
 import dev.felnull.otyacraftengine.client.loader.URLTextureManager;
+import dev.felnull.otyacraftengine.client.renderer.GuiDebugRenderer;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
 import dev.felnull.otyacraftengine.util.OEItemUtil;
 import dev.felnull.otyacraftengine.util.OETagUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -28,6 +32,12 @@ public class ClientHandler {
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(ClientHandler::onQuit);
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ClientHandler::onJoin);
         ClientTooltipEvent.ITEM.register(ClientHandler::onTooltip);
+        ClientGuiEvent.RENDER_POST.register(ClientHandler::onRenderGui);
+    }
+
+    private static void onRenderGui(Screen screen, PoseStack posestack, int mouseX, int mouseY, float delta) {
+        if (!OtyacraftEngine.CONFIG.showWidgetData) return;
+        GuiDebugRenderer.onScreenRender(screen, posestack, mouseX, mouseY, delta);
     }
 
     private static void onJoin(LocalPlayer localPlayer) {

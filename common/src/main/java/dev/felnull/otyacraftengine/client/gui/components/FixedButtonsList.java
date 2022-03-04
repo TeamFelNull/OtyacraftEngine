@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.client.gui.components;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.felnull.otyacraftengine.client.gui.components.base.IOEBaseComponent;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;

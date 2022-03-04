@@ -3,6 +3,10 @@
   "key.categories.otyacraftengine": "Otyacraft Engine",
   "key.otyacraftengine.test": "テスト",
   "_comment.cop": "Components",
+  "gui.narrate.widget": "%sウィジェット",
+  "gui.narrate.containerTab": "%sコンテナタブ",
+  "narration.containerTab.usage.focused": "Enterを押して詳細を開閉します",
+  "narration.containerTab.usage.hovered": "左クリックで詳細を開閉します",
   "_comment.con": "Config",
   "text.autoconfig.otyacraftengine.title": "Otyacraft Engineの設定",
   "text.autoconfig.otyacraftengine.category.default": "デフォルト",
@@ -13,5 +17,6 @@
   "text.autoconfig.otyacraftengine.option.showModNameTooltip": "ツールチップでMOD名を表示する",
   "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShapeを有効化",
   "text.autoconfig.otyacraftengine.option.maxURLTextureLoadThreadCount": "URLテクスチャ読み込みスレッド最大数",
+  "text.autoconfig.otyacraftengine.option.showWidgetData": "ウィジェットデータを表示",
   "_comment.la": "Last"
 }

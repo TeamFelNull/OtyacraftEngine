@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -76,8 +77,7 @@ public class TestBlock extends HorizontalDirectionalEntityBlock {
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()) {
-            var be = (TestBlockEntity) level.getBlockEntity(blockPos);
-            //   be.test();
+            openContainer(level, blockPos, (ServerPlayer) player, blockState, blockHitResult.getDirection());
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }

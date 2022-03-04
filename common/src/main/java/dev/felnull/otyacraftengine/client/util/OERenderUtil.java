@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.fnjl.util.FNColorUtil;
+import dev.felnull.otyacraftengine.client.gui.TextureSpecifyLocation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -265,6 +266,19 @@ public class OERenderUtil {
      */
     public static void drawTexture(ResourceLocation location, PoseStack poseStack, float x, float y, float textureStartX, float textureStartY, float textureFinishWidth, float textureFinishHeight) {
         drawTexture(location, poseStack, x, y, textureStartX, textureStartY, textureFinishWidth, textureFinishHeight, 256f, 256f);
+    }
+
+
+    /**
+     * GUI上でテクスチャを描画する
+     *
+     * @param poseStack PoseStack
+     * @param x         X
+     * @param y         Y
+     * @param texture   テクスチャ指定
+     */
+    public static void drawTexture(PoseStack poseStack, float x, float y, TextureSpecifyLocation texture) {
+        drawTexture(texture.location(), poseStack, x, y, texture.x(), texture.y(), texture.width(), texture.height(), texture.sizeWidth(), texture.sizeHeight());
     }
 
     /**

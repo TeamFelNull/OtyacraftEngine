@@ -3,6 +3,10 @@
   "key.categories.otyacraftengine": "Otyacraft Engine",
   "key.otyacraftengine.test": "Test",
   "_comment.cop": "Components",
+  "gui.narrate.widget": "%s widget",
+  "gui.narrate.containerTab": "%s container tab",
+  "narration.containerTab.usage.focused": "Press Enter to open and close details",
+  "narration.containerTab.usage.hovered": "Left click to open and close details",
   "_comment.con": "Config",
   "text.autoconfig.otyacraftengine.title": "Otyacraft Engine Config",
   "text.autoconfig.otyacraftengine.category.default": "Default",
@@ -13,5 +17,6 @@
   "text.autoconfig.otyacraftengine.option.showModNameTooltip": "Show mod name tooltip",
   "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShape",
   "text.autoconfig.otyacraftengine.option.maxURLTextureLoadThreadCount": "URL texture load thread max count",
+  "text.autoconfig.otyacraftengine.option.showWidgetData": "Show widget data",
   "_comment.la": "Last"
 }

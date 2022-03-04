@@ -24,4 +24,7 @@ public class OEConfig implements ConfigData {
 
     @ConfigEntry.Category("debug")
     public boolean showModNameTooltip = false;
+
+    @ConfigEntry.Category("debug")
+    public boolean showWidgetData = false;
 }
