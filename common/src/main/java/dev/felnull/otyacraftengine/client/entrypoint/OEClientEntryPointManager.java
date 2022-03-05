@@ -16,7 +16,7 @@ public class OEClientEntryPointManager {
         return INSTANCE;
     }
 
-    private void init() {
+    private synchronized void init() {
         if (inited) return;
         inited = true;
         ENTRYS.addAll(OEModUtil.getEntryPoints("otyacraftengine_client", OEClientEntryPoint.class, IOEClientEntryPoint.class));
