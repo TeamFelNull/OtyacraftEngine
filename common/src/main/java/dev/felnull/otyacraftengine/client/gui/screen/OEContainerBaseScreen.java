@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.UUID;
 
-public abstract class OEContainerBaseScreen<T extends OEBaseMenu> extends AbstractContainerScreen<T> implements IInstructionScreen {
+public abstract class OEContainerBaseScreen<T extends OEBaseMenu> extends AbstractContainerScreen<T> implements IInstructionScreen, IOEBaseScreen {
     protected static final Minecraft mc = Minecraft.getInstance();
     protected final UUID id = UUID.randomUUID();
     protected int bgTextureWidth = 256;

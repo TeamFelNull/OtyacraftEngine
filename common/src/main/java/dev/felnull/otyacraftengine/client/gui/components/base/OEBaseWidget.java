@@ -14,8 +14,8 @@ public abstract class OEBaseWidget extends AbstractWidget implements IOEBaseComp
     @Nullable
     private final String widgetTypeName;
 
-    public OEBaseWidget(int x, int y, int width, int height, Component component) {
-        this(x, y, width, height, null, component);
+    public OEBaseWidget(int x, int y, int width, int height, @NotNull Component message) {
+        this(x, y, width, height, null, message);
     }
 
     public OEBaseWidget(int x, int y, int width, int height, @Nullable String widgetTypeName, @NotNull Component message) {
