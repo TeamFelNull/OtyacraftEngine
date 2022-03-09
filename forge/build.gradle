@@ -46,6 +46,8 @@ dependencies {
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}"
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
+    modCompileOnly "vazkii.patchouli:Patchouli:${rootProject.patchouli_forge_version}:api"
+
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
