@@ -10,5 +10,6 @@ public class MyOEClientEntryPoint implements IOEClientEntryPoint {
     @Override
     public void onModelRegistry(Consumer<ResourceLocation> add) {
         add.accept(new ResourceLocation(OtyacraftEngine.MODID, "block/test_model"));
+        add.accept(new ResourceLocation(OtyacraftEngine.MODID, "item/test_item_kame"));
     }
 }

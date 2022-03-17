@@ -23,6 +23,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -36,6 +37,44 @@ import java.util.UUID;
 public class OERenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     public static final float MIN_BREADTH = 1.0E-3F;
+
+    public static void drawFill(@NotNull PoseStack poseStack, float x, float y, float w, float h, int color) {
+        innerFill(poseStack.last().pose(), x, y, w, h, color);
+    }
+
+    private static void innerFill(Matrix4f matrix4f, float i, float j, float k, float l, int m) {
+        float n;
+        if (i < k) {
+            n = i;
+            i = k;
+            k = n;
+        }
+
+        if (j < l) {
+            n = j;
+            j = l;
+            l = n;
+        }
+
+        float f = (float) (m >> 24 & 255) / 255.0F;
+        float g = (float) (m >> 16 & 255) / 255.0F;
+        float h = (float) (m >> 8 & 255) / 255.0F;
+        float o = (float) (m & 255) / 255.0F;
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        bufferBuilder.vertex(matrix4f, i, l, 0.0F).color(g, h, o, f).endVertex();
+        bufferBuilder.vertex(matrix4f, k, l, 0.0F).color(g, h, o, f).endVertex();
+        bufferBuilder.vertex(matrix4f, k, j, 0.0F).color(g, h, o, f).endVertex();
+        bufferBuilder.vertex(matrix4f, i, j, 0.0F).color(g, h, o, f).endVertex();
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+    }
 
     /**
      * 文字スプライトを描画
