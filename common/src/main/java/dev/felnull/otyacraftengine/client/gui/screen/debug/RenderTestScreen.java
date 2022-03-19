@@ -197,7 +197,7 @@ public class RenderTestScreen extends OEBaseScreen {
         renderTests.add(renderTest);
     }
 
-    public static void first() {
+    public static void fInit() {
         // for (Item item : Registry.ITEM) {
         //      addRenderTest(new ItemRenderTest(item));
         //  }

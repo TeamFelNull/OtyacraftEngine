@@ -3,7 +3,9 @@
   "package": "dev.felnull.otyacraftengine.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "client.ItemInHandRendererMixin"
+    "client.ItemInHandRendererMixin",
+    "client.ModelManagerMixin",
+    "client.TextureAtlasMixin"
   ],
   "mixins": [
     "MobBucketItemAccessor"

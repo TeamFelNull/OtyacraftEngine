@@ -32,7 +32,7 @@ public class ModelResourceHandler implements ModelResourceProvider, ModelVariant
     }
 
     @Override
-    public @Nullable UnbakedModel loadModelVariant(ModelResourceLocation modelId, ModelProviderContext context) throws ModelProviderException {
+    public @Nullable UnbakedModel loadModelVariant(ModelResourceLocation modelId, ModelProviderContext context) {
         try {
             if (OEClientEventHooks.onFabricOBJLoader(modelId))
                 return OBJLoader.getInstance().loadModel(new ResourceLocation(modelId.getNamespace(), "models/" + modelId.getPath()));
