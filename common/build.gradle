@@ -7,7 +7,6 @@ dependencies {
     implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     implementation "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     implementation 'com.madgag:animated-gif-lib:1.4'
-    implementation 'de.javagl:obj:0.3.0'
 }
 
 architectury {

@@ -51,7 +51,6 @@ dependencies {
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
-    shadowIn 'de.javagl:obj:0.3.0'
 }
 
 processResources {
