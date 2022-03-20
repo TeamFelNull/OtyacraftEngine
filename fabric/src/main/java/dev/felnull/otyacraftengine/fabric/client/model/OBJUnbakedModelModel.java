@@ -7,16 +7,17 @@ import com.mojang.math.Vector3f;
 import de.javagl.obj.*;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -53,53 +54,53 @@ public class OBJUnbakedModelModel implements UnbakedModel {
 
     @Nullable
     @Override
-    public BakedModel bake(ModelBakery modelBakery, Function<Material, TextureAtlasSprite> function, ModelState modelState, ResourceLocation resourceLocation) {
+    public BakedModel bake(@NotNull ModelBakery modelBakery, @NotNull Function<Material, TextureAtlasSprite> function, @NotNull ModelState modelState, @NotNull ResourceLocation resourceLocation) {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-        Mesh mesh = null;
-        if (renderer != null) {
-            Map<String, Obj> materialGroups = ObjSplitting.splitByMaterialGroups(modelObj);
-            MeshBuilder builder = renderer.meshBuilder();
-            QuadEmitter emitter = builder.getEmitter();
-            for (Map.Entry<String, Obj> entry : materialGroups.entrySet()) {
-                String matName = entry.getKey();
-                Obj matGroupObj = entry.getValue();
-                OBJMtlData mtl = mtls.get(matName);
-                int color = -1;
-                TextureAtlasSprite mtlSprite = function.apply(DEFAULT_SPRITE);
-                if (mtl != null) {
-                    FloatTuple diffuseColor = mtl.getKd();
-                    if (mtl.useDiffuseColor()) {
-                        color = 0xFF000000;
-                        for (int i = 0; i < 3; ++i) {
-                            color |= (int) (255 * diffuseColor.get(i)) << (16 - 8 * i);
-                        }
+        //Sodiumなど、rendererがnullになる場合にデフォルトのrendererを利用する
+        if (renderer == null)
+            renderer = IndigoRenderer.INSTANCE;
+        Map<String, Obj> materialGroups = ObjSplitting.splitByMaterialGroups(modelObj);
+        MeshBuilder builder = renderer.meshBuilder();
+        QuadEmitter emitter = builder.getEmitter();
+        for (Map.Entry<String, Obj> entry : materialGroups.entrySet()) {
+            String matName = entry.getKey();
+            Obj matGroupObj = entry.getValue();
+            OBJMtlData mtl = mtls.get(matName);
+            int color = -1;
+            TextureAtlasSprite mtlSprite = function.apply(DEFAULT_SPRITE);
+            if (mtl != null) {
+                FloatTuple diffuseColor = mtl.getKd();
+                if (mtl.useDiffuseColor()) {
+                    color = 0xFF000000;
+                    for (int i = 0; i < 3; ++i) {
+                        color |= (int) (255 * diffuseColor.get(i)) << (16 - 8 * i);
                     }
-                    mtlSprite = function.apply(new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(mtl.getMapKd())));
                 }
-                for (int i = 0; i < matGroupObj.getNumFaces(); i++) {
-                    FloatTuple floatTuple;
-                    Vector3f vertex;
-                    FloatTuple normal;
-                    int v;
-                    for (v = 0; v < matGroupObj.getFace(i).getNumVertices(); v++) {
-                        floatTuple = matGroupObj.getVertex(matGroupObj.getFace(i).getVertexIndex(v));
-                        vertex = new Vector3f(floatTuple.getX(), floatTuple.getY(), floatTuple.getZ());
-                        normal = matGroupObj.getNormal(matGroupObj.getFace(i).getNormalIndex(v));
-                        addVertex(i, v, vertex, normal, emitter, matGroupObj, false, modelState);
-                        if (v == 2 && matGroupObj.getFace(i).getNumVertices() == 3) {
-                            addVertex(i, 3, vertex, normal, emitter, matGroupObj, true, modelState);
-                        }
-                    }
-                    emitter.spriteColor(0, color, color, color, color);
-                    emitter.material(RendererAccess.INSTANCE.getRenderer().materialFinder().find());
-                    emitter.colorIndex(mtl.getTintIndex());
-                    emitter.nominalFace(emitter.lightFace());
-                    emitter.spriteBake(0, mtlSprite, MutableQuadView.BAKE_NORMALIZED | (modelState.isUvLocked() ? MutableQuadView.BAKE_LOCK_UV : 0));
-                    emitter.emit();
-                }
+                mtlSprite = function.apply(new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(mtl.getMapKd())));
             }
-            mesh = builder.build();
+            for (int i = 0; i < matGroupObj.getNumFaces(); i++) {
+                FloatTuple floatTuple;
+                Vector3f vertex;
+                FloatTuple normal;
+                int v;
+                for (v = 0; v < matGroupObj.getFace(i).getNumVertices(); v++) {
+                    floatTuple = matGroupObj.getVertex(matGroupObj.getFace(i).getVertexIndex(v));
+                    vertex = new Vector3f(floatTuple.getX(), floatTuple.getY(), floatTuple.getZ());
+                    normal = matGroupObj.getNormal(matGroupObj.getFace(i).getNormalIndex(v));
+                    addVertex(i, v, vertex, normal, emitter, matGroupObj, false, modelState);
+                    if (v == 2 && matGroupObj.getFace(i).getNumVertices() == 3) {
+                        addVertex(i, 3, vertex, normal, emitter, matGroupObj, true, modelState);
+                    }
+                }
+                emitter.spriteColor(0, color, color, color, color);
+                emitter.material(renderer.materialFinder().find());
+                emitter.colorIndex(mtl.getTintIndex());
+                emitter.nominalFace(emitter.lightFace());
+                emitter.spriteBake(0, mtlSprite, MutableQuadView.BAKE_NORMALIZED | (modelState.isUvLocked() ? MutableQuadView.BAKE_LOCK_UV : 0));
+                emitter.emit();
+            }
         }
+        var mesh = builder.build();
         return new OBJModel(mesh, transforms, function.apply(material));
     }
 

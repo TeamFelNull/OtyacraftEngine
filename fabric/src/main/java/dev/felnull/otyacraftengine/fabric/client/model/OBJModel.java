@@ -54,10 +54,16 @@ public class OBJModel implements BakedModel, FabricBakedModel {
     }
 
     @Override
+    @NotNull
     public List<BakedQuad> getQuads(@Nullable BlockState blockState, @Nullable Direction direction, @NotNull Random random) {
-        if (bakedQuads == null && mesh != null)
-            bakedQuads = ModelHelper.toQuadLists(mesh)[ModelHelper.NULL_FACE_ID];
-        return direction == null ? bakedQuads : empty;
+        if (direction != null) return empty;
+        if (bakedQuads == null) {
+            if (mesh != null)
+                bakedQuads = ModelHelper.toQuadLists(mesh)[ModelHelper.NULL_FACE_ID];
+            if (bakedQuads == null)
+                bakedQuads = empty;
+        }
+        return bakedQuads;
     }
 
     @Override

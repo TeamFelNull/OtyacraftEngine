@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -719,12 +720,14 @@ public class OERenderUtil {
     }
 
 
-    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel bakedModel, int combinedLight, int combinedOverlay) {
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, @NotNull BakedModel bakedModel, int combinedLight, int combinedOverlay) {
+        Objects.requireNonNull(bakedModel);
         var bmr = mc.getBlockRenderer().getModelRenderer();
         bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
     }
 
-    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, @NotNull BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
+        Objects.requireNonNull(bakedModel);
         var bmr = mc.getBlockRenderer().getModelRenderer();
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
