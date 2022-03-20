@@ -1,11 +1,13 @@
 package dev.felnull.otyacraftengine.client.gui.screen.debug;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.BakedModelRenderTest;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.IRenderTest;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.ItemRenderTest;
+import dev.felnull.otyacraftengine.client.util.OEClientUtil;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -30,6 +32,8 @@ public class RenderTestScreen extends OEBaseScreen {
     private int sampleCount;
     private int testCount = 1;
     private Motion motion = Motion.FIX;
+    private Vector3f cameraPos = new Vector3f(0, 0, 1);
+    private Vector3f cameraRot = new Vector3f();
 
     private EditBox countBox;
 
@@ -128,6 +132,46 @@ public class RenderTestScreen extends OEBaseScreen {
         lastTime = System.nanoTime();
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        if (motion == Motion.FREE_LOOK) {
+            float speed = 1;
+            if (OEClientUtil.isKeyInput(mc.options.keyUp)) {
+                cameraPos.add(0, -speed, 0);
+            }
+            if (OEClientUtil.isKeyInput(mc.options.keyDown)) {
+                cameraPos.add(0, speed, 0);
+            }
+            if (OEClientUtil.isKeyInput(mc.options.keyRight)) {
+                cameraPos.add(speed, 0, 0);
+            }
+            if (OEClientUtil.isKeyInput(mc.options.keyLeft)) {
+                cameraPos.add(-speed, 0, 0);
+            }
+            if (OEClientUtil.isKeyInput(mc.options.keySprint)) {
+                cameraPos = new Vector3f(0, 0, 1);
+                cameraRot = new Vector3f();
+            }
+        }
+    }
+
+    @Override
+    public boolean mouseDragged(double d, double e, int i, double f, double g) {
+        if (motion == Motion.FREE_LOOK)
+            cameraRot.add(-(float) g, (float) f, 0);
+        return super.mouseDragged(d, e, i, f, g);
+    }
+
+    @Override
+    public boolean mouseScrolled(double d, double e, double f) {
+        if (motion == Motion.FREE_LOOK) {
+            cameraPos.add(0, 0, (float) f * (OEClientUtil.isKeyInput(mc.options.keyShift) ? 0.5f : 1f));
+            cameraPos.set(cameraPos.x(), cameraPos.y(), Math.max(cameraPos.z(), 1));
+        }
+        return super.mouseScrolled(d, e, f);
+    }
+
     private void reset() {
         eqAll = 0;
         sampleCount = 0;
@@ -140,14 +184,27 @@ public class RenderTestScreen extends OEBaseScreen {
 
         poseStack.pushPose();
 
-
         if (motion != Motion.TRANSLATED && motion != Motion.ROTED && motion != Motion.BOTH) {
             double x = width / 2f;
             double y = sy / 2f;
+
+            if (motion == Motion.FREE_LOOK) {
+                x += cameraPos.x() * cameraPos.z();
+                y += cameraPos.y() * cameraPos.z();
+
+
+                poseStack.translate(x, y, 30);
+                OERenderUtil.poseRotateAll(poseStack, cameraRot.x(), cameraRot.y(), cameraRot.z());
+                poseStack.translate(-x, -y, -30);
+            }
+
             poseStack.translate(x, y, 1050.0D);
             poseStack.scale(1, 1, -1);
             poseStack.translate(0.0D, 0.0D, 1000);
             poseStack.scale((float) 30, (float) -30, (float) 30);
+
+            if (motion == Motion.FREE_LOOK)
+                OERenderUtil.poseScaleAll(poseStack, cameraPos.z());
         }
 
         for (int i = 0; i < count; i++) {
@@ -209,6 +266,6 @@ public class RenderTestScreen extends OEBaseScreen {
     }
 
     private static enum Motion {
-        FIX, TRANSLATED, ROTED, BOTH;
+        FIX, TRANSLATED, ROTED, BOTH, FREE_LOOK;
     }
 }

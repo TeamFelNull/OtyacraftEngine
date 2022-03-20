@@ -56,7 +56,6 @@ public class OBJUnbakedModelModel implements UnbakedModel {
     public BakedModel bake(ModelBakery modelBakery, Function<Material, TextureAtlasSprite> function, ModelState modelState, ResourceLocation resourceLocation) {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         Mesh mesh = null;
-
         if (renderer != null) {
             Map<String, Obj> materialGroups = ObjSplitting.splitByMaterialGroups(modelObj);
             MeshBuilder builder = renderer.meshBuilder();

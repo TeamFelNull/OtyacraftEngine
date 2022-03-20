@@ -5,7 +5,6 @@ import dev.felnull.otyacraftengine.client.gui.screen.TestBEScreen;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.RenderTestScreen;
 import dev.felnull.otyacraftengine.client.handler.ClientHandler;
 import dev.felnull.otyacraftengine.client.handler.TestClientHandler;
-import dev.felnull.otyacraftengine.client.model.TestModel;
 import dev.felnull.otyacraftengine.client.renderer.blockentity.TestRenderer;
 import dev.felnull.otyacraftengine.client.renderer.item.TestItemRenderer;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
@@ -29,6 +28,5 @@ public class OtyacraftEngineClient {
         TestItemRenderer.init();
         TestBEScreen.fInit();
         RenderTestScreen.fInit();
-        TestModel.init();
     }
 }
