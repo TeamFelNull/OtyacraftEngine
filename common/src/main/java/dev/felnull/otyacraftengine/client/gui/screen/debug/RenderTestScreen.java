@@ -3,7 +3,7 @@ package dev.felnull.otyacraftengine.client.gui.screen.debug;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.debug.socket.DebugSocketService;
+import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.BakedModelRenderTest;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.IRenderTest;
@@ -131,8 +131,8 @@ public class RenderTestScreen extends OEBaseScreen {
         drawTextBase(poseStack, String.format("Return Average Time: %.3fms %06dns", rtAvg / 1000000f, (int) rtAvg), 3f + width / 2f, sy + (mc.font.lineHeight + 1) * 2, 0xFFFFFF);
 
         if (motion == Motion.MOTION) {
-            var rv = DebugSocketService.getAngele(f);
-            var pv = DebugSocketService.getPosition(f);
+            var rv = SocketDebugService.getAngele(f);
+            var pv = SocketDebugService.getPosition(f);
             drawTextBase(poseStack, String.format("Debug Motion:  Yaw: %s  Pitch: %s  Roll: %s  x: %s  y: %s  z: %s", rv.x(), rv.y(), rv.z(), pv.x(), pv.y(), pv.z()), 3f, sy + (mc.font.lineHeight + 1) * 3, 0xFFFFFF);
         }
 
@@ -206,11 +206,11 @@ public class RenderTestScreen extends OEBaseScreen {
             }
 
             if (motion == Motion.MOTION) {
-                var pv = DebugSocketService.getPosition(f);
+                var pv = SocketDebugService.getPosition(f);
                 x += pv.x();
                 y += pv.z();
                 poseStack.translate(x, y, 30);
-                var rv = DebugSocketService.getAngele(f);
+                var rv = SocketDebugService.getAngele(f);
                 OERenderUtil.poseRotateY(poseStack, rv.x());
                 //    OERenderUtil.poseRotateX(poseStack, rv.y());
                 OERenderUtil.poseRotateZ(poseStack, rv.z());

@@ -6,11 +6,13 @@ import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.debug.socket.DebugSocketService;
+import dev.felnull.otyacraftengine.client.debug.MotionDebug;
+import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
 import dev.felnull.otyacraftengine.client.gui.screen.DebugScreen;
+import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -23,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
@@ -43,7 +46,8 @@ public class TestClientHandler {
     }
 
     private static void ontClientTick(Minecraft instance) {
-        DebugSocketService.tick();
+        SocketDebugService.tick();
+        MotionDebug.getInstance().tick();
     }
 
     public static void onIntegratedPauseChange(boolean paused) {
@@ -65,9 +69,11 @@ public class TestClientHandler {
     }
 
     public static EventResult onRenderHand(PoseStack poseStack, MultiBufferSource multiBufferSource, InteractionHand hand, int packedLight, float partialTicks, float interpolatedPitch, float swingProgress, float equipProgress, ItemStack stack) {
-      /*  if (stack.getItem() instanceof EnderEyeItem) {
+        if (stack.getItem() instanceof EnderEyeItem) {
             boolean bl = hand == InteractionHand.MAIN_HAND;
             HumanoidArm arm = bl ? mc.player.getMainArm() : mc.player.getMainArm().getOpposite();
+            poseStack.pushPose();
+            MotionDebug.getInstance().poseCurrent(poseStack, partialTicks);
             poseStack.pushPose();
             OERenderUtil.posePlayerArm(poseStack, arm, swingProgress, equipProgress);
             OERenderUtil.renderPlayerArm(poseStack, multiBufferSource, arm, packedLight);
@@ -76,8 +82,9 @@ public class TestClientHandler {
             OERenderUtil.poseHandItem(poseStack, arm, swingProgress, equipProgress);
             OERenderUtil.renderHandItem(poseStack, multiBufferSource, arm, stack, packedLight);
             poseStack.popPose();
+            poseStack.popPose();
             return EventResult.interruptFalse();
-        }*/
+        }
         return EventResult.pass();
     }
 

@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.UUID;
 
 
-public class DebugSocketService {
-    private static final Logger LOGGER = LogManager.getLogger(DebugSocketService.class);
+public class SocketDebugService {
+    private static final Logger LOGGER = LogManager.getLogger(SocketDebugService.class);
     private static final Gson GSON = new Gson();
     private static final boolean enable = true;
     private static final Minecraft mc = Minecraft.getInstance();
@@ -137,13 +137,19 @@ public class DebugSocketService {
         return new Vector3f(Mth.lerp(delta, oldPosition.x(), position.x()), Mth.lerp(delta, oldPosition.y(), position.y()), Mth.lerp(delta, oldPosition.z(), position.z()));
     }
 
+    public static boolean isConnected() {
+        if (connection != null)
+            return connection.isOpen();
+        return false;
+    }
+
     private static void connect(String hostName, int port) throws InterruptedException {
         while (mc.isRunning()) {
             connection = new DebugConnection(hostName, port);
             try {
                 connection.run();
             } catch (Exception e) {
-                LOGGER.error("ソケット通信エラーです", e);
+                LOGGER.error("Socket connection error", e);
                 Thread.sleep(1000);
             } finally {
                 connection = null;

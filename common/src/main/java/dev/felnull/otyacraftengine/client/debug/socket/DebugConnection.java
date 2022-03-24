@@ -42,6 +42,10 @@ public class DebugConnection {
         LOGGER.info("Stopped communication with the socket");
     }
 
+    public boolean isOpen() {
+        return socket != null && !socket.isClosed();
+    }
+
     public void sendText(String text) {
         send(new TextSocketObject(text));
     }
@@ -89,12 +93,12 @@ public class DebugConnection {
                 try {
                     var obj = stream.readObject();
                     if (obj instanceof TextSocketObject textSocketObject)
-                        DebugSocketService.onText(textSocketObject.getDataText());
+                        SocketDebugService.onText(textSocketObject.getDataText());
                 } catch (IOException e) {
-                    LOGGER.error("受信に失敗しました", e);
+                    LOGGER.error("Receive failed", e);
                     loop = false;
                 } catch (ClassNotFoundException e) {
-                    LOGGER.error("受信に失敗しました", e);
+                    LOGGER.error("Receive failed", e);
                 }
             } while (loop);
             DebugConnection.this.stop();
