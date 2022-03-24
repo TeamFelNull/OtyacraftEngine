@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.client;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.debug.socket.DebugSocketService;
 import dev.felnull.otyacraftengine.client.gui.screen.TestBEScreen;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.RenderTestScreen;
 import dev.felnull.otyacraftengine.client.handler.ClientHandler;
@@ -28,5 +29,6 @@ public class OtyacraftEngineClient {
         TestItemRenderer.init();
         TestBEScreen.fInit();
         RenderTestScreen.fInit();
+        DebugSocketService.start();
     }
 }

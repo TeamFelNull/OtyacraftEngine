@@ -3,8 +3,10 @@ package dev.felnull.otyacraftengine.client.handler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
+import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.debug.socket.DebugSocketService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
@@ -37,6 +39,11 @@ public class TestClientHandler {
         KeyMappingRegistry.register(TEST_KEY);
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(TestClientHandler::renderArmWithItem);
         ClientEvent.INTEGRATED_SERVER_PAUSE.register(TestClientHandler::onIntegratedPauseChange);
+        ClientTickEvent.CLIENT_POST.register(TestClientHandler::ontClientTick);
+    }
+
+    private static void ontClientTick(Minecraft instance) {
+        DebugSocketService.tick();
     }
 
     public static void onIntegratedPauseChange(boolean paused) {
