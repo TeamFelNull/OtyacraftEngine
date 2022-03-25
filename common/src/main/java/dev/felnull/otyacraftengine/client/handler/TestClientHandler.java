@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.client.handler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
@@ -11,6 +12,7 @@ import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
+import dev.felnull.otyacraftengine.client.gui.components.FixedButtonsList;
 import dev.felnull.otyacraftengine.client.gui.screen.DebugScreen;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import dev.felnull.otyacraftengine.impl.client.OEClientExpectPlatform;
@@ -21,6 +23,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -28,6 +31,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.List;
+import java.util.function.Function;
 
 public class TestClientHandler {
     public static final KeyMapping TEST_KEY = new KeyMapping("key.otyacraftengine.test", GLFW.GLFW_KEY_J, "key.categories.otyacraftengine");
@@ -122,5 +128,16 @@ public class TestClientHandler {
             return EventResult.interruptFalse();
         }*/
         return EventResult.pass();
+    }
+
+    private static class PointFixedButtonsList extends FixedButtonsList<MotionPoint> {
+
+        public PointFixedButtonsList(int x, int y, int w, int h, ResourceLocation resource, int tx, int ty, int tw, int th, int num, Component name, List<MotionPoint> list, Function<MotionPoint, Component> listName, PressEntry<MotionPoint> onPressEntry) {
+            super(x, y, w, h, resource, tx, ty, tw, th, num, name, list, listName, onPressEntry);
+        }
+    }
+
+    private static record MotionPoint(Vector3f position, Vector3f rotation, Vector3f scale) {
+
     }
 }

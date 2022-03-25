@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 
 public class MotionDebugScreen extends OEBaseScreen {
     private final static Vector3f lastSocketRotation = new Vector3f();
+    public static boolean pause;
     private static boolean socketRotationFixX = true;
     private static boolean socketRotationFixY = true;
     private static boolean socketRotationFixZ = true;
@@ -242,5 +243,10 @@ public class MotionDebugScreen extends OEBaseScreen {
 
     private static String createMotionText(Vector3f pos, Vector3f rot, Vector3f scale) {
         return String.format("Pos: [X: %s  Y: %s  Z: %s], Rot: [X: %s, Y: %s, Z: %s], Scale: [X: %s, Y: %s, Z: %s]", pos.x(), pos.y(), pos.z(), rot.x(), rot.y(), rot.z(), scale.x(), scale.y(), scale.z());
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return pause;
     }
 }

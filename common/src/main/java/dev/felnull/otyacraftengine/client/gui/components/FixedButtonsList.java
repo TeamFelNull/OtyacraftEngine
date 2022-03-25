@@ -70,11 +70,9 @@ public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseCompon
         }
 
         renderScrollbar(poseStack, this.x + getOneButtonWidth(), this.y, 9, height);
-
     }
 
     protected void renderScrollbar(PoseStack poseStack, int x, int y, int w, int h) {
-
         boolean hv = isHoveredScrollBar();
 
         OERenderUtil.drawTexture(resourceLocation, poseStack, x, y, xTexStart + (hv ? 9 : 0), yTexStart, 9, 3, wTex, hTex);
@@ -166,11 +164,8 @@ public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseCompon
     }
 
     protected int getCurrentFirstNumber() {
-
-
         if (list.size() <= num)
             return 0;
-
         return (int) ((list.size() - num) * scrollAmount);
     }
 

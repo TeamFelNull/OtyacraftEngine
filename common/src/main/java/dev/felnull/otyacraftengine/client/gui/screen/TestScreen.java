@@ -5,12 +5,14 @@ import dev.felnull.otyacraftengine.client.gui.TextureSpecifyLocation;
 import dev.felnull.otyacraftengine.client.gui.components.BetterEditBox;
 import dev.felnull.otyacraftengine.client.gui.components.IconButton;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
+import dev.felnull.otyacraftengine.client.gui.components.test.TestFixedListWidget;
 import dev.felnull.otyacraftengine.client.util.OETextureUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class TestScreen extends OEBaseScreen {
@@ -40,6 +42,14 @@ public class TestScreen extends OEBaseScreen {
                 return false;
             }
         });
+
+        List<String> strs = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            strs.add(UUID.randomUUID().toString());
+        }
+
+        var lst = addRenderableWidget(new TestFixedListWidget(10, 90, 100, 100, new TextComponent("TEST Fixed List"), 10, strs, (widget, item) -> System.out.println(item), true));
+        lst.setBorder(false);
     }
 
     @Override
