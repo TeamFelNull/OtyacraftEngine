@@ -165,14 +165,20 @@ public class RenderTestScreen extends OEBaseScreen {
 
     @Override
     public boolean mouseDragged(double d, double e, int i, double f, double g) {
-        if (motion == Motion.FREE_LOOK)
-            cameraRot.add(-(float) g, (float) f, 0);
+        if (motion == Motion.FREE_LOOK) {
+            boolean l = i == 0;
+            if (l)
+                cameraRot.add(-(float) g, (float) f, 0);
+            else
+                cameraPos.add((float) f, (float) g, 0);
+        }
         return super.mouseDragged(d, e, i, f, g);
     }
 
     @Override
     public boolean mouseScrolled(double d, double e, double f) {
         if (motion == Motion.FREE_LOOK) {
+
             cameraPos.add(0, 0, (float) f * (OEClientUtil.isKeyInput(mc.options.keyShift) ? 0.5f : 1f));
             cameraPos.set(cameraPos.x(), cameraPos.y(), Math.max(cameraPos.z(), 1));
         }

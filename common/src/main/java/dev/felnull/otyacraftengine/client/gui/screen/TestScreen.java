@@ -2,11 +2,13 @@ package dev.felnull.otyacraftengine.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.gui.TextureSpecifyLocation;
+import dev.felnull.otyacraftengine.client.gui.components.BetterEditBox;
 import dev.felnull.otyacraftengine.client.gui.components.IconButton;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftengine.client.util.OETextureUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -28,6 +30,16 @@ public class TestScreen extends OEBaseScreen {
         this.addRenderableWidget(new SwitchButton(10, 40, new TextComponent("TEST Switch Button"), n -> {
             System.out.println(n.isEnable());
         }, true));
+
+        var e = this.addRenderableWidget(new BetterEditBox(10, 60, 100, 20, new TextComponent("TEST Better Edit Box")));
+        e.setFilter(n -> {
+            try {
+                Integer.parseInt(n);
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        });
     }
 
     @Override

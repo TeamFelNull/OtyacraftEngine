@@ -11,6 +11,8 @@ import dev.felnull.otyacraftengine.client.renderer.item.TestItemRenderer;
 import dev.felnull.otyacraftengine.client.util.ClientUtilInit;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 
+import java.util.Properties;
+
 public class OtyacraftEngineClient {
 
     public static void init() {
