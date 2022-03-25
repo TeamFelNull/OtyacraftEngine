@@ -7,7 +7,7 @@ import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.debug.MotionDebug;
+import dev.felnull.otyacraftengine.client.debug.motion.MotionDebug;
 import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;

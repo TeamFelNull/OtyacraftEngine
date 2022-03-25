@@ -2,12 +2,16 @@ package dev.felnull.otyacraftengine.client.gui.screen.debug;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import dev.felnull.otyacraftengine.client.debug.MotionDebug;
+import dev.felnull.otyacraftengine.client.debug.motion.MotionDebug;
+import dev.felnull.otyacraftengine.client.debug.motion.MotionEntry;
 import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.gui.components.BetterEditBox;
+import dev.felnull.otyacraftengine.client.gui.components.FixedListWidget;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.util.OEClientUtil;
+import dev.felnull.otyacraftengine.mixin.client.ScreenAccessor;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
@@ -15,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class MotionDebugScreen extends OEBaseScreen {
@@ -29,6 +34,7 @@ public class MotionDebugScreen extends OEBaseScreen {
     private BetterEditBox xEditBox;
     private BetterEditBox yEditBox;
     private BetterEditBox zEditBox;
+    private MotionListWidget motionListWidget;
 
     public MotionDebugScreen(@Nullable Screen parent) {
         super(new TextComponent("Motion Debug"), parent);
@@ -82,6 +88,45 @@ public class MotionDebugScreen extends OEBaseScreen {
                 mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf", xEditBox.getValue(), yEditBox.getValue(), zEditBox.getValue()));
         }));
 
+        motionListWidget = addRenderableWidget(new MotionListWidget(width - 3 - 120, st - 20, 120, 50, 5, getMotionDebug().getMotions(), (widget, item) -> {
+
+        }, motionListWidget));
+
+        addRenderableWidget(new Button(width - 3 - 120, st + 50 + 3 - 20, 27, 20, new TextComponent("Add"), n -> {
+            var ne = getMotionDebug().getCurrentEntry();
+            getMotionDebug().getMotions().add(ne);
+            motionListWidget.setSelectedEntry(getMotionDebug().getMotions().size() - 1);
+        }));
+
+        addRenderableWidget(new Button(width - 3 - 120 + 30, st + 50 + 3 - 20, 27, 20, new TextComponent("Del"), n -> {
+            var e = motionListWidget.getSelectedEntry();
+            if (e != null) {
+                int num = motionListWidget.getSelectedEntryIndex();
+                getMotionDebug().getMotions().remove(num);
+                motionListWidget.setSelectedEntry(num - 1);
+            }
+        }));
+
+        addRenderableWidget(new Button(width - 3 - 120 + 60, st + 50 + 3 - 20, 27, 20, new TextComponent("Set"), n -> {
+            var e = motionListWidget.getSelectedEntry();
+            if (e != null)
+                getMotionDebug().load(e);
+        }));
+
+        addRenderableWidget(new Button(width - 3 - 120 + 90, st + 50 + 3 - 20, 27, 20, new TextComponent("Inj"), n -> {
+            var e = motionListWidget.getSelectedEntry();
+            if (e != null) {
+                var ne = getMotionDebug().getCurrentEntry();
+                int ei = motionListWidget.getSelectedEntryIndex();
+                if (ei - 1 >= getMotionDebug().getMotions().size()) {
+                    getMotionDebug().getMotions().add(ne);
+                    motionListWidget.setSelectedEntry(getMotionDebug().getMotions().size() - 1);
+                } else {
+                    getMotionDebug().getMotions().add(ei + 1, ne);
+                    motionListWidget.setSelectedEntry(ei + 1);
+                }
+            }
+        }));
         st += 17;
 
         var tsw = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Edit temporary Motion"), n -> getMotionDebug().setEditTemporary(n.isEnable()), true));
@@ -109,7 +154,7 @@ public class MotionDebugScreen extends OEBaseScreen {
 
         var srswfz = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Socket Rotation Fix Z"), n -> socketRotationFixZ = n.isEnable(), true));
         srswfz.setEnable(socketRotationFixZ);
-        st += 17;
+        //st += 17;
 
 
     }
@@ -191,7 +236,7 @@ public class MotionDebugScreen extends OEBaseScreen {
 
     @Override
     public boolean mouseDragged(double d, double e, int i, double f, double g) {
-        if (enableEdit) {
+        if (!isHoveredWidget((float) d, (float) e) && enableEdit) {
             boolean l = i == 0;
             if (l) {
                 addMotion((float) g, (float) f, 0);
@@ -203,13 +248,20 @@ public class MotionDebugScreen extends OEBaseScreen {
     }
 
     @Override
-    public boolean mouseScrolled(double d, double e, double f) {
-        float v = getMotionDebug().getSensitivity();
-        if (OEClientUtil.isKeyInput(mc.options.keyShift))
-            f *= 0.1f;
-        v += (f * 0.1f);
-        getMotionDebug().setSensitivity(Math.max(v, 0));
-        return super.mouseScrolled(d, e, f);
+    public boolean mouseScrolled(double x, double y, double f) {
+        if (!isHoveredWidget((float) x, (float) y)) {
+            float v = getMotionDebug().getSensitivity();
+            if (OEClientUtil.isKeyInput(mc.options.keyShift))
+                f *= 0.1f;
+            v += (f * 0.1f);
+            getMotionDebug().setSensitivity(Math.max(v, 0));
+        }
+        return super.mouseScrolled(x, y, f);
+    }
+
+    private boolean isHoveredWidget(float x, float y) {
+        ScreenAccessor sa = (ScreenAccessor) this;
+        return sa.getRenderables().stream().filter(n -> n instanceof AbstractWidget).map(n -> (AbstractWidget) n).filter(n -> x >= n.x && y >= n.y && x < (n.x + n.getWidth()) && y < (double) (n.y + n.getHeight())).anyMatch(n -> true);
     }
 
     private void setMotion(float x, float y, float z) {
@@ -248,5 +300,11 @@ public class MotionDebugScreen extends OEBaseScreen {
     @Override
     public boolean isPauseScreen() {
         return pause;
+    }
+
+    private static class MotionListWidget extends FixedListWidget<MotionEntry> {
+        public MotionListWidget(int x, int y, int width, int height, int entryShowCount, @NotNull List<MotionEntry> entryList, @Nullable PressEntry<MotionEntry> onPressEntry, MotionListWidget old) {
+            super(x, y, width, height, new TextComponent("Motion List"), entryShowCount, entryList, MotionEntry::getText, onPressEntry, true, old);
+        }
     }
 }

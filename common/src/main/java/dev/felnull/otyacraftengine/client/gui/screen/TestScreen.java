@@ -17,6 +17,7 @@ import java.util.UUID;
 
 public class TestScreen extends OEBaseScreen {
     private static final UUID id = UUID.randomUUID();
+    private TestFixedListWidget testFixedListWidget;
 
     public TestScreen(Screen parent) {
         super(new TextComponent("Test Screen"), parent);
@@ -48,8 +49,8 @@ public class TestScreen extends OEBaseScreen {
             strs.add(UUID.randomUUID().toString());
         }
 
-        var lst = addRenderableWidget(new TestFixedListWidget(10, 90, 100, 100, new TextComponent("TEST Fixed List"), 10, strs, (widget, item) -> System.out.println(item), true));
-        lst.setBorder(false);
+        testFixedListWidget = addRenderableWidget(new TestFixedListWidget(10, 90, 100, 100, new TextComponent("TEST Fixed List"), 10, strs, (widget, item) -> System.out.println(item), true, testFixedListWidget));
+        testFixedListWidget.setBorder(false);
     }
 
     @Override

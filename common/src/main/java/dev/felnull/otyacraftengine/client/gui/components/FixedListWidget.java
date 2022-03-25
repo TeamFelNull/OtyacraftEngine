@@ -32,18 +32,20 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
     protected int hoveredNumber;
     @Nullable
     protected E selectedEntry;
+    protected int selectedEntryIndex = -1;
 
-    public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable) {
-        this(x, y, width, height, message, entryShowCount, entryList, entryName, onPressEntry, selectable, new TextureSpecifyLocation(WIDGETS, 40, 34, 18, 42));
+    public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable, FixedListWidget<E> old) {
+        this(x, y, width, height, message, entryShowCount, entryList, entryName, onPressEntry, selectable, new TextureSpecifyLocation(WIDGETS, 40, 34, 18, 42), old);
     }
 
-    public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable, @NotNull TextureSpecifyLocation texture) {
+    public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable, @NotNull TextureSpecifyLocation texture, FixedListWidget<E> old) {
         super(x, y, width, height, "fixedListWidget", message, texture);
         this.entryShowCount = entryShowCount;
         this.entryList = entryList;
         this.entryName = entryName;
         this.onPressEntry = onPressEntry;
         this.selectable = selectable;
+        copyValue(old);
     }
 
     @Override
@@ -165,8 +167,10 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
         int cn = getCurrentFirstEntryIndex() + num;
         if (cn < entryList.size() && isEntryHovered(num)) {
             var e = entryList.get(cn);
-            if (selectable)
+            if (selectable) {
                 selectedEntry = e;
+                selectedEntryIndex = cn;
+            }
             if (onPressEntry != null)
                 onPressEntry.onPressEntry(this, e);
         }
@@ -175,20 +179,32 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
     public void setSelectedEntry(int index) {
         if (index >= 0 && index < entryList.size()) {
             this.selectedEntry = entryList.get(index);
+            this.selectedEntryIndex = index;
         } else {
             this.selectedEntry = null;
+            this.selectedEntryIndex = -1;
         }
     }
 
     public void setSelectedEntry(@Nullable E selectedEntry) {
-        if (selectedEntry == null || entryList.stream().anyMatch(n -> n == selectedEntry))
+        if (selectedEntry == null || entryList.stream().anyMatch(n -> n == selectedEntry)) {
             this.selectedEntry = selectedEntry;
+            if (selectedEntry == null)
+                selectedEntryIndex = -1;
+            else
+                selectedEntryIndex = entryList.indexOf(selectedEntry);
+        }
     }
 
     public @Nullable E getSelectedEntry() {
         if (entryList.stream().anyMatch(n -> n == selectedEntry))
             return selectedEntry;
         return null;
+    }
+
+    public int getSelectedEntryIndex() {
+        if (getSelectedEntry() == null) return -1;
+        return selectedEntryIndex;
     }
 
     protected int getCurrentFirstEntryIndex() {
@@ -253,6 +269,14 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
 
     public void setBorder(boolean border) {
         this.border = border;
+    }
+
+    public void copyValue(@Nullable FixedListWidget<E> copyValue) {
+        if (copyValue != null) {
+            this.selectedEntry = copyValue.selectedEntry;
+            this.scrollAmount = copyValue.scrollAmount;
+            this.selectedEntryIndex = copyValue.selectedEntryIndex;
+        }
     }
 
     public static interface PressEntry<E> {

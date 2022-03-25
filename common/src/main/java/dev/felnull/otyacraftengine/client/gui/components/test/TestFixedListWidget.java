@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TestFixedListWidget extends FixedListWidget<String> {
-    public TestFixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<String> entryList, @Nullable PressEntry<String> onPressEntry, boolean selectable) {
-        super(x, y, width, height, message, entryShowCount, entryList, TextComponent::new, onPressEntry, selectable);
+    public TestFixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<String> entryList, @Nullable PressEntry<String> onPressEntry, boolean selectable, TestFixedListWidget old) {
+        super(x, y, width, height, message, entryShowCount, entryList, TextComponent::new, onPressEntry, selectable, old);
     }
 }

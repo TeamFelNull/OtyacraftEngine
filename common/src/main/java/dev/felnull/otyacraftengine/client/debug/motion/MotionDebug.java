@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.client.debug;
+package dev.felnull.otyacraftengine.client.debug.motion;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -6,8 +6,12 @@ import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MotionDebug {
     private static final MotionDebug INSTANCE = new MotionDebug();
+    private final List<MotionEntry> motions = new ArrayList<>();
     private final Vector3f currentPosition = new Vector3f();
     private final Vector3f currentRotation = new Vector3f();
     private final Vector3f currentScale = new Vector3f(1, 1, 1);
@@ -232,5 +236,19 @@ public class MotionDebug {
         stack.translate(pos.x(), pos.y(), pos.z());
         OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
         stack.scale(scale.x(), scale.y(), scale.z());
+    }
+
+    public MotionEntry getCurrentEntry() {
+        return new MotionEntry(getCurrentPosition().copy(), getCurrentRotation().copy(), getCurrentScale().copy());
+    }
+
+    public void load(MotionEntry entry) {
+        setCurrentPosition(entry.position().x(), entry.position().y(), entry.position().z());
+        setCurrentRotation(entry.rotation().x(), entry.rotation().y(), entry.rotation().z());
+        setCurrentScale(entry.scale().x(), entry.scale().y(), entry.scale().z());
+    }
+
+    public List<MotionEntry> getMotions() {
+        return motions;
     }
 }
