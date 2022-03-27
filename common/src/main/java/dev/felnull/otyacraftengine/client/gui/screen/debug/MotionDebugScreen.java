@@ -1,16 +1,22 @@
 package dev.felnull.otyacraftengine.client.gui.screen.debug;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import dev.felnull.otyacraftengine.client.debug.motion.MotionDebug;
-import dev.felnull.otyacraftengine.client.debug.motion.MotionEntry;
+import dev.felnull.otyacraftengine.client.debug.MotionDebug;
 import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.gui.components.BetterEditBox;
 import dev.felnull.otyacraftengine.client.gui.components.FixedListWidget;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
+import dev.felnull.otyacraftengine.client.motion.Motion;
+import dev.felnull.otyacraftengine.client.motion.MotionManager;
+import dev.felnull.otyacraftengine.client.motion.MotionPoint;
 import dev.felnull.otyacraftengine.client.util.OEClientUtil;
 import dev.felnull.otyacraftengine.mixin.client.ScreenAccessor;
+import dev.felnull.otyacraftengine.util.OEPaths;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,11 +25,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class MotionDebugScreen extends OEBaseScreen {
-    private final static Vector3f lastSocketRotation = new Vector3f();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final SimpleDateFormat saveDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+    private static final Vector3f lastSocketRotation = new Vector3f();
     public static boolean pause;
     private static boolean socketRotationFixX = true;
     private static boolean socketRotationFixY = true;
@@ -35,6 +46,8 @@ public class MotionDebugScreen extends OEBaseScreen {
     private BetterEditBox yEditBox;
     private BetterEditBox zEditBox;
     private MotionListWidget motionListWidget;
+    private Button startButton;
+    private Button stopButton;
 
     public MotionDebugScreen(@Nullable Screen parent) {
         super(new TextComponent("Motion Debug"), parent);
@@ -88,29 +101,31 @@ public class MotionDebugScreen extends OEBaseScreen {
                 mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf", xEditBox.getValue(), yEditBox.getValue(), zEditBox.getValue()));
         }));
 
-        motionListWidget = addRenderableWidget(new MotionListWidget(width - 3 - 120, st - 20, 120, 50, 5, getMotionDebug().getMotions(), (widget, item) -> {
-
+        motionListWidget = addRenderableWidget(new MotionListWidget(width - 3 - 120, st - 20, 120, 50, 5, getMotionDebug().getPoints(), (widget, item) -> {
+            var e = motionListWidget.getSelectedEntry();
+            if (e != null)
+                getMotionDebug().load(e);
         }, motionListWidget));
 
         addRenderableWidget(new Button(width - 3 - 120, st + 50 + 3 - 20, 27, 20, new TextComponent("Add"), n -> {
             var ne = getMotionDebug().getCurrentEntry();
-            getMotionDebug().getMotions().add(ne);
-            motionListWidget.setSelectedEntry(getMotionDebug().getMotions().size() - 1);
+            getMotionDebug().getPoints().add(ne);
+            motionListWidget.setSelectedEntry(getMotionDebug().getPoints().size() - 1);
         }));
 
         addRenderableWidget(new Button(width - 3 - 120 + 30, st + 50 + 3 - 20, 27, 20, new TextComponent("Del"), n -> {
             var e = motionListWidget.getSelectedEntry();
             if (e != null) {
                 int num = motionListWidget.getSelectedEntryIndex();
-                getMotionDebug().getMotions().remove(num);
+                getMotionDebug().getPoints().remove(num);
                 motionListWidget.setSelectedEntry(num - 1);
             }
         }));
 
         addRenderableWidget(new Button(width - 3 - 120 + 60, st + 50 + 3 - 20, 27, 20, new TextComponent("Set"), n -> {
-            var e = motionListWidget.getSelectedEntry();
-            if (e != null)
-                getMotionDebug().load(e);
+            int num = motionListWidget.getSelectedEntryIndex();
+            getMotionDebug().getPoints().set(num, getMotionDebug().getCurrentEntry());
+            motionListWidget.setSelectedEntry(num);
         }));
 
         addRenderableWidget(new Button(width - 3 - 120 + 90, st + 50 + 3 - 20, 27, 20, new TextComponent("Inj"), n -> {
@@ -118,15 +133,49 @@ public class MotionDebugScreen extends OEBaseScreen {
             if (e != null) {
                 var ne = getMotionDebug().getCurrentEntry();
                 int ei = motionListWidget.getSelectedEntryIndex();
-                if (ei - 1 >= getMotionDebug().getMotions().size()) {
-                    getMotionDebug().getMotions().add(ne);
-                    motionListWidget.setSelectedEntry(getMotionDebug().getMotions().size() - 1);
+                if (ei - 1 >= getMotionDebug().getPoints().size()) {
+                    getMotionDebug().getPoints().add(ne);
+                    motionListWidget.setSelectedEntry(getMotionDebug().getPoints().size() - 1);
                 } else {
-                    getMotionDebug().getMotions().add(ei + 1, ne);
+                    getMotionDebug().getPoints().add(ei + 1, ne);
                     motionListWidget.setSelectedEntry(ei + 1);
                 }
             }
         }));
+
+        addRenderableWidget(new Button(width - 3 - 120, st + 50 + 3 - 20 + 23, 27, 20, new TextComponent("Output"), n -> {
+            if (getMotionDebug().getPoints().isEmpty()) return;
+            var pt = OEPaths.getClientOEFolderPath().resolve("debug").resolve("motion");
+            pt.toFile().mkdirs();
+            var motion = getMotionDebug().getMotion();
+            var jo = MotionManager.getInstance().toJson(motion);
+            try (Writer writer = new FileWriter(pt.resolve(saveDateFormat.format(new Date()) + ".json").toFile())) {
+                GSON.toJson(jo, writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+
+        addRenderableWidget(new Button(width - 3 - 120 + 30, st + 50 + 3 - 20 + 23, 27, 20, new TextComponent("Input"), n -> {
+            var files = OEClientUtil.openFileChooser(null, OEPaths.getClientOEFolderPath(), null, false);
+            loadJson(files);
+        }));
+
+        startButton = addRenderableWidget(new Button(width - 3 - 120 + 60, st + 50 + 3 - 20 + 23, 27, 20, new TextComponent("Start"), n -> {
+            n.active = false;
+            stopButton.active = true;
+            getMotionDebug().startMotion(3000);
+        }));
+        startButton.active = !getMotionDebug().isMotionTesting();
+
+
+        stopButton = addRenderableWidget(new Button(width - 3 - 120 + 90, st + 50 + 3 - 20 + 23, 27, 20, new TextComponent("Stop"), n -> {
+            n.active = false;
+            startButton.active = true;
+            getMotionDebug().stopMotion();
+        }));
+        stopButton.active = getMotionDebug().isMotionTesting();
+
         st += 17;
 
         var tsw = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Edit temporary Motion"), n -> getMotionDebug().setEditTemporary(n.isEnable()), true));
@@ -157,6 +206,21 @@ public class MotionDebugScreen extends OEBaseScreen {
         //st += 17;
 
 
+    }
+
+    protected void loadJson(File[] files) {
+        if (files == null || files.length != 1) return;
+        var fil = files[0];
+        JsonObject jo = null;
+
+        try (Reader reader = new FileReader(fil)) {
+            jo = GSON.fromJson(reader, JsonObject.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (jo == null) return;
+        getMotionDebug().setMotion(Motion.of(jo));
+        motionListWidget.setSelectedEntry(0);
     }
 
     @Override
@@ -302,9 +366,9 @@ public class MotionDebugScreen extends OEBaseScreen {
         return pause;
     }
 
-    private static class MotionListWidget extends FixedListWidget<MotionEntry> {
-        public MotionListWidget(int x, int y, int width, int height, int entryShowCount, @NotNull List<MotionEntry> entryList, @Nullable PressEntry<MotionEntry> onPressEntry, MotionListWidget old) {
-            super(x, y, width, height, new TextComponent("Motion List"), entryShowCount, entryList, MotionEntry::getText, onPressEntry, true, old);
+    private static class MotionListWidget extends FixedListWidget<MotionPoint> {
+        public MotionListWidget(int x, int y, int width, int height, int entryShowCount, @NotNull List<MotionPoint> entryList, @Nullable PressEntry<MotionPoint> onPressEntry, MotionListWidget old) {
+            super(x, y, width, height, new TextComponent("Motion List"), entryShowCount, entryList, MotionPoint::getText, onPressEntry, true, old);
         }
     }
 }

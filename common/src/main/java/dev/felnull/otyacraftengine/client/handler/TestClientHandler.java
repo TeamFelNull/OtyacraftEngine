@@ -7,7 +7,7 @@ import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.debug.motion.MotionDebug;
+import dev.felnull.otyacraftengine.client.debug.MotionDebug;
 import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
@@ -79,7 +79,7 @@ public class TestClientHandler {
             boolean bl = hand == InteractionHand.MAIN_HAND;
             HumanoidArm arm = bl ? mc.player.getMainArm() : mc.player.getMainArm().getOpposite();
             poseStack.pushPose();
-            MotionDebug.getInstance().poseCurrent(poseStack, partialTicks);
+            MotionDebug.getInstance().poseDebug(poseStack, partialTicks);
             poseStack.pushPose();
             OERenderUtil.posePlayerArm(poseStack, arm, swingProgress, equipProgress);
             OERenderUtil.renderPlayerArm(poseStack, multiBufferSource, arm, packedLight);

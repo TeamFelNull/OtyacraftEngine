@@ -161,7 +161,7 @@ public class OEClientUtil {
     }
 
     @Nullable
-    public static File[] openFileChooser(String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects) {
+    public static File[] openFileChooser(@Nullable String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects) {
         var st = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, null, singleFilter, allowMultipleSelects);
         if (st == null) return null;
         try {

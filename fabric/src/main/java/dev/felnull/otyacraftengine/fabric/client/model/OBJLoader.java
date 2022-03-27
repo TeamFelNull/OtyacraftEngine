@@ -18,7 +18,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 
 import java.io.InputStreamReader;
-import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +70,10 @@ public class OBJLoader {
         Map<String, OBJMtlData> mtls = new LinkedHashMap<>();
         ResourceManager manager = Minecraft.getInstance().getResourceManager();
         for (String name : mtlNames) {
-            ResourceLocation resourceId = new ResourceLocation(modelLocation.getNamespace(), Paths.get(modelLocation.getPath()).getParent().resolve(name).toString().replace("\\", "/"));
+            var pths = modelLocation.getPath().split("/");
+            pths[pths.length - 1] = name;
+            var pth = String.join("/", pths);
+            ResourceLocation resourceId = new ResourceLocation(modelLocation.getNamespace(), pth);
             if (manager.hasResource(resourceId)) {
                 Resource resource = manager.getResource(resourceId);
                 OBJMtlReader.read(resource.getInputStream()).forEach(mtl -> mtls.put(mtl.getName(), mtl));

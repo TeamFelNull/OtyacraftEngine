@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.forge.client.handler;
 
 import dev.felnull.otyacraftengine.client.entrypoint.OEClientEntryPointManager;
+import dev.felnull.otyacraftengine.client.motion.MotionManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -18,6 +19,7 @@ public class ModelHandler {
 
     @SubscribeEvent
     public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent e) {
+        e.registerReloadListener(new MotionManager());
     /*    e.registerReloadListener(new SimplePreparableReloadListener<OEModelLoader>() {
             @Override
             protected @NotNull OEModelLoader prepare(@NotNull ResourceManager arg, @NotNull ProfilerFiller arg2) {
