@@ -53,7 +53,6 @@ public class TestClientHandler {
 
     private static void ontClientTick(Minecraft instance) {
         SocketDebugService.tick();
-        MotionDebug.getInstance().tick();
     }
 
     public static void onIntegratedPauseChange(boolean paused) {
@@ -79,7 +78,7 @@ public class TestClientHandler {
             boolean bl = hand == InteractionHand.MAIN_HAND;
             HumanoidArm arm = bl ? mc.player.getMainArm() : mc.player.getMainArm().getOpposite();
             poseStack.pushPose();
-            MotionDebug.getInstance().poseDebug(poseStack, partialTicks);
+            MotionDebug.getInstance().poseDebug(poseStack);
             poseStack.pushPose();
             OERenderUtil.posePlayerArm(poseStack, arm, swingProgress, equipProgress);
             OERenderUtil.renderPlayerArm(poseStack, multiBufferSource, arm, packedLight);

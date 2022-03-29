@@ -15,7 +15,7 @@ public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Bo
     }
 
     public MotionRotation copy() {
-        return new MotionRotation(angle, center, reset);
+        return new MotionRotation(angle.copy(), center.copy(), reset);
     }
 
     public MotionRotation add(MotionRotation rotation) {
@@ -23,7 +23,7 @@ public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Bo
     }
 
     public MotionRotation() {
-        this(Vector3f.ZERO, Vector3f.ZERO, Triple.of(false, false, false));
+        this(new Vector3f(), new Vector3f(), Triple.of(false, false, false));
     }
 
     public static MotionRotation of(JsonObject jo) {

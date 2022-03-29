@@ -44,6 +44,7 @@ public record Motion(@NotNull List<MotionPoint> points) {
     }
 
     public void pose(@NotNull PoseStack stack, float par) {
+        if (points.isEmpty()) return;
         var iv = getInterval(par);
         var st = iv.getLeft();
         var en = iv.getRight();
