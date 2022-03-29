@@ -12,7 +12,6 @@ import dev.felnull.otyacraftengine.client.gui.components.FixedListWidget;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.motion.Motion;
-import dev.felnull.otyacraftengine.client.motion.MotionManager;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
 import dev.felnull.otyacraftengine.client.util.OEClientUtil;
 import dev.felnull.otyacraftengine.mixin.client.ScreenAccessor;
@@ -148,7 +147,7 @@ public class MotionDebugScreen extends OEBaseScreen {
             var pt = OEPaths.getClientOEFolderPath().resolve("debug").resolve("motion");
             pt.toFile().mkdirs();
             var motion = getMotionDebug().getMotion();
-            var jo = MotionManager.getInstance().toJson(motion);
+            var jo = motion.toJson();
             try (Writer writer = new FileWriter(pt.resolve(saveDateFormat.format(new Date()) + ".json").toFile())) {
                 GSON.toJson(jo, writer);
             } catch (IOException e) {

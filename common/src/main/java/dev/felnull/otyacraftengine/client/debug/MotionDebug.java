@@ -5,7 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import dev.felnull.otyacraftengine.client.motion.Motion;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
+import dev.felnull.otyacraftengine.client.motion.MotionRotation;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
+import dev.felnull.otyacraftengine.util.OEMath;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,15 +18,15 @@ public class MotionDebug {
     private static final MotionDebug INSTANCE = new MotionDebug();
     private final List<MotionPoint> points = new ArrayList<>();
     private final Vector3f currentPosition = new Vector3f();
-    private final Vector3f currentRotation = new Vector3f();
+    private MotionRotation currentRotation = new MotionRotation();
     private final Vector3f currentScale = new Vector3f(1, 1, 1);
     private final Vector3f temporaryPosition = new Vector3f();
-    private final Vector3f temporaryRotation = new Vector3f();
+    private MotionRotation temporaryRotation = new MotionRotation();
     private final Vector3f temporaryScale = new Vector3f();
     private Vector3f position = new Vector3f();
-    private Vector3f rotation = new Vector3f();
+    private MotionRotation rotation = new MotionRotation();
     private Vector3f oldPosition = new Vector3f();
-    private Vector3f oldRotation = new Vector3f();
+    private MotionRotation oldRotation = new MotionRotation();
     private boolean temporary;
     private boolean editTemporary;
     private boolean editRotation;
@@ -60,7 +62,7 @@ public class MotionDebug {
     }
 
     @NotNull
-    public Vector3f getCurrentRotation() {
+    public MotionRotation getCurrentRotation() {
         return currentRotation;
     }
 
@@ -73,7 +75,7 @@ public class MotionDebug {
         return temporaryPosition;
     }
 
-    public Vector3f getTemporaryRotation() {
+    public MotionRotation getTemporaryRotation() {
         return temporaryRotation;
     }
 
@@ -85,8 +87,8 @@ public class MotionDebug {
         temporaryPosition.set(x, y, z);
     }
 
-    public void setTemporaryRotation(float x, float y, float z) {
-        temporaryRotation.set(x, y, z);
+    public void setTemporaryRotation(float ax, float ay, float az, float cx, float cy, float cz, boolean rx, boolean ry, boolean rz) {
+        temporaryRotation = new MotionRotation(ax, ay, az, cx, cy, cz, rx, ry, rz);
     }
 
     public void setTemporaryScale(float x, float y, float z) {
@@ -105,8 +107,8 @@ public class MotionDebug {
         currentPosition.set(x, y, z);
     }
 
-    public void setCurrentRotation(float x, float y, float z) {
-        currentRotation.set(x, y, z);
+    public void setCurrentRotation(float ax, float ay, float az, float cx, float cy, float cz, boolean rx, boolean ry, boolean rz) {
+        currentRotation = new MotionRotation(ax, ay, az, cx, cy, cz, rx, ry, rz);
     }
 
     public void setCurrentScale(float x, float y, float z) {
@@ -132,8 +134,8 @@ public class MotionDebug {
         return cp;
     }
 
-    public Vector3f getRotation(float delta) {
-        return new Vector3f(lerpRoted(delta, oldRotation.x(), rotation.x()), lerpRoted(delta, oldRotation.y(), rotation.y()), lerpRoted(delta, oldRotation.z(), rotation.z()));
+    public MotionRotation getRotation(float delta) {
+        return OEMath.leap(delta, oldRotation, rotation);
     }
 
     private static float lerpRoted(float delta, float old, float current) {
@@ -148,10 +150,10 @@ public class MotionDebug {
         return Mth.lerp(delta, old, current);
     }
 
-    public Vector3f getRotation() {
+    public MotionRotation getRotation() {
         var cr = currentRotation.copy();
         if (temporary)
-            cr.add(temporaryRotation);
+            cr = cr.add(temporaryRotation);
         return cr;
     }
 
@@ -182,10 +184,10 @@ public class MotionDebug {
     public void addRotation(float x, float y, float z) {
         if (editTemporary) {
             var tr = getTemporaryRotation();
-            setTemporaryRotation(addRotation(tr.x(), x), addRotation(tr.y(), y), addRotation(tr.z(), z));
+         //   setTemporaryRotation(addRotation(tr.x(), x), addRotation(tr.y(), y), addRotation(tr.z(), z));
         } else {
             var cr = getCurrentRotation();
-            setCurrentRotation(addRotation(cr.x(), x), addRotation(cr.y(), y), addRotation(cr.z(), z));
+        //    setCurrentRotation(addRotation(cr.x(), x), addRotation(cr.y(), y), addRotation(cr.z(), z));
         }
     }
 
@@ -202,10 +204,10 @@ public class MotionDebug {
     }
 
     public void setRotation(float x, float y, float z) {
-        if (editTemporary)
+   /*     if (editTemporary)
             setTemporaryRotation(x, y, z);
         else
-            setCurrentRotation(x, y, z);
+            setCurrentRotation(x, y, z);*/
     }
 
     public void setScale(float x, float y, float z) {
@@ -230,7 +232,7 @@ public class MotionDebug {
         var rot = getRotation(delta);
         var scale = getScale();
         stack.translate(pos.x(), pos.y(), pos.z());
-        OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
+     //   OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
         stack.scale(scale.x(), scale.y(), scale.z());
     }
 
@@ -239,7 +241,7 @@ public class MotionDebug {
         var rot = getRotation();
         var scale = getScale();
         stack.translate(pos.x(), pos.y(), pos.z());
-        OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
+      //  OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
         stack.scale(scale.x(), scale.y(), scale.z());
     }
 
@@ -252,12 +254,13 @@ public class MotionDebug {
     }
 
     public MotionPoint getCurrentEntry() {
-        return new MotionPoint(getCurrentPosition().copy(), getCurrentRotation().copy());
+        // return new MotionPoint(getCurrentPosition().copy(), getCurrentRotation().copy());
+        return null;
     }
 
     public void load(MotionPoint entry) {
         setCurrentPosition(entry.position().x(), entry.position().y(), entry.position().z());
-        setCurrentRotation(entry.rotation().x(), entry.rotation().y(), entry.rotation().z());
+        // setCurrentRotation(entry.rotation().x(), entry.rotation().y(), entry.rotation().z());
     }
 
     public List<MotionPoint> getPoints() {

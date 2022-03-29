@@ -1,10 +1,11 @@
 package dev.felnull.otyacraftengine.client.motion;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import dev.felnull.otyacraftengine.client.util.OERenderUtil;
+import dev.felnull.otyacraftengine.util.OEMath;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,15 @@ public record Motion(@NotNull List<MotionPoint> points) {
         return new Motion(builder.build());
     }
 
+    public JsonObject toJson() {
+        var jo = new JsonObject();
+        jo.addProperty("version", 1);
+        var ja = new JsonArray();
+        points.forEach(n -> ja.add(n.toJson()));
+        jo.add("points", ja);
+        return jo;
+    }
+
     @NotNull
     public Pair<MotionPoint, MotionPoint> getInterval(float par) {
         par = Mth.clamp(par, 0, 1);
@@ -38,17 +48,17 @@ public record Motion(@NotNull List<MotionPoint> points) {
         var st = iv.getLeft();
         var en = iv.getRight();
         Vector3f pos;
-        Vector3f rot;
+        MotionRotation rot;
         if (st == en) {
             pos = st.position();
             rot = st.rotation();
         } else {
             float op = par % (1f / (points.size() - 1));
             op *= points.size() - 1;
-            pos = new Vector3f(Mth.lerp(op, st.position().x(), en.position().x()), Mth.lerp(op, st.position().y(), en.position().y()), Mth.lerp(op, st.position().z(), en.position().z()));
-            rot = new Vector3f(Mth.lerp(op, st.rotation().x(), en.rotation().x()), Mth.lerp(op, st.rotation().y(), en.rotation().y()), Mth.lerp(op, st.rotation().z(), en.rotation().z()));
+            pos = OEMath.leap(op, st.position(), en.position());
+            rot = OEMath.leap(op, st.rotation(), en.rotation());
         }
         stack.translate(pos.x(), pos.y(), pos.z());
-        OERenderUtil.poseRotateAll(stack, rot.x(), rot.y(), rot.z());
+        rot.pose(stack);
     }
 }
