@@ -25,6 +25,7 @@ public class MotionDebug {
     private final DebugOption option = new DebugOption();
     private Vector3f position = new Vector3f();
     private MotionRotation rotation = new MotionRotation();
+    private float ratio = 1f;
     private Vector3f temporaryPosition = new Vector3f();
     private SimpleRotation temporaryRotation = new SimpleRotation();
     private Motion playMotion;
@@ -104,6 +105,14 @@ public class MotionDebug {
         return rotation;
     }
 
+    public float getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
+    }
+
     public void setPosition(Vector3f position) {
         this.position = position;
     }
@@ -178,13 +187,16 @@ public class MotionDebug {
     }
 
     public void reset() {
-        setPosition(new Vector3f());
-        var or = getRotation().origin().copy();
-        setRotation(new MotionRotation());
-        setTemporaryPosition(new Vector3f());
-        setTemporaryRotation(new SimpleRotation());
-        if (isFixOrigin())
-            setRotationOrigin(or, true);
+        if (isEditTemporary()) {
+            setTemporaryPosition(new Vector3f());
+            setTemporaryRotation(new SimpleRotation());
+        } else {
+            setPosition(new Vector3f());
+            var or = getRotation().origin().copy();
+            setRotation(new MotionRotation());
+            if (isFixOrigin())
+                setRotationOrigin(or, true);
+        }
     }
 
     public void pose(@NotNull PoseStack stack) {
@@ -212,6 +224,8 @@ public class MotionDebug {
         poseDebug(stack);
         stack.pushPose();
 
+        if (!isShowOrigin()) return;
+
         stack.pushPose();
         stack.translate(rotation.origin().x(), rotation.origin().y(), rotation.origin().z());
         OERenderUtil.poseScaleAll(stack, 0.1f * scale);
@@ -228,12 +242,13 @@ public class MotionDebug {
     }
 
     public MotionPoint createPoint() {
-        return new MotionPoint(getPosition().copy(), getRotation().copy());
+        return new MotionPoint(getPosition().copy(), getRotation().copy(), ratio);
     }
 
     public void setPoint(MotionPoint point) {
         setPosition(point.getPosition());
         setRotation(point.getRotation());
+        setRatio(point.getRatio());
     }
 
     @NotNull

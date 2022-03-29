@@ -34,6 +34,7 @@ public class MotionDebugScreen extends OEBaseScreen {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final SimpleDateFormat saveDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
     private static final Vector3f lastSocketRotation = new Vector3f();
+    private static boolean enableVisible = true;
     public static boolean pause;
     private static boolean socketRotationFixX = true;
     private static boolean socketRotationFixY = true;
@@ -47,7 +48,8 @@ public class MotionDebugScreen extends OEBaseScreen {
     private MotionListWidget motionListWidget;
     private Button startButton;
     private Button stopButton;
-    private boolean enableVisible = true;
+    private BetterEditBox motionSpeedEditBox;
+    private BetterEditBox ratioEditBox;
 
     public MotionDebugScreen(@Nullable Screen parent) {
         super(new TextComponent("Motion Debug"), parent);
@@ -112,6 +114,17 @@ public class MotionDebugScreen extends OEBaseScreen {
             if (!xEditBox.getValue().isEmpty() && !yEditBox.getValue().isEmpty() && !zEditBox.getValue().isEmpty())
                 mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf", xEditBox.getValue(), yEditBox.getValue(), zEditBox.getValue()));
         }));
+
+        addRenderableWidget(new Button(123, st + 15 + 23, 50, 20, new TextComponent("All Copy"), n -> {
+            var p = getMotionDebug().createPoint();
+            var pos = p.getPosition();
+            var rot = p.getRotation();
+            var ang = rot.angle();
+            var ori = rot.origin();
+            var res = rot.reset();
+            mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %s, %s, %s", pos.x(), pos.y(), pos.z(), ang.x(), ang.y(), ang.z(), ori.x(), ori.y(), ori.z(), res.getLeft(), res.getMiddle(), res.getLeft()));
+        }));
+
 
         motionListWidget = addRenderableWidget(new MotionListWidget(width - 3 - 120, st - 20, 120, 50, 5, getMotionDebug().getPoints(), (widget, item) -> {
             var e = motionListWidget.getSelectedEntry();
@@ -178,7 +191,12 @@ public class MotionDebugScreen extends OEBaseScreen {
         startButton = addRenderableWidget(new Button(width - 3 - 120 + 60, st + 50 + 3 - 20 + 23, 27, 20, new TextComponent("Start"), n -> {
             n.active = false;
             stopButton.active = true;
-            getMotionDebug().startMotion(3000);
+            try {
+                var str = motionSpeedEditBox.getValue();
+                long val = str.isEmpty() ? 3000 : Math.max(Long.parseLong(str), 1);
+                getMotionDebug().startMotion(val);
+            } catch (NumberFormatException ignored) {
+            }
         }));
         startButton.active = !getMotionDebug().isMotionPlaying();
 
@@ -189,6 +207,21 @@ public class MotionDebugScreen extends OEBaseScreen {
             getMotionDebug().stopMotion();
         }));
         stopButton.active = getMotionDebug().isMotionPlaying();
+
+
+        motionSpeedEditBox = addRenderableWidget(new BetterEditBox(width - 3 - 120, st + 50 + 3 - 20 + 23 + 23, 120, 12, motionSpeedEditBox, new TextComponent("Motion Speed")));
+        motionSpeedEditBox.setFilter(fpr);
+
+        ratioEditBox = addRenderableWidget(new BetterEditBox(width - 3 - 120, st + 50 + 3 - 20 + 23 + 23 + 20, 50, 12, ratioEditBox, new TextComponent("Ratio")));
+        ratioEditBox.setFilter(fpr);
+        ratioEditBox.setValue(String.valueOf(getMotionDebug().getRatio()));
+        ratioEditBox.setResponder(n -> {
+            try {
+                float r = ratioEditBox.getValue().isEmpty() ? 1f : Float.parseFloat(ratioEditBox.getValue());
+                getMotionDebug().setRatio(r);
+            } catch (NumberFormatException ignored) {
+            }
+        });
 
         st += 17;
 
@@ -404,10 +437,19 @@ public class MotionDebugScreen extends OEBaseScreen {
         x *= sc;
         y *= sc;
         z *= sc;
-        switch (getMotionDebug().getEditType()) {
-            case POSITION -> getMotionDebug().addPosition(y * 0.05f, -x * 0.05f, z * 0.05f);
-            case ROTATION -> getMotionDebug().addRotationAngle(-x, -y, -z);
-            case ROTATION_ORIGIN -> getMotionDebug().addRotationOrigin(y * 0.05f, -x * 0.05f, z * 0.05f);
+
+        if (getMotionDebug().isEditTemporary()) {
+            switch (getMotionDebug().getEditType()) {
+                case POSITION -> getMotionDebug().addTemporaryPosition(y * 0.05f, -x * 0.05f, z * 0.05f);
+                case ROTATION -> getMotionDebug().addTemporaryRotationAngle(-x, -y, -z);
+                case ROTATION_ORIGIN -> getMotionDebug().addRotationOrigin(y * 0.05f, -x * 0.05f, z * 0.05f);
+            }
+        } else {
+            switch (getMotionDebug().getEditType()) {
+                case POSITION -> getMotionDebug().addPosition(y * 0.05f, -x * 0.05f, z * 0.05f);
+                case ROTATION -> getMotionDebug().addRotationAngle(-x, -y, -z);
+                case ROTATION_ORIGIN -> getMotionDebug().addRotationOrigin(y * 0.05f, -x * 0.05f, z * 0.05f);
+            }
         }
     }
 

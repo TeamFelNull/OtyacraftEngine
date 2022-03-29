@@ -10,8 +10,8 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
 public record MotionRotation(Vector3f angle, Vector3f origin, Triple<Boolean, Boolean, Boolean> reset) {
-    public MotionRotation(float ax, float ay, float az, float cx, float cy, float cz, boolean rx, boolean ry, boolean rz) {
-        this(new Vector3f(ax, ay, az), new Vector3f(cx, cy, cz), Triple.of(rx, ry, rz));
+    public MotionRotation(float ax, float ay, float az, float ox, float oy, float oz, boolean rx, boolean ry, boolean rz) {
+        this(new Vector3f(ax, ay, az), new Vector3f(ox, oy, oz), Triple.of(rx, ry, rz));
     }
 
     public MotionRotation copy() {

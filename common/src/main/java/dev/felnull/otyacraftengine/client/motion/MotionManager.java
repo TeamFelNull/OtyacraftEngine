@@ -41,6 +41,4 @@ public class MotionManager extends SimplePreparableReloadListener<MotionLoader> 
         if (motions == null) return null;
         return motions.get(location);
     }
-
-
 }
