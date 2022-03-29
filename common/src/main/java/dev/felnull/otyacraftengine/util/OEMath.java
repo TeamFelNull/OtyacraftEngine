@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class OEMath {
     public static MotionRotation add(MotionRotation rotation, MotionRotation rotation2) {
-        var c = rotation.center().copy();
-        c.add(rotation2.center());
+        var c = rotation.origin().copy();
+        c.add(rotation2.origin());
 
         var a = rotation.angle().copy();
         a.add(rotation2.angle());
@@ -19,7 +19,7 @@ public class OEMath {
 
     @NotNull
     public static MotionRotation leap(float delta, @NotNull MotionRotation old, @NotNull MotionRotation current) {
-        return new MotionRotation(OEMath.leapAngle(delta, old, current), leap(delta, old.center(), current.center()), Triple.of(false, false, false));
+        return new MotionRotation(OEMath.leapAngle(delta, old, current), leap(delta, old.origin(), current.origin()), Triple.of(false, false, false));
     }
 
     @NotNull

@@ -8,18 +8,18 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 
-public record MotionPoint(Vector3f position, MotionRotation rotation, float ratio) {
+public class MotionPoint {
+    private final Vector3f position;
+    private final MotionRotation rotation;
+
     public MotionPoint(Vector3f position, MotionRotation rotation) {
-        this(position, rotation, 1f);
+        this.position = position;
+        this.rotation = rotation;
     }
 
     public static MotionPoint of(JsonObject jo) {
         var pos = jo.getAsJsonArray("pos");
-        float rat = 1f;
-        var r = jo.get("rat");
-        if (r != null)
-            rat = r.getAsFloat();
-        return new MotionPoint(new Vector3f(pos.get(0).getAsFloat(), pos.get(1).getAsFloat(), pos.get(2).getAsFloat()), MotionRotation.of(jo.getAsJsonObject("rot")), rat);
+        return new MotionPoint(new Vector3f(pos.get(0).getAsFloat(), pos.get(1).getAsFloat(), pos.get(2).getAsFloat()), MotionRotation.of(jo.getAsJsonObject("rot")));
     }
 
     public JsonObject toJson() {
@@ -30,9 +30,15 @@ public record MotionPoint(Vector3f position, MotionRotation rotation, float rati
         p.add(position.z());
         jo.add("pos", p);
         jo.add("rot", rotation.toJson());
-        if (ratio != 1f)
-            jo.addProperty("rat", ratio);
         return jo;
+    }
+
+    public MotionRotation getRotation() {
+        return rotation;
+    }
+
+    public Vector3f getPosition() {
+        return position;
     }
 
     public Component getText() {

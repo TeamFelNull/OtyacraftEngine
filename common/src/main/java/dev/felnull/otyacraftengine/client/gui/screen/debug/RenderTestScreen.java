@@ -8,6 +8,7 @@ import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.BakedModelRenderTest;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.IRenderTest;
 import dev.felnull.otyacraftengine.client.gui.screen.debug.rendertest.ItemRenderTest;
+import dev.felnull.otyacraftengine.client.model.OETestModels;
 import dev.felnull.otyacraftengine.client.util.OEClientUtil;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
 import net.minecraft.client.gui.components.Button;
@@ -289,6 +290,10 @@ public class RenderTestScreen extends OEBaseScreen {
         addRenderTest(new BakedModelRenderTest(new ResourceLocation(OtyacraftEngine.MODID, "item/test_item_kame")));//144.5*10 32.6*10
         addRenderTest(new ItemRenderTest(Items.APPLE));//44.2 56.5
         addRenderTest(new ItemRenderTest(Items.IRON_BLOCK));//13.0 17.7
+
+
+        addRenderTest(new BakedModelRenderTest(OETestModels.ORIGIN));
+        addRenderTest(new BakedModelRenderTest(OETestModels.XYZ_AXIS));
     }
 
     private static enum Motion {

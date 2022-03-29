@@ -9,13 +9,13 @@ import dev.felnull.otyacraftengine.util.OEMath;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 
-public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Boolean, Boolean> reset) {
+public record MotionRotation(Vector3f angle, Vector3f origin, Triple<Boolean, Boolean, Boolean> reset) {
     public MotionRotation(float ax, float ay, float az, float cx, float cy, float cz, boolean rx, boolean ry, boolean rz) {
         this(new Vector3f(ax, ay, az), new Vector3f(cx, cy, cz), Triple.of(rx, ry, rz));
     }
 
     public MotionRotation copy() {
-        return new MotionRotation(angle.copy(), center.copy(), reset);
+        return new MotionRotation(angle.copy(), origin.copy(), reset);
     }
 
     public MotionRotation add(MotionRotation rotation) {
@@ -28,7 +28,7 @@ public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Bo
 
     public static MotionRotation of(JsonObject jo) {
         var ja = jo.getAsJsonArray("angle");
-        var jc = jo.getAsJsonArray("center");
+        var jc = jo.getAsJsonArray("origin");
         var jr = jo.getAsJsonArray("reset");
         Triple<Boolean, Boolean, Boolean> res = Triple.of(false, false, false);
         if (jr != null)
@@ -45,10 +45,10 @@ public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Bo
         jo.add("angle", a);
 
         var c = new JsonArray();
-        c.add(center.x());
-        c.add(center.y());
-        c.add(center.z());
-        jo.add("center", c);
+        c.add(origin.x());
+        c.add(origin.y());
+        c.add(origin.z());
+        jo.add("origin", c);
 
         if (!reset.getRight() && !reset.getMiddle() && !reset.getLeft()) {
             var r = new JsonArray();
@@ -61,8 +61,8 @@ public record MotionRotation(Vector3f angle, Vector3f center, Triple<Boolean, Bo
     }
 
     public void pose(@NotNull PoseStack poseStack) {
-        poseStack.translate(center.x(), center.y(), center.z());
+        poseStack.translate(origin.x(), origin.y(), origin.z());
         OERenderUtil.poseRotateAll(poseStack, angle.x(), angle.y(), angle.z());
-        poseStack.translate(-center.x(), -center.y(), -center.z());
+        poseStack.translate(-origin.x(), -origin.y(), -origin.z());
     }
 }

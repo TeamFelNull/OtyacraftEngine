@@ -78,7 +78,7 @@ public class TestClientHandler {
             boolean bl = hand == InteractionHand.MAIN_HAND;
             HumanoidArm arm = bl ? mc.player.getMainArm() : mc.player.getMainArm().getOpposite();
             poseStack.pushPose();
-            MotionDebug.getInstance().poseDebug(poseStack);
+            MotionDebug.getInstance().onDebug(poseStack, multiBufferSource, .5f);
             poseStack.pushPose();
             OERenderUtil.posePlayerArm(poseStack, arm, swingProgress, equipProgress);
             OERenderUtil.renderPlayerArm(poseStack, multiBufferSource, arm, packedLight);

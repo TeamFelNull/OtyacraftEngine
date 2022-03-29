@@ -12,7 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record Motion(@NotNull List<MotionPoint> points) {
+public class Motion {
+    private final List<MotionPoint> points;
+
     public Motion(@NotNull List<MotionPoint> points) {
         this.points = points;
     }
@@ -35,6 +37,10 @@ public record Motion(@NotNull List<MotionPoint> points) {
         return jo;
     }
 
+    public List<MotionPoint> getPoints() {
+        return points;
+    }
+
     @NotNull
     public Pair<MotionPoint, MotionPoint> getInterval(float par) {
         par = Mth.clamp(par, 0, 1);
@@ -51,13 +57,13 @@ public record Motion(@NotNull List<MotionPoint> points) {
         Vector3f pos;
         MotionRotation rot;
         if (st == en) {
-            pos = st.position();
-            rot = st.rotation();
+            pos = st.getPosition();
+            rot = st.getRotation();
         } else {
             float op = par % (1f / (points.size() - 1));
             op *= points.size() - 1;
-            pos = OEMath.leap(op, st.position(), en.position());
-            rot = OEMath.leap(op, st.rotation(), en.rotation());
+            pos = OEMath.leap(op, st.getPosition(), en.getPosition());
+            rot = OEMath.leap(op, st.getRotation(), en.getRotation());
         }
         stack.translate(pos.x(), pos.y(), pos.z());
         rot.pose(stack);

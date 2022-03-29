@@ -38,7 +38,7 @@ public class MotionDebugScreen extends OEBaseScreen {
     private static boolean socketRotationFixX = true;
     private static boolean socketRotationFixY = true;
     private static boolean socketRotationFixZ = true;
-    private static boolean enableEdit;
+    private static boolean enableEdit = true;
     private Button editTypeButton;
     private SwitchButton enableEditSwitch;
     private BetterEditBox xEditBox;
@@ -47,6 +47,7 @@ public class MotionDebugScreen extends OEBaseScreen {
     private MotionListWidget motionListWidget;
     private Button startButton;
     private Button stopButton;
+    private boolean enableVisible = true;
 
     public MotionDebugScreen(@Nullable Screen parent) {
         super(new TextComponent("Motion Debug"), parent);
@@ -55,6 +56,18 @@ public class MotionDebugScreen extends OEBaseScreen {
     @Override
     protected void init() {
         super.init();
+
+        var vib = addRenderableWidget(new Button(width - 13, 3, 10, 10, new TextComponent("I"), n -> {
+            ScreenAccessor accessor = (ScreenAccessor) this;
+            enableVisible = !enableVisible;
+            accessor.getRenderables().forEach(m -> {
+                if (m == n) return;
+                if (m instanceof AbstractWidget w)
+                    w.visible = enableVisible;
+            });
+        }));
+
+
         int st = 3 + mc.font.lineHeight * 6 + 2;
         var etsw = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Enable temporary Motion"), n -> getMotionDebug().setEnableTemporary(n.isEnable()), true));
         etsw.setEnable(getMotionDebug().isEnableTemporary());
@@ -110,6 +123,7 @@ public class MotionDebugScreen extends OEBaseScreen {
             var ne = getMotionDebug().createPoint();
             getMotionDebug().getPoints().add(ne);
             motionListWidget.setSelectedEntry(getMotionDebug().getPoints().size() - 1);
+            getMotionDebug().setRotationReset(false, false, false);
         }));
 
         addRenderableWidget(new Button(width - 3 - 120 + 30, st + 50 + 3 - 20, 27, 20, new TextComponent("Del"), n -> {
@@ -139,6 +153,7 @@ public class MotionDebugScreen extends OEBaseScreen {
                     getMotionDebug().getPoints().add(ei + 1, ne);
                     motionListWidget.setSelectedEntry(ei + 1);
                 }
+                getMotionDebug().setRotationReset(false, false, false);
             }
         }));
 
@@ -201,9 +216,44 @@ public class MotionDebugScreen extends OEBaseScreen {
 
         var srswfz = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Socket Rotation Fix Z"), n -> socketRotationFixZ = n.isEnable(), true));
         srswfz.setEnable(socketRotationFixZ);
-        //st += 17;
+        st += 15;
 
+        addRenderableWidget(new Button(3, st, 40, 20, new TextComponent("Reset X"), n -> {
+            var o = getMotionDebug().getRotation().reset();
+            getMotionDebug().setRotationReset(true, o.getMiddle(), o.getRight());
+            var oa = getMotionDebug().getRotation().angle();
+            getMotionDebug().setRotationAngle(new Vector3f(oa.x() % 360, oa.y(), oa.z()));
+        }));
 
+        addRenderableWidget(new Button(3 + 40 + 3, st, 40, 20, new TextComponent("Reset Y"), n -> {
+            var o = getMotionDebug().getRotation().reset();
+            getMotionDebug().setRotationReset(o.getLeft(), true, o.getRight());
+            var oa = getMotionDebug().getRotation().angle();
+            getMotionDebug().setRotationAngle(new Vector3f(oa.x(), oa.y() % 360, oa.z()));
+        }));
+
+        addRenderableWidget(new Button(3 + 40 + 3 + 3 + 40, st, 40, 20, new TextComponent("Reset Z"), n -> {
+            var o = getMotionDebug().getRotation().reset();
+            getMotionDebug().setRotationReset(o.getLeft(), o.getMiddle(), true);
+            var oa = getMotionDebug().getRotation().angle();
+            getMotionDebug().setRotationAngle(new Vector3f(oa.x(), oa.y(), oa.z() % 360));
+        }));
+
+        st += 24;
+
+        var fosw = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Fix Origin"), n -> getMotionDebug().setFixOrigin(n.isEnable()), true));
+        fosw.setEnable(getMotionDebug().isFixOrigin());
+        st += 17;
+
+        var sosw = addRenderableWidget(new SwitchButton(3, st, new TextComponent("Show Origin"), n -> getMotionDebug().setShowOrigin(n.isEnable()), true));
+        sosw.setEnable(getMotionDebug().isShowOrigin());
+
+        var sca = (ScreenAccessor) this;
+        sca.getRenderables().forEach(n -> {
+            if (n == vib) return;
+            if (n instanceof AbstractWidget w)
+                w.visible = enableVisible;
+        });
     }
 
     protected void loadJson(File[] files) {
@@ -265,16 +315,19 @@ public class MotionDebugScreen extends OEBaseScreen {
 
     @Override
     public void render(@NotNull PoseStack poseStack, int x, int y, float f) {
-        this.renderBackground(poseStack);
+        if (enableVisible)
+            this.renderBackground(poseStack);
         super.render(poseStack, x, y, f);
 
         drawTextBase(poseStack, mc.fpsString, 3, 3, 0xFFFFFF);
-        drawTextBase(poseStack, "Motion Point - " + createMotionText(getMotionDebug().getPosition(), getMotionDebug().getRotation().angle(), getMotionDebug().getRotation().center()), 3, 3 + mc.font.lineHeight, 0xFFFFFF);
-        drawTextBase(poseStack, "Temporary - " + createMotionText(getMotionDebug().getTemporaryPosition(), getMotionDebug().getTemporaryRotation().angle(), getMotionDebug().getTemporaryRotation().center()), 3, 3 + mc.font.lineHeight * 2, 0xFFFFFF);
-        drawTextBase(poseStack, "Sensitivity: " + getMotionDebug().getSensitivity(), 3, 3 + mc.font.lineHeight * 3, 0xFFFFFF);
+        drawTextBase(poseStack, "Motion Point - " + createMotionText(getMotionDebug().getPosition(), getMotionDebug().getRotation().angle(), getMotionDebug().getRotation().origin()), 3, 3 + mc.font.lineHeight, 0xFFFFFF);
+        var reset = getMotionDebug().getRotation().reset();
+        drawTextBase(poseStack, String.format("Reset: [X: %s, Y: %s, Z: %s]", reset.getLeft() ? "T" : "F", reset.getMiddle() ? "T" : "F", reset.getRight() ? "T" : "F"), 3, 3 + mc.font.lineHeight * 2, 0xFFFFFF);
+        drawTextBase(poseStack, "Temporary - " + createMotionText(getMotionDebug().getTemporaryPosition(), getMotionDebug().getTemporaryRotation().angle(), getMotionDebug().getTemporaryRotation().origin()), 3, 3 + mc.font.lineHeight * 3, 0xFFFFFF);
+        drawTextBase(poseStack, "Sensitivity: " + getMotionDebug().getSensitivity(), 3, 3 + mc.font.lineHeight * 4, 0xFFFFFF);
         var spos = SocketDebugService.getPosition(f);
         var srot = SocketDebugService.getAngele(f);
-        drawTextBase(poseStack, !SocketDebugService.isConnected() ? "Socket - Not connected" : String.format("Socket - Pos: [X: %s  Y: %s  Z: %s], Rot: [X: %s, Y: %s, Z: %s]", (int) spos.x(), (int) spos.y(), (int) spos.z(), (int) srot.x(), (int) srot.y(), (int) srot.z()), 3, 3 + mc.font.lineHeight * 4, 0xFFFFFF);
+        drawTextBase(poseStack, !SocketDebugService.isConnected() ? "Socket - Not connected" : String.format("Socket - Pos: [X: %s  Y: %s  Z: %s], Rot: [X: %s, Y: %s, Z: %s]", (int) spos.x(), (int) spos.y(), (int) spos.z(), (int) srot.x(), (int) srot.y(), (int) srot.z()), 3, 3 + mc.font.lineHeight * 5, 0xFFFFFF);
     }
 
     @Override
@@ -307,7 +360,7 @@ public class MotionDebugScreen extends OEBaseScreen {
             if (l) {
                 addMotion((float) g, (float) f, 0);
             } else {
-                addMotion(0, 0, (float) g);
+                addMotion(0, (float) f, (float) g);
             }
         }
         return super.mouseDragged(d, e, i, f, g);
@@ -334,7 +387,7 @@ public class MotionDebugScreen extends OEBaseScreen {
         switch (getMotionDebug().getEditType()) {
             case POSITION -> getMotionDebug().setPosition(new Vector3f(x, y, z));
             case ROTATION -> getMotionDebug().setRotationAngle(new Vector3f(x, y, z));
-            case ROTATION_CENTER -> getMotionDebug().setRotationCenter(new Vector3f(x, y, z));
+            case ROTATION_ORIGIN -> getMotionDebug().setRotationOrigin(new Vector3f(x, y, z));
         }
     }
 
@@ -342,7 +395,7 @@ public class MotionDebugScreen extends OEBaseScreen {
         return switch (getMotionDebug().getEditType()) {
             case POSITION -> getMotionDebug().getPosition();
             case ROTATION -> getMotionDebug().getRotation().angle();
-            case ROTATION_CENTER -> getMotionDebug().getRotation().center();
+            case ROTATION_ORIGIN -> getMotionDebug().getRotation().origin();
         };
     }
 
@@ -354,7 +407,7 @@ public class MotionDebugScreen extends OEBaseScreen {
         switch (getMotionDebug().getEditType()) {
             case POSITION -> getMotionDebug().addPosition(y * 0.05f, -x * 0.05f, z * 0.05f);
             case ROTATION -> getMotionDebug().addRotationAngle(-x, -y, -z);
-            case ROTATION_CENTER -> getMotionDebug().addRotationCenter(y * 0.05f, -x * 0.05f, z * 0.05f);
+            case ROTATION_ORIGIN -> getMotionDebug().addRotationOrigin(y * 0.05f, -x * 0.05f, z * 0.05f);
         }
     }
 
@@ -362,8 +415,8 @@ public class MotionDebugScreen extends OEBaseScreen {
         return MotionDebug.getInstance();
     }
 
-    private static String createMotionText(Vector3f pos, Vector3f angle, Vector3f center) {
-        return String.format("Pos: [X: %s  Y: %s  Z: %s], Angle: [X: %s, Y: %s, Z: %s], Center: [X: %s, Y: %s, Z: %s]", pos.x(), pos.y(), pos.z(), angle.x(), angle.y(), angle.z(), center.x(), center.y(), center.z());
+    private static String createMotionText(Vector3f pos, Vector3f angle, Vector3f origin) {
+        return String.format("Pos: [X: %s  Y: %s  Z: %s], Angle: [X: %s, Y: %s, Z: %s], Origin: [X: %s, Y: %s, Z: %s]", pos.x(), pos.y(), pos.z(), angle.x(), angle.y(), angle.z(), origin.x(), origin.y(), origin.z());
     }
 
     @Override
