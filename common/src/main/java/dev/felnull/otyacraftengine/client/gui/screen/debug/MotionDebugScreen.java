@@ -117,6 +117,9 @@ public class MotionDebugScreen extends OEBaseScreen {
             mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %s, %s, %s", pos.x(), pos.y(), pos.z(), ang.x(), ang.y(), ang.z(), ori.x(), ori.y(), ori.z(), res.getLeft(), res.getMiddle(), res.getLeft()));
         }));
 
+        addRenderableWidget(new Button(123 + 53, st + 15 + 23, 50, 20, new TextComponent("All Paste"), n -> {
+            parseAll(mc.keyboardHandler.getClipboard());
+        }));
 
         motionListWidget = addRenderableWidget(new MotionListWidget(width - 3 - 120, st - 20, 120, 50, 5, getMotionDebug().getPoints(), (widget, item) -> {
             var e = motionListWidget.getSelectedEntry();
@@ -274,6 +277,37 @@ public class MotionDebugScreen extends OEBaseScreen {
             if (n instanceof AbstractWidget w)
                 w.visible = enableVisible;
         });
+    }
+
+    private void parseAll(String text) {
+        if (text == null || text.isEmpty()) return;
+        text = text.replace(" ", "");
+        var str = text.split(",");
+        try {
+            float[] f = new float[9];
+            for (int i = 0; i < f.length; i++) {
+                f[i] = parseFloat(str[i]);
+            }
+            boolean[] b = new boolean[3];
+            for (int i = 0; i < b.length; i++) {
+                b[i] = Boolean.parseBoolean(str[f.length + i]);
+            }
+            getMotionDebug().setPosition(new Vector3f(f[0], f[1], f[2]));
+            getMotionDebug().setRotationAngle(new Vector3f(f[3], f[4], f[5]));
+            getMotionDebug().setRotationOrigin(new Vector3f(f[6], f[7], f[8]), true);
+            getMotionDebug().setRotationReset(b[0], b[1], b[2]);
+        } catch (Exception ignored) {
+        }
+//        mc.keyboardHandler.setClipboard(String.format("%sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %sf, %s, %s, %s", pos.x(), pos.y(), pos.z(), ang.x(), ang.y(), ang.z(), ori.x(), ori.y(), ori.z(), res.getLeft(), res.getMiddle(), res.getLeft()));
+    }
+
+    private float parseFloat(String text) {
+        try {
+            text = text.replace("f", "");
+            return Float.parseFloat(text);
+        } catch (NumberFormatException ignored) {
+        }
+        return 0f;
     }
 
     protected void loadJson(File[] files) {

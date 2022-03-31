@@ -33,6 +33,10 @@ public class Motion {
         }
     }
 
+    public static Motion of(MotionPoint... points) {
+        return new Motion(Arrays.stream(points).toList());
+    }
+
     public static Motion of(JsonObject json) {
         int v = json.get("version").getAsInt();
         if (v != 1) throw new IllegalStateException("Unsupported motion version");
