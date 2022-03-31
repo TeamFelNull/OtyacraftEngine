@@ -38,6 +38,7 @@ import java.util.UUID;
 public class OERenderUtil {
     private static final Minecraft mc = Minecraft.getInstance();
     public static final float MIN_BREADTH = 1.0E-3F;
+    public static boolean SKIP_TRANSANDROT_MODELPART;
 
     public static void drawFill(@NotNull PoseStack poseStack, float x, float y, float w, float h, int color) {
         innerFill(poseStack.last().pose(), x, y, w, h, color);
@@ -740,6 +741,7 @@ public class OERenderUtil {
     }
 
     public static void renderPlayerArm(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {
+        if (mc.player.isInvisible()) return;
         boolean bl = arm != HumanoidArm.LEFT;
         var pr = (PlayerRenderer) mc.getEntityRenderDispatcher().getRenderer(mc.player);
         RenderSystem.setShaderTexture(0, mc.player.getSkinTextureLocation());
@@ -785,11 +787,11 @@ public class OERenderUtil {
         poseStack.translate((float) t * s, r, l);
         poseStack.translate((float) t * 0.56F, -0.52F + equipProgress * -0.6F, -0.7200000286102295D);
         float g = Mth.sin(swingProgress * swingProgress * Mth.PI);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) t * (45.0F + g * -20.0F)));
+        OERenderUtil.poseRotateY(poseStack, (float) t * (45.0F + g * -20.0F));
         float h = Mth.sin(Mth.sqrt(swingProgress) * Mth.PI);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees((float) t * h * -20.0F));
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(h * -80.0F));
-        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) t * -45.0F));
+        OERenderUtil.poseRotateZ(poseStack, (float) t * h * -20.0F);
+        OERenderUtil.poseRotateX(poseStack, h * -80.0F);
+        OERenderUtil.poseRotateY(poseStack, (float) t * -45.0F);
     }
 
     public static float getParSecond(long loopTime) {
@@ -813,5 +815,13 @@ public class OERenderUtil {
         return sb.toString();
     }
 
+    public static void noTransAndRotModelPart(Runnable runnable) {
+        SKIP_TRANSANDROT_MODELPART = true;
+        runnable.run();
+        SKIP_TRANSANDROT_MODELPART = false;
+    }
 
+    public static void renderPlayerArmNoTransAndRot(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {
+        noTransAndRotModelPart(() -> renderPlayerArm(poseStack, multiBufferSource, arm, light));
+    }
 }

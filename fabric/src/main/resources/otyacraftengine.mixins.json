@@ -4,9 +4,11 @@
   "compatibilityLevel": "JAVA_16",
   "minVersion": "0.8",
   "client": [
-    "client.ItemInHandRendererMixin"
+    "client.ItemInHandRendererMixin",
+    "client.MinecraftMixin"
   ],
   "mixins": [
+    "EntityMixin",
     "MobBucketItemAccessor"
   ],
   "injectors": {

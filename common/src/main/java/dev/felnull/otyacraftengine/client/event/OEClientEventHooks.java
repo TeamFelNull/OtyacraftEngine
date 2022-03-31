@@ -39,4 +39,9 @@ public class OEClientEventHooks {
     public static void onIntegratedServerPauseChange(boolean paused) {
         ClientEvent.INTEGRATED_SERVER_PAUSE.invoker().onPauseChange(paused);
     }
+
+    public static boolean onHandAttack(ItemStack itemStack) {
+        var event = ClientEvent.HAND_ATTACK.invoker().onHandAttack(itemStack);
+        return event.isEmpty() || event.isTrue();
+    }
 }

@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.client.debug;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.model.OETestModels;
 import dev.felnull.otyacraftengine.client.motion.Motion;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
@@ -221,6 +222,7 @@ public class MotionDebug {
     }
 
     public void onDebug(@NotNull PoseStack stack, MultiBufferSource multiBufferSource, float scale) {
+        if (!OtyacraftEngine.isTestMode()) return;
         poseDebug(stack);
         stack.pushPose();
 

@@ -59,15 +59,7 @@ public class MotionDebugScreen extends OEBaseScreen {
     protected void init() {
         super.init();
 
-        var vib = addRenderableWidget(new Button(width - 13, 3, 10, 10, new TextComponent("I"), n -> {
-            ScreenAccessor accessor = (ScreenAccessor) this;
-            enableVisible = !enableVisible;
-            accessor.getRenderables().forEach(m -> {
-                if (m == n) return;
-                if (m instanceof AbstractWidget w)
-                    w.visible = enableVisible;
-            });
-        }));
+        var vib = addRenderableWidget(new Button(width - 13, 3, 10, 10, new TextComponent("I"), this::toggleEnableVisible));
 
 
         int st = 3 + mc.font.lineHeight * 6 + 2;
@@ -132,12 +124,7 @@ public class MotionDebugScreen extends OEBaseScreen {
                 getMotionDebug().setPoint(e);
         }, motionListWidget));
 
-        addRenderableWidget(new Button(width - 3 - 120, st + 50 + 3 - 20, 27, 20, new TextComponent("Add"), n -> {
-            var ne = getMotionDebug().createPoint();
-            getMotionDebug().getPoints().add(ne);
-            motionListWidget.setSelectedEntry(getMotionDebug().getPoints().size() - 1);
-            getMotionDebug().setRotationReset(false, false, false);
-        }));
+        addRenderableWidget(new Button(width - 3 - 120, st + 50 + 3 - 20, 27, 20, new TextComponent("Add"), n -> addPoint()));
 
         addRenderableWidget(new Button(width - 3 - 120 + 30, st + 50 + 3 - 20, 27, 20, new TextComponent("Del"), n -> {
             var e = motionListWidget.getSelectedEntry();
@@ -319,7 +306,14 @@ public class MotionDebugScreen extends OEBaseScreen {
             enableEdit = !enableEdit;
             enableEditSwitch.setEnable(enableEdit);
             return true;
+        } else if (i == GLFW.GLFW_KEY_Y) {
+            toggleEnableVisible(null);
+            return true;
+        } else if (i == GLFW.GLFW_KEY_A) {
+            addPoint();
+            return true;
         }
+
         if (enableEdit) {
             boolean sflg = OEClientUtil.isKeyInput(mc.options.keyShift);
 
@@ -397,6 +391,23 @@ public class MotionDebugScreen extends OEBaseScreen {
             }
         }
         return super.mouseDragged(d, e, i, f, g);
+    }
+
+    private void toggleEnableVisible(Button button) {
+        ScreenAccessor accessor = (ScreenAccessor) this;
+        enableVisible = !enableVisible;
+        accessor.getRenderables().forEach(m -> {
+            if (m == button) return;
+            if (m instanceof AbstractWidget w)
+                w.visible = enableVisible;
+        });
+    }
+
+    private void addPoint() {
+        var ne = getMotionDebug().createPoint();
+        getMotionDebug().getPoints().add(ne);
+        motionListWidget.setSelectedEntry(getMotionDebug().getPoints().size() - 1);
+        getMotionDebug().setRotationReset(false, false, false);
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.motion.MotionManager;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
 import dev.felnull.otyacraftengine.client.motion.MotionSwapper;
 import dev.felnull.otyacraftengine.client.util.OEModelUtil;
@@ -18,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 public class TestItemRenderer implements BEWLItemRenderer {
     private static final MotionPoint START_POINT = new MotionPoint(0.0f, -0.050148662f, 0.0f, 0.0f, 0.0f, 0.0f, 0.475f, -0.8396927f, -0.5500001f, false, false, false);
     private static final MotionPoint END_POINT = new MotionPoint(-1.5375013f, 1.4543099f, -0.47641152f, 0.0f, 0.0f, 0.0f, 0.475f, -0.8396927f, -0.5500001f, false, false, false);
-    private static final ResourceLocation TEST_MOTION = new ResourceLocation(OtyacraftEngine.MODID, "test_item");
+    private static final ResourceLocation TEST_MOTION = new ResourceLocation(OtyacraftEngine.MODID, "test_pat");
     private static final MotionSwapper TEST_SWAPPER = MotionSwapper.swapStartAndEnd(END_POINT, START_POINT);
 
     public static void init() {
@@ -30,7 +31,8 @@ public class TestItemRenderer implements BEWLItemRenderer {
         //   Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(Items.APPLE), transformType, light, overlay, poseStack, multiBufferSource, 0);
         if (Minecraft.getInstance().player != null) {
             poseStack.pushPose();
-            //  var motion = MotionManager.getInstance().getMotion(TEST_MOTION);
+            var motion = MotionManager.getInstance().getMotion(TEST_MOTION);
+            motion.pose(poseStack, OERenderUtil.getParSecond(3000));
             //motion.pose(poseStack, OERenderUtil.getParSecond(3000), TEST_SWAPPER);
             // END_POINT.getPose().pose(poseStack);
 

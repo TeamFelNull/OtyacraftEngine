@@ -9,11 +9,11 @@
     "client.ItemInHandLayerMixin",
     "client.ItemInHandRendererMixin",
     "client.LevelRendererMixin",
+    "client.ModelPartMixin",
     "client.ScreenAccessor",
     "client.SubtitleMixin"
   ],
   "mixins": [
-    "EntityMixin",
     "InventoryChangeTriggerMixin",
     "LivingEntityMixin",
     "MinecraftServerMixin",

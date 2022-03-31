@@ -49,6 +49,13 @@ public class TestClientHandler {
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(TestClientHandler::renderArmWithItem);
         ClientEvent.INTEGRATED_SERVER_PAUSE.register(TestClientHandler::onIntegratedPauseChange);
         ClientTickEvent.CLIENT_POST.register(TestClientHandler::ontClientTick);
+        ClientEvent.HAND_ATTACK.register(TestClientHandler::onHandAttack);
+    }
+
+    private static EventResult onHandAttack(ItemStack itemStack) {
+        //    if (itemStack.is(Items.DIAMOND))
+        //        return EventResult.interruptFalse();
+        return EventResult.pass();
     }
 
     private static void ontClientTick(Minecraft instance) {
