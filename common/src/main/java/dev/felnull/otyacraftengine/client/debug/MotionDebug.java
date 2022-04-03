@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.model.OETestModels;
 import dev.felnull.otyacraftengine.client.motion.Motion;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
+import dev.felnull.otyacraftengine.client.motion.MotionPose;
 import dev.felnull.otyacraftengine.client.motion.MotionRotation;
 import dev.felnull.otyacraftengine.client.util.OEModelUtil;
 import dev.felnull.otyacraftengine.client.util.OERenderUtil;
@@ -200,6 +201,10 @@ public class MotionDebug {
         }
     }
 
+    public MotionPose getPose() {
+        return new MotionPose(position, rotation);
+    }
+
     public void pose(@NotNull PoseStack stack) {
         stack.translate(position.x(), position.y(), position.z());
         rotation.pose(stack);
@@ -224,9 +229,9 @@ public class MotionDebug {
     public void onDebug(@NotNull PoseStack stack, MultiBufferSource multiBufferSource, float scale) {
         if (!OtyacraftEngine.isTestMode()) return;
         poseDebug(stack);
-        stack.pushPose();
 
         if (!isShowOrigin()) return;
+        stack.pushPose();
 
         stack.pushPose();
         stack.translate(rotation.origin().x(), rotation.origin().y(), rotation.origin().z());

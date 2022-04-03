@@ -106,6 +106,9 @@ public class TestClientHandler {
                 return EventResult.interruptFalse();
             }
         }*/
+
+      //  if (hand == InteractionHand.MAIN_HAND)
+      //      System.out.println(oldStack.hashCode() +" : "+ newStack.hashCode());
         return EventResult.pass();
     }
 

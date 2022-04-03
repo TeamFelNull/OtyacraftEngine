@@ -14,6 +14,7 @@ import dev.felnull.otyacraftengine.client.gui.screen.OEBaseScreen;
 import dev.felnull.otyacraftengine.client.motion.Motion;
 import dev.felnull.otyacraftengine.client.motion.MotionPoint;
 import dev.felnull.otyacraftengine.client.util.OEClientUtil;
+import dev.felnull.otyacraftengine.client.util.OEScreenUtil;
 import dev.felnull.otyacraftengine.mixin.client.ScreenAccessor;
 import dev.felnull.otyacraftengine.util.OEPaths;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -333,6 +334,9 @@ public class MotionDebugScreen extends OEBaseScreen {
 
     @Override
     public boolean keyPressed(int i, int j, int k) {
+        if (isHoveredWidget((float) OEClientUtil.getMouseX(), (float) OEClientUtil.getMouseY()))
+            return super.keyPressed(i, j, k);
+
         if (i == GLFW.GLFW_KEY_R) {
             setNextEditType();
             return true;
@@ -457,8 +461,9 @@ public class MotionDebugScreen extends OEBaseScreen {
     }
 
     private boolean isHoveredWidget(float x, float y) {
-        ScreenAccessor sa = (ScreenAccessor) this;
-        return sa.getRenderables().stream().filter(n -> n instanceof AbstractWidget).map(n -> (AbstractWidget) n).filter(n -> x >= n.x && y >= n.y && x < (n.x + n.getWidth()) && y < (double) (n.y + n.getHeight())).anyMatch(n -> true);
+        if (!enableVisible) return false;
+
+        return OEScreenUtil.getRenderableAbstractWidgets(this).stream().filter(n -> x >= n.x && y >= n.y && x < (n.x + n.getWidth()) && y < (double) (n.y + n.getHeight())).anyMatch(n -> true);
     }
 
     private void setMotion(float x, float y, float z) {
