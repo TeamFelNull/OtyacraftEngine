@@ -66,11 +66,11 @@ public class OEClientUtil {
     /**
      * キーが押されているか
      *
-     * @param keyCode キー
+     * @param keyMapping キー
      * @return 押されているか
      */
-    public static boolean isKeyInput(KeyMapping keyCode) {
-        return isKeyInput(OEClientExpectPlatform.getKey(keyCode).getValue());
+    public static boolean isKeyInput(KeyMapping keyMapping) {
+        return isKeyInput(getKey(keyMapping).getValue());
     }
 
     /**
@@ -186,5 +186,9 @@ public class OEClientUtil {
 
     public static double getMouseY() {
         return mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+    }
+
+    public static InputConstants.Key getKey(KeyMapping keyMapping) {
+        return OEClientExpectPlatform.getKey(keyMapping);
     }
 }
