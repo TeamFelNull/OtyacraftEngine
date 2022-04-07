@@ -17,7 +17,8 @@ public abstract class OEBaseScreen extends Screen implements IOEBaseScreen {
         this(message, null);
     }
 
-    public @Nullable Screen getParentScreen() {
+    public @Nullable
+    Screen getParentScreen() {
         return parentScreen;
     }
 

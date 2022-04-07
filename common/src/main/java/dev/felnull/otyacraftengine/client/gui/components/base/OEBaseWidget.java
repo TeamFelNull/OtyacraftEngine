@@ -65,7 +65,8 @@ public abstract class OEBaseWidget extends AbstractWidget implements IOEBaseComp
 
     public abstract void onPress();
 
-    public @Nullable String getWidgetTypeName() {
+    public @Nullable
+    String getWidgetTypeName() {
         return widgetTypeName;
     }
 }

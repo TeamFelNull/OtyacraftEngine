@@ -29,7 +29,8 @@ public class IconButton extends OEBaseWidget {
         onPress.accept(this);
     }
 
-    public @NotNull TextureSpecifyLocation getIconTexture() {
+    public @NotNull
+    TextureSpecifyLocation getIconTexture() {
         return iconTexture;
     }
 

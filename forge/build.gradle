@@ -62,10 +62,10 @@ processResources {
 }
 shadowJar {
     configurations = [project.configurations.shadowIn]
-    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl') {
+    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl') {
         exclude 'dev.felnull.fnjln.**'
     }
-    relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
 }
 shadowJar {
     exclude "fabric.mod.json"

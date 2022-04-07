@@ -18,7 +18,8 @@ public abstract class OEBaseImageWidget extends OEBaseWidget {
         this.texture = texture;
     }
 
-    public @NotNull TextureSpecifyLocation getTexture() {
+    public @NotNull
+    TextureSpecifyLocation getTexture() {
         return texture;
     }
 

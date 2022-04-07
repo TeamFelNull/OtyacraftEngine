@@ -56,11 +56,11 @@ processResources {
 }
 shadowJar {
     configurations = [project.configurations.shadowIn]
-    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.libs.dev.felnull.fnjl') {
+    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl') {
         exclude 'dev.felnull.fnjln.**'
     }
-    relocate 'com.madgag', 'dev.felnull.otyacraftengine.libs.com.madgag'
-    relocate 'de.javagl', 'dev.felnull.otyacraftengine.libs.de.javagl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
+    relocate 'de.javagl', 'dev.felnull.otyacraftengine.include.de.javagl'
 }
 shadowJar {
     exclude "architectury.common.json"

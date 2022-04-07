@@ -196,7 +196,8 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
         }
     }
 
-    public @Nullable E getSelectedEntry() {
+    public @Nullable
+    E getSelectedEntry() {
         if (entryList.stream().anyMatch(n -> n == selectedEntry))
             return selectedEntry;
         return null;
@@ -255,7 +256,8 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
         return width - (9 + (border ? 0 : 1));
     }
 
-    public @NotNull List<E> getEntryList() {
+    public @NotNull
+    List<E> getEntryList() {
         return entryList;
     }
 

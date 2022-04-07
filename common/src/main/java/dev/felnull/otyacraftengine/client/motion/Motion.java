@@ -65,6 +65,8 @@ public class Motion {
 
     @NotNull
     public Triple<MotionPoint, MotionPoint, Integer> getPontByRatio(float ratio) {
+        if (points.size() == 1)
+            return Triple.of(points.get(0), points.get(0), 0);
         ratio = Mth.clamp(ratio, 0, getTotalRatio());
         int num = 0;
         for (int i = 0; i < elapsedRatio.length - 1; i++) {
@@ -90,9 +92,11 @@ public class Motion {
         var en = iv.getMiddle();
 
         var ps = swapper.swapPrePoint(this, par, iv.getRight(), st, en);
-        var ns = swapper.swapNextPoint(this, par, iv.getRight(), st, en);
         if (ps != null)
             st = ps;
+        if (points.size() == 1)
+            return st.getPose();
+        var ns = swapper.swapNextPoint(this, par, iv.getRight(), st, en);
         if (ns != null)
             en = ns;
 

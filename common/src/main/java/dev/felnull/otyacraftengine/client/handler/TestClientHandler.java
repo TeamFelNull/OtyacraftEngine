@@ -107,8 +107,8 @@ public class TestClientHandler {
             }
         }*/
 
-      //  if (hand == InteractionHand.MAIN_HAND)
-      //      System.out.println(oldStack.hashCode() +" : "+ newStack.hashCode());
+        //  if (hand == InteractionHand.MAIN_HAND)
+        //      System.out.println(oldStack.hashCode() +" : "+ newStack.hashCode());
         return EventResult.pass();
     }
 

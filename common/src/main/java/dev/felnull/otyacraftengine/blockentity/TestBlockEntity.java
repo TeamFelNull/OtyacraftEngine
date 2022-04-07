@@ -70,7 +70,8 @@ public class TestBlockEntity extends OEBaseContainerBlockEntity {
     }
 
     @Override
-    public @NotNull NonNullList<ItemStack> getItems() {
+    public @NotNull
+    NonNullList<ItemStack> getItems() {
         return ITEMS;
     }
 

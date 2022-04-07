@@ -17,7 +17,8 @@ public class PatchouliWrapper {
         OEPatchouliExpectPlatform.openBookGUI(player, location);
     }
 
-    public static @NotNull ResourceLocation getOpenBookGui() {
+    public static @NotNull
+    ResourceLocation getOpenBookGui() {
         return OEPatchouliExpectPlatform.getOpenBookGui();
     }
 }
