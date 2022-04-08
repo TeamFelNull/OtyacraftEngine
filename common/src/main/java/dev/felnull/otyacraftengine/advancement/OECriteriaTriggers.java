@@ -1,11 +1,11 @@
 package dev.felnull.otyacraftengine.advancement;
 
-import dev.architectury.registry.level.advancement.CriteriaTriggersRegistry;
+import net.minecraft.advancements.CriteriaTriggers;
 
 public class OECriteriaTriggers {
     public static final MODRootTrigger MOD_ROOT_TRIGGER = new MODRootTrigger();
 
     public static void init() {
-        CriteriaTriggersRegistry.register(MOD_ROOT_TRIGGER);
+        CriteriaTriggers.register(MOD_ROOT_TRIGGER);
     }
 }

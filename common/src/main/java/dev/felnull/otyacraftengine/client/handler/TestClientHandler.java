@@ -20,6 +20,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -50,6 +52,12 @@ public class TestClientHandler {
         ClientEvent.INTEGRATED_SERVER_PAUSE.register(TestClientHandler::onIntegratedPauseChange);
         ClientTickEvent.CLIENT_POST.register(TestClientHandler::ontClientTick);
         ClientEvent.HAND_ATTACK.register(TestClientHandler::onHandAttack);
+        ClientEvent.EVALUATE_RENDER_HANDS.register(TestClientHandler::onEvaluateRenderHands);
+    }
+
+    private static void onEvaluateRenderHands(ClientEvent.HandRenderSelectionWrapper handRenderSelection, LocalPlayer player, ClientEvent.EvaluateRenderHandSetter setter) {
+        if (player.getMainHandItem().is(Items.ENDER_EYE))
+            setter.setEvaluate(ClientEvent.HandRenderSelectionWrapper.onlyForHand(InteractionHand.MAIN_HAND));
     }
 
     private static EventResult onHandAttack(ItemStack itemStack) {

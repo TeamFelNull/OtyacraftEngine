@@ -4,6 +4,7 @@ import dev.architectury.event.Event;
 import dev.architectury.event.EventFactory;
 import dev.architectury.event.EventResult;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,20 +16,39 @@ public interface ClientEvent {
     Event<PoseHumanoidArm> POSE_HUMANOID_ARM = EventFactory.createEventResult();
     Event<PauseChange> INTEGRATED_SERVER_PAUSE = EventFactory.createLoop();
     Event<HandAttack> HAND_ATTACK = EventFactory.createEventResult();
+    Event<EvaluateRenderHands> EVALUATE_RENDER_HANDS = EventFactory.createLoop();
 
-    public interface ChangeHandHeight {
+    interface ChangeHandHeight {
         EventResult changeHandHeight(InteractionHand hand, ItemStack oldStack, ItemStack newStack);
     }
 
-    public interface PoseHumanoidArm {
+    interface PoseHumanoidArm {
         EventResult poseHumanoidArm(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity);
     }
 
-    public interface PauseChange {
+    interface PauseChange {
         void onPauseChange(boolean paused);
     }
 
-    public interface HandAttack {
+    interface HandAttack {
         EventResult onHandAttack(@NotNull ItemStack itemStack);
+    }
+
+    interface EvaluateRenderHands {
+        void onEvaluateRenderHands(HandRenderSelectionWrapper handRenderSelection, LocalPlayer player, EvaluateRenderHandSetter setter);
+    }
+
+    interface EvaluateRenderHandSetter {
+        void setEvaluate(HandRenderSelectionWrapper wrapper);
+    }
+
+    enum HandRenderSelectionWrapper {
+        RENDER_BOTH_HANDS,
+        RENDER_MAIN_HAND_ONLY,
+        RENDER_OFF_HAND_ONLY;
+
+        public static HandRenderSelectionWrapper onlyForHand(InteractionHand interactionHand) {
+            return interactionHand == InteractionHand.MAIN_HAND ? RENDER_MAIN_HAND_ONLY : RENDER_OFF_HAND_ONLY;
+        }
     }
 }

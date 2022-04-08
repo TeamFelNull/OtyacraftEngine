@@ -1,7 +1,9 @@
 package dev.felnull.otyacraftengine.mixin.client;
 
+import dev.felnull.otyacraftengine.client.event.ClientEvent;
 import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
@@ -33,5 +36,29 @@ public class ItemInHandRendererMixin {
         if (!OEClientEventHooks.onChangeHandHeight(InteractionHand.OFF_HAND, this.offHandItem, oitem)) {
             this.offHandItem = oitem;
         }
+
+    }
+
+    @Inject(method = "evaluateWhichHandsToRender", at = @At("RETURN"), cancellable = true)
+    private static void evaluateWhichHandsToRender(LocalPlayer localPlayer, CallbackInfoReturnable<ItemInHandRenderer.HandRenderSelection> cir) {
+        var ret = toHandRenderSelection(OEClientEventHooks.onEvaluateWhichHandsToRender(toHandRenderSelectionWrapper(cir.getReturnValue()), localPlayer));
+        if (ret != cir.getReturnValue())
+            cir.setReturnValue(ret);
+    }
+
+    private static ClientEvent.HandRenderSelectionWrapper toHandRenderSelectionWrapper(ItemInHandRenderer.HandRenderSelection handRenderSelection) {
+        return switch (handRenderSelection) {
+            case RENDER_BOTH_HANDS -> ClientEvent.HandRenderSelectionWrapper.RENDER_BOTH_HANDS;
+            case RENDER_MAIN_HAND_ONLY -> ClientEvent.HandRenderSelectionWrapper.RENDER_MAIN_HAND_ONLY;
+            case RENDER_OFF_HAND_ONLY -> ClientEvent.HandRenderSelectionWrapper.RENDER_OFF_HAND_ONLY;
+        };
+    }
+
+    private static ItemInHandRenderer.HandRenderSelection toHandRenderSelection(ClientEvent.HandRenderSelectionWrapper handRenderSelectionWrapper) {
+        return switch (handRenderSelectionWrapper) {
+            case RENDER_BOTH_HANDS -> ItemInHandRenderer.HandRenderSelection.RENDER_BOTH_HANDS;
+            case RENDER_MAIN_HAND_ONLY -> ItemInHandRenderer.HandRenderSelection.RENDER_MAIN_HAND_ONLY;
+            case RENDER_OFF_HAND_ONLY -> ItemInHandRenderer.HandRenderSelection.RENDER_OFF_HAND_ONLY;
+        };
     }
 }
