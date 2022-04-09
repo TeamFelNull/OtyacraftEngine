@@ -18,6 +18,10 @@ public class MotionPoint {
         this(new Vector3f(px, py, pz), new MotionRotation(ax, ay, az, ox, oy, oz, rx, ry, rz));
     }
 
+    public MotionPoint(MotionPose pose, float ratio) {
+        this(pose.position(), pose.rotation(), ratio);
+    }
+
     public MotionPoint(Vector3f position, MotionRotation rotation) {
         this(position, rotation, 1f);
     }

@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public class Motion {
+    public static final Motion EMPTY = new Motion(List.of());
     private final List<MotionPoint> points;
     private final float[] elapsedRatio;
 
@@ -31,6 +32,10 @@ public class Motion {
         for (int i = 1; i < elapsedRatio.length; i++) {
             this.elapsedRatio[i] = this.elapsedRatio[i - 1] + this.points.get(i - 1).getRatio();
         }
+    }
+
+    public static Motion of(Motion... motions) {
+        return new Motion(Arrays.stream(motions).flatMap(n -> n.getPoints().stream()).toList());
     }
 
     public static Motion of(MotionPoint... points) {
@@ -72,7 +77,7 @@ public class Motion {
         for (int i = 0; i < elapsedRatio.length - 1; i++) {
             float ls = elapsedRatio[i];
             float le = elapsedRatio[i + 1];
-            if (ls < ratio && le > ratio) {
+            if (ls < ratio && le >= ratio) {
                 num = i;
                 break;
             }
@@ -85,7 +90,13 @@ public class Motion {
     }
 
     public MotionPose getPose(float par, MotionSwapper swapper) {
+        return getPose(par, swapper, 0, Math.max(points.size() - 1, 0));
+    }
+
+    public MotionPose getPose(float par, MotionSwapper swapper, int start, int end) {
         if (points.isEmpty()) return new MotionPose(Vector3f.ZERO, new MotionRotation());
+        float ra = elapsedRatio[start] + (elapsedRatio[end] - elapsedRatio[start]) * par;
+        par = ra / getTotalRatio();
         float rp = getTotalRatio() * par;
         var iv = getPontByRatio(rp);
         var st = iv.getLeft();
