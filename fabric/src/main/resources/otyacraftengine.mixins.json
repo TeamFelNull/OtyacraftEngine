@@ -6,7 +6,7 @@
   "client": [
     "client.ItemInHandRendererMixin",
     "client.MinecraftMixin",
-    "client.MyronObjLoaderMixin"
+    "client.MyronAbstractObjLoaderMixin"
   ],
   "mixins": [
     "EntityMixin",

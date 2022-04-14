@@ -6,11 +6,9 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
-import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.debug.MotionDebug;
 import dev.felnull.otyacraftengine.client.debug.socket.SocketDebugService;
 import dev.felnull.otyacraftengine.client.event.ClientEvent;
-import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
 import dev.felnull.otyacraftengine.client.gui.components.FixedButtonsList;
 import dev.felnull.otyacraftengine.client.gui.screen.DebugScreen;
@@ -43,7 +41,6 @@ public class TestClientHandler {
 
     public static void init() {
         ClientRawInputEvent.KEY_PRESSED.register(TestClientHandler::onKeyPressed);
-        FabricOBJLoaderEvent.LOAD.register(TestClientHandler::onFabricOBJLoad);
         MoreRenderEvent.RENDER_ITEM_IN_HAND.register(TestClientHandler::onRenderHand);
         ClientEvent.CHANGE_HAND_HEIGHT.register(TestClientHandler::changeHandHeight);
         ClientEvent.POSE_HUMANOID_ARM.register(TestClientHandler::poseHumanoidArm);
@@ -80,12 +77,6 @@ public class TestClientHandler {
             client.setScreen(new DebugScreen());
         }
         return EventResult.interruptDefault();
-    }
-
-    public static EventResult onFabricOBJLoad(ResourceLocation location) {
-        if (location.getNamespace().equals(OtyacraftEngine.MODID))
-            return EventResult.interruptTrue();
-        return EventResult.pass();
     }
 
     public static EventResult onRenderHand(PoseStack poseStack, MultiBufferSource multiBufferSource, InteractionHand hand, int packedLight, float partialTicks, float interpolatedPitch, float swingProgress, float equipProgress, ItemStack stack) {

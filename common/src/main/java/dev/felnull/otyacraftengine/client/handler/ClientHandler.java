@@ -1,11 +1,13 @@
 package dev.felnull.otyacraftengine.client.handler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.event.FabricOBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.loader.PlayerInfoManager;
 import dev.felnull.otyacraftengine.client.loader.URLTextureManager;
 import dev.felnull.otyacraftengine.client.renderer.GuiDebugRenderer;
@@ -33,6 +35,13 @@ public class ClientHandler {
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(ClientHandler::onJoin);
         ClientTooltipEvent.ITEM.register(ClientHandler::onTooltip);
         ClientGuiEvent.RENDER_POST.register(ClientHandler::onRenderGui);
+        FabricOBJLoaderEvent.LOAD.register(ClientHandler::onFabricOBJLoad);
+    }
+
+    private static EventResult onFabricOBJLoad(ResourceLocation location) {
+        if (location.getNamespace().equals(OtyacraftEngine.MODID))
+            return EventResult.interruptTrue();
+        return EventResult.pass();
     }
 
     private static void onRenderGui(Screen screen, PoseStack posestack, int mouseX, int mouseY, float delta) {
