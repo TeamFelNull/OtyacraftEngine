@@ -22,10 +22,4 @@ public class EntityMixin {
     private void init(EntityType<?> entityType, Level level, CallbackInfo ci) {
         OECommonEventHooks.onEntityDefineSynchedData((Entity) (Object) this, entityData);
     }
-
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void tick(CallbackInfo ci) {
-        if (!OECommonEventHooks.onEntityTick((Entity) (Object) this))
-            ci.cancel();
-    }
 }

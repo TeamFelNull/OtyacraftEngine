@@ -15,7 +15,7 @@ public class TestCommonHandler {
     private static EventResult entityTick(Entity entity) {
         //   if (!(entity instanceof Player))
         //   return EventResult.interruptFalse();
-        //entity.setPos(entity.position().add(0, 0.5f, 0));
+        //  entity.setPos(entity.position().add(0, 0.5f, 0));
         return EventResult.pass();
     }
 
