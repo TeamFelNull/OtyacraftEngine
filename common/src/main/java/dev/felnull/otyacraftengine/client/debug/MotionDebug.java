@@ -205,6 +205,12 @@ public class MotionDebug {
         return new MotionPose(position, rotation);
     }
 
+    public MotionPose getDebugPose() {
+        if (playMotion == null)
+            return getPose();
+        return playMotion.getPose(OERenderUtil.getParSecond(cycleSpeed));
+    }
+
     public void pose(@NotNull PoseStack stack) {
         stack.translate(position.x(), position.y(), position.z());
         rotation.pose(stack);

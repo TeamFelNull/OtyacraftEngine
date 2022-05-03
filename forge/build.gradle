@@ -149,7 +149,7 @@ curseforge {
             addGameVersion 'Java 17'
 
             relations {
-                requiredDependency "cloth-config-forge"
+                requiredDependency "cloth-config"
                 requiredDependency "architectury-forge"
             }
 

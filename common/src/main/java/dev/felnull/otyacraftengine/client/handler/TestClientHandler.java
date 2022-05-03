@@ -40,11 +40,13 @@ public class TestClientHandler {
     private static final Minecraft mc = Minecraft.getInstance();
 
     public static void init() {
+        KeyMappingRegistry.register(TEST_KEY);
+
         ClientRawInputEvent.KEY_PRESSED.register(TestClientHandler::onKeyPressed);
         MoreRenderEvent.RENDER_ITEM_IN_HAND.register(TestClientHandler::onRenderHand);
         ClientEvent.CHANGE_HAND_HEIGHT.register(TestClientHandler::changeHandHeight);
         ClientEvent.POSE_HUMANOID_ARM.register(TestClientHandler::poseHumanoidArm);
-        KeyMappingRegistry.register(TEST_KEY);
+        ClientEvent.POSE_HUMANOID_ARM_POST.register(TestClientHandler::poseHumanoidArmPost);
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(TestClientHandler::renderArmWithItem);
         ClientEvent.INTEGRATED_SERVER_PAUSE.register(TestClientHandler::onIntegratedPauseChange);
         ClientTickEvent.CLIENT_POST.register(TestClientHandler::ontClientTick);
@@ -118,6 +120,10 @@ public class TestClientHandler {
             return EventResult.interruptFalse();
         }*/
         return EventResult.pass();
+    }
+
+    public static void poseHumanoidArmPost(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity) {
+       // model.rightArm.xRot = model.rightArm.xRot + Mth.PI * OERenderUtil.getParSecond(1000);
     }
 
     public static EventResult renderArmWithItem(ItemInHandLayer<? extends LivingEntity, ? extends EntityModel<?>> layer, LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {

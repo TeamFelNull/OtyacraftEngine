@@ -12,4 +12,8 @@ public class OEEntityUtil {
     public static HumanoidArm getArmByHand(LivingEntity entity, InteractionHand hand) {
         return hand == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
     }
+
+    public static InteractionHand getOppositeHand(InteractionHand hand) {
+        return hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+    }
 }

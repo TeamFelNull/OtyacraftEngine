@@ -30,6 +30,10 @@ public class OEClientEventHooks {
         return event.isEmpty() || event.isTrue();
     }
 
+    public static void onPoseHumanoidArmPost(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity) {
+        ClientEvent.POSE_HUMANOID_ARM_POST.invoker().poseHumanoidArm(arm, hand, model, livingEntity);
+    }
+
     public static boolean onRenderArmWithItem(ItemInHandLayer<? extends LivingEntity, ? extends EntityModel<?>> layer, LivingEntity livingEntity, ItemStack itemStack, ItemTransforms.TransformType transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
         var event = MoreRenderEvent.RENDER_ARM_WITH_ITEM.invoker().renderArmWithItem(layer, livingEntity, itemStack, transformType, humanoidArm, poseStack, multiBufferSource, i);
         return event.isEmpty() || event.isTrue();

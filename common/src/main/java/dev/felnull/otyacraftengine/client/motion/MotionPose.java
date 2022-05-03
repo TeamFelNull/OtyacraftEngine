@@ -20,4 +20,8 @@ public record MotionPose(Vector3f position, MotionRotation rotation) {
         var rot = new MotionRotation(ang, ori, rotation.reset());
         return new MotionPose(pos, rot);
     }
+
+    public MotionPoint toPoint() {
+        return new MotionPoint(position, rotation);
+    }
 }

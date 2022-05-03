@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public interface ClientEvent {
     Event<ChangeHandHeight> CHANGE_HAND_HEIGHT = EventFactory.createEventResult();
     Event<PoseHumanoidArm> POSE_HUMANOID_ARM = EventFactory.createEventResult();
+    Event<PoseHumanoidArmPost> POSE_HUMANOID_ARM_POST = EventFactory.createLoop();
     Event<PauseChange> INTEGRATED_SERVER_PAUSE = EventFactory.createLoop();
     Event<HandAttack> HAND_ATTACK = EventFactory.createEventResult();
     Event<EvaluateRenderHands> EVALUATE_RENDER_HANDS = EventFactory.createLoop();
@@ -24,6 +25,10 @@ public interface ClientEvent {
 
     interface PoseHumanoidArm {
         EventResult poseHumanoidArm(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity);
+    }
+
+    interface PoseHumanoidArmPost {
+        void poseHumanoidArm(HumanoidArm arm, InteractionHand hand, HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity);
     }
 
     interface PauseChange {

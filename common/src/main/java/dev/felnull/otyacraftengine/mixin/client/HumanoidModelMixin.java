@@ -26,5 +26,18 @@ public class HumanoidModelMixin<T extends LivingEntity> {
         if (!OEClientEventHooks.onPoseHumanoidArm(HumanoidArm.LEFT, hand, (HumanoidModel<T>) (Object) this, livingEntity))
             ci.cancel();
     }
+
+    @Inject(method = "poseRightArm", at = @At("TAIL"))
+    private void poseRightArmPost(T livingEntity, CallbackInfo ci) {
+        var hand = livingEntity.getMainArm() == HumanoidArm.RIGHT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+        OEClientEventHooks.onPoseHumanoidArmPost(HumanoidArm.RIGHT, hand, (HumanoidModel<T>) (Object) this, livingEntity);
+    }
+
+
+    @Inject(method = "poseLeftArm", at = @At("TAIL"))
+    private void poseLeftArmPost(T livingEntity, CallbackInfo ci) {
+        var hand = livingEntity.getMainArm() == HumanoidArm.LEFT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+        OEClientEventHooks.onPoseHumanoidArmPost(HumanoidArm.LEFT, hand, (HumanoidModel<T>) (Object) this, livingEntity);
+    }
 }
 

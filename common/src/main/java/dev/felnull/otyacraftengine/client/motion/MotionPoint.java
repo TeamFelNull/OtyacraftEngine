@@ -71,7 +71,7 @@ public class MotionPoint {
     }
 
     public MotionPose getPose() {
-        return new MotionPose(new Vector3f(position.x(), position.y(), position.z()), rotation);
+        return new MotionPose(position, rotation);
     }
 
     @Override
