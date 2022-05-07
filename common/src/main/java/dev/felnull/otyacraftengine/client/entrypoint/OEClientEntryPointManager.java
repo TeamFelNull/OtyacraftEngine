@@ -29,6 +29,11 @@ public class OEClientEntryPointManager {
             public void onModelRegistry(Consumer<ResourceLocation> register) {
                 consumer(n -> n.onModelRegistry(register));
             }
+
+            @Override
+            public void onLayerRegistry(LayerRegister register) {
+                consumer(n -> n.onLayerRegistry(register));
+            }
         };
     }
 

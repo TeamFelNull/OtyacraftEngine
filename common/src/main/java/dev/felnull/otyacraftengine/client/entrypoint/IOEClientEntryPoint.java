@@ -7,4 +7,7 @@ import java.util.function.Consumer;
 public interface IOEClientEntryPoint {
     default void onModelRegistry(Consumer<ResourceLocation> addModel) {
     }
+
+    default void onLayerRegistry(LayerRegister register) {
+    }
 }

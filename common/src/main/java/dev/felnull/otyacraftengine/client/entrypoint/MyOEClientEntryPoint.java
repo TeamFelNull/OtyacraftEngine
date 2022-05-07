@@ -17,4 +17,12 @@ public class MyOEClientEntryPoint implements IOEClientEntryPoint {
 
         OETestModels.init(add);
     }
+
+    @Override
+    public void onLayerRegistry(LayerRegister register) {
+        if (!OtyacraftEngine.isTestMode()) return;
+
+        //register.addLayer(EntityType.PIG, TestLayer::new);
+       // register.addLayer(EntityType.PLAYER, TestLayer::new);
+    }
 }
