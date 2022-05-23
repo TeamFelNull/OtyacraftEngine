@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.util;
 
 import com.google.common.collect.ImmutableSet;
 import dev.felnull.otyacraftengine.impl.OERegistryExpectPlatform;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -44,5 +45,9 @@ public class OERegistryUtil {
 
     public static VillagerTrades.ItemListing createTradeItemsForEmeralds(ItemStack itemStack, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
         return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
+    }
+
+    public static SimpleParticleType createSimpleParticleType(boolean overrideLimiter) {
+        return OERegistryExpectPlatform.createSimpleParticleType(overrideLimiter);
     }
 }

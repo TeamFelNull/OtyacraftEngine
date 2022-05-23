@@ -2,14 +2,21 @@ package dev.felnull.otyacraftengine.forge.client.handler;
 
 import dev.felnull.otyacraftengine.client.entrypoint.LayerRegister;
 import dev.felnull.otyacraftengine.client.entrypoint.OEClientEntryPointManager;
+import dev.felnull.otyacraftengine.client.entrypoint.ParticleRegister;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,6 +24,21 @@ import java.util.function.Function;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientBusHandler {
+    @SubscribeEvent
+    public static void onTest(ParticleFactoryRegisterEvent e) {
+        OEClientEntryPointManager.getInstance().call().onParticleRegistry(new ParticleRegister() {
+            @Override
+            public <T extends ParticleOptions> void registerParticle(ParticleType<T> type, ParticleProvider<T> provider) {
+                Minecraft.getInstance().particleEngine.register(type, provider);
+            }
+
+            @Override
+            public <T extends ParticleOptions> void registerParticle(ParticleType<T> type, Function<SpriteSet, ParticleProvider<T>> provider) {
+                Minecraft.getInstance().particleEngine.register(type, provider::apply);
+            }
+        });
+    }
+
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers e) {
         OEClientEntryPointManager.getInstance().call().onLayerRegistry(new LayerRegister() {

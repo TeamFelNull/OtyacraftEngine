@@ -10,4 +10,7 @@ public interface IOEClientEntryPoint {
 
     default void onLayerRegistry(LayerRegister register) {
     }
+
+    default void onParticleRegistry(ParticleRegister register) {
+    }
 }

@@ -23,6 +23,12 @@ public class MyOEClientEntryPoint implements IOEClientEntryPoint {
         if (!OtyacraftEngine.isTestMode()) return;
 
         //register.addLayer(EntityType.PIG, TestLayer::new);
-       // register.addLayer(EntityType.PLAYER, TestLayer::new);
+        // register.addLayer(EntityType.PLAYER, TestLayer::new);
+    }
+
+    @Override
+    public void onParticleRegistry(ParticleRegister register) {
+        if (!OtyacraftEngine.isTestMode()) return;
+
     }
 }

@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.impl.forge;
 
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -32,5 +33,9 @@ public class OERegistryExpectPlatformImpl {
 
     public static VillagerProfession createVillagerProfession(ResourceLocation name, PoiType jobPoiType, ImmutableSet<Item> requestedItems, ImmutableSet<Block> secondaryPoi, @Nullable SoundEvent workSound) {
         return new VillagerProfession(name.toString(), jobPoiType, requestedItems, secondaryPoi, workSound);
+    }
+
+    public static SimpleParticleType createSimpleParticleType(boolean overrideLimiter) {
+        return new SimpleParticleType(overrideLimiter);
     }
 }

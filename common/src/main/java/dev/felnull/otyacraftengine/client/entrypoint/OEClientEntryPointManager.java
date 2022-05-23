@@ -10,6 +10,23 @@ import java.util.function.Consumer;
 public class OEClientEntryPointManager {
     private static final OEClientEntryPointManager INSTANCE = new OEClientEntryPointManager();
     private final List<IOEClientEntryPoint> ENTRYS = new ArrayList<>();
+    private final IOEClientEntryPoint entryPoint = new IOEClientEntryPoint() {
+        @Override
+        public void onModelRegistry(Consumer<ResourceLocation> register) {
+            consumer(n -> n.onModelRegistry(register));
+        }
+
+        @Override
+        public void onLayerRegistry(LayerRegister register) {
+            consumer(n -> n.onLayerRegistry(register));
+        }
+
+        @Override
+        public void onParticleRegistry(ParticleRegister register) {
+            consumer(n -> n.onParticleRegistry(register));
+        }
+    };
+
     private boolean inited;
 
     public static OEClientEntryPointManager getInstance() {
@@ -24,17 +41,7 @@ public class OEClientEntryPointManager {
 
     public IOEClientEntryPoint call() {
         init();
-        return new IOEClientEntryPoint() {
-            @Override
-            public void onModelRegistry(Consumer<ResourceLocation> register) {
-                consumer(n -> n.onModelRegistry(register));
-            }
-
-            @Override
-            public void onLayerRegistry(LayerRegister register) {
-                consumer(n -> n.onLayerRegistry(register));
-            }
-        };
+        return entryPoint;
     }
 
     private void consumer(Consumer<IOEClientEntryPoint> entryPointConsumer) {

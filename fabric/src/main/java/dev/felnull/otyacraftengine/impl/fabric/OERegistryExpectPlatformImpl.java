@@ -2,7 +2,9 @@ package dev.felnull.otyacraftengine.impl.fabric;
 
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.fabricmc.fabric.mixin.object.builder.PointOfInterestTypeAccessor;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -34,5 +36,9 @@ public class OERegistryExpectPlatformImpl {
 
     public static VillagerProfession createVillagerProfession(ResourceLocation name, PoiType jobPoiType, ImmutableSet<Item> requestedItems, ImmutableSet<Block> secondaryPoi, @Nullable SoundEvent workSound) {
         return VillagerProfessionBuilder.create().id(name).workstation(jobPoiType).harvestableItems(requestedItems).secondaryJobSites(secondaryPoi).workSound(workSound).build();
+    }
+
+    public static SimpleParticleType createSimpleParticleType(boolean overrideLimiter) {
+        return FabricParticleTypes.simple(overrideLimiter);
     }
 }

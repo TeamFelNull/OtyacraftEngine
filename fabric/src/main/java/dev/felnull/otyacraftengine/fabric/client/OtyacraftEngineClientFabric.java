@@ -13,5 +13,6 @@ public class OtyacraftEngineClientFabric implements ClientModInitializer {
         ModelResourceHandler.init();
         ResourceReloadHandler.init();
         ClientHandler.init();
+        ClientParticleInit.init();
     }
 }
