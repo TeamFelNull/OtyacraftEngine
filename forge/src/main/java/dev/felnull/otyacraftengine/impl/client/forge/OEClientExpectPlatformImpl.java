@@ -23,4 +23,8 @@ public class OEClientExpectPlatformImpl {
     public static BakedModel getModel(ResourceLocation location) {
         return mc.getModelManager().getModel(location);
     }
+
+    public static void loadShader(ResourceLocation location) {
+        Minecraft.getInstance().gameRenderer.loadEffect(location);
+    }
 }
