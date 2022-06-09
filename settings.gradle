@@ -13,6 +13,6 @@ include("forge")
 
 rootProject.name = "OtyacraftEngine"
 
-if (JavaVersion.current().ordinal() + 1 < 17) {
-    throw new IllegalStateException("申し訳ないがJava17+以外はNG")
+if (JavaVersion.current().ordinal() + 1 != 17) {
+    throw new IllegalStateException("申し訳ないがJava17以外はNG")
 }

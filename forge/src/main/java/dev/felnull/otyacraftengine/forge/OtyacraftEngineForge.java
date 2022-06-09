@@ -3,11 +3,6 @@ package dev.felnull.otyacraftengine.forge;
 import dev.architectury.platform.forge.EventBuses;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.OtyacraftEngineClient;
-import dev.felnull.otyacraftengine.forge.client.handler.ClientHandler;
-import dev.felnull.otyacraftengine.forge.client.handler.RenderHandler;
-import dev.felnull.otyacraftengine.forge.handler.CommonHandler;
-import dev.felnull.otyacraftengine.forge.server.handler.ServerHandler;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -16,15 +11,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class OtyacraftEngineForge {
     public OtyacraftEngineForge() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-        MinecraftForge.EVENT_BUS.register(CommonHandler.class);
-        MinecraftForge.EVENT_BUS.register(ServerHandler.class);
         EventBuses.registerModEventBus(OtyacraftEngine.MODID, FMLJavaModLoadingContext.get().getModEventBus());
         OtyacraftEngine.init();
     }
 
     private void doClientStuff(FMLClientSetupEvent event) {
         OtyacraftEngineClient.init();
-        MinecraftForge.EVENT_BUS.register(ClientHandler.class);
-        MinecraftForge.EVENT_BUS.register(RenderHandler.class);
     }
 }

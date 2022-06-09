@@ -1,5 +1,0 @@
-{
-  "parent": "otyacraftengine:item/parabolic_antenna_base",
-  "loader": "forge:obj",
-  "model": "otyacraftengine:models/item/kamesuta_antenna.obj"
-}

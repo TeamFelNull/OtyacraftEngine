@@ -1,20 +1,14 @@
-dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
-
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}"
-    modApi "me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}"
-    implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
-    implementation "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
-    implementation 'com.madgag:animated-gif-lib:1.4'
-}
-
 architectury {
-    common()
+    common(rootProject.enabled_platforms.split(","))
 }
 
 loom {
     accessWidenerPath = file("src/main/resources/otyacraftengine.accesswidener")
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 }
 
 publishing {
@@ -22,37 +16,9 @@ publishing {
         mavenCommon(MavenPublication) {
             artifactId = rootProject.archives_base_name
             from components.java
-            pom {
-                name = 'OtyacraftEngine'
-                description = 'My mod integration library.'
-                licenses {
-                    license {
-                        name = 'GNU Lesser General Public License v3.0'
-                        url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'MORIMORI0317'
-                        name = 'MORIMORI0317'
-                    }
-                    developer {
-                        id = 'FelNull'
-                        name = 'TeamFelNull'
-                        email = 'teamfelnull@m.servg.red'
-                    }
-                }
-            }
         }
     }
 
     repositories {
-        maven {
-            url "https://maven.felnull.dev/"
-            credentials {
-                username = "felnull"
-                password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
-            }
-        }
     }
 }

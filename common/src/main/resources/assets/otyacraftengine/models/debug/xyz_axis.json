@@ -1,5 +1,0 @@
-{
-  "parent": "builtin/entity",
-  "loader": "forge:obj",
-  "model": "otyacraftengine:models/debug/xyz_axis.obj"
-}

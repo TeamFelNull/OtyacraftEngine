@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
+loaderVersion = "[41,)"
 issueTrackerURL = "https://github.com/TeamFelnull/OtyacraftEngine/issues"
 license = "GNU LGPLv3"
 
@@ -13,7 +13,7 @@ authors = "MORIMORI0317"
 credits = "FelNull developers"
 description = '''
 This mod is an integrated library used by FelNull developers.
-The Ikisugi MOD...
+The ikisugi dependency mod...
 '''
 logoFile = "logo.png"
 
@@ -23,27 +23,20 @@ catalogueImageIcon = "icon.png"
 [[dependencies.otyacraftengine]]
 modId = "forge"
 mandatory = true
-versionRange = "[40,)"
+versionRange = "[41.0.5,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18.2,)"
+versionRange = "[1.19,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "architectury"
 mandatory = true
-versionRange = "[4.1.32,)"
+versionRange = "[5.5.18,)"
 ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.otyacraftengine]]
-modId = "cloth_config"
-mandatory = true
-versionRange = "[6.2.57,)"
-ordering = "NONE"
 side = "BOTH"
