@@ -46,23 +46,24 @@ processResources {
         expand "version": project.version
     }
 }
-
+shadowJar {
+    configurations = [project.configurations.shadowIn]
+    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
+    relocate 'de.javagl', 'dev.felnull.otyacraftengine.include.de.javagl'
+}
 shadowJar {
     exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
-
-    configurations = [project.configurations.shadowIn]
-    relocate'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl'
-    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
-    relocate 'de.javagl', 'dev.felnull.otyacraftengine.include.de.javagl'
 }
 
 remapJar {
     injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    setBaseName("${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}")
     classifier null
 }
 

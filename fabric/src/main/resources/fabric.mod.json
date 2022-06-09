@@ -12,7 +12,7 @@
     "email": "teamfelnull@felnull.dev",
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine",
     "sources": "https://github.com/TeamFelnull/OtyacraftEngine",
-    "issues": "https://github.com/TeamFelnull/IamMusicPlayer/issues"
+    "issues": "https://github.com/TeamFelnull/OtyacraftEngine/issues"
   },
   "license": "GNU LGPLv3",
   "icon": "assets/otyacraftengine/icon.png",
