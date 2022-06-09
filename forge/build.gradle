@@ -19,17 +19,34 @@ loom {
 configurations {
     common
     shadowCommon
+    shadowIn
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
+    forgeDependencies.extendsFrom shadowIn
+    shadowCommon.extendsFrom shadowIn
 }
-
+repositories {
+    maven {
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+}
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
+    shadowIn 'com.madgag:animated-gif-lib:1.4'
 }
 
 processResources {
@@ -46,6 +63,10 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
+
+    configurations = [project.configurations.shadowIn]
+    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
 }
 
 remapJar {

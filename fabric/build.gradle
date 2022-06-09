@@ -14,18 +14,29 @@ loom {
 configurations {
     common
     shadowCommon
+    shadowIn
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentFabric.extendsFrom common
+    implementation.extendsFrom shadowIn
+    shadowCommon.extendsFrom shadowIn
 }
-
+repositories {
+    maven { url "https://maven.terraformersmc.com/releases/" }
+}
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    modApi "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    shadowIn 'com.madgag:animated-gif-lib:1.4'
+    shadowIn 'de.javagl:obj:0.3.0'
 }
 
 processResources {
@@ -41,6 +52,11 @@ shadowJar {
 
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
+
+    configurations = [project.configurations.shadowIn]
+    relocate'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl'
+    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
+    relocate 'de.javagl', 'dev.felnull.otyacraftengine.include.de.javagl'
 }
 
 remapJar {
