@@ -1,6 +1,8 @@
 package net.examplemod;
 
 import com.google.common.base.Suppliers;
+import dev.architectury.platform.Mod;
+import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registries;
@@ -21,16 +23,18 @@ public class ExampleMod {
     // Registering a new creative tab
     public static final CreativeModeTab EXAMPLE_TAB = CreativeTabRegistry.create(new ResourceLocation(MOD_ID, "example_tab"), () ->
             new ItemStack(ExampleMod.EXAMPLE_ITEM.get()));
-    
+
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registry.ITEM_REGISTRY);
     public static final RegistrySupplier<Item> EXAMPLE_ITEM = ITEMS.register("example_item", () ->
             new Item(new Item.Properties().tab(ExampleMod.EXAMPLE_TAB)));
-    
+
     public static void init() {
         ITEMS.register();
-        
+
         System.out.println(ExampleExpectPlatform.getConfigDirectory().toAbsolutePath().normalize().toString());
 
-        System.out.println(OtyacraftEngine.getTest());
+        for (Mod mod : Platform.getMods()) {
+            System.out.println(mod.getModId());
+        }
     }
 }

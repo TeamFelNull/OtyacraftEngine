@@ -24,8 +24,6 @@
     "examplemod-common.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "architectury": ">=4.4.59"
+    "fabric": "*"
   }
 }

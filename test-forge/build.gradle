@@ -21,11 +21,14 @@ configurations {
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     common(project(path: ":test-common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":test-common", configuration: "transformProductionForge")) { transitive = false }
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    common(project(path: ":forge", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":forge", configuration: "transformProductionForge")) { transitive = false }
 }
 
 processResources {

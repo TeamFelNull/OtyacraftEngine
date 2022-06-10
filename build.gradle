@@ -34,6 +34,7 @@ allprojects {
             name = "felnull"
             url = "https://maven.felnull.dev/"
         }
+        maven { url "https://maven.terraformersmc.com/releases/" }
     }
 
     tasks.withType(JavaCompile) {

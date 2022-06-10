@@ -12,24 +12,3 @@ description = '''
 This is an example description! Tell everyone what your mod is about!
 '''
 #logoFile = ""
-
-[[dependencies.examplemod]]
-modId = "forge"
-mandatory = true
-versionRange = "[40,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.examplemod]]
-modId = "minecraft"
-mandatory = true
-versionRange = "[1.18.2,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.examplemod]]
-modId = "architectury"
-mandatory = true
-versionRange = "[4.4.59,)"
-ordering = "AFTER"
-side = "BOTH"
