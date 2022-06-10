@@ -8,6 +8,10 @@ public class OtyacraftEngine {
     public static final String MODID = "otyacraftengine";
 
     public static void init() {
-       
+
+    }
+
+    public static String getTest() {
+        return "課長壊れる";
     }
 }
