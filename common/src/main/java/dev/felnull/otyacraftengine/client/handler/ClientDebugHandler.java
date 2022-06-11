@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.client.handler;
 
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
-import dev.felnull.otyacraftengine.debug.OtyacraftEngineDebug;
+import dev.felnull.otyacraftengine.client.debug.OtyacraftEngineClientDebug;
 import dev.felnull.otyacraftengine.util.OEEntityUtil;
 import dev.felnull.otyacraftengine.util.OEItemUtil;
 import net.minecraft.ChatFormatting;
@@ -22,7 +22,7 @@ public class ClientDebugHandler {
 
     private static void onTooltip(ItemStack stack, List<Component> lines, TooltipFlag flag) {
         if (stack.isEmpty()) return;
-        var oed = OtyacraftEngineDebug.getInstance();
+        var oed = OtyacraftEngineClientDebug.getInstance();
         if (oed.isShowTagInTooltip()) {
             var itemTags = new ArrayList<>(stack.getTags().map(TagKey::location).toList());
 

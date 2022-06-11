@@ -1,9 +1,9 @@
-package dev.felnull.otyacraftengine.debug;
+package dev.felnull.otyacraftengine.client.debug;
 
-public class OtyacraftEngineDebug {
-    private static final OtyacraftEngineDebug INSTANCE = new OtyacraftEngineDebug();
+public class OtyacraftEngineClientDebug {
+    private static final OtyacraftEngineClientDebug INSTANCE = new OtyacraftEngineClientDebug();
 
-    public static OtyacraftEngineDebug getInstance() {
+    public static OtyacraftEngineClientDebug getInstance() {
         return INSTANCE;
     }
 

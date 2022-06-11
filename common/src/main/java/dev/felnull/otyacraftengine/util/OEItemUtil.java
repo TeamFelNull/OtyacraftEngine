@@ -166,7 +166,7 @@ public class OEItemUtil {
      * @return アイテムスタックのリスト
      */
     @NotNull
-    public static List<ItemStack> divideItemStack(@NotNull ItemStack stack, int cont) {
+    public static List<ItemStack> allocationItemStack(@NotNull ItemStack stack, int cont) {
         if (stack.isEmpty()) return ImmutableList.of();
         List<ItemStack> stacks = new ArrayList<>();
         int sc = stack.getMaxStackSize();
