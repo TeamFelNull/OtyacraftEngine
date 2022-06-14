@@ -1,6 +1,5 @@
 package net.examplemod.fabric;
 
-import net.examplemod.ExampleExpectPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

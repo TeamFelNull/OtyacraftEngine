@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  *
  * @author MORIMORI0317
  */
-public class OEEntityUtil {
+public class OEEntityUtils {
     /**
      * エンティティタイプからタグのストリームを取得
      *

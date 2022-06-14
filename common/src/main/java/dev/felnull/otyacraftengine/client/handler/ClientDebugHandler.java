@@ -3,8 +3,8 @@ package dev.felnull.otyacraftengine.client.handler;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.client.debug.OtyacraftEngineClientDebug;
-import dev.felnull.otyacraftengine.util.OEEntityUtil;
-import dev.felnull.otyacraftengine.util.OEItemUtil;
+import dev.felnull.otyacraftengine.util.OEEntityUtils;
+import dev.felnull.otyacraftengine.util.OEItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -43,12 +43,12 @@ public class ClientDebugHandler {
             }
 
             var entityTypes = getEntityTypesByItem(stack);
-            var entityTypeTags = entityTypes.stream().flatMap(OEEntityUtil::getTags).map(TagKey::location).toList();
+            var entityTypeTags = entityTypes.stream().flatMap(OEEntityUtils::getTags).map(TagKey::location).toList();
             addTagList(lines, "Entity tags", entityTypeTags);
         }
 
         if (oed.isShowModNameInTooltip()) {
-            var modid = OEItemUtil.getCreatorModId(stack);
+            var modid = OEItemUtils.getCreatorModId(stack);
             lines.add(Component.literal(Platform.getMod(modid).getName()).withStyle(ChatFormatting.DARK_GREEN));
         }
     }
@@ -66,7 +66,7 @@ public class ClientDebugHandler {
         if (item instanceof SpawnEggItem spawnEggItem) {
             return Set.of(spawnEggItem.getType(stack.getTag()));
         } else if (item instanceof MobBucketItem mobBucketItem) {
-            return Set.of(OEItemUtil.getMobBucketEntity(mobBucketItem));
+            return Set.of(OEItemUtils.getMobBucketEntity(mobBucketItem));
         }
         return Set.of();
     }

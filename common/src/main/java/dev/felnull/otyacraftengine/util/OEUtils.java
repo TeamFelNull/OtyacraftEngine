@@ -13,11 +13,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * URL関係のユーティリティ
+ * 区別するほどでもないユーティリティ
  *
  * @author MORIMORI0317
  */
-public class OEURLUtil {
+public class OEUtils {
     private static final Gson GSON = new Gson();
 
     /**
@@ -27,7 +27,7 @@ public class OEURLUtil {
      * @return Json
      * @throws IOException 例外
      */
-    public static JsonObject getJson(URL url) throws IOException {
+    public static JsonObject getURLJson(URL url) throws IOException {
         try (Reader reader = new InputStreamReader(new BufferedInputStream(FNURLUtil.getStream(url)))) {
             return GSON.fromJson(reader, JsonObject.class);
         }
@@ -40,7 +40,7 @@ public class OEURLUtil {
      * @param jsonConsumer Json
      * @return 処理結果
      */
-    public static CompletableFuture<Void> getJsonAsync(URL url, Consumer<JsonObject> jsonConsumer) {
+    public static CompletableFuture<Void> getURLJsonAsync(URL url, Consumer<JsonObject> jsonConsumer) {
         return FNURLUtil.getStreamAsync(url, n -> {
             if (n == null) {
                 jsonConsumer.accept(null);

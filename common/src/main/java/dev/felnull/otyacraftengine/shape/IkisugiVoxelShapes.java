@@ -3,8 +3,10 @@ package dev.felnull.otyacraftengine.shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.felnull.otyacraftengine.util.OEVoxelShapeUtil;
+import dev.felnull.otyacraftengine.util.OEVoxelShapeUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 
@@ -15,10 +17,20 @@ public class IkisugiVoxelShapes {
         return INSTANCE;
     }
 
-    public VoxelShape getShapeFromJson(JsonObject shapeJson) {
+    public VoxelShape getShapeFromJson(JsonObject shapeJson, ResourceLocation location) {
         var version = shapeJson.get("version");
-        if (version != null && version.getAsInt() == 2)
-            return getShapeFromJsonV2(shapeJson);
+
+        if (version != null && version.isJsonPrimitive()) {
+            if (version.getAsInt() == 2)
+                return getShapeFromJsonV2(shapeJson);
+
+            if (version.getAsInt() == 3)
+                return getShapeFromJsonV3(shapeJson, location);
+
+            if (version.getAsInt() > 3)
+                throw new IllegalStateException("Not support ikisugi voxel shape version: " + version.getAsInt());
+        }
+
         return getShapeFromJsonV1(shapeJson);
     }
 
@@ -26,74 +38,103 @@ public class IkisugiVoxelShapes {
         List<VoxelShape> shapes = new ArrayList<>();
         for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
             JsonArray ja = jshape.getAsJsonArray();
-            VoxelShape shape = OEVoxelShapeUtil.makeBox(ja.get(0).getAsDouble(), ja.get(1).getAsDouble(), ja.get(2).getAsDouble(), ja.get(3).getAsDouble(), ja.get(4).getAsDouble(), ja.get(5).getAsDouble());
+            VoxelShape shape = OEVoxelShapeUtils.makeBox(ja.get(0).getAsDouble(), ja.get(1).getAsDouble(), ja.get(2).getAsDouble(), ja.get(3).getAsDouble(), ja.get(4).getAsDouble(), ja.get(5).getAsDouble());
             shapes.add(shape);
         }
-        return OEVoxelShapeUtil.uniteBox(shapes);
+        return OEVoxelShapeUtils.uniteBox(shapes);
     }
 
     private VoxelShape getShapeFromJsonV2(JsonObject shapeJ) {
         List<VoxelShape> shapes = new ArrayList<>();
         for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
             JsonArray ja = jshape.getAsJsonArray();
-            VoxelShape shape = OEVoxelShapeUtil.makeBox(ja.get(0).getAsDouble() * 16, ja.get(1).getAsDouble() * 16, ja.get(2).getAsDouble() * 16, ja.get(3).getAsDouble() * 16, ja.get(4).getAsDouble() * 16, ja.get(5).getAsDouble() * 16);
+            VoxelShape shape = OEVoxelShapeUtils.makeBox(ja.get(0).getAsDouble() * 16, ja.get(1).getAsDouble() * 16, ja.get(2).getAsDouble() * 16, ja.get(3).getAsDouble() * 16, ja.get(4).getAsDouble() * 16, ja.get(5).getAsDouble() * 16);
             shapes.add(shape);
         }
-        var shape = OEVoxelShapeUtil.uniteBox(shapes);
-        Set<Edge> edges = new HashSet<>();
+        var shape = OEVoxelShapeUtils.uniteBox(shapes);
+        Set<VoxelEdge> edges = new HashSet<>();
         for (JsonElement jshape : shapeJ.getAsJsonArray("edges")) {
-            JsonArray ja = jshape.getAsJsonArray();
-            edges.add(new Edge(ja.get(0).getAsDouble(), ja.get(1).getAsDouble(), ja.get(2).getAsDouble(), ja.get(3).getAsDouble(), ja.get(4).getAsDouble(), ja.get(5).getAsDouble()));
+            var ed = VoxelEdge.parse(jshape.getAsJsonArray());
+            if (ed != null)
+                edges.add(ed);
         }
-        ((IkisugiVoxelShape) shape).setEdges(Collections.unmodifiableSet(edges));
+        // ((IkisugiVoxelShape) shape).setRenderEdges(Collections.unmodifiableSet(edges));
+        return shape;
+    }
+
+    private VoxelShape getShapeFromJsonV3(JsonObject shapeJ, ResourceLocation location) {
+        List<VoxelShape> shapes = new ArrayList<>();
+        for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
+            JsonArray ja = jshape.getAsJsonArray();
+            VoxelShape shape = OEVoxelShapeUtils.makeBox(ja.get(0).getAsDouble() * 16, ja.get(1).getAsDouble() * 16, ja.get(2).getAsDouble() * 16, ja.get(3).getAsDouble() * 16, ja.get(4).getAsDouble() * 16, ja.get(5).getAsDouble() * 16);
+            shapes.add(shape);
+        }
+
+        var shape = OEVoxelShapeUtils.uniteBox(shapes);
+        ResourceLocation relocation;
+        if (shapeJ.has("render_edges") && shapeJ.get("render_edges").isJsonPrimitive()) {
+            var reloc = shapeJ.get("render_edges").getAsString();
+            relocation = new ResourceLocation(reloc);
+        } else {
+            relocation = location;
+        }
+
+        ((IkisugiVoxelShape) shape).setRenderEdges(new VoxelEntry(relocation));
         return shape;
     }
 
     public VoxelShape copy(VoxelShape target, IkisugiVoxelShape source) {
-        ((IkisugiVoxelShape) target).setEdges(source.getEdges());
+        ((IkisugiVoxelShape) target).setRenderEdges(source.getRenderEdges());
         return target;
     }
 
     public VoxelShape unite(VoxelShape target, VoxelShape... shapes) {
-        Set<Edge> edges = new HashSet<>();
+        List<VoxelEntry> entries = new ArrayList<>();
         for (VoxelShape shape : shapes) {
-            var shp = ((IkisugiVoxelShape) shape).getEdges();
-            if (shp != null) edges.addAll(shp);
+            var ve = ((IkisugiVoxelShape) shape).getRenderEdges();
+            if (ve != null)
+                entries.addAll(Arrays.asList(ve));
         }
-        ((IkisugiVoxelShape) target).setEdges(Collections.unmodifiableSet(edges));
+        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
         return target;
     }
 
     public VoxelShape unite(VoxelShape target, List<IkisugiVoxelShape> shapes) {
-        Set<Edge> edges = new HashSet<>();
-        shapes.forEach(n -> {
-            var shp = n.getEdges();
-            if (shp != null) edges.addAll(shp);
+        List<VoxelEntry> entries = new ArrayList<>();
+        shapes.forEach(shape -> {
+            var ve = shape.getRenderEdges();
+            if (ve != null)
+                entries.addAll(Arrays.asList(ve));
         });
-        ((IkisugiVoxelShape) target).setEdges(Collections.unmodifiableSet(edges));
+        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
         return target;
     }
 
     public VoxelShape move(VoxelShape target, IkisugiVoxelShape source, double x, double y, double z) {
+        if (source.getRenderEdges() == null) return target;
         x /= 16;
         y /= 16;
         z /= 16;
-        Set<Edge> edges = new HashSet<>();
-        if (source.getEdges() == null) return target;
-        for (Edge edge : source.getEdges()) {
-            edges.add(new Edge(edge.stX() + x, edge.stY() + y, edge.stZ() + z, edge.enX() + x, edge.enY() + y, edge.enZ() + z));
+        List<VoxelEntry> entries = new ArrayList<>();
+
+        for (VoxelEntry renderEdge : source.getRenderEdges()) {
+            var pp = renderEdge.getPose();
+            entries.add(new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x() + x, pp.y() + y, pp.z() + z, pp.axis())));
         }
-        ((IkisugiVoxelShape) target).setEdges(Collections.unmodifiableSet(edges));
+
+        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
         return target;
     }
 
     public VoxelShape rotate(VoxelShape target, IkisugiVoxelShape source, RotateAngledAxis angledAxis) {
-        Set<Edge> edges = new HashSet<>();
-        if (source.getEdges() == null) return target;
-        for (Edge edge : source.getEdges()) {
-            edges.add(angledAxis.convertEdge(edge));
+        List<VoxelEntry> entries = new ArrayList<>();
+
+        for (VoxelEntry renderEdge : source.getRenderEdges()) {
+            var pp = renderEdge.getPose();
+            entries.add(new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x(), pp.y(), pp.z(), ArrayUtils.add(pp.axis(), angledAxis))));
         }
-        ((IkisugiVoxelShape) target).setEdges(Collections.unmodifiableSet(edges));
+
+        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
         return target;
     }
 }

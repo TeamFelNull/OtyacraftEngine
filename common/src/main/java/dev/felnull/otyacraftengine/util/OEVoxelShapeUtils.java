@@ -3,7 +3,7 @@ package dev.felnull.otyacraftengine.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.felnull.fnjl.util.FNDataUtil;
-import dev.felnull.otyacraftengine.shape.DirectionVoxelShapes;
+import dev.felnull.otyacraftengine.shape.bundle.DirectionVoxelShapesBundle;
 import dev.felnull.otyacraftengine.shape.IkisugiVoxelShape;
 import dev.felnull.otyacraftengine.shape.IkisugiVoxelShapes;
 import dev.felnull.otyacraftengine.shape.RotateAngledAxis;
@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author MORIMORI0317
  */
-public class OEVoxelShapeUtil {
+public class OEVoxelShapeUtils {
     private static final Gson GSON = new Gson();
 
     /**
@@ -205,7 +205,7 @@ public class OEVoxelShapeUtil {
     public static VoxelShape rotateBox(VoxelShape shape, RotateAngledAxis angledAxis) {
         List<VoxelShape> shapes = new ArrayList<>();
         for (AABB aabb : shape.toAabbs()) {
-            shapes.add(Shapes.create(angledAxis.convertAABB(aabb)));
+            shapes.add(Shapes.create(angledAxis.rotationAABB(aabb)));
         }
         var ushape = uniteBox(shapes);
         return IkisugiVoxelShapes.getInstance().rotate(ushape, (IkisugiVoxelShape) shape, angledAxis);
@@ -320,11 +320,12 @@ public class OEVoxelShapeUtil {
      * @return 読み込まれたVoxelShape
      */
     public static VoxelShape getShapeFromResource(ResourceLocation location, Class<?> classLoader) {
-        InputStream stream = FNDataUtil.resourceExtractor(classLoader, "/data/" + location.getNamespace() + "/shape/" + location.getPath() + ".json");
-        if (stream == null) return Shapes.block();
+        InputStream stream = FNDataUtil.resourceExtractor(classLoader, "data/" + location.getNamespace() + "/voxel_shape/" + location.getPath() + ".json");
+        if (stream == null)
+            throw new IllegalStateException("Failed to load shape: " + location);
 
         try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
-            return IkisugiVoxelShapes.getInstance().getShapeFromJson(GSON.fromJson(reader, JsonObject.class));
+            return IkisugiVoxelShapes.getInstance().getShapeFromJson(GSON.fromJson(reader, JsonObject.class), location);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -336,7 +337,7 @@ public class OEVoxelShapeUtil {
      * @param shape 元のVoxelShapes
      * @return 4方向VoxelShapes
      */
-    public static DirectionVoxelShapes makeAllDirection(VoxelShape shape) {
-        return new DirectionVoxelShapes(shape, rotateBoxDirection(shape, Direction.SOUTH), rotateBoxDirection(shape, Direction.EAST), rotateBoxDirection(shape, Direction.WEST));
+    public static DirectionVoxelShapesBundle makeAllDirection(VoxelShape shape) {
+        return new DirectionVoxelShapesBundle(shape);
     }
 }

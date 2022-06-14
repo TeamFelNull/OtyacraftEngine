@@ -12,4 +12,7 @@ dependencies {
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+
+    implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    implementation 'com.madgag:animated-gif-lib:1.4'
 }

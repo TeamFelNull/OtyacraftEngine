@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  *
  * @author MORIMORI0317
  */
-public class OEPlayerUtil {
+public class OEPlayerUtils {
     /**
      * チャンクのプレイヤーに対しての処理
      *

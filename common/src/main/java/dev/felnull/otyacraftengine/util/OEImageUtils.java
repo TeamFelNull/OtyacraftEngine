@@ -16,7 +16,7 @@ import java.io.InputStream;
  *
  * @author MORIMORI0317
  */
-public class OEImageUtil {
+public class OEImageUtils {
     /**
      * 画像のサイズを減らす
      *

@@ -31,6 +31,9 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
     common(project(path: ":fabric", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":fabric", configuration: "transformProductionFabric")) { transitive false }
+
+    implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    implementation 'com.madgag:animated-gif-lib:1.4'
 }
 
 processResources {
