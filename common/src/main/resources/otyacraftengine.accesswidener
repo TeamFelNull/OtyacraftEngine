@@ -1,1 +1,6 @@
 accessWidener   v2  named
+accessible field net/minecraft/client/renderer/texture/DynamicTexture pixels Lcom/mojang/blaze3d/platform/NativeImage;
+accessible field net/minecraft/client/renderer/texture/TextureManager byPath Ljava/util/Map;
+accessible field net/minecraft/client/renderer/texture/TextureManager tickableTextures Ljava/util/Set;
+
+accessible method net/minecraft/client/renderer/texture/TextureManager safeClose (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V

@@ -5,6 +5,11 @@ import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * クライアントのユーティリティ
+ *
+ * @author MORIMORI0317
+ */
 public class OEClientUtils {
     /**
      * 特定の時間でループする値
