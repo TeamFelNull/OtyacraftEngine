@@ -1,13 +1,23 @@
 package dev.felnull.otyacraftengine.client.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+/**
+ * 描画関係のユーティリティ
+ *
+ * @author MORIMORI0317
+ */
 public class OERenderUtils {
     /**
      * PoseStackを16分の１単位で移動する
@@ -17,7 +27,7 @@ public class OERenderUtils {
      * @param y         Y
      * @param z         Z
      */
-    public static void poseTrans16(PoseStack poseStack, double x, double y, double z) {
+    public static void poseTrans16(@NotNull PoseStack poseStack, double x, double y, double z) {
         float pix = 1f / 16f;
         poseStack.translate(pix * x, pix * y, pix * z);
     }
@@ -28,7 +38,7 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param scale     すべてのスケール
      */
-    public static void poseScaleAll(PoseStack poseStack, float scale) {
+    public static void poseScaleAll(@NotNull PoseStack poseStack, float scale) {
         poseStack.scale(scale, scale, scale);
     }
 
@@ -40,7 +50,7 @@ public class OERenderUtils {
      * @param y         Y角度
      * @param z         Z角度
      */
-    public static void poseRotateAll(PoseStack poseStack, float x, float y, float z) {
+    public static void poseRotateAll(@NotNull PoseStack poseStack, float x, float y, float z) {
         poseRotateX(poseStack, x);
         poseRotateY(poseStack, y);
         poseRotateZ(poseStack, z);
@@ -52,7 +62,7 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param angle     角度
      */
-    public static void poseRotateX(PoseStack poseStack, float angle) {
+    public static void poseRotateX(@NotNull PoseStack poseStack, float angle) {
         poseStack.mulPose(Vector3f.XP.rotationDegrees(angle));
     }
 
@@ -62,7 +72,7 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param angle     角度
      */
-    public static void poseRotateY(PoseStack poseStack, float angle) {
+    public static void poseRotateY(@NotNull PoseStack poseStack, float angle) {
         poseStack.mulPose(Vector3f.YP.rotationDegrees(angle));
     }
 
@@ -72,7 +82,7 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param angle     角度
      */
-    public static void poseRotateZ(PoseStack poseStack, float angle) {
+    public static void poseRotateZ(@NotNull PoseStack poseStack, float angle) {
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(angle));
     }
 
@@ -83,7 +93,7 @@ public class OERenderUtils {
      * @param state     角度
      * @param roted     回転ずれ
      */
-    public static void poseRotateHorizontalState(PoseStack poseStack, BlockState state, int roted) {
+    public static void poseRotateHorizontalState(@NotNull PoseStack poseStack, @NotNull BlockState state, int roted) {
         Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         poseRotateDirection(poseStack, direction, roted);
     }
@@ -95,7 +105,7 @@ public class OERenderUtils {
      * @param direction 方向
      * @param roted     回転ずれ
      */
-    public static void poseRotateDirection(PoseStack poseStack, Direction direction, int roted) {
+    public static void poseRotateDirection(@NotNull PoseStack poseStack, @NotNull Direction direction, int roted) {
         for (int i = 0; i < roted; i++) {
             direction = direction.getClockWise();
         }
@@ -111,13 +121,162 @@ public class OERenderUtils {
         }
     }
 
-    public static void poseCenterConsumer(PoseStack poseStack, float centerX, float centerY, float centerZ, Consumer<PoseStack> poseStackConsumer) {
-        poseStack.translate(centerX, centerX, centerX);
+    /**
+     * 中心でposeを変更する
+     *
+     * @param poseStack         PoseStack
+     * @param centerX           中心X
+     * @param centerY           中心Y
+     * @param centerZ           中心Z
+     * @param poseStackConsumer 中心での処理
+     */
+    public static void poseCenterConsumer(@NotNull PoseStack poseStack, float centerX, float centerY, float centerZ, @NotNull Consumer<PoseStack> poseStackConsumer) {
+        poseStack.translate(centerX, centerY, centerZ);
         poseStackConsumer.accept(poseStack);
-        poseStack.translate(-centerX, -centerX, -centerX);
+        poseStack.translate(-centerX, -centerY, -centerZ);
     }
 
-    public static float getParSecond(long loopTime) {
-        return (float) (System.currentTimeMillis() % loopTime) / (float) loopTime;
+    /**
+     * GUI上でテクスチャを描画する
+     *
+     * @param location      テクスチャ
+     * @param poseStack     PoseStack
+     * @param x             X
+     * @param y             Y
+     * @param u0            テクスチャの開始地点X
+     * @param v0            テクスチャの開始地点Y
+     * @param u1            テクスチャの終了地点X
+     * @param v1            テクスチャの終了地点Y
+     * @param textureWidth  テクスチャの横サイズ
+     * @param textureHeight テクスチャの縦サイズ
+     */
+    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
+        setPreDraw(location);
+        blitFloat(poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight);
+    }
+
+    /**
+     * GUI上でテクスチャを描画する
+     * テクスチャサイズは256x256
+     *
+     * @param location  テクスチャ
+     * @param poseStack PoseStack
+     * @param x         X
+     * @param y         Y
+     * @param u0        テクスチャの開始地点X
+     * @param v0        テクスチャの開始地点Y
+     * @param u1        テクスチャの終了地点X
+     * @param v1        テクスチャの終了地点Y
+     */
+    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
+        drawTexture(location, poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    }
+
+    /**
+     * テクスチャ描画前に呼び出し
+     *
+     * @param location テクスチャ
+     */
+    public static void setPreDraw(@NotNull ResourceLocation location) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, location);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+    }
+
+    /**
+     * 指定済みテクスチャとシェーダーで描画
+     *
+     * @param poseStack     PoseStack
+     * @param x             X
+     * @param y             Y
+     * @param u0            テクスチャの開始地点X
+     * @param v0            テクスチャの開始地点Y
+     * @param u1            テクスチャの終了地点X
+     * @param v1            テクスチャの終了地点Y
+     * @param textureWidth  テクスチャの横サイズ
+     * @param textureHeight テクスチャの縦サイズ
+     */
+    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
+        Matrix4f matrix4f = poseStack.last().pose();
+        float ry = x + u1;
+        float rh = y + v1;
+        float ru0 = u0 / textureWidth;
+        float ru1 = (u0 + u1) / textureWidth;
+        float rv0 = v0 / textureHeight;
+        float rv1 = (v0 + v1) / textureHeight;
+
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferBuilder.vertex(matrix4f, x, rh, 0).uv(ru0, rv1).endVertex();
+        bufferBuilder.vertex(matrix4f, ry, rh, 0).uv(ru1, rv1).endVertex();
+        bufferBuilder.vertex(matrix4f, ry, y, 0).uv(ru1, rv0).endVertex();
+        bufferBuilder.vertex(matrix4f, x, y, 0).uv(ru0, rv0).endVertex();
+        BufferUploader.drawWithShader(bufferBuilder.end());
+    }
+
+    /**
+     * 指定済みテクスチャとシェーダーで描画
+     * テクスチャサイズは256x256
+     *
+     * @param poseStack PoseStack
+     * @param x         X
+     * @param y         Y
+     * @param u0        テクスチャの開始地点X
+     * @param v0        テクスチャの開始地点Y
+     * @param u1        テクスチャの終了地点X
+     * @param v1        テクスチャの終了地点Y
+     */
+    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
+        blitFloat(poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    }
+
+    /**
+     * GUI上を塗りつぶす
+     * intの場合はGuiComponent.fillを推奨
+     *
+     * @param poseStack PoseStack
+     * @param x         X
+     * @param y         Y
+     * @param width     幅
+     * @param height    高さ
+     * @param color     塗りつぶし色
+     */
+    public static void drawFill(@NotNull PoseStack poseStack, float x, float y, float width, float height, int color) {
+        innerFill(poseStack.last().pose(), x, y, width, height, color);
+    }
+
+    private static void innerFill(Matrix4f matrix4f, float x, float y, float w, float h, int coler) {
+        float n;
+        if (x < w) {
+            n = x;
+            x = w;
+            w = n;
+        }
+
+        if (y < h) {
+            n = y;
+            y = h;
+            h = n;
+        }
+
+        float a = (float) (coler >> 24 & 255) / 255.0F;
+        float r = (float) (coler >> 16 & 255) / 255.0F;
+        float g = (float) (coler >> 8 & 255) / 255.0F;
+        float b = (float) (coler & 255) / 255.0F;
+
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        bufferBuilder.vertex(matrix4f, x, h, 0.0F).color(r, g, b, a).endVertex();
+        bufferBuilder.vertex(matrix4f, w, h, 0.0F).color(r, g, b, a).endVertex();
+        bufferBuilder.vertex(matrix4f, w, y, 0.0F).color(r, g, b, a).endVertex();
+        bufferBuilder.vertex(matrix4f, x, y, 0.0F).color(r, g, b, a).endVertex();
+        BufferUploader.drawWithShader(bufferBuilder.end());
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
     }
 }

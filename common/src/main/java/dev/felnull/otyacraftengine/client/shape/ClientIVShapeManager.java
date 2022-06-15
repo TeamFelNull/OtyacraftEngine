@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine.client.shape;
 
+import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.shape.VoxelEdge;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -9,15 +11,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ClientIVShapeManager extends SimplePreparableReloadListener<ClientIVShapeLoader> {
-    private static ClientIVShapeManager INSTANCE;
+    private static final ClientIVShapeManager INSTANCE = OEClientExpectPlatform.createCIVSManagerInstance();
     private Map<ResourceLocation, VoxelClientShape> voxelClientShapes;
     private Map<ResourceLocation, VoxelClientShape> legacyVoxelClientShapes = new HashMap<>();
-
-    public ClientIVShapeManager() {
-        INSTANCE = this;
-    }
 
     public static ClientIVShapeManager getInstance() {
         return INSTANCE;
@@ -39,5 +38,9 @@ public class ClientIVShapeManager extends SimplePreparableReloadListener<ClientI
         if (ret != null)
             return ret;
         return legacyVoxelClientShapes.get(location);
+    }
+
+    public void addLegacyShapes(ResourceLocation location, Set<VoxelEdge> edges) {
+        legacyVoxelClientShapes.put(location, new VoxelClientShape(null, null, edges));
     }
 }

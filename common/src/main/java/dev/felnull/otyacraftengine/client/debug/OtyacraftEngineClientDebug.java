@@ -14,4 +14,8 @@ public class OtyacraftEngineClientDebug {
     public boolean isShowModNameInTooltip() {
         return true;
     }
+
+    public HighlightVoxelShapeType getHighlightVoxelShape() {
+        return HighlightVoxelShapeType.OFF;
+    }
 }

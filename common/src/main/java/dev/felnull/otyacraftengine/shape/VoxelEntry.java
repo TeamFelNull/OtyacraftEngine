@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 public class VoxelEntry {
     private final ResourceLocation location;
     private final VoxelPose pose;
-    private VoxelEdge[] cacheEdges;
 
     public VoxelEntry(ResourceLocation location, VoxelPose pose) {
         this.location = location;
@@ -22,13 +21,5 @@ public class VoxelEntry {
 
     public VoxelPose getPose() {
         return pose;
-    }
-
-    public VoxelEdge[] getCacheEdges() {
-        return cacheEdges;
-    }
-
-    public void setCacheEdges(VoxelEdge[] cacheEdges) {
-        this.cacheEdges = cacheEdges;
     }
 }

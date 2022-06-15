@@ -3,10 +3,10 @@ package dev.felnull.otyacraftengine.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.felnull.fnjl.util.FNDataUtil;
-import dev.felnull.otyacraftengine.shape.bundle.DirectionVoxelShapesBundle;
 import dev.felnull.otyacraftengine.shape.IkisugiVoxelShape;
 import dev.felnull.otyacraftengine.shape.IkisugiVoxelShapes;
 import dev.felnull.otyacraftengine.shape.RotateAngledAxis;
+import dev.felnull.otyacraftengine.shape.bundle.DirectionVoxelShapesBundle;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -158,8 +158,7 @@ public class OEVoxelShapeUtils {
      * @return 合体したVoxelShape
      */
     public static VoxelShape uniteBox(VoxelShape... shapes) {
-        var shape = Shapes.or(shapes[0], ArrayUtils.remove(shapes, 0));
-        return IkisugiVoxelShapes.getInstance().unite(shape, shapes);
+        return Shapes.or(shapes[0], ArrayUtils.remove(shapes, 0));
     }
 
     /**

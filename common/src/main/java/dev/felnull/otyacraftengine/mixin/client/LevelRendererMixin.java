@@ -3,16 +3,20 @@ package dev.felnull.otyacraftengine.mixin.client;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.felnull.otyacraftengine.client.debug.HighlightVoxelShapeType;
+import dev.felnull.otyacraftengine.client.debug.OtyacraftEngineClientDebug;
 import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import dev.felnull.otyacraftengine.shape.IkisugiVoxelShape;
 import dev.felnull.otyacraftengine.shape.RotateAngledAxis;
 import dev.felnull.otyacraftengine.shape.VoxelEdge;
 import dev.felnull.otyacraftengine.shape.VoxelEntry;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,15 +35,19 @@ public abstract class LevelRendererMixin {
     @Nullable
     public abstract RenderTarget entityTarget();
 
+    @Shadow
+    @Nullable
+    private ClientLevel level;
+
     @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
     private void renderHitOutline(PoseStack poseStack, VertexConsumer vertexConsumer, Entity entity, double d, double e, double f, BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
-       /* var shapeType = OtyacraftEngine.CONFIG.highlightVoxelShape;
+        var shapeType = OtyacraftEngineClientDebug.getInstance().getHighlightVoxelShape();
         if (shapeType != HighlightVoxelShapeType.OFF) {
             var shape = shapeType.getGetter();
             if (shape != null)
                 LevelRenderer.renderVoxelShape(poseStack, vertexConsumer, shape.getShape(blockState, level, blockPos, CollisionContext.of(entity)), (double) blockPos.getX() - d, (double) blockPos.getY() - e, (double) blockPos.getZ() - f, 0.0F, 0.0F, 0.0F, 0.4F);
             ci.cancel();
-        }*/
+        }
     }
 
     @Inject(method = "renderShape", at = @At("HEAD"), cancellable = true)
@@ -54,7 +62,9 @@ public abstract class LevelRendererMixin {
             var p = entry.getPose();
             var pose = poseStack.last();
 
-            if (entry.getCacheEdges() == null) {
+            var cache = cls.getEdgeCache(entry);
+
+            if (cache == null) {
                 List<VoxelEdge> edges = new ArrayList<>();
                 for (VoxelEdge edge : cls.getRenderEdges()) {
                     for (RotateAngledAxis axi : p.axis()) {
@@ -62,10 +72,11 @@ public abstract class LevelRendererMixin {
                     }
                     edges.add(edge);
                 }
-                entry.setCacheEdges(edges.toArray(new VoxelEdge[0]));
+                cache = edges.toArray(new VoxelEdge[0]);
+                cls.setEdgeCache(entry, cache);
             }
 
-            for (VoxelEdge edge : entry.getCacheEdges()) {
+            for (VoxelEdge edge : cache) {
                 renderShapeEdge(pose, vertexConsumer, edge.stX(), edge.stY(), edge.stZ(), edge.enX(), edge.enY(), edge.enZ(), x, y, z, r, g, b, a);
             }
 

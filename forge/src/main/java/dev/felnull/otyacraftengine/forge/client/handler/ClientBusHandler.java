@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientBusHandler {
     @SubscribeEvent
-    public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent e) {
-        e.registerReloadListener(new ClientIVShapeManager());
+    public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e) {
+        e.registerReloadListener(ClientIVShapeManager.getInstance());
     }
 }

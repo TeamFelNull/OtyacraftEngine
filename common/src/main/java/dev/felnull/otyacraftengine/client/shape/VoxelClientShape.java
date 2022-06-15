@@ -1,28 +1,32 @@
 package dev.felnull.otyacraftengine.client.shape;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.felnull.otyacraftengine.shape.VoxelEdge;
+import dev.felnull.otyacraftengine.shape.VoxelEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class VoxelClientShape {
     private final String meta;
     private final String version;
-    private final List<VoxelEdge> renderEdges;
+    private final Set<VoxelEdge> renderEdges;
+    private final Map<VoxelEntry, VoxelEdge[]> edgeCache = new HashMap<>();
 
-    public VoxelClientShape(@Nullable String meta, @Nullable String version, @NotNull List<VoxelEdge> edges) {
+    public VoxelClientShape(@Nullable String meta, @Nullable String version, @NotNull Set<VoxelEdge> edges) {
         this.meta = meta;
         this.version = version;
-        this.renderEdges = ImmutableList.copyOf(edges);
+        this.renderEdges = ImmutableSet.copyOf(edges);
     }
 
     @NotNull
-    public List<VoxelEdge> getRenderEdges() {
+    public Set<VoxelEdge> getRenderEdges() {
         return renderEdges;
     }
 
@@ -48,7 +52,7 @@ public class VoxelClientShape {
         if (jo.has("version") && jo.get("version").isJsonPrimitive())
             version = jo.get("version").getAsString();
 
-        ImmutableList.Builder<VoxelEdge> edgeBuilder = new ImmutableList.Builder<>();
+        ImmutableSet.Builder<VoxelEdge> edgeBuilder = new ImmutableSet.Builder<>();
 
         if (jo.has("edges") && jo.get("edges").isJsonArray()) {
             var ja = jo.getAsJsonArray("edges");
@@ -84,5 +88,13 @@ public class VoxelClientShape {
     @Override
     public int hashCode() {
         return Objects.hash(meta, version, renderEdges);
+    }
+
+    public VoxelEdge[] getEdgeCache(VoxelEntry entry) {
+        return edgeCache.get(entry);
+    }
+
+    public void setEdgeCache(VoxelEntry entry, VoxelEdge[] edges) {
+        edgeCache.put(entry, edges);
     }
 }

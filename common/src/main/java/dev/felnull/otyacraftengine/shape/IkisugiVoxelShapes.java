@@ -3,6 +3,8 @@ package dev.felnull.otyacraftengine.shape;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
 import dev.felnull.otyacraftengine.util.OEVoxelShapeUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -22,12 +24,12 @@ public class IkisugiVoxelShapes {
 
         if (version != null && version.isJsonPrimitive()) {
             if (version.getAsInt() == 2)
-                return getShapeFromJsonV2(shapeJson);
+                return getShapeFromJsonV2(shapeJson, location);
 
             if (version.getAsInt() == 3)
                 return getShapeFromJsonV3(shapeJson, location);
 
-            if (version.getAsInt() > 3)
+            if (version.getAsInt() >= 4)
                 throw new IllegalStateException("Not support ikisugi voxel shape version: " + version.getAsInt());
         }
 
@@ -44,7 +46,7 @@ public class IkisugiVoxelShapes {
         return OEVoxelShapeUtils.uniteBox(shapes);
     }
 
-    private VoxelShape getShapeFromJsonV2(JsonObject shapeJ) {
+    private VoxelShape getShapeFromJsonV2(JsonObject shapeJ, ResourceLocation location) {
         List<VoxelShape> shapes = new ArrayList<>();
         for (JsonElement jshape : shapeJ.getAsJsonArray("shapes")) {
             JsonArray ja = jshape.getAsJsonArray();
@@ -52,13 +54,18 @@ public class IkisugiVoxelShapes {
             shapes.add(shape);
         }
         var shape = OEVoxelShapeUtils.uniteBox(shapes);
-        Set<VoxelEdge> edges = new HashSet<>();
-        for (JsonElement jshape : shapeJ.getAsJsonArray("edges")) {
-            var ed = VoxelEdge.parse(jshape.getAsJsonArray());
-            if (ed != null)
-                edges.add(ed);
-        }
-        // ((IkisugiVoxelShape) shape).setRenderEdges(Collections.unmodifiableSet(edges));
+
+        EnvExecutor.runInEnv(Env.CLIENT, () -> () -> {
+            Set<VoxelEdge> edges = new HashSet<>();
+            for (JsonElement jshape : shapeJ.getAsJsonArray("edges")) {
+                var ed = VoxelEdge.parse(jshape.getAsJsonArray());
+                if (ed != null)
+                    edges.add(ed);
+            }
+            dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager.getInstance().addLegacyShapes(location, edges);
+        });
+
+        ((IkisugiVoxelShape) shape).setRenderEdges(new VoxelEntry(location));
         return shape;
     }
 
