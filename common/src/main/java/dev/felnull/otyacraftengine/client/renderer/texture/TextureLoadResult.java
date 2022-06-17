@@ -4,39 +4,33 @@ import dev.felnull.otyacraftengine.client.util.OETextureUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public record TextureLoadResult(ResourceLocation location, Exception exception) {
-    public TextureLoadResult() {
-        this(null, null);
-    }
+public interface TextureLoadResult {
+    ResourceLocation getLocation();
 
-    public boolean isLoading() {
-        return location == null && exception == null;
-    }
+    boolean isLoading();
 
-    public boolean isNoError() {
-        return exception == null;
-    }
+    boolean isError();
 
-    public boolean isSuccess() {
-        return !isLoading() && isNoError();
-    }
+    boolean isSuccess();
+
+    Exception getException();
 
     @NotNull
-    public ResourceLocation of(@NotNull ResourceLocation loading, @NotNull ResourceLocation error) {
+    default ResourceLocation of(@NotNull ResourceLocation loading, @NotNull ResourceLocation error) {
         if (isLoading())
             return loading;
-        if (exception != null)
+        if (isError())
             return error;
-        return location;
+        return getLocation();
     }
 
     @NotNull
-    public ResourceLocation of(@NotNull ResourceLocation error) {
+    default ResourceLocation of(@NotNull ResourceLocation error) {
         return of(OETextureUtils.getLoadingIcon(), error);
     }
 
     @NotNull
-    public ResourceLocation of() {
+    default ResourceLocation of() {
         return of(OETextureUtils.getLoadingIcon(), OETextureUtils.getErrorIcon());
     }
 }

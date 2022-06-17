@@ -16,7 +16,7 @@ import java.util.UUID;
 public class NativeTextureManager {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final NativeTextureManager INSTANCE = new NativeTextureManager();
-    private final Map<UUID, TextureLoadResult> NATIVE_TEXTURE_LOADS = new HashMap<>();
+    private final Map<UUID, NativeTextureLoadResult> NATIVE_TEXTURE_LOADS = new HashMap<>();
     private final Map<UUID, NativeTextureLoader> NATIVE_TEXTURE_LOADERS = new HashMap<>();
 
     public static NativeTextureManager getInstance() {
@@ -24,13 +24,13 @@ public class NativeTextureManager {
     }
 
     @NotNull
-    public TextureLoadResult getAndLoadTextureAsync(@NotNull UUID uuid, @NotNull InputStream stream) {
-        TextureLoadResult r;
+    public NativeTextureLoadResult getAndLoadTextureAsync(@NotNull UUID uuid, @NotNull InputStream stream) {
+        NativeTextureLoadResult r;
         synchronized (NATIVE_TEXTURE_LOADS) {
             r = NATIVE_TEXTURE_LOADS.get(uuid);
         }
         if (r == null) {
-            r = new TextureLoadResult();
+            r = new NativeTextureLoadResult();
             synchronized (NATIVE_TEXTURE_LOADS) {
                 NATIVE_TEXTURE_LOADS.put(uuid, r);
             }
@@ -43,8 +43,8 @@ public class NativeTextureManager {
         return r;
     }
 
-    public TextureLoadResult getAndLoadTexture(@NotNull UUID uuid, @NotNull InputStream stream) {
-        TextureLoadResult r;
+    public NativeTextureLoadResult getAndLoadTexture(@NotNull UUID uuid, @NotNull InputStream stream) {
+        NativeTextureLoadResult r;
         synchronized (NATIVE_TEXTURE_LOADS) {
             r = NATIVE_TEXTURE_LOADS.get(uuid);
         }
@@ -58,7 +58,7 @@ public class NativeTextureManager {
     }
 
     @Nullable
-    public TextureLoadResult getTexture(@NotNull UUID uuid) {
+    public NativeTextureLoadResult getTexture(@NotNull UUID uuid) {
         synchronized (NATIVE_TEXTURE_LOADS) {
             return NATIVE_TEXTURE_LOADS.get(uuid);
         }
@@ -83,7 +83,7 @@ public class NativeTextureManager {
         }
     }
 
-    private static TextureLoadResult loadNativeTexture(InputStream stream) {
+    private static NativeTextureLoadResult loadNativeTexture(InputStream stream) {
         ResourceLocation[] loc = new ResourceLocation[1];
         try (BufferedInputStream bufstream = new BufferedInputStream(stream)) {
             var tx = OETextureUtils.createNativeTexture(bufstream);
@@ -91,9 +91,9 @@ public class NativeTextureManager {
                 loc[0] = mc.getTextureManager().register("native_texture", tx);
             }).get();
         } catch (Exception ex) {
-            return new TextureLoadResult(null, ex);
+            return new NativeTextureLoadResult(null, ex);
         }
-        return new TextureLoadResult(loc[0], null);
+        return new NativeTextureLoadResult(loc[0], null);
     }
 
     private class NativeTextureLoader extends FlagThread {

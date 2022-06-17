@@ -3,9 +3,7 @@ package dev.felnull.otyacraftengine.client.util;
 import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.renderer.texture.DynamicGifTexture;
-import dev.felnull.otyacraftengine.client.renderer.texture.NativeTextureManager;
-import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadResult;
+import dev.felnull.otyacraftengine.client.renderer.texture.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -69,18 +67,23 @@ public class OETextureUtils {
     }
 
     @NotNull
-    public static TextureLoadResult getAndLoadNativeTextureAsync(@NotNull UUID uuid, @NotNull InputStream stream) {
+    public static NativeTextureLoadResult getAndLoadNativeTextureAsync(@NotNull UUID uuid, @NotNull InputStream stream) {
         return NativeTextureManager.getInstance().getAndLoadTextureAsync(uuid, stream);
     }
 
     @NotNull
-    public static TextureLoadResult getAndLoadNativeTexture(@NotNull UUID uuid, @NotNull InputStream stream) {
+    public static NativeTextureLoadResult getAndLoadNativeTexture(@NotNull UUID uuid, @NotNull InputStream stream) {
         return NativeTextureManager.getInstance().getAndLoadTexture(uuid, stream);
     }
 
     @Nullable
-    public static TextureLoadResult getNativeTexture(@NotNull UUID uuid) {
+    public static NativeTextureLoadResult getNativeTexture(@NotNull UUID uuid) {
         return NativeTextureManager.getInstance().getTexture(uuid);
+    }
+
+    @NotNull
+    public static URLTextureLoadResult getAndLoadURLTexture(@NotNull String url, boolean cached) {
+        return URLTextureManager.getInstance().getAndLoadUrlTextureAsync(url, cached);
     }
 
     /**
