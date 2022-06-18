@@ -6,8 +6,10 @@ import dev.felnull.fnjl.util.FNImageUtil;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.Tickable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public final class DynamicGifTexture extends DynamicTexture implements Tickable {
     private final ImageFrame[] frames;
@@ -52,10 +54,14 @@ public final class DynamicGifTexture extends DynamicTexture implements Tickable 
     }
 
     @NotNull
-    public static DynamicGifTexture create(@NotNull GifDecoder decoder) throws IOException {
+    public static DynamicGifTexture create(@NotNull GifDecoder decoder, @Nullable Consumer<TextureLoadProgress> progress) throws IOException {
         ImageFrame[] frames = new ImageFrame[decoder.getFrameCount()];
+        if (progress != null)
+            progress.accept(new TextureLoadProgressImpl("Gif decoding", decoder.getFrameCount(), 0));
         long duration = 0;
         for (int i = 0; i < decoder.getFrameCount(); i++) {
+            if (progress != null)
+                progress.accept(new TextureLoadProgressImpl("Gif decoding", decoder.getFrameCount(), i + 1));
             var img = decoder.getFrame(i);
             long delay = decoder.getDelay(i);
             try (var stream = FNImageUtil.toInputStream(img, "png")) {

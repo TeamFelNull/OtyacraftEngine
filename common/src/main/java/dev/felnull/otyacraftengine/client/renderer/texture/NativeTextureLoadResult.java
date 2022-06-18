@@ -2,9 +2,23 @@ package dev.felnull.otyacraftengine.client.renderer.texture;
 
 import net.minecraft.resources.ResourceLocation;
 
-public record NativeTextureLoadResult(ResourceLocation location, Exception exception) implements TextureLoadResult {
+public class NativeTextureLoadResult implements TextureLoadResult {
+    private final ResourceLocation location;
+    private final Exception exception;
+    private TextureLoadProgress progress;
+
+    public NativeTextureLoadResult(ResourceLocation location, Exception exception, TextureLoadProgress progress) {
+        this.location = location;
+        this.exception = exception;
+        this.progress = progress;
+    }
+
+    public NativeTextureLoadResult(ResourceLocation location, Exception exception) {
+        this(location, exception, null);
+    }
+
     public NativeTextureLoadResult() {
-        this(null, null);
+        this(null, null, new TextureLoadProgressImpl());
     }
 
     @Override
@@ -15,6 +29,11 @@ public record NativeTextureLoadResult(ResourceLocation location, Exception excep
     @Override
     public Exception getException() {
         return exception;
+    }
+
+    @Override
+    public TextureLoadProgress getProgress() {
+        return progress;
     }
 
     @Override
@@ -30,5 +49,9 @@ public record NativeTextureLoadResult(ResourceLocation location, Exception excep
     @Override
     public boolean isError() {
         return exception != null;
+    }
+
+    protected void setProgress(TextureLoadProgress progress) {
+        this.progress = progress;
     }
 }

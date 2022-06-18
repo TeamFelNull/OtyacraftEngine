@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class NativeTextureManager {
     private static final Minecraft mc = Minecraft.getInstance();
@@ -34,7 +35,7 @@ public class NativeTextureManager {
             synchronized (NATIVE_TEXTURE_LOADS) {
                 NATIVE_TEXTURE_LOADS.put(uuid, r);
             }
-            NativeTextureLoader loader = new NativeTextureLoader(uuid, stream);
+            NativeTextureLoader loader = new NativeTextureLoader(uuid, stream, r);
             synchronized (NATIVE_TEXTURE_LOADERS) {
                 NATIVE_TEXTURE_LOADERS.put(uuid, loader);
             }
@@ -44,12 +45,16 @@ public class NativeTextureManager {
     }
 
     public NativeTextureLoadResult getAndLoadTexture(@NotNull UUID uuid, @NotNull InputStream stream) {
+        return getAndLoadTexture(uuid, stream, null);
+    }
+
+    public NativeTextureLoadResult getAndLoadTexture(@NotNull UUID uuid, @NotNull InputStream stream, @Nullable Consumer<TextureLoadProgress> progress) {
         NativeTextureLoadResult r;
         synchronized (NATIVE_TEXTURE_LOADS) {
             r = NATIVE_TEXTURE_LOADS.get(uuid);
         }
         if (r == null) {
-            r = loadNativeTexture(stream);
+            r = loadNativeTexture(stream, progress);
             synchronized (NATIVE_TEXTURE_LOADS) {
                 NATIVE_TEXTURE_LOADS.put(uuid, r);
             }
@@ -77,19 +82,23 @@ public class NativeTextureManager {
             var r = NATIVE_TEXTURE_LOADS.get(id);
             if (r != null) {
                 if (r.isSuccess())
-                    OETextureUtils.freeTexture(r.location());
+                    OETextureUtils.freeTexture(r.getLocation());
                 NATIVE_TEXTURE_LOADS.remove(id);
             }
         }
     }
 
-    private static NativeTextureLoadResult loadNativeTexture(InputStream stream) {
+    private static NativeTextureLoadResult loadNativeTexture(InputStream stream, Consumer<TextureLoadProgress> progress) {
         ResourceLocation[] loc = new ResourceLocation[1];
         try (BufferedInputStream bufstream = new BufferedInputStream(stream)) {
-            var tx = OETextureUtils.createNativeTexture(bufstream);
+            var tx = OETextureUtils.createNativeTexture(bufstream, progress);
+            if (progress != null)
+                progress.accept(new TextureLoadProgressImpl("Texture registering", 1, 0));
             mc.submit(() -> {
                 loc[0] = mc.getTextureManager().register("native_texture", tx);
             }).get();
+            if (progress != null)
+                progress.accept(new TextureLoadProgressImpl("Texture registering", 1, 1));
         } catch (Exception ex) {
             return new NativeTextureLoadResult(null, ex);
         }
@@ -99,10 +108,12 @@ public class NativeTextureManager {
     private class NativeTextureLoader extends FlagThread {
         private final UUID uuid;
         private final InputStream stream;
+        private final NativeTextureLoadResult result;
 
-        private NativeTextureLoader(UUID uuid, InputStream stream) {
+        private NativeTextureLoader(UUID uuid, InputStream stream, NativeTextureLoadResult result) {
             this.uuid = uuid;
             this.stream = stream;
+            this.result = result;
         }
 
         @Override
@@ -111,10 +122,10 @@ public class NativeTextureManager {
                 finish();
                 return;
             }
-            var ret = loadNativeTexture(stream);
+            var ret = loadNativeTexture(stream, result::setProgress);
             if (isStopped()) {
-                if (ret.location() != null)
-                    OETextureUtils.freeTexture(ret.location());
+                if (ret.getLocation() != null)
+                    OETextureUtils.freeTexture(ret.getLocation());
                 finish();
                 return;
             }

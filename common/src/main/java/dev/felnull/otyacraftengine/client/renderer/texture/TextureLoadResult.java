@@ -17,10 +17,8 @@ public interface TextureLoadResult {
 
     @NotNull
     default ResourceLocation of(@NotNull ResourceLocation loading, @NotNull ResourceLocation error) {
-        if (isLoading())
-            return loading;
-        if (isError())
-            return error;
+        if (isLoading()) return loading;
+        if (isError()) return error;
         return getLocation();
     }
 
@@ -33,4 +31,6 @@ public interface TextureLoadResult {
     default ResourceLocation of() {
         return of(OETextureUtils.getLoadingIcon(), OETextureUtils.getErrorIcon());
     }
+
+    TextureLoadProgress getProgress();
 }

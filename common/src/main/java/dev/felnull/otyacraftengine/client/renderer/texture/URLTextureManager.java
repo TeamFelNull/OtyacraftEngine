@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class URLTextureManager {
@@ -58,7 +59,12 @@ public class URLTextureManager {
             }
             for (LoadURLEntry rwu : REMOVE_WAIT_URLS) {
                 WAIT_LOAD_URLS.remove(rwu);
-                var loader = new URLTextureLoader(rwu.url, rwu.cached);
+                URLTextureLoadResult ret;
+                synchronized (LOAD_URL_TEXTURE) {
+                    ret = LOAD_URL_TEXTURE.get(HASH_CACHE.apply(rwu.url));
+                }
+                ret.setProgress(new TextureLoadProgressImpl("Load waiting", LOAD_URL_TEXTURE.size(), LOAD_URL_TEXTURE.size()));
+                var loader = new URLTextureLoader(rwu.url, rwu.cached, ret);
                 loader.start();
                 URL_TEXTURE_LOADERS.add(loader);
             }
@@ -85,7 +91,7 @@ public class URLTextureManager {
             synchronized (LOAD_URL_TEXTURE) {
                 for (Map.Entry<String, URLTextureLoadResult> entry : LOAD_URL_TEXTURE.entrySet()) {
                     var ret = entry.getValue();
-                    if (ret.needReload() && ret.isError() && ret.loadedTime() >= 0 && System.currentTimeMillis() - ret.loadedTime() >= 1000 * 60 * 60) {
+                    if (ret.isNeedReload() && ret.isError() && ret.getLoadedTime() >= 0 && System.currentTimeMillis() - ret.getLoadedTime() >= 1000 * 60 * 60) {
                         removes.add(entry.getKey());
                     }
                 }
@@ -102,6 +108,7 @@ public class URLTextureManager {
             var ret = LOAD_URL_TEXTURE.get(hash);
             if (ret == null) {
                 ret = new URLTextureLoadResult(null, false, -1, null, null);
+                ret.setProgress(new TextureLoadProgressImpl("Load waiting", LOAD_URL_TEXTURE.size(), 0));
                 LOAD_URL_TEXTURE.put(hash, ret);
                 synchronized (WAIT_LOAD_URLS) {
                     WAIT_LOAD_URLS.add(new LoadURLEntry(url, cached));
@@ -111,6 +118,13 @@ public class URLTextureManager {
         }
     }
 
+    private void updateWaitProgress() {
+        synchronized (LOAD_URL_TEXTURE) {
+            for (URLTextureLoadResult value : LOAD_URL_TEXTURE.values()) {
+                value.setProgress(new TextureLoadProgressImpl(value.getProgress().getStateName(), value.getProgress().getTotal(), value.getProgress().getComplete() + 1));
+            }
+        }
+    }
 
     public synchronized void saveIndex() {
         long st = System.currentTimeMillis();
@@ -217,8 +231,8 @@ public class URLTextureManager {
         }
         synchronized (LOAD_URL_TEXTURE) {
             for (URLTextureLoadResult value : LOAD_URL_TEXTURE.values()) {
-                if (value.uuid() != null)
-                    NativeTextureManager.getInstance().freeNativeTexture(value.uuid());
+                if (value.getUUID() != null)
+                    NativeTextureManager.getInstance().freeNativeTexture(value.getUUID());
             }
             LOAD_URL_TEXTURE.clear();
         }
@@ -255,13 +269,14 @@ public class URLTextureManager {
             throw new IllegalStateException("URL is too long");
     }
 
-    private Pair<String, URLTextureLoadResult> loadUrlTexture(String url, boolean cached) {
+    private Pair<String, URLTextureLoadResult> loadUrlTexture(String url, boolean cached, Consumer<TextureLoadProgress> progress) {
         var hash = HASH_CACHE.apply(url);
         try {
             checkUrlText(url);
         } catch (Exception ex) {
             return Pair.of(hash, new URLTextureLoadResult(ex, false, null, UUID.randomUUID()));
         }
+
         UUID fileCache;
         synchronized (FILE_CACHE_TEXTURE_IDS) {
             fileCache = FILE_CACHE_TEXTURE_IDS.get(hash);
@@ -270,7 +285,7 @@ public class URLTextureManager {
         NativeTextureManager ntm = NativeTextureManager.getInstance();
         if (fileCache != null) {
             try {
-                var ret = ntm.getAndLoadTexture(fileCache, new FileInputStream(getFileCachePath(fileCache).toFile()));
+                var ret = ntm.getAndLoadTexture(fileCache, new FileInputStream(getFileCachePath(fileCache).toFile()), progress);
                 return Pair.of(hash, new URLTextureLoadResult(null, false, ret, fileCache));
             } catch (FileNotFoundException e) {
                 synchronized (FILE_CACHE_TEXTURE_IDS) {
@@ -281,10 +296,11 @@ public class URLTextureManager {
 
         UUID uuid = UUID.randomUUID();
         InputStream stream;
+        long length;
         try {
             var con = FNURLUtil.getConnection(new URL(url));
-            long length = con.getContentLengthLong();
-            long max = 1024L * 1024L * 3;
+            length = con.getContentLengthLong();
+            long max = 1024L * 1024L * 10;
             if (length > max)
                 throw new IOException("Size Over: " + max + "byte" + " current: " + length + "byte");
             stream = con.getInputStream();
@@ -296,7 +312,13 @@ public class URLTextureManager {
             try {
                 var fil = getFileCachePath(uuid).toFile();
                 fil.getParentFile().mkdirs();
-                FNDataUtil.bufInputToOutput(stream, new FileOutputStream(fil));
+
+                progress.accept(new TextureLoadProgressImpl("Cache getting", (int) length, 0));
+                try (InputStream inputStream = stream) {
+                    FNDataUtil.fileWriteToProgress(inputStream, length, fil, progressListener -> progress.accept(new TextureLoadProgressImpl("Cache getting", (int) progressListener.getWrittenLength(), (int) progressListener.getLength())));
+                }
+                progress.accept(new TextureLoadProgressImpl("Cache getting", (int) length, (int) length));
+
                 stream = new FileInputStream(getFileCachePath(uuid).toFile());
                 synchronized (FILE_CACHE_TEXTURE_IDS) {
                     FILE_CACHE_TEXTURE_IDS.put(hash, uuid);
@@ -307,7 +329,7 @@ public class URLTextureManager {
             }
         }
 
-        var ret = ntm.getAndLoadTexture(uuid, stream);
+        var ret = ntm.getAndLoadTexture(uuid, stream, progress);
         return Pair.of(hash, new URLTextureLoadResult(null, false, ret, uuid));
     }
 
@@ -317,10 +339,12 @@ public class URLTextureManager {
     private class URLTextureLoader extends FlagThread {
         private final String url;
         private final boolean cached;
+        private final URLTextureLoadResult result;
 
-        private URLTextureLoader(String url, boolean cached) {
+        private URLTextureLoader(String url, boolean cached, URLTextureLoadResult result) {
             this.url = url;
             this.cached = cached;
+            this.result = result;
         }
 
         @Override
@@ -329,16 +353,16 @@ public class URLTextureManager {
                 finished();
                 return;
             }
-            var ret = loadUrlTexture(url, cached);
+            var ret = loadUrlTexture(url, cached, result::setProgress);
             var retHash = ret.getKey();
             var retEntry = ret.getValue();
-            if (retEntry.loadResult() != null && retEntry.loadResult().exception() != null) {
-                retEntry = new URLTextureLoadResult(retEntry.exception(), true, null, retEntry.uuid());
+            if (retEntry.getNativeResult() != null && retEntry.getNativeResult().getException() != null) {
+                retEntry = new URLTextureLoadResult(retEntry.getException(), true, null, retEntry.getUUID());
             }
 
             if (isStopped()) {
-                if (retEntry.uuid() != null)
-                    NativeTextureManager.getInstance().freeNativeTexture(retEntry.uuid());
+                if (retEntry.getUUID() != null)
+                    NativeTextureManager.getInstance().freeNativeTexture(retEntry.getUUID());
                 finished();
                 return;
             }
@@ -352,6 +376,7 @@ public class URLTextureManager {
 
         private void finished() {
             URL_TEXTURE_LOADERS.remove(this);
+            updateWaitProgress();
         }
     }
 

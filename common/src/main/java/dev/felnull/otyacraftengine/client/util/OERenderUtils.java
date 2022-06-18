@@ -184,6 +184,55 @@ public class OERenderUtils {
     }
 
     /**
+     * 半透明で描画のための呼び出し
+     *
+     * @param location テクスチャ
+     * @param draw     描画処理
+     */
+    public static void setAndDrawAlpha(@NotNull ResourceLocation location, Runnable draw) {
+        setPreDraw(location);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        draw.run();
+        RenderSystem.disableBlend();
+    }
+
+    /**
+     * GUI上で半透明テクスチャを描画する
+     *
+     * @param location      テクスチャ
+     * @param poseStack     PoseStack
+     * @param x             X
+     * @param y             Y
+     * @param u0            テクスチャの開始地点X
+     * @param v0            テクスチャの開始地点Y
+     * @param u1            テクスチャの終了地点X
+     * @param v1            テクスチャの終了地点Y
+     * @param textureWidth  テクスチャの横サイズ
+     * @param textureHeight テクスチャの縦サイズ
+     */
+    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
+        setAndDrawAlpha(location, () -> blitFloat(poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight));
+    }
+
+    /**
+     * GUI上で半透明テクスチャを描画する
+     * テクスチャサイズは256x256
+     *
+     * @param location  テクスチャ
+     * @param poseStack PoseStack
+     * @param x         X
+     * @param y         Y
+     * @param u0        テクスチャの開始地点X
+     * @param v0        テクスチャの開始地点Y
+     * @param u1        テクスチャの終了地点X
+     * @param v1        テクスチャの終了地点Y
+     */
+    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
+        drawTextureAlpha(location, poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    }
+
+    /**
      * 指定済みテクスチャとシェーダーで描画
      *
      * @param poseStack     PoseStack
