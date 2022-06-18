@@ -10,11 +10,8 @@ pluginManagement {
 include("common")
 include("fabric")
 include("forge")
-include("test-common")
-include("test-fabric")
-include("test-forge")
+include("testmod-common")
+include("testmod-fabric")
+include("testmod-forge")
 
 rootProject.name = "OtyacraftEngine"
-
-if (JavaVersion.current().ordinal() + 1 != 17)
-    throw new IllegalStateException("申し訳ないがJava17以外はNG")

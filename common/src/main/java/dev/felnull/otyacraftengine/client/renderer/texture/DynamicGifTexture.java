@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import dev.felnull.fnjl.util.FNImageUtil;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.Tickable;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,13 +34,7 @@ public final class DynamicGifTexture extends DynamicTexture implements Tickable 
     }
 
     private int getFrameByTime(long time) {
-        long dr = 0;
-        for (int i = 0; i < frames.length; i++) {
-            if (dr <= time && dr + frames[i].delay() > time)
-                return i;
-            dr += frames[i].delay();
-        }
-        return 0;
+        return Mth.binarySearch(0, frames.length, v -> time <= frames[v].timestamp());
     }
 
     @Override
@@ -64,14 +59,14 @@ public final class DynamicGifTexture extends DynamicTexture implements Tickable 
                 progress.accept(new TextureLoadProgressImpl("Gif decoding", decoder.getFrameCount(), i + 1));
             var img = decoder.getFrame(i);
             long delay = decoder.getDelay(i);
-            try (var stream = FNImageUtil.toInputStream(img, "png")) {
-                frames[i] = new ImageFrame(NativeImage.read(stream), delay);
-            }
             duration += delay;
+            try (var stream = FNImageUtil.toInputStream(img, "png")) {
+                frames[i] = new ImageFrame(NativeImage.read(stream), duration);
+            }
         }
         return new DynamicGifTexture(duration, frames);
     }
 
-    private static record ImageFrame(NativeImage image, long delay) {
+    private static record ImageFrame(NativeImage image, long timestamp) {
     }
 }

@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.client.renderer.texture;
 
-import net.minecraft.util.ProgressListener;
+import net.minecraft.util.Mth;
 
 public interface TextureLoadProgress {
 
@@ -9,7 +9,7 @@ public interface TextureLoadProgress {
     int getComplete();
 
     default float getParent() {
-        return (float) getComplete() / (float) getTotal();
+        return Mth.clamp((float) getComplete() / (float) getTotal(), 0f, 1f);
     }
 
     String getStateName();

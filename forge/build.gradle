@@ -13,6 +13,9 @@ loom {
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
+        mixinConfig "otyacraftengine-common.mixins.json"
+        mixinConfig "otyacraftengine.mixins.json"
     }
 }
 
@@ -26,13 +29,16 @@ configurations {
     forgeDependencies.extendsFrom shadowIn
     shadowCommon.extendsFrom shadowIn
 }
+
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}"
 
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
@@ -45,11 +51,7 @@ processResources {
         expand "version": project.version
     }
 }
-shadowJar {
-    configurations = [project.configurations.shadowIn]
-    relocate 'dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl'
-    relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
-}
+
 shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"
@@ -61,7 +63,6 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    setBaseName("${rootProject.archives_base_name}-${project.name}-${rootProject.minecraft_version}")
     classifier null
 }
 

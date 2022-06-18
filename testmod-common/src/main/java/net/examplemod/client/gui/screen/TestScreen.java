@@ -1,9 +1,7 @@
 package net.examplemod.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.fnjl.util.FNStringUtil;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
-import dev.felnull.otyacraftengine.client.util.OETextureUtils;
 import dev.felnull.otyacraftengine.debug.ProcessTimeMeasure;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -16,7 +14,7 @@ public class TestScreen extends Screen {
     private final ProcessTimeMeasure processTimeMeasure = new ProcessTimeMeasure();
     private final UUID uuid = UUID.randomUUID();
     private final UUID uuid2 = UUID.randomUUID();
-    private final String testURL = "https://cdn.discordapp.com/attachments/887769442019323924/892670356358324264/pinki.gif";
+    private final String testURL = "https://cdn.discordapp.com/attachments/887769442019323924/893123973678768148/test.gif";
     private final String testURL2 = "https://cdn.discordapp.com/attachments/358878159615164416/987758500182650910/systemerror_94180.png";
     // private final InputStream nativeStream;
     // private final InputStream nativeGifStream;
@@ -87,12 +85,12 @@ public class TestScreen extends Screen {
         });
         processTimeMeasure.printResult(1000, 10000);*/
 
-        var r1 = OETextureUtils.getAndLoadURLTextureAsync(testURL, false);
+       /* var r1 = OETextureUtils.getAndLoadURLTextureAsync(testURL, false);
         var r2 = OETextureUtils.getAndLoadURLTextureAsync(testURL2, false);
 
 
-        OERenderUtils.drawTextureAlpha(r1.of(), poseStack, 200, 0, 0, 0, 100, 100, 100, 100);
-        OERenderUtils.drawTextureAlpha(r2.of(), poseStack, 300, 0, 0, 0, 100, 100, 100, 100);// 0.009ms 9104.029ns, Count 546
+        OERenderUtils.drawTextureAlpha(r1.of(OETextureUtils.getErrorIcon(), OETextureUtils.getErrorIcon()), poseStack, 200, 0, 0, 0, 100, 100, 100, 100);
+        OERenderUtils.drawTextureAlpha(r2.of(OETextureUtils.getErrorIcon(), OETextureUtils.getErrorIcon()), poseStack, 300, 0, 0, 0, 100, 100, 100, 100);// 0.009ms 9104.029ns, Count 546
 
         if (r1.isLoading())
             drawString(poseStack, font, r1.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r1.getProgress().getParent()), 200, 110, 0xFFFFFFFF);
@@ -104,6 +102,6 @@ public class TestScreen extends Screen {
             drawString(poseStack, font, r2.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r2.getProgress().getParent()), 300, 110, 0xFFFFFFFF);
 
         if (r2.isError())
-            drawString(poseStack, font, r2.getException().toString(), 300, 110, 0xFFFFFFFF);
+            drawString(poseStack, font, r2.getException().toString(), 300, 110, 0xFFFFFFFF);*/
     }
 }
