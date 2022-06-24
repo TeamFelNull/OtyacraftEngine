@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.client.renderer.texture;
 
+import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.util.OETextureUtils;
 import dev.felnull.otyacraftengine.util.FlagThread;
 import net.minecraft.client.Minecraft;
@@ -114,6 +115,7 @@ public class NativeTextureManager {
             this.uuid = uuid;
             this.stream = stream;
             this.result = result;
+            setName(OtyacraftEngine.getModName() + "-Native texture loader thread");
         }
 
         @Override

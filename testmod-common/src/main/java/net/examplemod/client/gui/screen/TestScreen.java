@@ -1,8 +1,8 @@
 package net.examplemod.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import dev.felnull.fnjl.debug.ProcessTimeMeasure;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
-import dev.felnull.otyacraftengine.debug.ProcessTimeMeasure;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

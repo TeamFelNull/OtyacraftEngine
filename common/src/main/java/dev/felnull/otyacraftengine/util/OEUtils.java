@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 /**
  * 区別するほどでもないユーティリティ
@@ -35,21 +34,18 @@ public class OEUtils {
 
     /**
      * 非同期でJsonを取得
+     * 失敗時はnulが来ます
      *
-     * @param url          URL
-     * @param jsonConsumer Json
+     * @param url URL
      * @return 処理結果
      */
-    public static CompletableFuture<Void> getURLJsonAsync(URL url, Consumer<JsonObject> jsonConsumer) {
-        return FNURLUtil.getStreamAsync(url, n -> {
-            if (n == null) {
-                jsonConsumer.accept(null);
-            } else {
-                try (Reader reader = new InputStreamReader(new BufferedInputStream(n))) {
-                    jsonConsumer.accept(GSON.fromJson(reader, JsonObject.class));
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+    public static CompletableFuture<JsonObject> getURLJsonAsync(URL url) {
+        return FNURLUtil.getStreamAsync(url).thenApplyAsync(ret -> {
+            if (ret == null) return null;
+            try (Reader reader = new InputStreamReader(new BufferedInputStream(ret))) {
+                return GSON.fromJson(reader, JsonObject.class);
+            } catch (IOException ex) {
+                return null;
             }
         });
     }

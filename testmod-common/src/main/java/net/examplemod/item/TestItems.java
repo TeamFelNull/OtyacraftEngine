@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 
 public class TestItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ExampleMod.MODID, Registry.ITEM_REGISTRY);
-    public static final RegistrySupplier<Item> TEST_ITEM = ITEMS.register("test_item", () -> new Item(new Item.Properties().tab(TestCreativeTab.TEST_TAB)));
+    public static final RegistrySupplier<Item> TEST_ITEM = ITEMS.register("test_item", () -> new TestItem(new Item.Properties().tab(TestCreativeTab.TEST_TAB)));
 
     public static void init() {
         ITEMS.register();

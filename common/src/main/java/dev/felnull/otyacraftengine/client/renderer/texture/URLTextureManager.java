@@ -345,6 +345,7 @@ public class URLTextureManager {
             this.url = url;
             this.cached = cached;
             this.result = result;
+            setName(OtyacraftEngine.getModName() + "-URL texture loader thread");
         }
 
         @Override
