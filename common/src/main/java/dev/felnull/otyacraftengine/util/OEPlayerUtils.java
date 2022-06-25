@@ -49,7 +49,7 @@ public class OEPlayerUtils {
      */
     @NotNull
     public static Optional<UUID> getUUIDByName(@NotNull String name) {
-        return PlayerInfoManager.getInstance().getUUIDByNameCached(name);
+        return PlayerInfoManager.getInstance().getCachedUUIDByName(name);
     }
 
     /**
@@ -61,7 +61,7 @@ public class OEPlayerUtils {
      */
     @NotNull
     public static Optional<String> getNameByUUID(@NotNull UUID uuid) {
-        return PlayerInfoManager.getInstance().getNameByUUIDCached(uuid);
+        return PlayerInfoManager.getInstance().getCachedNameByUUID(uuid);
     }
 
     /**
@@ -73,7 +73,7 @@ public class OEPlayerUtils {
      */
     @NotNull
     public static CompletableFuture<Optional<UUID>> getUUIDByNameAsync(@NotNull String name) {
-        return PlayerInfoManager.getInstance().getUUIDByNameCachedAsync(name);
+        return PlayerInfoManager.getInstance().getCachedUUIDByNameAsync(name);
     }
 
     /**
@@ -85,6 +85,6 @@ public class OEPlayerUtils {
      */
     @NotNull
     public static CompletableFuture<Optional<String>> getNameByUUIDAsync(@NotNull UUID uuid) {
-        return PlayerInfoManager.getInstance().getNameByUUIDCachedAsync(uuid);
+        return PlayerInfoManager.getInstance().getCachedNameByUUIDAsync(uuid);
     }
 }

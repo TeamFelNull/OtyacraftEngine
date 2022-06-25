@@ -2,7 +2,8 @@ package net.examplemod.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.fnjl.debug.ProcessTimeMeasure;
-import dev.felnull.otyacraftengine.client.util.OERenderUtils;
+import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 public class TestScreen extends Screen {
     public static final ResourceLocation TEST_TEXTURE = new ResourceLocation("test", "textures/gui/test.png");
+    private static final Minecraft mc = Minecraft.getInstance();
     private final ProcessTimeMeasure processTimeMeasure = new ProcessTimeMeasure();
     private final UUID uuid = UUID.randomUUID();
     private final UUID uuid2 = UUID.randomUUID();
@@ -62,9 +64,24 @@ public class TestScreen extends Screen {
         //
         processTimeMeasure.printResult(1000, 10000);*/
 
-        OERenderUtils.drawTexture(TEST_TEXTURE, poseStack, 0, 0, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
+        long st = System.nanoTime();
+        var uuidRet = ClientPlayerInfoManager.getInstance().getUUIDByNameTolerance("MoriMori_0317_jp");
+        processTimeMeasure.lap(System.nanoTime() - st);
+        processTimeMeasure.printResult(1000, 10000);
 
-        OERenderUtils.drawFill(poseStack, 100, 0, 200, 100, 0xFF114514);
+        if (uuidRet.isSuccess())
+            drawString(poseStack, font, uuidRet.uuid().toString(), 10, 10, 0xFFFFFFFF);
+        else if (uuidRet.loading())
+            drawString(poseStack, font, "loading", 10, 10, 0xFFFFFFFF);
+        else if (uuidRet.isFailure())
+            drawString(poseStack, font, "failure", 10, 10, 0xFFFFFFFF);
+
+        //var tex = ClientPlayerInfoManager.getInstance().getPlayerTexture(MinecraftProfileTexture.Type.SKIN, "MoriMori_0317_jp");
+
+        //  OERenderUtils.drawTexture(tex, poseStack, 0, 0, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
+        // OERenderUtils.drawTexture(ClientPlayerInfoManager.getInstance().getPlayerTexture(MinecraftProfileTexture.Type.SKIN, "toranpfan6433"), poseStack, 0, 100, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
+
+        //     OERenderUtils.drawFill(poseStack, 100, 0, 200, 100, 0xFF114514);
 
         //  OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL, true).of(), poseStack, 200, 0, 0, 0, 100, 100, 100, 100);
         //   OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL2, true).of(), poseStack, 300, 0, 0, 0, 100, 100, 100, 100);

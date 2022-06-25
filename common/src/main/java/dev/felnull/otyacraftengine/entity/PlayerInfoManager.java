@@ -90,34 +90,34 @@ public class PlayerInfoManager {
     }
 
     @NotNull
-    public Optional<UUID> getUUIDByNameCached(@NotNull String name) {
+    public Optional<UUID> getCachedUUIDByName(@NotNull String name) {
         synchronized (UUID_BY_NAME_CACHE) {
             return UUID_BY_NAME_CACHE.computeIfAbsent(name, k -> getUUIDByName(name));
         }
     }
 
     @NotNull
-    public Optional<String> getNameByUUIDCached(@NotNull UUID uuid) {
+    public Optional<String> getCachedNameByUUID(@NotNull UUID uuid) {
         synchronized (NAME_BY_UUID_CACHE) {
             return NAME_BY_UUID_CACHE.computeIfAbsent(uuid, k -> getNameByUUID(uuid));
         }
     }
 
     @NotNull
-    public CompletableFuture<Optional<String>> getNameByUUIDCachedAsync(@NotNull UUID uuid) {
+    public CompletableFuture<Optional<String>> getCachedNameByUUIDAsync(@NotNull UUID uuid) {
         synchronized (NAME_BY_UUID_CACHE) {
             if (NAME_BY_UUID_CACHE.containsKey(uuid))
                 return CompletableFuture.completedFuture(NAME_BY_UUID_CACHE.get(uuid));
-            return CompletableFuture.supplyAsync(() -> getNameByUUIDCached(uuid), executorService);
+            return CompletableFuture.supplyAsync(() -> getCachedNameByUUID(uuid), executorService);
         }
     }
 
     @NotNull
-    public CompletableFuture<Optional<UUID>> getUUIDByNameCachedAsync(@NotNull String name) {
+    public CompletableFuture<Optional<UUID>> getCachedUUIDByNameAsync(@NotNull String name) {
         synchronized (UUID_BY_NAME_CACHE) {
             if (UUID_BY_NAME_CACHE.containsKey(name))
                 return CompletableFuture.completedFuture(UUID_BY_NAME_CACHE.get(name));
-            return CompletableFuture.supplyAsync(() -> getUUIDByNameCached(name), executorService);
+            return CompletableFuture.supplyAsync(() -> getCachedUUIDByName(name), executorService);
         }
     }
 }
