@@ -19,6 +19,7 @@ public class TestBlocks {
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(ExampleMod.MODID, Registry.ITEM_REGISTRY);
     public static final RegistrySupplier<Block> TEST_SHAPE_BLOCK = register("test_shape_block", () -> new TestShapeBlock(BlockBehaviour.Properties.of(Material.METAL)));
     public static final RegistrySupplier<Block> TEST_SHAPE_DIRECTION_BLOCK = register("test_shape_direction_block", () -> new TestShapeDirectionBlock(BlockBehaviour.Properties.of(Material.METAL)));
+    public static final RegistrySupplier<Block> TEST_CONTAINER_BLOCK = register("test_container_block", () -> new TestContainerBlock(BlockBehaviour.Properties.of(Material.METAL)));
 
     private static RegistrySupplier<Block> register(String name, Supplier<Block> block) {
         return register(name, block, n -> new BlockItem(n, new Item.Properties().tab(TestCreativeTab.TEST_TAB)));

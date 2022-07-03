@@ -33,7 +33,5 @@ public abstract class EquipmentEntityBlock extends OEBaseEntityBlock {
         return level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity oeBaseContainerBlock;
     }
 
-    protected void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-
-    }
+    abstract protected void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult);
 }

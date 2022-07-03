@@ -5,7 +5,9 @@
   "client": [
   ],
   "mixins": [
-    "MobBucketItemAccessor"
+    "MobBucketItemAccessor",
+    "OEBaseBlockEntityMixin",
+    "OEBaseContainerBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
