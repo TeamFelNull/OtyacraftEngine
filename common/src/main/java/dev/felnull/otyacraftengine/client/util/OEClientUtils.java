@@ -39,36 +39,87 @@ public class OEClientUtils {
         return OEClientExpectPlatform.getKey(keyMapping);
     }
 
+    /**
+     * プレイヤー名から一部欠落したプロファイルを読み込む
+     * ほとんどテクスチャ取得用
+     *
+     * @param name プレイヤー名
+     * @return プロファイ
+     */
     @NotNull
     public static GameProfile getPlayerLackProfileTolerance(@NotNull String name) {
         return ClientPlayerInfoManager.getInstance().getLackProfileTolerance(name);
     }
 
+    /**
+     * プレイヤー名からプレイヤーUUIDを取得する
+     * {@link dev.felnull.otyacraftengine.util.OEPlayerUtils#getUUIDByName(String)}との違いはクライアント側で取得できるプレイヤーからも検索する
+     *
+     * @param name プレイヤー名
+     * @return UUID
+     */
     @NotNull
     public static Optional<UUID> getPlayerUUIDByName(@NotNull String name) {
         return ClientPlayerInfoManager.getInstance().getUUIDByName(name);
     }
 
+    /**
+     * 非同期でプレイヤー名からプレイヤーUUIDを取得する
+     * {@link dev.felnull.otyacraftengine.util.OEPlayerUtils#getUUIDByNameAsync(String)}との違いはクライアント側で取得できるプレイヤーからも検索する
+     *
+     * @param name プレイヤー名
+     * @return UUID
+     */
     @NotNull
     public static CompletableFuture<Optional<UUID>> getPlayerUUIDByNameAsync(@NotNull String name) {
         return ClientPlayerInfoManager.getInstance().getUUIDByNameAsync(name);
     }
 
+    /**
+     * プレイヤーUUIDからプレイヤー名を取得する
+     * {@link dev.felnull.otyacraftengine.util.OEPlayerUtils#getNameByUUID(UUID)}との違いはクライアント側で取得できるプレイヤーからも検索する
+     *
+     * @param uuid プレイヤーUUID
+     * @return 名前
+     */
     @NotNull
     public static Optional<String> getPlayerNameByUUID(@NotNull UUID uuid) {
         return ClientPlayerInfoManager.getInstance().getNameByUUID(uuid);
     }
 
+    /**
+     * 非同期でプレイヤーUUIDからプレイヤー名を取得する
+     * {@link dev.felnull.otyacraftengine.util.OEPlayerUtils#getNameByUUIDAsync(UUID)}との違いはクライアント側で取得できるプレイヤーからも検索する
+     *
+     * @param uuid プレイヤーUUID
+     * @return 名前
+     */
     @NotNull
     public static CompletableFuture<Optional<String>> getPlayerNameByUUIDAsync(@NotNull UUID uuid) {
         return ClientPlayerInfoManager.getInstance().getNameByUUIDAsync(uuid);
     }
 
+    /**
+     * プレイヤー名からプレイヤーUUIDを取得する
+     * {@link #getPlayerUUIDByName(String)}との違いは取得失敗時や、取得中でも即座に結果を返す
+     * 描画など即座に出力するために利用
+     *
+     * @param name プレイヤー名
+     * @return 取得結果
+     */
     @NotNull
     public PlayerUUIDByNameResult getPlayerUUIDByNameTolerance(@NotNull String name) {
         return ClientPlayerInfoManager.getInstance().getUUIDByNameTolerance(name);
     }
 
+    /**
+     * プレイヤーUUIDからプレイヤー名を取得する
+     * {@link #getPlayerNameByUUID(UUID)}との違いは取得失敗時や、取得中でも即座に結果を返す
+     * 描画など即座に出力するために利用
+     *
+     * @param uuid プレイヤーUUID
+     * @return 取得結果
+     */
     @NotNull
     public PlayerNameByUUIDResult getPlayerNameByUUIDTolerance(@NotNull UUID uuid) {
         return ClientPlayerInfoManager.getInstance().getNameByUUIDTolerance(uuid);

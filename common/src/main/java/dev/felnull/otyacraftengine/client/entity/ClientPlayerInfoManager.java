@@ -183,8 +183,10 @@ public class ClientPlayerInfoManager {
             if (pl != null)
                 return getTexture(pl, type);
         }
-
-        return null;
+        var name = getNameByUUIDTolerance(uuid).name();
+        if (name != null)
+            return getPlayerTexture(type, name);
+        return type == MinecraftProfileTexture.Type.SKIN ? DefaultPlayerSkin.getDefaultSkin(uuid) : null;
     }
 
     private ResourceLocation getTexture(PlayerInfo playerInfo, MinecraftProfileTexture.Type type) {

@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.client;
 import dev.felnull.otyacraftengine.client.handler.ClientDebugHandler;
 import dev.felnull.otyacraftengine.client.handler.ClientHandler;
 import dev.felnull.otyacraftengine.client.renderer.texture.URLTextureManager;
+import dev.felnull.otyacraftengine.networking.OEPackets;
 
 public class OtyacraftEngineClient {
 
@@ -10,5 +11,7 @@ public class OtyacraftEngineClient {
         ClientDebugHandler.init();
         ClientHandler.init();
         URLTextureManager.getInstance().init();
+
+        OEPackets.clientInit();
     }
 }

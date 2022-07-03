@@ -6,6 +6,7 @@
     "client.LevelRendererMixin"
   ],
   "mixins": [
+    "InventoryChangeTriggerMixin",
     "ShapesMixin",
     "VoxelShapeMixin"
   ],

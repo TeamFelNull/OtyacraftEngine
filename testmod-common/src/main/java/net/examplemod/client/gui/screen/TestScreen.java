@@ -1,8 +1,11 @@
 package net.examplemod.client.gui.screen;
 
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.fnjl.debug.ProcessTimeMeasure;
 import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
+import dev.felnull.otyacraftengine.client.handler.ClientHandler;
+import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -64,7 +67,7 @@ public class TestScreen extends Screen {
         //
         processTimeMeasure.printResult(1000, 10000);*/
 
-        long st = System.nanoTime();
+      /*  long st = System.nanoTime();
         var uuidRet = ClientPlayerInfoManager.getInstance().getUUIDByNameTolerance("MoriMori_0317_jp");
         processTimeMeasure.lap(System.nanoTime() - st);
         processTimeMeasure.printResult(1000, 10000);
@@ -74,11 +77,11 @@ public class TestScreen extends Screen {
         else if (uuidRet.loading())
             drawString(poseStack, font, "loading", 10, 10, 0xFFFFFFFF);
         else if (uuidRet.isFailure())
-            drawString(poseStack, font, "failure", 10, 10, 0xFFFFFFFF);
+            drawString(poseStack, font, "failure", 10, 10, 0xFFFFFFFF);*/
 
-        //var tex = ClientPlayerInfoManager.getInstance().getPlayerTexture(MinecraftProfileTexture.Type.SKIN, "MoriMori_0317_jp");
+        var tex = ClientPlayerInfoManager.getInstance().getPlayerTexture(MinecraftProfileTexture.Type.SKIN, UUID.fromString("5c751dd1-0882-4f31-ad61-c4ee928c4595"));
 
-        //  OERenderUtils.drawTexture(tex, poseStack, 0, 0, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
+        OERenderUtils.drawTexture(tex, poseStack, 0, 0, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
         // OERenderUtils.drawTexture(ClientPlayerInfoManager.getInstance().getPlayerTexture(MinecraftProfileTexture.Type.SKIN, "toranpfan6433"), poseStack, 0, 100, 0, 0, 100, 100, 100, 100);//0.014ms 13504.797ns
 
         //     OERenderUtils.drawFill(poseStack, 100, 0, 200, 100, 0xFF114514);

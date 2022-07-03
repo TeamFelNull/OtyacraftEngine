@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftengine.mixin.client;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.felnull.otyacraftengine.client.debug.HighlightVoxelShapeType;
@@ -31,10 +30,6 @@ import java.util.List;
 
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
-    @Shadow
-    @Nullable
-    public abstract RenderTarget entityTarget();
-
     @Shadow
     @Nullable
     private ClientLevel level;

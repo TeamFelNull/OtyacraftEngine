@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 
 public class ClientHandler {
-
     public static void init() {
         ClientLifecycleEvent.CLIENT_STOPPING.register(ClientHandler::onStopping);
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(ClientHandler::onLevelLoad);

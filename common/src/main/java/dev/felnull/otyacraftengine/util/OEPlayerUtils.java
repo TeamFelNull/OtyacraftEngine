@@ -1,9 +1,11 @@
 package dev.felnull.otyacraftengine.util;
 
 import dev.felnull.otyacraftengine.entity.PlayerInfoManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +28,18 @@ public class OEPlayerUtils {
      */
     public static void doPlayers(@NotNull LevelChunk chunk, @NotNull Consumer<ServerPlayer> playerConsumer) {
         ((ServerChunkCache) chunk.getLevel().getChunkSource()).chunkMap.getPlayers(chunk.getPos(), false).forEach(playerConsumer);
+    }
+
+    /**
+     * BlockPosからチャンクを取得しそのチャンクのプレイヤーに対しての処理
+     *
+     * @param level          LevelReader
+     * @param pos            BlockPos
+     * @param playerConsumer プレイヤーの処理
+     */
+    public static void doPlayers(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull Consumer<ServerPlayer> playerConsumer) {
+        LevelChunk lch = (LevelChunk) level.getChunk(pos);
+        doPlayers(lch, playerConsumer);
     }
 
     /**

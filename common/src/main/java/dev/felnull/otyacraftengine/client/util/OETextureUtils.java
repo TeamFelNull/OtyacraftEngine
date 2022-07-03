@@ -1,8 +1,10 @@
 package dev.felnull.otyacraftengine.client.util;
 
 import com.madgag.gif.fmsware.GifDecoder;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
 import dev.felnull.otyacraftengine.client.renderer.texture.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -39,18 +42,15 @@ public class OETextureUtils {
      */
     @NotNull
     public static DynamicTexture createNativeTexture(@NotNull InputStream stream, @Nullable Consumer<TextureLoadProgress> progress) throws IOException {
-        if (progress != null)
-            progress.accept(new TextureLoadProgressImpl("Image loading", 1, 0));
+        if (progress != null) progress.accept(new TextureLoadProgressImpl("Image loading", 1, 0));
 
         byte[] data = stream.readAllBytes();
 
-        if (progress != null)
-            progress.accept(new TextureLoadProgressImpl("Image loading", 1, 1));
+        if (progress != null) progress.accept(new TextureLoadProgressImpl("Image loading", 1, 1));
 
         try (var istream = new ByteArrayInputStream(data)) {
             GifDecoder decoder = new GifDecoder();
-            if (decoder.read(istream) == 0)
-                return DynamicGifTexture.create(decoder, progress);
+            if (decoder.read(istream) == 0) return DynamicGifTexture.create(decoder, progress);
         }
 
         try (var istream = new ByteArrayInputStream(data)) {
@@ -67,8 +67,7 @@ public class OETextureUtils {
         TextureManager textureManager = mc.getTextureManager();
         AbstractTexture abstractTexture = textureManager.byPath.get(location);
         if (abstractTexture != null) {
-            if (abstractTexture instanceof Tickable)
-                textureManager.tickableTextures.remove(abstractTexture);
+            if (abstractTexture instanceof Tickable) textureManager.tickableTextures.remove(abstractTexture);
             textureManager.safeClose(location, abstractTexture);
         }
     }
@@ -133,14 +132,12 @@ public class OETextureUtils {
             if (r.isPresent()) {
                 try (var st = r.get().open()) {
                     var ret = getAndLoadNativeTexture(UUID.randomUUID(), st);
-                    if (ret.isSuccess())
-                        LOADING_ICON = ret.getLocation();
+                    if (ret.isSuccess()) LOADING_ICON = ret.getLocation();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (LOADING_ICON == null)
-                throw new IllegalStateException("Failed to loading icon being loaded.");
+            if (LOADING_ICON == null) throw new IllegalStateException("Failed to loading icon being loaded.");
         }
 
         return LOADING_ICON;
@@ -154,5 +151,105 @@ public class OETextureUtils {
     @NotNull
     public static ResourceLocation getErrorIcon() {
         return ERROR_ICON;
+    }
+
+    /**
+     * UUIDからプレイヤーテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param type テクスチャタイプ
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーテクスチャロケーション
+     * @since 2.0
+     */
+    @Nullable
+    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, @NotNull UUID uuid) {
+        return ClientPlayerInfoManager.getInstance().getPlayerTexture(type, uuid);
+    }
+
+    /**
+     * 名前からプレイヤーテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param type テクスチャタイプ
+     * @param name プレイヤー名
+     * @return プレイヤーテクスチャロケーション
+     */
+    @Nullable
+    public static ResourceLocation getPlayerTexture(MinecraftProfileTexture.Type type, @NotNull String name) {
+        return ClientPlayerInfoManager.getInstance().getPlayerTexture(type, name);
+    }
+
+    /**
+     * 名前からプレイヤーエリトラテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーエリトラテクスチャID
+     */
+    @Nullable
+    public static ResourceLocation getPlayerElytraTexture(@NotNull String name) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, name);
+    }
+
+    /**
+     * 名前からプレイヤーマントテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param name プレイヤー名
+     * @return プレイヤーマントテクスチャID
+     */
+    @Nullable
+    public static ResourceLocation getPlayerCapeTexture(@NotNull String name) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, name);
+    }
+
+    /**
+     * 名前からプレイヤースキンテクスチャ取得
+     *
+     * @param name プレイヤー名
+     * @return プレイヤースキンテクスチャID
+     */
+    @NotNull
+    public static ResourceLocation getPlayerSkinTexture(@NotNull String name) {
+        return Objects.requireNonNull(getPlayerTexture(MinecraftProfileTexture.Type.SKIN, name));
+    }
+
+    /**
+     * UUIDからプレイヤーエリトラテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーエリトラテクスチャID
+     * @since 2.0
+     */
+    @Nullable
+    public static ResourceLocation getPlayerElytraTexture(@NotNull UUID uuid) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.ELYTRA, uuid);
+    }
+
+    /**
+     * UUIDからプレイヤーマントテクスチャ取得
+     * 存在しない場合はnullを返す
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤーマントテクスチャID
+     * @since 2.0
+     */
+    @Nullable
+    public static ResourceLocation getPlayerCapeTexture(@NotNull UUID uuid) {
+        return getPlayerTexture(MinecraftProfileTexture.Type.CAPE, uuid);
+    }
+
+    /**
+     * UUIDからプレイヤースキンテクスチャ取得
+     *
+     * @param uuid プレイヤーUUID
+     * @return プレイヤースキンテクスチャID
+     * @since 2.0
+     */
+    @NotNull
+    public static ResourceLocation getPlayerSkinTexture(@NotNull UUID uuid) {
+        return Objects.requireNonNull(getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid));
     }
 }
