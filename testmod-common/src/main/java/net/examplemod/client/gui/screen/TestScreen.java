@@ -3,9 +3,10 @@ package net.examplemod.client.gui.screen;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.fnjl.debug.ProcessTimeMeasure;
+import dev.felnull.fnjl.util.FNStringUtil;
 import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
-import dev.felnull.otyacraftengine.client.handler.ClientHandler;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
+import dev.felnull.otyacraftengine.client.util.OETextureUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,7 @@ public class TestScreen extends Screen {
     private static final Minecraft mc = Minecraft.getInstance();
     private final ProcessTimeMeasure processTimeMeasure = new ProcessTimeMeasure();
     private final UUID uuid = UUID.randomUUID();
-    private final UUID uuid2 = UUID.randomUUID();
+    private final UUID uuid2 = UUID.randomUUID();//https://i.imgur.com/1W9Gtkm.png
     private final String testURL = "https://cdn.discordapp.com/attachments/887769442019323924/893123973678768148/test.gif";
     private final String testURL2 = "https://cdn.discordapp.com/attachments/358878159615164416/987758500182650910/systemerror_94180.png";
     // private final InputStream nativeStream;
@@ -86,9 +87,24 @@ public class TestScreen extends Screen {
 
         //     OERenderUtils.drawFill(poseStack, 100, 0, 200, 100, 0xFF114514);
 
-        //  OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL, true).of(), poseStack, 200, 0, 0, 0, 100, 100, 100, 100);
-        //   OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL2, true).of(), poseStack, 300, 0, 0, 0, 100, 100, 100, 100);
-/*
+        var r1 = OETextureUtils.getAndLoadURLTextureAsync(testURL, true);
+        var r2 = OETextureUtils.getAndLoadURLTextureAsync(testURL2, true);
+
+        OERenderUtils.drawTexture(r1.of(), poseStack, 200, 0, 0, 0, 100, 100, 100, 100);
+        OERenderUtils.drawTexture(r2.of(), poseStack, 300, 0, 0, 0, 100, 100, 100, 100);
+
+        if (r1.isLoading())
+            drawString(poseStack, font, r1.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r1.getProgress().getParent()), 200, 110, 0xFFFFFFFF);
+
+        if (r1.isError())
+            drawString(poseStack, font, r1.getException().toString(), 200, 110, 0xFFFFFFFF);
+
+        if (r2.isLoading())
+            drawString(poseStack, font, r2.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r2.getProgress().getParent()), 300, 110, 0xFFFFFFFF);
+
+        if (r2.isError())
+            drawString(poseStack, font, r2.getException().toString(), 300, 110, 0xFFFFFFFF);
+        /*
         var r1 = OETextureUtils.getAndLoadNativeTextureAsync(uuid, nativeStream);
         var r2 = OETextureUtils.getAndLoadNativeTextureAsync(uuid2, nativeGifStream);
 

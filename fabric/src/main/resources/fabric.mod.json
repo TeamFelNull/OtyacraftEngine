@@ -35,6 +35,8 @@
     "architectury": ">=5.5.18"
   },
   "custom": {
-    "modmenu:api": true
+    "modmenu": {
+      "badges": [ "library" ]
+    }
   }
 }

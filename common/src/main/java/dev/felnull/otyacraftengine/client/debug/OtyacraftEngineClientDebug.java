@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine.client.debug;
 
+import dev.felnull.otyacraftengine.OtyacraftEngine;
+
 public class OtyacraftEngineClientDebug {
     private static final OtyacraftEngineClientDebug INSTANCE = new OtyacraftEngineClientDebug();
 
@@ -8,14 +10,18 @@ public class OtyacraftEngineClientDebug {
     }
 
     public boolean isShowTagInTooltip() {
-        return true;
+        return OtyacraftEngine.getConfig().getDebugConfig().isShowTagTooltip();
     }
 
     public boolean isShowModNameInTooltip() {
-        return true;
+        return OtyacraftEngine.getConfig().getDebugConfig().isShowModNameTooltip();
+    }
+
+    public boolean isShowWidgetData() {
+        return OtyacraftEngine.getConfig().getDebugConfig().isShowWidgetData();
     }
 
     public HighlightVoxelShapeType getHighlightVoxelShape() {
-        return HighlightVoxelShapeType.OFF;
+        return OtyacraftEngine.getConfig().getDebugConfig().getHighlightVoxelShape();
     }
 }

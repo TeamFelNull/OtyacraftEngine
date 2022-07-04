@@ -11,6 +11,7 @@ import dev.felnull.otyacraftengine.util.OEPaths;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
@@ -20,6 +21,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class URLTextureManager {
     private static final URLTextureManager INSTANCE = new URLTextureManager();
@@ -30,7 +34,7 @@ public class URLTextureManager {
     private final List<URLTextureLoader> URL_TEXTURE_LOADERS = new ArrayList<>();
     private final List<LoadURLEntry> WAIT_LOAD_URLS = new ArrayList<>();
     private final List<LoadURLEntry> REMOVE_WAIT_URLS = new ArrayList<>();
-    private final int maxLoadCount = 3;
+    private final List<Supplier<String>> ALLOW_URL_REGEX = new ArrayList<>();
     private Function<String, String> HASH_CACHE = createHashMemoize();
     private boolean dirtyFileCache;
     private long lastSave = -1;
@@ -44,6 +48,12 @@ public class URLTextureManager {
     public void init() {
         loadIndex();
         optimizationFileCache();
+
+        addAllowUrlRegex(() -> OtyacraftEngine.getConfig().getClientConfig().getUrlTextureConfig().getUrlRegex());
+    }
+
+    public void addAllowUrlRegex(@NotNull Supplier<String> regex) {
+        ALLOW_URL_REGEX.add(Objects.requireNonNull(regex));
     }
 
     public void tick() {
@@ -51,7 +61,7 @@ public class URLTextureManager {
 
         synchronized (WAIT_LOAD_URLS) {
             int ct = 0;
-            int lt = Math.max(maxLoadCount - URL_TEXTURE_LOADERS.size(), 0);
+            int lt = Math.max(OtyacraftEngine.getConfig().getClientConfig().getUrlTextureConfig().getMaxLoaderCount() - URL_TEXTURE_LOADERS.size(), 0);
             for (LoadURLEntry waitUrl : WAIT_LOAD_URLS) {
                 if (ct >= lt) break;
                 REMOVE_WAIT_URLS.add(waitUrl);
@@ -266,7 +276,10 @@ public class URLTextureManager {
 
     private void checkUrlText(String url) {
         if (url.length() > 300)
-            throw new IllegalStateException("URL is too long");
+            throw new IllegalArgumentException("URL is too long");
+
+        if (ALLOW_URL_REGEX.stream().map(n -> Pattern.compile(n.get()).matcher(url)).noneMatch(Matcher::matches))
+            throw new IllegalArgumentException("Not allowed URL regex");
     }
 
     private Pair<String, URLTextureLoadResult> loadUrlTexture(String url, boolean cached, Consumer<TextureLoadProgress> progress) {
