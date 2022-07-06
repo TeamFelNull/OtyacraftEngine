@@ -5,6 +5,7 @@ import dev.felnull.otyacraftengine.client.handler.ClientDebugHandler;
 import dev.felnull.otyacraftengine.client.handler.ClientHandler;
 import dev.felnull.otyacraftengine.client.renderer.texture.URLTextureManager;
 import dev.felnull.otyacraftengine.networking.OEPackets;
+import net.minecraft.client.renderer.RenderStateShard;
 
 public class OtyacraftEngineClient {
 
@@ -15,5 +16,7 @@ public class OtyacraftEngineClient {
         URLTextureManager.getInstance().init();
 
         OEPackets.clientInit();
+
+
     }
 }

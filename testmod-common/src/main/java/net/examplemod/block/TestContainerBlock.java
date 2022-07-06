@@ -1,11 +1,9 @@
 package net.examplemod.block;
 
-import dev.felnull.otyacraftengine.block.EquipmentEntityBlock;
+import dev.felnull.otyacraftengine.block.OEBaseEntityBlock;
 import net.examplemod.blockentity.TestContainerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class TestContainerBlock extends EquipmentEntityBlock {
+public class TestContainerBlock extends OEBaseEntityBlock {
     public TestContainerBlock(Properties properties) {
         super(properties);
     }
@@ -47,10 +45,6 @@ public class TestContainerBlock extends EquipmentEntityBlock {
             }
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
-    }
-
-    @Override
-    protected void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
     }
 
     @Nullable

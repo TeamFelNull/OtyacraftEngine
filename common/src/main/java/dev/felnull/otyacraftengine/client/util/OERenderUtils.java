@@ -4,13 +4,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -19,6 +24,8 @@ import java.util.function.Consumer;
  * @author MORIMORI0317
  */
 public class OERenderUtils {
+    private static final Minecraft mc = Minecraft.getInstance();
+
     /**
      * PoseStackを16分の１単位で移動する
      *
@@ -327,5 +334,73 @@ public class OERenderUtils {
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    /**
+     * モデルを描画する
+     *
+     * @param poseStack       PoseStack
+     * @param vertexConsumer  VertexConsumer
+     * @param bakedModel      BakedModel
+     * @param combinedLight   CombinedLight
+     * @param combinedOverlay CombinedOverlay
+     */
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, @NotNull BakedModel bakedModel, int combinedLight, int combinedOverlay) {
+        Objects.requireNonNull(bakedModel);
+        var bmr = mc.getBlockRenderer().getModelRenderer();
+        bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, 1.0F, 1.0F, 1.0F, combinedLight, combinedOverlay);
+    }
+
+    /**
+     * モデルを描画する
+     *
+     * @param poseStack       PoseStack
+     * @param vertexConsumer  VertexConsumer
+     * @param bakedModel      BakedModel
+     * @param combinedLight   CombinedLight
+     * @param combinedOverlay CombinedOverlay
+     * @param color           色
+     */
+    public static void renderModel(PoseStack poseStack, VertexConsumer vertexConsumer, @NotNull BakedModel bakedModel, int combinedLight, int combinedOverlay, int color) {
+        Objects.requireNonNull(bakedModel);
+        var bmr = mc.getBlockRenderer().getModelRenderer();
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, r, g, b, combinedLight, combinedOverlay);
+    }
+
+    public static void renderTextureSprite(ResourceLocation location, PoseStack poseStack, MultiBufferSource multiBufferSource, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int combinedLightIn, int combinedOverlayIn) {
+        renderSprite(poseStack, multiBufferSource.getBuffer(RenderType.entityCutout(location)), width, height, u0, v0, u1, v1, textureWidth, textureHeight, combinedLightIn, combinedOverlayIn);
+    }
+
+    public static void renderColorfulTextureSprite(ResourceLocation location, PoseStack poseStack, MultiBufferSource multiBufferSource, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int color, int combinedLightIn, int combinedOverlayIn) {
+        renderColorfulSprite(poseStack, multiBufferSource.getBuffer(RenderType.entityCutout(location)), width, height, u0, v0, u1, v1, textureWidth, textureHeight, color, combinedLightIn, combinedOverlayIn);
+    }
+
+    public static void renderSprite(PoseStack poseStack, VertexConsumer vertexConsumer, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int combinedLightIn, int combinedOverlayIn) {
+        renderColorfulSprite(poseStack, vertexConsumer, width, height, u0, v0, u1, v1, textureWidth, textureHeight, 0xFFFFFFFF, combinedLightIn, combinedOverlayIn);
+    }
+
+    public static void renderColorfulSprite(PoseStack poseStack, VertexConsumer vertexConsumer, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int color, int combinedLightIn, int combinedOverlayIn) {
+        float wst = u0 / textureWidth;
+        float wft = u1 / textureWidth + wst;
+        float hst = v0 / textureHeight;
+        float hft = v1 / textureHeight + hst;
+
+        float a = (float) (color >> 24 & 255) / 255.0F;
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+
+        PoseStack.Pose pose = poseStack.last();
+        vertex(vertexConsumer, pose, 0, 0, 0, wst, hft, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertex(vertexConsumer, pose, width, 0, 0, wft, hft, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertex(vertexConsumer, pose, width, height, 0, wft, hst, r, g, b, a, combinedOverlayIn, combinedLightIn);
+        vertex(vertexConsumer, pose, 0, height, 0, wst, hst, r, g, b, a, combinedOverlayIn, combinedLightIn);
+    }
+
+    private static void vertex(VertexConsumer builder, PoseStack.Pose pose, float x, float y, float z, float u, float v, float r, float g, float b, float a, int combinedOverlayIn, int combinedLightIn) {
+        builder.vertex(pose.pose(), x, y, z).color(r, g, b, a).uv(u, v).overlayCoords(combinedOverlayIn).uv2(combinedLightIn).normal(pose.normal(), 0f, 0f, 0f).endVertex();
     }
 }

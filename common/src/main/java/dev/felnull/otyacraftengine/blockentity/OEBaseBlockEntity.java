@@ -11,9 +11,21 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class OEBaseBlockEntity extends BlockEntity implements ClientSyncableBlockEntity {
+public abstract class OEBaseBlockEntity extends BlockEntity implements OEBaseFuncBlockEntity {
+    private boolean updateMark;
+
     public OEBaseBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
+    }
+
+    @Override
+    public void setUpdateMarked(boolean marked) {
+        this.updateMark = marked;
+    }
+
+    @Override
+    public boolean isUpdateMarked() {
+        return updateMark;
     }
 
     @Override

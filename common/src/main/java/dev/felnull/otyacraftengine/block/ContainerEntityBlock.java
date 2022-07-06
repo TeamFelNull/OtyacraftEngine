@@ -1,0 +1,32 @@
+package dev.felnull.otyacraftengine.block;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+public interface ContainerEntityBlock {
+    default InteractionResult useContainer(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (isOpenContainer(blockState, level, blockPos, player, interactionHand, blockHitResult)) {
+            if (level.isClientSide()) {
+                return InteractionResult.SUCCESS;
+            } else {
+                openContainer(blockState, (ServerLevel) level, blockPos, (ServerPlayer) player, interactionHand, blockHitResult);
+                return InteractionResult.CONSUME;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    default boolean isOpenContainer(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity oeBaseContainerBlock;
+    }
+
+    void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult);
+}

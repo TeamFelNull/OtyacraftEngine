@@ -17,9 +17,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements DroppedBlockEntity, ClientSyncableBlockEntity {
+public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements DroppedBlockEntity, OEBaseFuncBlockEntity {
+    private boolean updateMark;
+
     protected OEBaseContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
+    }
+
+    @Override
+    public void setUpdateMarked(boolean marked) {
+        this.updateMark = marked;
+    }
+
+    @Override
+    public boolean isUpdateMarked() {
+        return updateMark;
     }
 
     @NotNull
