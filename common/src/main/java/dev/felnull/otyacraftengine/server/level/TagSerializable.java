@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.server.nbt;
+package dev.felnull.otyacraftengine.server.level;
 
 import net.minecraft.nbt.CompoundTag;
 

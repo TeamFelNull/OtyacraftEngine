@@ -2,11 +2,11 @@ package net.examplemod.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.felnull.otyacraftengine.client.renderer.OERenderTypes;
 import dev.felnull.otyacraftengine.client.renderer.blockentity.AbstractBlockEntityRenderer;
 import dev.felnull.otyacraftengine.client.util.OEModelUtils;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import net.examplemod.blockentity.TestRotedBlockEntity;
-import net.examplemod.client.renderer.shader.TestRenderType;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -35,7 +35,7 @@ public class TestRotedRenderer extends AbstractBlockEntityRenderer<TestRotedBloc
             OERenderUtils.poseRotateZ(poseStack, rot);
             OERenderUtils.poseTrans16(poseStack, 3f, 0, 0);
         });
-        VertexConsumer tvc = multiBufferSource.getBuffer(TestRenderType.TEST.apply(TEST_TEXTURE));
+        VertexConsumer tvc = multiBufferSource.getBuffer(OERenderTypes.wave(TEST_TEXTURE));
         OERenderUtils.renderColorfulSprite(poseStack, tvc, 1, 1, 0, 0, 1, 1, 1, 1, 0xFFFFFFFF, i, j);
 
         //  OERenderUtils.renderModel(poseStack, vc, model, i, j);

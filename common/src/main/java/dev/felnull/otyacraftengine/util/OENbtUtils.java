@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.util;
 
-import dev.felnull.otyacraftengine.server.nbt.TagSerializable;
+import dev.felnull.otyacraftengine.server.level.TagSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;

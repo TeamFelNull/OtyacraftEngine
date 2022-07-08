@@ -1,13 +1,18 @@
 package dev.felnull.otyacraftengine.client.handler;
 
 import dev.architectury.event.events.client.ClientLifecycleEvent;
+import dev.architectury.event.events.client.ClientReloadShadersEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
 import dev.felnull.otyacraftengine.client.event.MoreClientLifecycleEvents;
+import dev.felnull.otyacraftengine.client.renderer.shader.OEShaders;
 import dev.felnull.otyacraftengine.client.renderer.texture.URLTextureManager;
 import dev.felnull.otyacraftengine.entity.PlayerInfoManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.server.packs.resources.ResourceManager;
+
+import java.io.IOException;
 
 public class ClientHandler {
     public static void init() {
@@ -15,6 +20,15 @@ public class ClientHandler {
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(ClientHandler::onLevelLoad);
         MoreClientLifecycleEvents.CLIENT_LEVEL_UNLOAD.register(ClientHandler::onLevelUnload);
         ClientTickEvent.CLIENT_POST.register(ClientHandler::ontClientTick);
+        ClientReloadShadersEvent.EVENT.register(ClientHandler::onShaderReload);
+    }
+
+    private static void onShaderReload(ResourceManager manager, ClientReloadShadersEvent.ShadersSink sink) {
+        try {
+            OEShaders.reload(manager, sink);
+        } catch (IOException e) {
+            throw new RuntimeException("could not reload test shaders", e);
+        }
     }
 
     private static void onStopping(Minecraft minecraft) {

@@ -6,7 +6,9 @@
     "client.LevelRendererMixin"
   ],
   "mixins": [
+    "EntityMixin",
     "InventoryChangeTriggerMixin",
+    "MinecraftServerMixin",
     "ShapesMixin",
     "VoxelShapeMixin"
   ],
