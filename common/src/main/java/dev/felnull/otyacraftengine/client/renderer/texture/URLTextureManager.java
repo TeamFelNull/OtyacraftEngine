@@ -236,7 +236,10 @@ public class URLTextureManager {
     public synchronized void clear() {
         HASH_CACHE = createHashMemoize();
         synchronized (URL_TEXTURE_LOADERS) {
-            URL_TEXTURE_LOADERS.forEach(FlagThread::stopped);
+            URL_TEXTURE_LOADERS.forEach(utl -> {
+                if (utl != null)
+                    utl.stopped();
+            });
             URL_TEXTURE_LOADERS.clear();
         }
         synchronized (LOAD_URL_TEXTURE) {

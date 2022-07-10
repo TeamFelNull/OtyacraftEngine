@@ -3,12 +3,15 @@ package dev.felnull.otyacraftengine.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.felnull.fnjl.util.FNURLUtil;
+import dev.felnull.otyacraftengine.explatform.OEExpectPlatform;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -48,5 +51,18 @@ public class OEUtils {
                 return null;
             }
         });
+    }
+
+    /**
+     * Forgeならアノテーションから、FabricならEntryPointを実装しているものを呼び出さす
+     *
+     * @param name            名前
+     * @param annotationClass アノテーション
+     * @param interfaceClass  インターフェース
+     * @param <T>             型
+     * @return 呼び出されているインスタンス一覧
+     */
+    public static <T> List<T> getCallPoints(@NotNull String name, @NotNull Class<?> annotationClass, @NotNull Class<T> interfaceClass) {
+        return OEExpectPlatform.getCallPoints(name, annotationClass, interfaceClass);
     }
 }

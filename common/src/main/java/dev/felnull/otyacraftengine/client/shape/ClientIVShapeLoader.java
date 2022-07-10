@@ -35,7 +35,7 @@ public class ClientIVShapeLoader {
                 if (vs != null)
                     builder.put(new ResourceLocation(location.getNamespace(), p.substring("voxel_shape/".length(), p.length() - ".json".length())), vs);
             } catch (Exception e) {
-                LOGGER.error("Error occurred while loading motion resource json " + location, e);
+                LOGGER.error("Error occurred while loading shape resource json " + location, e);
             }
             profilerFiller.pop();
         }));

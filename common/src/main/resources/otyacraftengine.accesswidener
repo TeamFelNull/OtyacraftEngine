@@ -4,3 +4,5 @@ accessible field net/minecraft/client/renderer/texture/TextureManager byPath Lja
 accessible field net/minecraft/client/renderer/texture/TextureManager tickableTextures Ljava/util/Set;
 
 accessible method net/minecraft/client/renderer/texture/TextureManager safeClose (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V
+accessible method net/minecraft/client/renderer/block/model/ItemTransforms$Deserializer <init> ()V
+accessible method net/minecraft/client/renderer/block/model/ItemTransform$Deserializer <init> ()V

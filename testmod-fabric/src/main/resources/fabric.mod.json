@@ -20,6 +20,9 @@
     ],
     "client": [
       "net.examplemod.fabric.client.ExampleModFabricClient"
+    ],
+    "otyacraftengine_client": [
+      "net.examplemod.client.callpoint.TestClientCallPoint"
     ]
   },
   "mixins": [
