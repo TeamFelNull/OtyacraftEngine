@@ -27,5 +27,7 @@
   "text.autoconfig.otyacraftengine.option.debugConfig.showModNameTooltip": "Show mod name tooltip",
   "text.autoconfig.otyacraftengine.option.debugConfig.showWidgetData": "Show widget data",
   "text.autoconfig.otyacraftengine.option.debugConfig.highlightVoxelShape": "Highlight voxel shape",
+  "_comment.other": "Other",
+  "modmenu.descriptionTranslation.otyacraftengine": "Integrated library used by felnull developers.\nThe ikisugi dependency mod...",
   "_comment.la": "Last"
 }

@@ -27,5 +27,7 @@
   "text.autoconfig.otyacraftengine.option.ikisugiVoxelShape": "Ikisugi VoxelShapeを有効化",
   "text.autoconfig.otyacraftengine.option.maxURLTextureLoadThreadCount": "URLテクスチャ読み込みスレッド最大数",
   "text.autoconfig.otyacraftengine.option.showWidgetData": "ウィジェットデータを表示",
+  "_comment.other": "Other",
+  "modmenu.descriptionTranslation.otyacraftengine": "FelNullの開発者が使う統合ライブラリ\nイキスギ依存関係MOD...",
   "_comment.la": "Last"
 }

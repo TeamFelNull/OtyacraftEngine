@@ -22,7 +22,7 @@ public class OtyacraftEngineForge {
         OtyacraftEngine.init();
     }
 
-    private void doClientStuff(FMLClientSetupEvent event) {
+    private void doClientStuff(final FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.register(ClientHandlerForge.class);
         MinecraftForge.EVENT_BUS.register(RenderHandlerForge.class);
         OtyacraftEngineClient.init();

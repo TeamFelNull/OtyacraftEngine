@@ -3,9 +3,11 @@
   "id": "otyacraftengine",
   "version": "${version}",
   "name": "Otyacraft Engine",
-  "description": "This mod is an integrated library used by FelNull developers.\nThe ikisugi dependency mod...",
+  "description": "Integrated library used by felnull developers.\nThe ikisugi dependency mod...",
   "authors": [
-    "MORIMORI0317",
+    "MORIMORI0317"
+  ],
+  "contributors": [
     "FelNull developers"
   ],
   "contact": {
@@ -31,12 +33,14 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19",
-    "architectury": ">=5.5.18"
+    "minecraft": ">=1.19.2",
+    "architectury": ">=6.2.43"
   },
   "custom": {
     "modmenu": {
-      "badges": [ "library" ]
+      "badges": [
+        "library"
+      ]
     }
   }
 }

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -463,4 +464,31 @@ public class OERenderUtils {
         mc.gameRenderer.itemInHandRenderer.renderItem(mc.player, stack, handFlg ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !handFlg, poseStack, multiBufferSource, light);
     }
 
+    /**
+     * 中央ぞろえで文字描画
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @since 2.0
+     */
+    public static void drawCenterText(PoseStack poseStack, Component text, float x, float y, int color) {
+        mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
+    }
+
+    /**
+     * 中央ぞろえ文字描画
+     *
+     * @param poseStack PoseStack
+     * @param str       文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @since 2.0
+     */
+    public static void drawCenterText(PoseStack poseStack, String str, float x, float y, int color) {
+        mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+    }
 }

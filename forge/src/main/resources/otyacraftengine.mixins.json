@@ -2,6 +2,7 @@
   "required": true,
   "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
   "client": [
   ],
   "mixins": [

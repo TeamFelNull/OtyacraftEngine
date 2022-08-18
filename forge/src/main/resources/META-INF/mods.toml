@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[41,)"
+loaderVersion = "[43,)"
 issueTrackerURL = "https://github.com/TeamFelnull/OtyacraftEngine/issues"
 license = "GNU LGPLv3"
 
@@ -12,7 +12,7 @@ updateJSONURL = "https://raw.githubusercontent.com/TeamFelnull/OtyacraftEngine/m
 authors = "MORIMORI0317"
 credits = "FelNull developers"
 description = '''
-This mod is an integrated library used by FelNull developers.
+Integrated library used by felnull developers.
 The ikisugi dependency mod...
 '''
 logoFile = "logo.png"
@@ -23,20 +23,20 @@ catalogueImageIcon = "icon.png"
 [[dependencies.otyacraftengine]]
 modId = "forge"
 mandatory = true
-versionRange = "[41,)"
+versionRange = "[43,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19,)"
+versionRange = "[1.19.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "architectury"
 mandatory = true
-versionRange = "[5.6.22,)"
+versionRange = "[6.2.43,)"
 ordering = "AFTER"
 side = "BOTH"

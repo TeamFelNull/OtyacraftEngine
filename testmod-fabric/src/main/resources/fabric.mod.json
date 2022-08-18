@@ -1,33 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
-  "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "id": "otyacraftenginetest",
+  "version": "114514",
+  "name": "Otyacraft Engine Test",
+  "description": "The otyacraft engine test mod.",
   "authors": [
-    "Me!"
+    "MORIMORI0317"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "Insert License Here",
+  "license": "IKISUGI LICENSE",
   "icon": "assets/examplemod/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.examplemod.fabric.ExampleModFabric"
+      "dev.felnull.otyacraftenginetest.fabric.OtyacraftEngineTestFabric"
     ],
     "client": [
-      "net.examplemod.fabric.client.ExampleModFabricClient"
+      "dev.felnull.otyacraftenginetest.fabric.client.OtyacraftEngineTestClientFabric"
     ],
     "otyacraftengine_client": [
-      "net.examplemod.client.callpoint.TestClientCallPoint"
+      "dev.felnull.otyacraftenginetest.client.callpoint.TestOECallPoint"
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "otyacraftenginetest.mixins.json",
+    "otyacraftenginetest-common.mixins.json"
   ],
   "depends": {
     "fabric": "*"
