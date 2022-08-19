@@ -18,7 +18,7 @@ public class TestCode2Screen extends Screen {
         this.renderBackground(poseStack);
         var rnd = RandomSource.create(114514);
         for (int k = 0; k < (tick / 60) + 1; k++) {
-            OERenderUtils.drawCenterText(poseStack, "This is ikisugi test", width / 2f + (float) Math.sin((double) (System.currentTimeMillis() + k * 1000L) * rnd.nextFloat() / 1000d) * width / 4f, height / 2f + (float) Math.sin((double) (System.currentTimeMillis() + k * 1000L) * rnd.nextFloat() / 1300d) * height / 4f, 0xFF000000 | rnd.nextInt(0xFFFFFF));
+            OERenderUtils.drawCenterFont(poseStack, "This is ikisugi test", width / 2f + (float) Math.sin((double) (System.currentTimeMillis() + k * 1000L) * rnd.nextFloat() / 1000d) * width / 4f, height / 2f + (float) Math.sin((double) (System.currentTimeMillis() + k * 1000L) * rnd.nextFloat() / 1300d) * height / 4f, 0xFF000000 | rnd.nextInt(0xFFFFFF));
         }
 
         super.render(poseStack, i, j, f);

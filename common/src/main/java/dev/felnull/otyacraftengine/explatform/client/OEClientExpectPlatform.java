@@ -22,4 +22,9 @@ public class OEClientExpectPlatform {
     public static BakedModel getModel(ResourceLocation location) {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static float getPartialTicks() {
+        throw new AssertionError();
+    }
 }

@@ -7,8 +7,14 @@ import dev.felnull.otyacraftengine.client.entity.PlayerNameByUUIDResult;
 import dev.felnull.otyacraftengine.client.entity.PlayerUUIDByNameResult;
 import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -19,6 +25,8 @@ import java.util.concurrent.CompletableFuture;
  * @author MORIMORI0317
  */
 public class OEClientUtils {
+    private static final Minecraft mc = Minecraft.getInstance();
+
     /**
      * 特定の時間でループする値
      *
@@ -123,5 +131,98 @@ public class OEClientUtils {
     @NotNull
     public PlayerNameByUUIDResult getPlayerNameByUUIDTolerance(@NotNull UUID uuid) {
         return ClientPlayerInfoManager.getInstance().getNameByUUIDTolerance(uuid);
+    }
+
+    /**
+     * キーが押されているか
+     *
+     * @param keyCode キーコード
+     * @return 押されているか
+     */
+    public static boolean isKeyInput(int keyCode) {
+        if (keyCode < GLFW.GLFW_MOUSE_BUTTON_1)
+            return false;
+
+        long winID = Minecraft.getInstance().getWindow().getWindow();
+
+        if (keyCode <= GLFW.GLFW_MOUSE_BUTTON_8)
+            return GLFW.glfwGetMouseButton(winID, keyCode) == 1;
+
+        return InputConstants.isKeyDown(winID, keyCode);
+    }
+
+    /**
+     * キーが押されているか
+     *
+     * @param keyMapping キー
+     * @return 押されているか
+     */
+    public static boolean isKeyInput(@NotNull KeyMapping keyMapping) {
+        return isKeyInput(getKey(keyMapping).getValue());
+    }
+
+    /**
+     * マウスのX座標
+     *
+     * @return x
+     */
+    public static double getMouseX() {
+        return mc.mouseHandler.xpos() * mc.getWindow().getGuiScaledWidth() / mc.getWindow().getScreenWidth();
+    }
+
+    /**
+     * マウスのY座標
+     *
+     * @return y
+     */
+    public static double getMouseY() {
+        return mc.mouseHandler.ypos() * mc.getWindow().getGuiScaledHeight() / mc.getWindow().getScreenHeight();
+    }
+
+    /**
+     * ファイル選択を開く
+     *
+     * @param title                タイトル
+     * @param defaultPath          初期パス
+     * @param singleFilter         フィルター
+     * @param allowMultipleSelects 複数選択するかどうか
+     * @return 選択結果
+     */
+    @Nullable
+    public static File[] openFileChooser(@Nullable String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects) {
+        var st = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, null, singleFilter, allowMultipleSelects);
+        if (st == null) return null;
+        try {
+            if (allowMultipleSelects) {
+                String[] sp = st.split("\\|");
+                File[] fl = new File[sp.length];
+                for (int i = 0; i < sp.length; i++) {
+                    fl[i] = new File(sp[i]);
+                }
+                return fl;
+            } else {
+                return new File[]{new File(st)};
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static String getWidthOmitText(String text, float maxWidth, String exit) {
+        int wh = mc.font.width(text);
+        if (wh > maxWidth) {
+            int exwh = mc.font.width(exit);
+            StringBuilder sb = new StringBuilder();
+
+            for (char c : text.toCharArray()) {
+                sb.append(c);
+                if (mc.font.width(sb.toString()) > maxWidth - exwh)
+                    break;
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append(exit);
+            return sb.toString();
+        }
+        return text;
     }
 }

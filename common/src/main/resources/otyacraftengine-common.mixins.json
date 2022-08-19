@@ -5,7 +5,8 @@
   "minVersion": "0.8",
   "client": [
     "client.ItemInHandLayerMixin",
-    "client.LevelRendererMixin"
+    "client.LevelRendererMixin",
+    "client.ModelPartMixin"
   ],
   "mixins": [
     "EntityMixin",

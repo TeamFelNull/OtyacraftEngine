@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.explatform.client.fabric;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import dev.felnull.otyacraftengine.fabric.client.shape.ClientIVShapeManagerFabric;
+import dev.felnull.otyacraftengine.fabric.mixin.client.MinecraftAccessor;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
 import net.minecraft.client.KeyMapping;
@@ -23,5 +24,9 @@ public class OEClientExpectPlatformImpl {
 
     public static BakedModel getModel(ResourceLocation location) {
         return BakedModelManagerHelper.getModel(mc.getModelManager(), location);
+    }
+
+    public static float getPartialTicks() {
+        return mc.isPaused() ? ((MinecraftAccessor) mc).getPausePartialTick() : mc.getFrameTime();
     }
 }

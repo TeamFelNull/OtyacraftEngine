@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.felnull.otyacraftengine.client.renderer.OERenderTypes;
+import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -31,6 +33,7 @@ import java.util.function.Consumer;
  */
 public class OERenderUtils {
     private static final Minecraft mc = Minecraft.getInstance();
+    public static boolean SKIP_TRANSANDROT_MODELPART;
 
     /**
      * PoseStackを16分の１単位で移動する
@@ -474,7 +477,7 @@ public class OERenderUtils {
      * @param color     色(ARGB)
      * @since 2.0
      */
-    public static void drawCenterText(PoseStack poseStack, Component text, float x, float y, int color) {
+    public static void drawCenterFont(PoseStack poseStack, Component text, float x, float y, int color) {
         mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
     }
 
@@ -488,7 +491,331 @@ public class OERenderUtils {
      * @param color     色(ARGB)
      * @since 2.0
      */
-    public static void drawCenterText(PoseStack poseStack, String str, float x, float y, int color) {
+    public static void drawCenterFont(PoseStack poseStack, String str, float x, float y, int color) {
         mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+    }
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param lastPose          pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     * @return size?
+     */
+    public static int fontDrawInBatch(Component text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+    }
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param lastPose          pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     * @return size?
+     */
+    public static int fontDrawInBatch(String text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+    }
+
+    @Deprecated
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color, int combinedLightIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        poseStack.popPose();
+    }
+
+    @Deprecated
+    public static void renderTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int combinedLightIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param poseStack         pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     */
+    public static void renderFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        poseStack.pushPose();
+        poseStack.scale(-0.025F, -0.025F, 0.025F);
+        Matrix4f matrix4f = poseStack.last().pose();
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param poseStack         pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     */
+    public static void renderFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        poseStack.pushPose();
+        poseStack.scale(-0.025F, -0.025F, 0.025F);
+        Matrix4f matrix4f = poseStack.last().pose();
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        poseStack.popPose();
+    }
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param poseStack         pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     */
+    public static void renderCenterFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        poseStack.pushPose();
+        poseStack.scale(-0.025F, -0.025F, 0.025F);
+        Matrix4f matrix4f = poseStack.last().pose();
+        x += (float) (-mc.font.width(text) / 2);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        poseStack.popPose();
+    }
+
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param poseStack         pose
+     * @param multiBufferSource multiBufferSource
+     * @param seeThrough        透けて見えるかどうか
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     */
+    public static void renderCenterFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+        poseStack.pushPose();
+        poseStack.scale(-0.025F, -0.025F, 0.025F);
+        Matrix4f matrix4f = poseStack.last().pose();
+        x += (float) (-mc.font.width(text) / 2);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        poseStack.popPose();
+    }
+
+    /**
+     * 幅を固定して文字を描画
+     * 幅に入りきらないと縮小し描画される
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @param width     幅
+     */
+    public static void drawFixedWidthFont(PoseStack poseStack, Component text, float x, float y, int color, float width) {
+        int size = mc.font.width(text);
+        poseStack.pushPose();
+        if (size > width) {
+            float scale = width / size;
+            x /= scale;
+            y /= scale;
+            poseScaleAll(poseStack, scale);
+        }
+        mc.font.draw(poseStack, text, x, y, color);
+        poseStack.popPose();
+    }
+
+    /**
+     * 幅を固定して文字を描画
+     * 幅に入りきらないと縮小し描画される
+     *
+     * @param poseStack PoseStack
+     * @param text      文字
+     * @param x         中央X
+     * @param y         Y
+     * @param color     色(ARGB)
+     * @param width     幅
+     */
+    public static void drawFixedWidthFont(PoseStack poseStack, String text, float x, float y, int color, float width) {
+        int size = mc.font.width(text);
+        poseStack.pushPose();
+        if (size > width) {
+            float scale = width / size;
+            x /= scale;
+            y /= scale;
+            poseScaleAll(poseStack, scale);
+        }
+        mc.font.draw(poseStack, text, x, y, color);
+        poseStack.popPose();
+    }
+
+    /**
+     * GUI上でUUIDから取得したプレイヤーの顔を描画する
+     *
+     * @param poseStack PoseStack
+     * @param uuid      プレイヤーUUID
+     * @param x         X
+     * @param y         Y
+     * @since 2.0
+     */
+    public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y) {
+        drawPlayerFace(poseStack, uuid, x, y, 8);
+    }
+
+    /**
+     * GUI上でUUIDから取得したプレイヤーの顔を描画する
+     * サイズ変更可
+     *
+     * @param poseStack PoseStack
+     * @param uuid      プレイヤーUUID
+     * @param x         X
+     * @param y         Y
+     * @param size      サイズ
+     * @since 2.0
+     */
+    public static void drawPlayerFace(PoseStack poseStack, UUID uuid, float x, float y, float size) {
+        poseStack.pushPose();
+        float sc = size / 8f;
+        ResourceLocation plskin = OETextureUtils.getPlayerSkinTexture(uuid);
+        drawTexture(plskin, poseStack, x, y, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        drawTexture(plskin, poseStack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        poseStack.popPose();
+    }
+
+    /**
+     * GUI上で名前から取得したプレイヤーの顔を描画する
+     *
+     * @param poseStack PoseStack
+     * @param name      プレイヤー名
+     * @param x         X
+     * @param y         Y
+     */
+    public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y) {
+        drawPlayerFace(poseStack, name, x, y, 8);
+    }
+
+    /**
+     * GUI上で名前から取得したプレイヤーの顔を描画する
+     * サイズ変更可
+     *
+     * @param poseStack PoseStack
+     * @param name      プレイヤー名
+     * @param x         X
+     * @param y         Y
+     * @param size      サイズ
+     * @since 2.0
+     */
+    public static void drawPlayerFace(PoseStack poseStack, String name, float x, float y, float size) {
+        poseStack.pushPose();
+        float sc = size / 8f;
+        ResourceLocation plskin = OETextureUtils.getPlayerSkinTexture(name);
+        drawTexture(plskin, poseStack, x, y, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        drawTexture(plskin, poseStack, x, y, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc);
+        poseStack.popPose();
+    }
+
+    /**
+     * UUIDから取得したプレイヤーの顔スプライトを描画する
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param uuid              プレイヤーUUID
+     * @param size              サイズ
+     * @param combinedLightIn   CombinedLightIn
+     * @param combinedOverlayIn CombinedOverlayIn
+     */
+    public static void renderPlayerFaceSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, UUID uuid, float size, int combinedLightIn, int combinedOverlayIn) {
+        renderPlayerFaceSprite(poseStack, multiBufferSource.getBuffer(OERenderTypes.simpleSpriteCutout(OETextureUtils.getPlayerSkinTexture(uuid))), size, combinedLightIn, combinedOverlayIn);
+    }
+
+    /**
+     * UUIDから取得したプレイヤーの顔スプライトを描画する
+     *
+     * @param poseStack         PoseStack
+     * @param multiBufferSource MultiBufferSource
+     * @param name              プレイヤー名
+     * @param size              サイズ
+     * @param combinedLightIn   CombinedLightIn
+     * @param combinedOverlayIn CombinedOverlayIn
+     */
+    public static void renderPlayerFaceSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, String name, float size, int combinedLightIn, int combinedOverlayIn) {
+        renderPlayerFaceSprite(poseStack, multiBufferSource.getBuffer(OERenderTypes.simpleSpriteCutout(OETextureUtils.getPlayerSkinTexture(name))), size, combinedLightIn, combinedOverlayIn);
+    }
+
+    /**
+     * プレイヤーの顔スプライトを描画する
+     *
+     * @param poseStack         PoseStack
+     * @param vertexConsumer    VertexConsumer
+     * @param size              サイズ
+     * @param combinedLightIn   CombinedLightIn
+     * @param combinedOverlayIn CombinedOverlayIn
+     */
+    public static void renderPlayerFaceSprite(PoseStack poseStack, VertexConsumer vertexConsumer, float size, int combinedLightIn, int combinedOverlayIn) {
+        poseStack.pushPose();
+        float sc = size / 8f;
+        renderSprite(poseStack, vertexConsumer, size, size, 8f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+
+        poseStack.pushPose();
+        poseStack.translate(0, 0, Mth.EPSILON);
+        renderSprite(poseStack, vertexConsumer, size, size, 40f * sc, 8f * sc, 8f * sc, 8f * sc, 64f * sc, 64f * sc, combinedLightIn, combinedOverlayIn);
+        poseStack.popPose();
+
+        poseStack.popPose();
+    }
+
+    public static float getPartialTicks() {
+        return OEClientExpectPlatform.getPartialTicks();
+    }
+
+    public static void noTransAndRotModelPart(Runnable runnable) {
+        SKIP_TRANSANDROT_MODELPART = true;
+        runnable.run();
+        SKIP_TRANSANDROT_MODELPART = false;
+    }
+
+    public static void renderPlayerArmNoTransAndRot(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {
+        noTransAndRotModelPart(() -> renderPlayerArm(poseStack, multiBufferSource, arm, light));
     }
 }
