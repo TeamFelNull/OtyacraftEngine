@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.advancement.OECriteriaTriggers;
 import dev.felnull.otyacraftengine.handler.CommonHandler;
+import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
@@ -19,6 +20,7 @@ public class OtyacraftEngine {
         CommonHandler.init();
         OEPackets.init();
         OECriteriaTriggers.init();
+        PlayerItemLocations.init();
     }
 
     public static String getModName() {

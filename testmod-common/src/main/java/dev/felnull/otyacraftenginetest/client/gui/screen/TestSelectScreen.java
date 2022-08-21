@@ -19,8 +19,12 @@ public class TestSelectScreen extends Screen {
             minecraft.setScreen(new TestCode1Screen());
         }));
 
-        this.addRenderableWidget(new Button(3, 49, 40, 20, Component.literal("Test1"), (buttonx) -> {
+        this.addRenderableWidget(new Button(3, 49, 40, 20, Component.literal("Test2"), (buttonx) -> {
             minecraft.setScreen(new TestCode2Screen());
+        }));
+
+        this.addRenderableWidget(new Button(3, 72, 40, 20, Component.literal("Test3"), (buttonx) -> {
+            minecraft.setScreen(new TestCode3Screen());
         }));
     }
 

@@ -4,7 +4,6 @@ import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
 import dev.felnull.otyacraftenginetest.block.TestBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -32,11 +31,5 @@ public class TestContainerBlockEntity extends OEBaseContainerBlockEntity {
     @Override
     public @NotNull NonNullList<ItemStack> getItems() {
         return items;
-    }
-
-    @Override
-    public void loadToUpdateTag(CompoundTag tag) {
-        System.out.println("ｳｧｧ!!ｵﾚﾓｲｯﾁｬｳｩｩｩ!!!ｳｳｳｳｳｳｳｳｳｩｩｩｩｩｩｩｩｳｳｳｳｳｳｳｳ!ｲｨｨｲｨｨｨｲｲｲｨｲｲｲｲ");
-        super.loadToUpdateTag(tag);
     }
 }
