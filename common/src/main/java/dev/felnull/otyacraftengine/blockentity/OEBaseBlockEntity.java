@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class OEBaseBlockEntity extends BlockEntity implements OEBaseFuncBlockEntity {
+public abstract class OEBaseBlockEntity extends BlockEntity implements IOEBaseFuncBlockEntity {
     private boolean updateMark;
 
     public OEBaseBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {

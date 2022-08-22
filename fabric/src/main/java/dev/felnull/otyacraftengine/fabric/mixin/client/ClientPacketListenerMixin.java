@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.mixin.client;
 
-import dev.felnull.otyacraftengine.blockentity.ClientSyncableBlockEntity;
+import dev.felnull.otyacraftengine.blockentity.IClientSyncableBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ public class ClientPacketListenerMixin {
     private void handleBlockEntityData(ClientboundBlockEntityDataPacket clientboundBlockEntityDataPacket, CallbackInfo ci) {
         BlockPos blockPos = clientboundBlockEntityDataPacket.getPos();
         this.minecraft.level.getBlockEntity(blockPos, clientboundBlockEntityDataPacket.getType()).ifPresent((blockEntity) -> {
-            if (blockEntity instanceof ClientSyncableBlockEntity syncableBlockEntity) {
+            if (blockEntity instanceof IClientSyncableBlockEntity syncableBlockEntity) {
                 CompoundTag tag = clientboundBlockEntityDataPacket.getTag();
                 syncableBlockEntity.loadToUpdateTag(tag);
                 ci.cancel();

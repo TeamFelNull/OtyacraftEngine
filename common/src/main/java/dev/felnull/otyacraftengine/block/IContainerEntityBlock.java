@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public interface ContainerEntityBlock {
+public interface IContainerEntityBlock {
     default InteractionResult useContainer(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (isOpenContainer(blockState, level, blockPos, player, interactionHand, blockHitResult)) {
             if (level.isClientSide()) {

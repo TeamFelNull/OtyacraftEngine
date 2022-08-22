@@ -4,7 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public interface ClientSyncableBlockEntity {
+public interface IClientSyncableBlockEntity {
     boolean isSyncUpdate();
 
     void saveToUpdateTag(CompoundTag tag);

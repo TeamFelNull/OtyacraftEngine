@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.forge.mixin;
 
-import dev.felnull.otyacraftengine.blockentity.ClientSyncableBlockEntity;
+import dev.felnull.otyacraftengine.blockentity.IClientSyncableBlockEntity;
 import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -9,7 +9,7 @@ import net.minecraftforge.common.extensions.IForgeBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(OEBaseContainerBlockEntity.class)
-public abstract class OEBaseContainerBlockEntityMixin implements IForgeBlockEntity, ClientSyncableBlockEntity {
+public abstract class OEBaseContainerBlockEntityMixin implements IForgeBlockEntity, IClientSyncableBlockEntity {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         CompoundTag tag = pkt.getTag();

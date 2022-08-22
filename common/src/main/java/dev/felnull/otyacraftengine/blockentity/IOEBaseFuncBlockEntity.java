@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.blockentity;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public interface OEBaseFuncBlockEntity extends ClientSyncableBlockEntity {
+public interface IOEBaseFuncBlockEntity extends IClientSyncableBlockEntity {
     default void baseAfterTick() {
         if (!(this instanceof BlockEntity blockEntity)) return;
         var level = blockEntity.getLevel();
