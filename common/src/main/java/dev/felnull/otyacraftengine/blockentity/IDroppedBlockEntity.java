@@ -4,7 +4,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Collection;
 
-public interface DroppedBlockEntity {
+public interface IDroppedBlockEntity {
     Collection<ItemStack> getDroppedItems();
 
     default boolean isRetainDrop() {

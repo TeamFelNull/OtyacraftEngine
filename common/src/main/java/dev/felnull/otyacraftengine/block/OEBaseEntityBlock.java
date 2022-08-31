@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.block;
 
 import com.google.common.collect.ImmutableList;
-import dev.felnull.otyacraftengine.blockentity.DroppedBlockEntity;
+import dev.felnull.otyacraftengine.blockentity.IDroppedBlockEntity;
 import dev.felnull.otyacraftengine.util.OEItemUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -41,7 +41,7 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock {
         if (!blockState.is(blockState2.getBlock())) {
             var be = level.getBlockEntity(blockPos);
             if (!level.isClientSide() && level instanceof ServerLevel) {
-                if (be instanceof DroppedBlockEntity droppedBlockEntity) {
+                if (be instanceof IDroppedBlockEntity droppedBlockEntity) {
                     if (!droppedBlockEntity.isRetainDrop()) {
                         var drops = droppedBlockEntity.getDroppedItems();
                         NonNullList<ItemStack> items = NonNullList.create();
@@ -59,7 +59,7 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock {
     @Override
     public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         var be = level.getBlockEntity(blockPos);
-        if (be instanceof DroppedBlockEntity droppedBlockEntity && droppedBlockEntity.isRetainDrop()) {
+        if (be instanceof IDroppedBlockEntity droppedBlockEntity && droppedBlockEntity.isRetainDrop()) {
             if (!level.isClientSide && player.isCreative()) {
                 var dropItem = droppedBlockEntity.createRetainDropItem();
                 if (!dropItem.isEmpty()) {
@@ -79,7 +79,7 @@ public abstract class OEBaseEntityBlock extends BaseEntityBlock {
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
         var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof DroppedBlockEntity icbe && icbe.isRetainDrop())
+        if (blockEntity instanceof IDroppedBlockEntity icbe && icbe.isRetainDrop())
             return ImmutableList.of(icbe.createRetainDropItem());
 
         return super.getDrops(blockState, builder);

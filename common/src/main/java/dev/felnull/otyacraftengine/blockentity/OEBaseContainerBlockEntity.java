@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements DroppedBlockEntity, IOEBaseFuncBlockEntity {
+public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntity implements IDroppedBlockEntity, IOEBaseFuncBlockEntity {
     private boolean updateMark;
 
     protected OEBaseContainerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
