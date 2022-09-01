@@ -3,6 +3,7 @@
   "package": "dev.felnull.otyacraftengine.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "plugin": "dev.felnull.otyacraftengine.fabric.mixin.OEMixinPluginFabric",
   "client": [
     "client.ClientPacketListenerMixin",
     "client.ItemInHandRendererMixin",
@@ -11,7 +12,8 @@
   ],
   "mixins": [
     "EntityMixin",
-    "MobBucketItemAccessor"
+    "MobBucketItemAccessor",
+    "data.FabricDataGenHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1

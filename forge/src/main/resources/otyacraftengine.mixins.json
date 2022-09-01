@@ -3,13 +3,15 @@
   "package": "dev.felnull.otyacraftengine.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "plugin": "dev.felnull.otyacraftengine.forge.mixin.OEMixinPluginForge",
   "client": [
     "client.BlockEntityWithoutLevelRendererMixin"
   ],
   "mixins": [
     "MobBucketItemAccessor",
     "OEBaseBlockEntityMixin",
-    "OEBaseContainerBlockEntityMixin"
+    "OEBaseContainerBlockEntityMixin",
+    "data.DataMainMixin"
   ],
   "injectors": {
     "defaultRequire": 1
