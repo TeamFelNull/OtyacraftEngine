@@ -29,10 +29,10 @@ public class OEPackets {
     }
 
     public static record BlockEntityInstructionMessage(UUID instructionScreenID,
-                                                       BlockEntityExistence blockEntityExistence, String name, int num,
+                                                       BlockEntityExistence blockEntityExistence, String name,
                                                        CompoundTag data) implements PacketMessage {
         public BlockEntityInstructionMessage(FriendlyByteBuf bf) {
-            this(bf.readUUID(), BlockEntityExistence.read(bf), bf.readUtf(), bf.readInt(), bf.readNbt());
+            this(bf.readUUID(), BlockEntityExistence.read(bf), bf.readUtf(), bf.readNbt());
         }
 
         @Override
@@ -40,16 +40,15 @@ public class OEPackets {
             buf.writeUUID(instructionScreenID);
             blockEntityExistence.write(buf);
             buf.writeUtf(name);
-            buf.writeInt(num);
             buf.writeNbt(data);
             return buf;
         }
     }
 
     public static record ItemInstructionMessage(UUID instructionScreenID, ItemExistence itemExistence, String name,
-                                                int num, CompoundTag data) implements PacketMessage {
+                                                CompoundTag data) implements PacketMessage {
         public ItemInstructionMessage(FriendlyByteBuf bf) {
-            this(bf.readUUID(), ItemExistence.read(bf), bf.readUtf(), bf.readInt(), bf.readNbt());
+            this(bf.readUUID(), ItemExistence.read(bf), bf.readUtf(), bf.readNbt());
         }
 
         @Override
@@ -57,7 +56,6 @@ public class OEPackets {
             buf.writeUUID(instructionScreenID);
             itemExistence.write(buf);
             buf.writeUtf(name);
-            buf.writeInt(num);
             buf.writeNbt(data);
             return buf;
         }

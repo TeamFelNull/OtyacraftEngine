@@ -9,9 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IInstructionBEScreen extends IInstructionScreen {
-    static void instructionBlockEntity(IInstructionBEScreen screen, BlockEntity blockEntity, String name, int num, CompoundTag data) {
+    static void instructionBlockEntity(IInstructionBEScreen screen, BlockEntity blockEntity, String name, CompoundTag data) {
         if (Minecraft.getInstance().screen == screen && blockEntity instanceof IInstructionBlockEntity) {
-            NetworkManager.sendToServer(OEPackets.BLOCK_ENTITY_INSTRUCTION, new OEPackets.BlockEntityInstructionMessage(screen.getInstructionID(), BlockEntityExistence.getByBlockEntity(blockEntity), name, num, data).toFBB());
+            NetworkManager.sendToServer(OEPackets.BLOCK_ENTITY_INSTRUCTION, new OEPackets.BlockEntityInstructionMessage(screen.getInstructionID(), BlockEntityExistence.getByBlockEntity(blockEntity), name, data).toFBB());
         }
     }
 }

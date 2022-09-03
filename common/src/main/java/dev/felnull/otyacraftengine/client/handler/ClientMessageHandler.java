@@ -14,7 +14,7 @@ public class ClientMessageHandler {
             if (!message.blockEntityExistence().check(mc.level))
                 return;
             if (mc.screen instanceof IInstructionBEScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
-                insScreen.onInstructionReturn(message.name(), message.num(), message.data());
+                insScreen.onInstructionReturn(message.name(), message.data());
         });
     }
 
@@ -23,7 +23,7 @@ public class ClientMessageHandler {
             if (!message.itemExistence().check(mc.player))
                 return;
             if (mc.screen instanceof IInstructionItemScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
-                insScreen.onInstructionReturn(message.name(), message.num(), message.data());
+                insScreen.onInstructionReturn(message.name(), message.data());
         });
     }
 }

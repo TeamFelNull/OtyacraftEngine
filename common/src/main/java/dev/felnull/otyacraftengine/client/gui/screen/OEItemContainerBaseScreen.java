@@ -21,7 +21,7 @@ public abstract class OEItemContainerBaseScreen<T extends OEItemBaseMenu> extend
     }
 
     @Override
-    public void instruction(String name, int num, CompoundTag data) {
-        IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, num, data);
+    public void instruction(String name, CompoundTag data) {
+        IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, data);
     }
 }

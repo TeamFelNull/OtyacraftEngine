@@ -36,11 +36,11 @@ public abstract class OEItemBEContainerBaseScreen<T extends OEItemBEBaseMenu> ex
     }
 
     @Override
-    public void instruction(String name, int num, CompoundTag data) {
+    public void instruction(String name, CompoundTag data) {
         if (isBlock()) {
-            IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, num, data);
+            IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, data);
         } else {
-            IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, num, data);
+            IInstructionItemScreen.instructionItem(this, getItem(), getItemLocation(), name, data);
         }
     }
 }

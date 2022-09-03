@@ -79,7 +79,7 @@ public abstract class OEContainerBaseScreen<T extends OEBaseMenu> extends Abstra
     }
 
     @Override
-    public void onInstructionReturn(String name, int num, CompoundTag data) {
+    public void onInstructionReturn(String name, CompoundTag data) {
 
     }
 

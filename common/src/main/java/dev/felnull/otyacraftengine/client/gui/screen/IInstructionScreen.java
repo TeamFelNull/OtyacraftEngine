@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface IInstructionScreen {
     UUID getInstructionID();
 
-    void instruction(String name, int num, CompoundTag data);
+    void instruction(String name, CompoundTag data);
 
-    void onInstructionReturn(String name, int num, CompoundTag data);
+    void onInstructionReturn(String name, CompoundTag data);
 }

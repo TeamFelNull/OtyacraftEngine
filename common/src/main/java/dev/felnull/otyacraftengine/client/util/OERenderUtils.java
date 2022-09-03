@@ -34,6 +34,7 @@ import java.util.function.Consumer;
 public class OERenderUtils {
     private static final Minecraft mc = Minecraft.getInstance();
     public static boolean SKIP_TRANSANDROT_MODELPART;
+    public static final float MIN_BREADTH = 1.0E-3F;
 
     /**
      * PoseStackを16分の１単位で移動する
@@ -379,6 +380,18 @@ public class OERenderUtils {
         bmr.renderModel(poseStack.last(), vertexConsumer, null, bakedModel, r, g, b, combinedLight, combinedOverlay);
     }
 
+    @Deprecated
+    public static void renderTextureSprite(ResourceLocation location, PoseStack poseStack, MultiBufferSource multiBufferSource, float x, float y, float z, float pitch, float yaw, float roll, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int combinedLightIn, int combinedOverlayIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseRotateY(poseStack, yaw);
+        poseRotateX(poseStack, pitch);
+        poseRotateZ(poseStack, roll);
+        renderTextureSprite(location, poseStack, multiBufferSource, width, height, u0, v0, u1, v1, textureWidth, textureHeight, combinedLightIn, combinedOverlayIn);
+        poseStack.popPose();
+    }
+
+
     public static void renderTextureSprite(ResourceLocation location, PoseStack poseStack, MultiBufferSource multiBufferSource, float width, float height, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight, int combinedLightIn, int combinedOverlayIn) {
         renderSprite(poseStack, multiBufferSource.getBuffer(OERenderTypes.simpleSpriteCutout(location)), width, height, u0, v0, u1, v1, textureWidth, textureHeight, combinedLightIn, combinedOverlayIn);
     }
@@ -548,6 +561,24 @@ public class OERenderUtils {
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
         mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        poseStack.popPose();
+    }
+
+    @Deprecated
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int color, int combinedLightIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        poseStack.popPose();
+    }
+
+    @Deprecated
+    public static void renderCenterTextSprite(PoseStack poseStack, MultiBufferSource multiBufferSource, Component text, float x, float y, float z, float size, float textX, float textY, int combinedLightIn) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 

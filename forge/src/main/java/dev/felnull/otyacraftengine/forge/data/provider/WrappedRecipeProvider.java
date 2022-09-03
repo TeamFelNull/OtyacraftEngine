@@ -1,9 +1,14 @@
 package dev.felnull.otyacraftengine.forge.data.provider;
 
 import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Consumer;
@@ -19,6 +24,23 @@ public class WrappedRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        recipeProviderWrapper.generateRecipes(consumer);
+        recipeProviderWrapper.generateRecipe(consumer, new RecipeProviderAccessImpl());
+    }
+
+    private static class RecipeProviderAccessImpl implements RecipeProviderWrapper.RecipeProviderAccess {
+        @Override
+        public InventoryChangeTrigger.TriggerInstance has(MinMaxBounds.Ints ints, ItemLike itemLike) {
+            return RecipeProvider.has(ints, itemLike);
+        }
+
+        @Override
+        public InventoryChangeTrigger.TriggerInstance has(ItemLike itemLike) {
+            return RecipeProvider.has(itemLike);
+        }
+
+        @Override
+        public InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tagKey) {
+            return RecipeProvider.has(tagKey);
+        }
     }
 }

@@ -14,10 +14,10 @@ public class ServerMessageHandler {
             if (!message.blockEntityExistence().check(player.getLevel()))
                 return;
             var ibe = (IInstructionBlockEntity) player.getLevel().getBlockEntity(message.blockEntityExistence().blockPos());
-            if (ibe != null && ibe.canInstructionWith(player, message.name(), message.num(), message.data())) {
-                CompoundTag retag = ibe.onInstruction(player, message.name(), message.num(), message.data());
+            if (ibe != null && ibe.canInstructionWith(player, message.name(), message.data())) {
+                CompoundTag retag = ibe.onInstruction(player, message.name(), message.data());
                 if (retag != null)
-                    NetworkManager.sendToPlayer(player, OEPackets.BLOCK_ENTITY_INSTRUCTION_RETURN, new OEPackets.BlockEntityInstructionMessage(message.instructionScreenID(), message.blockEntityExistence(), message.name(), message.num(), retag).toFBB());
+                    NetworkManager.sendToPlayer(player, OEPackets.BLOCK_ENTITY_INSTRUCTION_RETURN, new OEPackets.BlockEntityInstructionMessage(message.instructionScreenID(), message.blockEntityExistence(), message.name(), retag).toFBB());
             }
         });
     }
@@ -29,10 +29,10 @@ public class ServerMessageHandler {
                 return;
             var is = message.itemExistence().location().getItem(player);
             var ii = (IInstructionItem) is.getItem();
-            if (ii.canInstructionWith(is, player, message.name(), message.num(), message.data())) {
-                CompoundTag retag = ii.onInstruction(is, player, message.name(), message.num(), message.data());
+            if (ii.canInstructionWith(is, player, message.name(), message.data())) {
+                CompoundTag retag = ii.onInstruction(is, player, message.name(), message.data());
                 if (retag != null)
-                    NetworkManager.sendToPlayer(player, OEPackets.ITEM_INSTRUCTION_RETURN, new OEPackets.ItemInstructionMessage(message.instructionScreenID(), message.itemExistence(), message.name(), message.num(), retag).toFBB());
+                    NetworkManager.sendToPlayer(player, OEPackets.ITEM_INSTRUCTION_RETURN, new OEPackets.ItemInstructionMessage(message.instructionScreenID(), message.itemExistence(), message.name(), retag).toFBB());
             }
         });
     }

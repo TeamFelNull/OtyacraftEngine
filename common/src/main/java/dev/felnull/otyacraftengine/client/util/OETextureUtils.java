@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.client.util;
 import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.blaze3d.platform.NativeImage;
+import dev.felnull.fnjl.util.FNMath;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
 import dev.felnull.otyacraftengine.client.renderer.texture.*;
@@ -251,5 +252,21 @@ public class OETextureUtils {
     @NotNull
     public static ResourceLocation getPlayerSkinTexture(@NotNull UUID uuid) {
         return Objects.requireNonNull(getPlayerTexture(MinecraftProfileTexture.Type.SKIN, uuid));
+    }
+
+    /**
+     * テクスチャのスケールを取得
+     *
+     * @param location テクスチャロケーション
+     * @return スケール
+     */
+    public static TextureScale getTextureScale(ResourceLocation location) {
+        if (location != null && mc.getTextureManager().getTexture(location) instanceof DynamicTexture texture) {
+            int w = texture.getPixels().getWidth();
+            int h = texture.getPixels().getHeight();
+            var sc = FNMath.scale(w, h);
+            return new TextureScale(sc.getX(), sc.getY());
+        }
+        return null;
     }
 }

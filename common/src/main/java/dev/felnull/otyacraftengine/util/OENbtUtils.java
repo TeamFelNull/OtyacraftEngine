@@ -235,6 +235,17 @@ public class OENbtUtils {
         return readUUIDKeyMap(tag, name, map, NbtUtils::loadUUID, TAG_UUID);
     }
 
+
+    @NotNull
+    public static CompoundTag writeUUIDTagMap(@NotNull CompoundTag tag, @NotNull String name, @Nullable Map<UUID, CompoundTag> map) {
+        return writeUUIDKeyMap(tag, name, map, tag1 -> tag1);
+    }
+
+    @NotNull
+    public static Map<UUID, CompoundTag> readUUIDTagMap(@NotNull CompoundTag tag, @NotNull String name, @Nullable Map<UUID, CompoundTag> map) {
+        return readUUIDKeyMap(tag, name, map, tag1 -> (CompoundTag) tag1, Tag.TAG_COMPOUND);
+    }
+
     /**
      * NBTにUUIDがキーでTagSerializableを実装した値のマップを書き込む
      *
@@ -334,4 +345,6 @@ public class OENbtUtils {
         }
         return defaultEnum;
     }
+
+
 }

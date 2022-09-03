@@ -22,7 +22,7 @@ public abstract class OEBEContainerBaseScreen<T extends OEBEBaseMenu> extends OE
     }
 
     @Override
-    public void instruction(String name, int num, CompoundTag data) {
-        IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, num, data);
+    public void instruction(String name, CompoundTag data) {
+        IInstructionBEScreen.instructionBlockEntity(this, getBlockEntity(), name, data);
     }
 }

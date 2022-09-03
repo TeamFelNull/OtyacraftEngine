@@ -16,10 +16,10 @@ public class OETestRecipeProvider extends RecipeProviderWrapper {
     }
 
     @Override
-    public void generate(Consumer<FinishedRecipe> exporter) {
+    public void generateRecipe(Consumer<FinishedRecipe> exporter, RecipeProviderAccess providerAccess) {
         ShapelessRecipeBuilder.shapeless(Items.APPLE, 1)
                 .requires(Items.EGG)
-                // .unlockedBy("has_item", has.apply(Items.EGG))
+                .unlockedBy("has_item", providerAccess.has(Items.EGG))
                 .save(exporter, new ResourceLocation(OtyacraftEngineTest.MODID, "test"));
     }
 }
