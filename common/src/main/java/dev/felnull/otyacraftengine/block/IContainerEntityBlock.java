@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine.block;
 
+import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
+import dev.felnull.otyacraftengine.util.OEMenuUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,5 +30,8 @@ public interface IContainerEntityBlock {
         return level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity oeBaseContainerBlock;
     }
 
-    void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult);
+    default void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult){
+        if (level.getBlockEntity(blockPos) instanceof OEBaseContainerBlockEntity oeBaseContainerBlock)
+            OEMenuUtil.openBlockMenu(player, oeBaseContainerBlock, blockPos, oeBaseContainerBlock.getContainerSize());
+    }
 }

@@ -39,7 +39,7 @@ public class TestRotedBlockEntity extends OEBaseBlockEntity {
 
     public void addSpeed(int num) {
         speed += num;
-        syncToClient();
+       setChanged();
     }
 
     @Override

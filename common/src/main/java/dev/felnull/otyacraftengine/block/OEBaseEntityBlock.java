@@ -2,12 +2,18 @@ package dev.felnull.otyacraftengine.block;
 
 import com.google.common.collect.ImmutableList;
 import dev.felnull.otyacraftengine.blockentity.IDroppedBlockEntity;
+import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;
 import dev.felnull.otyacraftengine.util.OEItemUtils;
+import dev.felnull.otyacraftengine.util.OEMenuUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +23,7 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

@@ -97,8 +97,6 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
         }
         if (flag)
             this.setChanged();
-
-        syncToClient();
     }
 
     @Override
@@ -155,5 +153,11 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
     @Override
     public boolean canInstructionWith(ServerPlayer player, String name, CompoundTag data) {
         return stillValid(player);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        updateMarked();
     }
 }

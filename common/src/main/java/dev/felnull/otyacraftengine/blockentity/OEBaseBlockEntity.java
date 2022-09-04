@@ -50,4 +50,10 @@ public abstract class OEBaseBlockEntity extends BlockEntity implements IOEBaseFu
         if (!isSyncUpdate()) return null;
         return ClientboundBlockEntityDataPacket.create(this);
     }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        updateMarked();
+    }
 }

@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftengine.block;
 
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -11,12 +10,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class HorizontalDirectionalEntityBlock extends OEBaseEntityBlock {
+public abstract class HorizontalDirectionalEquipmentEntityBlock extends EquipmentEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public HorizontalDirectionalEntityBlock(Properties properties) {
+    public HorizontalDirectionalEquipmentEntityBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
     @Override
