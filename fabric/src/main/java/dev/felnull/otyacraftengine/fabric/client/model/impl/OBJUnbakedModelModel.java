@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
@@ -96,7 +95,8 @@ public class OBJUnbakedModelModel implements UnbakedModel {
                 }
                 emitter.spriteColor(0, color, color, color, color);
                 emitter.material(renderer.materialFinder().find());
-                emitter.colorIndex(mtl.getTintIndex());
+                if (mtl != null)
+                    emitter.colorIndex(mtl.getTintIndex());
                 emitter.nominalFace(emitter.lightFace());
                 emitter.spriteBake(0, mtlSprite, MutableQuadView.BAKE_NORMALIZED | (modelState.isUvLocked() ? MutableQuadView.BAKE_LOCK_UV : 0));
 

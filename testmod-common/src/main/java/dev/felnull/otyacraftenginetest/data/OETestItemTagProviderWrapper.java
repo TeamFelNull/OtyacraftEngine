@@ -10,5 +10,6 @@ public class OETestItemTagProviderWrapper extends ItemTagProviderWrapper {
 
     @Override
     public void generateTag(ItemTagProviderAccess providerAccess) {
+
     }
 }

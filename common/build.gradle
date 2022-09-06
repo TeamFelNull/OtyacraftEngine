@@ -16,6 +16,7 @@ dependencies {
     modApi "me.shedaniel.cloth:cloth-config:8.0.75"
 
     implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    implementation "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     implementation 'com.madgag:animated-gif-lib:1.4'
 }
 
