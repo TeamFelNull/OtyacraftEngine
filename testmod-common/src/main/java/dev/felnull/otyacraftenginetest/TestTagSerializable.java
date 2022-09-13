@@ -9,7 +9,7 @@ public class TestTagSerializable implements TagSerializable {
     private String name = "";
     private int val;
 
-    public TestTagSerializable(){
+    public TestTagSerializable() {
     }
 
     public TestTagSerializable(String name, int val) {

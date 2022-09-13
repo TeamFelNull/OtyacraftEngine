@@ -4,7 +4,7 @@ import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.advancement.OECriteriaTriggers;
 import dev.felnull.otyacraftengine.handler.CommonHandler;
 import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
-import dev.felnull.otyacraftengine.natives.impl.FNJLNativesWrapperImpl;
+import dev.felnull.otyacraftengine.natives.fnjl.impl.FNJLNativesWrapperImpl;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;

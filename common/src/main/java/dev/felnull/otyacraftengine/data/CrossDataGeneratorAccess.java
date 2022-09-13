@@ -16,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 public interface CrossDataGeneratorAccess {
     @NotNull DataGenerator getVanillaGenerator();
 
-    void addProvider(@NotNull DataProvider dataProvider);
+    void addProvider(@NotNull DataGeneratorType dataGeneratorType, @NotNull DataProvider dataProvider);
 
     default void addProvider(@NotNull DataProviderWrapper<?> dataProviderWrapper) {
-        addProvider(dataProviderWrapper.getProvider());
+        addProvider(dataProviderWrapper.getGeneratorType(), dataProviderWrapper.getProvider());
     }
 
     Mod getMod();
@@ -29,4 +29,6 @@ public interface CrossDataGeneratorAccess {
     TagsProvider<Item> createItemTagProvider(ItemTagProviderWrapper itemTagProviderWrapper, @NotNull BlockTagProviderWrapper blockTagProviderWrapper);
 
     TagsProvider<Block> createBlockTagProvider(BlockTagProviderWrapper blockTagProviderWrapper);
+
+    boolean isInclude(DataGeneratorType type);
 }

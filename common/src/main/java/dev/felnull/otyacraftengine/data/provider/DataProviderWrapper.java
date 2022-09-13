@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import net.minecraft.data.DataProvider;
 
 public abstract class DataProviderWrapper<T extends DataProvider> {
@@ -15,4 +16,6 @@ public abstract class DataProviderWrapper<T extends DataProvider> {
     }
 
     public abstract T getProvider();
+
+    public abstract DataGeneratorType getGeneratorType();
 }

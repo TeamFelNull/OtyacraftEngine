@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.natives.impl;
+package dev.felnull.otyacraftengine.natives.fnjl.impl;
 
 import dev.felnull.fnjl.os.OSs;
 import dev.felnull.fnjl.util.FNDataUtil;
@@ -7,9 +7,9 @@ import dev.felnull.fnjln.FNNativesFont;
 import dev.felnull.fnjln.FNNativesSpecialFolder;
 import dev.felnull.fnjln.FelNullJavaLibraryNatives;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.natives.FNJLNFileChooserFilterWrapper;
-import dev.felnull.otyacraftengine.natives.FNJLNFileChooserFlagWrapper;
-import dev.felnull.otyacraftengine.natives.FNJLNativesWrapper;
+import dev.felnull.otyacraftengine.natives.fnjl.FNJLNFileChooserFilterWrapper;
+import dev.felnull.otyacraftengine.natives.fnjl.FNJLNFileChooserFlagWrapper;
+import dev.felnull.otyacraftengine.natives.fnjl.FNJLNativesWrapper;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFWNativeWin32;
 

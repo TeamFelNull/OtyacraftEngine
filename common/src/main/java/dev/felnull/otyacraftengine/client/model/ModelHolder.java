@@ -1,12 +1,12 @@
 package dev.felnull.otyacraftengine.client.model;
 
+import dev.felnull.otyacraftengine.client.callpoint.ModelRegister;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
-
 public interface ModelHolder {
+    @NotNull
     static ModelHolder create(@NotNull ResourceLocation location) {
         return new ModelHolderImpl(location);
     }
@@ -14,8 +14,5 @@ public interface ModelHolder {
     @NotNull
     BakedModel get();
 
-    @NotNull
-    ResourceLocation getLocation();
-
-    void setModelSupplier(Supplier<BakedModel> modelSupplier);
+    void registering(@NotNull ModelRegister register);
 }

@@ -38,6 +38,10 @@ public abstract class OEBaseBlockEntity extends BlockEntity implements IOEBaseFu
     }
 
     @Override
+    public void loadToUpdateTag(CompoundTag tag) {
+    }
+
+    @Override
     public CompoundTag getUpdateTag() {
         var tag = super.getUpdateTag();
         saveToUpdateTag(tag);

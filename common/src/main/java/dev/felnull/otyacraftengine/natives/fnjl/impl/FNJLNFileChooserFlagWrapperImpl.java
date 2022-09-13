@@ -1,6 +1,6 @@
-package dev.felnull.otyacraftengine.natives.impl;
+package dev.felnull.otyacraftengine.natives.fnjl.impl;
 
-import dev.felnull.otyacraftengine.natives.FNJLNFileChooserFlagWrapper;
+import dev.felnull.otyacraftengine.natives.fnjl.FNJLNFileChooserFlagWrapper;
 
 public class FNJLNFileChooserFlagWrapperImpl implements FNJLNFileChooserFlagWrapper {
     private boolean multiSelect;

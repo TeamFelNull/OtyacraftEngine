@@ -1,6 +1,6 @@
-package dev.felnull.otyacraftengine.natives.impl;
+package dev.felnull.otyacraftengine.natives.fnjl.impl;
 
-import dev.felnull.otyacraftengine.natives.FNJLNFileChooserFilterWrapper;
+import dev.felnull.otyacraftengine.natives.fnjl.FNJLNFileChooserFilterWrapper;
 
 public class FNJLNFileChooserFilterWrapperImpl implements FNJLNFileChooserFilterWrapper {
     private final String description;

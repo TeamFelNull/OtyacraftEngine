@@ -6,5 +6,6 @@ import dev.felnull.otyacraftenginetest.item.TestItems;
 public class TestItemRenderers {
     public static void init() {
         ItemRendererRegister.register(TestItems.TEST_RENDERER_ITEM, new TestItemRenderer());
+        ItemRendererRegister.register(TestItems.TEST_RENDERER_ITEM2, new TestModelsItemRenderer());
     }
 }

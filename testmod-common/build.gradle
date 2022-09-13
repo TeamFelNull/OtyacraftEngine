@@ -11,5 +11,6 @@ dependencies {
     implementation project(path: ":common", configuration: "namedElements")
 
     implementation "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    implementation "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     implementation 'com.madgag:animated-gif-lib:1.4'
 }

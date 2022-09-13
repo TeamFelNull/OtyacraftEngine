@@ -10,8 +10,10 @@ public interface ModelDeferredRegister {
         return new ModelDeferredRegisterImpl();
     }
 
+    void registering(@NotNull ModelRegister register);
+
     @NotNull
     ModelHolder register(@NotNull ResourceLocation location);
 
-    void registering(@NotNull ModelRegister register);
+    @NotNull <T extends ModelBundle> T register(@NotNull T bundle);
 }

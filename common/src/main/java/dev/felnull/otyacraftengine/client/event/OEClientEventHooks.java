@@ -63,4 +63,24 @@ public class OEClientEventHooks {
         var ret = wrapperAtomicReference.get();
         return ret != null ? ret : handRenderSelection;
     }
+
+    public static boolean onCheckTextureURL(String url) {
+        return TextureEvent.CHECK_TEXTURE_URL.invoker().onCheckURL(url).isTrue();
+    }
+
+    public static String onSwapTextureURL(String url) {
+        String[] nurl = {url};
+        TextureEvent.SWAP_TEXTURE_URL.invoker().onSwapURL(url, new TextureEvent.TextureURLSwapper() {
+            @Override
+            public void setURL(String url) {
+                nurl[0] = url;
+            }
+
+            @Override
+            public String getURL() {
+                return nurl[0];
+            }
+        });
+        return nurl[0];
+    }
 }

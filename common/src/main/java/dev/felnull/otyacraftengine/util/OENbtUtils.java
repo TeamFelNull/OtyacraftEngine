@@ -72,10 +72,14 @@ public class OENbtUtils {
     public static <T> List<T> readList(@NotNull CompoundTag tag, @NotNull String name, @Nullable List<T> list, @NotNull Function<Tag, T> reader, int num) {
         if (list != null) list.clear();
         else list = new ArrayList<>();
-        ListTag listTag = tag.getList(name, num);
-        for (Tag lstag : listTag) {
-            list.add(reader.apply(lstag));
+
+        if (tag.contains(name, Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList(name, num);
+            for (Tag lstag : listTag) {
+                list.add(reader.apply(lstag));
+            }
         }
+
         return list;
     }
 

@@ -9,10 +9,7 @@ public interface IClientSyncableBlockEntity {
 
     void saveToUpdateTag(CompoundTag tag);
 
-    default void loadToUpdateTag(CompoundTag tag) {
-        if (this instanceof BlockEntity blockEntity)
-            blockEntity.load(tag);
-    }
+    void loadToUpdateTag(CompoundTag tag);
 
     default void syncToClient() {
         if (this instanceof BlockEntity blockEntity && isSyncUpdate())

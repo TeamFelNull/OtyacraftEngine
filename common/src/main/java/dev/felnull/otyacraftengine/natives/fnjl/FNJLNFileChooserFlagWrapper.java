@@ -1,6 +1,6 @@
-package dev.felnull.otyacraftengine.natives;
+package dev.felnull.otyacraftengine.natives.fnjl;
 
-import dev.felnull.otyacraftengine.natives.impl.FNJLNFileChooserFlagWrapperImpl;
+import dev.felnull.otyacraftengine.natives.fnjl.impl.FNJLNFileChooserFlagWrapperImpl;
 
 public interface FNJLNFileChooserFlagWrapper {
     static FNJLNFileChooserFlagWrapper create() {

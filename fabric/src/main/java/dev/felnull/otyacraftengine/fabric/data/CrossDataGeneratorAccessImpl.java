@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.fabric.data;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
@@ -34,7 +35,7 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
-    public void addProvider(@NotNull DataProvider dataProvider) {
+    public void addProvider(@NotNull DataGeneratorType dataGeneratorType, @NotNull DataProvider dataProvider) {
         fabricDataGenerator.addProvider(dataProvider);
     }
 
@@ -60,5 +61,10 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     @Override
     public TagsProvider<Block> createBlockTagProvider(BlockTagProviderWrapper blockTagProviderWrapper) {
         return new WrappedFabricBlockTagProvider(fabricDataGenerator, blockTagProviderWrapper);
+    }
+
+    @Override
+    public boolean isInclude(DataGeneratorType type) {
+        return true;
     }
 }

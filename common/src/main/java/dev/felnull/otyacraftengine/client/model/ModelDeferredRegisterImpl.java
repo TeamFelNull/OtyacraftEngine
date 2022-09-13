@@ -5,16 +5,12 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @ApiStatus.Internal
 public class ModelDeferredRegisterImpl implements ModelDeferredRegister {
-    private static final List<ModelHolder> MODELS = new ArrayList<>();
-
-    protected ModelDeferredRegisterImpl() {
-
-    }
+    private static final Set<ModelHolder> MODELS = new HashSet<>();
 
     @Override
     public @NotNull ModelHolder register(@NotNull ResourceLocation location) {
@@ -24,9 +20,15 @@ public class ModelDeferredRegisterImpl implements ModelDeferredRegister {
     }
 
     @Override
+    public <T extends ModelBundle> @NotNull T register(@NotNull T bundle) {
+        MODELS.addAll(bundle.getAllHolders());
+        return bundle;
+    }
+
+    @Override
     public void registering(@NotNull ModelRegister register) {
         for (ModelHolder model : MODELS) {
-            model.setModelSupplier(register.addAndGetModel(model.getLocation()));
+            model.registering(register);
         }
     }
 }

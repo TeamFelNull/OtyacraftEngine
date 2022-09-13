@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.forge.data;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
@@ -34,9 +35,9 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
-    public void addProvider(@NotNull DataProvider dataProvider) {
+    public void addProvider(@NotNull DataGeneratorType dataGeneratorType, @NotNull DataProvider dataProvider) {
         var gen = gatherDataEvent.getGenerator();
-        gen.addProvider(gatherDataEvent.includeServer(), dataProvider);
+        gen.addProvider(isInclude(dataGeneratorType), dataProvider);
     }
 
     @Override
@@ -60,5 +61,15 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     @Override
     public TagsProvider<Block> createBlockTagProvider(BlockTagProviderWrapper blockTagProviderWrapper) {
         return new WrappedBlockTagProvider(getVanillaGenerator(), gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), blockTagProviderWrapper);
+    }
+
+    @Override
+    public boolean isInclude(DataGeneratorType type) {
+        return switch (type) {
+            case CLIENT -> gatherDataEvent.includeClient();
+            case SERVER -> gatherDataEvent.includeServer();
+            case DEV -> gatherDataEvent.includeDev();
+            case REPORT -> gatherDataEvent.includeReports();
+        };
     }
 }

@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,11 @@ public abstract class TagProviderWrapper<T, A extends TagProviderWrapper.TagProv
 
     public static interface TagProviderAccess<T> {
         TagAppenderWrapper<T> tag(TagKey<T> tagKey);
+    }
+
+    @Override
+    public DataGeneratorType getGeneratorType() {
+        return DataGeneratorType.SERVER;
     }
 
     public static interface TagAppenderWrapper<T> {

@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -22,6 +23,11 @@ public abstract class RecipeProviderWrapper extends DataProviderWrapper<RecipePr
     @Override
     public RecipeProvider getProvider() {
         return this.recipeProvider;
+    }
+
+    @Override
+    public DataGeneratorType getGeneratorType() {
+        return DataGeneratorType.SERVER;
     }
 
     public abstract void generateRecipe(Consumer<FinishedRecipe> exporter, RecipeProviderAccess providerAccess);

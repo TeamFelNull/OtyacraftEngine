@@ -63,6 +63,12 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
     }
 
     @Override
+    public void loadToUpdateTag(CompoundTag tag) {
+        getItems().clear();
+        ContainerHelper.loadAllItems(tag, getItems());
+    }
+
+    @Override
     public boolean isSyncUpdate() {
         return true;
     }
@@ -123,6 +129,7 @@ public abstract class OEBaseContainerBlockEntity extends BaseContainerBlockEntit
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
+        getItems().clear();
         ContainerHelper.loadAllItems(tag, getItems());
     }
 

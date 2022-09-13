@@ -36,7 +36,9 @@ dependencies {
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
 
     runtimeClasspath "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    runtimeClasspath "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     runtimeClasspath 'com.madgag:animated-gif-lib:1.4'
     forgeDependencies "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    forgeDependencies "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     forgeDependencies 'com.madgag:animated-gif-lib:1.4'
 }

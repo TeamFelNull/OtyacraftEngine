@@ -4,9 +4,9 @@ import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import net.minecraftforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class CrossDataGeneratorAccesses {
+public interface CrossDataGeneratorAccesses {
     @NotNull
-    public static CrossDataGeneratorAccess create(GatherDataEvent gatherDataEvent) {
+    static CrossDataGeneratorAccess create(GatherDataEvent gatherDataEvent) {
         return new CrossDataGeneratorAccessImpl(gatherDataEvent);
     }
 }

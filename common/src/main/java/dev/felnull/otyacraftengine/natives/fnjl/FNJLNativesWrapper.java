@@ -1,6 +1,6 @@
-package dev.felnull.otyacraftengine.natives;
+package dev.felnull.otyacraftengine.natives.fnjl;
 
-import dev.felnull.otyacraftengine.natives.impl.FNJLNativesWrapperImpl;
+import dev.felnull.otyacraftengine.natives.fnjl.impl.FNJLNativesWrapperImpl;
 
 import java.io.File;
 import java.nio.file.Path;

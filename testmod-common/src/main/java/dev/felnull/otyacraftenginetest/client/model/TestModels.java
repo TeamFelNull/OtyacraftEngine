@@ -11,6 +11,7 @@ public class TestModels {
     public static ModelHolder KAMESUTA_MODEL = REGISTER.register(new ResourceLocation(OtyacraftEngineTest.MODID, "block/test_model"));
     public static ModelHolder KAMESUTA_ANTENNA_MODEL = REGISTER.register(new ResourceLocation(OtyacraftEngineTest.MODID, "item/kamesuta_antenna"));
     public static ModelHolder SEA_CHICKEN_MODEL = REGISTER.register(new ResourceLocation(OtyacraftEngineTest.MODID, "item/sea_chicken"));
+    public static TestModelBundle TEST_MODELS = REGISTER.register(new TestModelBundle());
 
     public static void init(ModelRegister register) {
         REGISTER.registering(register);

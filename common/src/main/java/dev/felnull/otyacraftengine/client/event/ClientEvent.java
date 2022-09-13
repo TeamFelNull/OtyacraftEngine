@@ -48,9 +48,7 @@ public interface ClientEvent {
     }
 
     enum HandRenderSelectionWrapper {
-        RENDER_BOTH_HANDS,
-        RENDER_MAIN_HAND_ONLY,
-        RENDER_OFF_HAND_ONLY;
+        RENDER_BOTH_HANDS, RENDER_MAIN_HAND_ONLY, RENDER_OFF_HAND_ONLY;
 
         public static HandRenderSelectionWrapper onlyForHand(InteractionHand interactionHand) {
             return interactionHand == InteractionHand.MAIN_HAND ? RENDER_MAIN_HAND_ONLY : RENDER_OFF_HAND_ONLY;

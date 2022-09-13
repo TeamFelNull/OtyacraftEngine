@@ -6,12 +6,12 @@ import dev.felnull.fnjl.util.FNDataUtil;
 import dev.felnull.fnjl.util.FNStringUtil;
 import dev.felnull.fnjl.util.FNURLUtil;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
 import dev.felnull.otyacraftengine.util.FlagThread;
 import dev.felnull.otyacraftengine.util.OEPaths;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
@@ -21,8 +21,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class URLTextureManager {
@@ -34,7 +32,6 @@ public class URLTextureManager {
     private final List<URLTextureLoader> URL_TEXTURE_LOADERS = new ArrayList<>();
     private final List<LoadURLEntry> WAIT_LOAD_URLS = new ArrayList<>();
     private final List<LoadURLEntry> REMOVE_WAIT_URLS = new ArrayList<>();
-    private final List<Supplier<String>> ALLOW_URL_REGEX = new ArrayList<>();
     private Function<String, String> HASH_CACHE = createHashMemoize();
     private boolean dirtyFileCache;
     private long lastSave = -1;
@@ -48,12 +45,6 @@ public class URLTextureManager {
     public void init() {
         loadIndex();
         optimizationFileCache();
-
-        addAllowUrlRegex(() -> OtyacraftEngine.getConfig().getClientConfig().getUrlTextureConfig().getUrlRegex());
-    }
-
-    public void addAllowUrlRegex(@NotNull Supplier<String> regex) {
-        ALLOW_URL_REGEX.add(Objects.requireNonNull(regex));
     }
 
     public void tick() {
@@ -233,6 +224,11 @@ public class URLTextureManager {
             OtyacraftEngine.LOGGER.info(String.format("Removed %s unnecessary URL Texture Cache files in %sms.", ct, System.currentTimeMillis() - st));
     }
 
+    public void reload() {
+        saveIndex();
+        clear();
+    }
+
     public synchronized void clear() {
         HASH_CACHE = createHashMemoize();
         synchronized (URL_TEXTURE_LOADERS) {
@@ -277,18 +273,25 @@ public class URLTextureManager {
         });
     }
 
-    private void checkUrlText(String url) {
+    private void checkUrl(String url) {
         if (url.length() > 300)
             throw new IllegalArgumentException("URL is too long");
 
-        if (ALLOW_URL_REGEX.stream().map(n -> Pattern.compile(n.get()).matcher(url)).noneMatch(Matcher::matches))
-            throw new IllegalArgumentException("Not allowed URL regex");
+        //if (ALLOW_URL_REGEX.stream().map(n -> Pattern.compile(n.get()).matcher(url)).noneMatch(Matcher::matches))
+        //    throw new IllegalArgumentException("Not allowed URL regex");
+
+        boolean oea = Pattern.compile(OtyacraftEngine.getConfig().getClientConfig().getUrlTextureConfig().getUrlRegex()).matcher(url).matches();
+        boolean eva = OEClientEventHooks.onCheckTextureURL(url);
+        boolean aflg = oea || eva;
+
+        if (!aflg)
+            throw new IllegalArgumentException("Not allowed URL");
     }
 
     private Pair<String, URLTextureLoadResult> loadUrlTexture(String url, boolean cached, Consumer<TextureLoadProgress> progress) {
         var hash = HASH_CACHE.apply(url);
         try {
-            checkUrlText(url);
+            checkUrl(url);
         } catch (Exception ex) {
             return Pair.of(hash, new URLTextureLoadResult(ex, false, null, UUID.randomUUID()));
         }
@@ -314,7 +317,7 @@ public class URLTextureManager {
         InputStream stream;
         long length;
         try {
-            var con = FNURLUtil.getConnection(new URL(url));
+            var con = FNURLUtil.getConnection(new URL(OEClientEventHooks.onSwapTextureURL(url)));
             length = con.getContentLengthLong();
             long max = 1024L * 1024L * 10;
             if (length > max)
