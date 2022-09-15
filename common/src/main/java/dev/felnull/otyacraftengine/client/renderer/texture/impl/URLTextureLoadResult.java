@@ -1,5 +1,7 @@
-package dev.felnull.otyacraftengine.client.renderer.texture;
+package dev.felnull.otyacraftengine.client.renderer.texture.impl;
 
+import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadProgress;
+import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadResult;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.UUID;
@@ -76,7 +78,7 @@ public class URLTextureLoadResult implements TextureLoadResult {
         return loadResult;
     }
 
-    protected void setProgress(TextureLoadProgress progress) {
+    public void setProgress(TextureLoadProgress progress) {
         this.progress = progress;
     }
 }

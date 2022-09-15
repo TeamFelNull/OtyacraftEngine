@@ -35,7 +35,7 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
     protected int selectedEntryIndex = -1;
 
     public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable, FixedListWidget<E> old) {
-        this(x, y, width, height, message, entryShowCount, entryList, entryName, onPressEntry, selectable, TextureSpecify.create(WIDGETS, 40, 34, 18, 42), old);
+        this(x, y, width, height, message, entryShowCount, entryList, entryName, onPressEntry, selectable, TextureSpecify.createRelative(WIDGETS, 40, 34, 18, 42), old);
     }
 
     public FixedListWidget(int x, int y, int width, int height, @NotNull Component message, int entryShowCount, @NotNull List<E> entryList, @NotNull Function<E, Component> entryName, @Nullable PressEntry<E> onPressEntry, boolean selectable, @NotNull TextureSpecify texture, FixedListWidget<E> old) {

@@ -162,14 +162,14 @@ public class OERenderUtils {
      * @param y             Y
      * @param u0            テクスチャの開始地点X
      * @param v0            テクスチャの開始地点Y
-     * @param u1            テクスチャの終了地点X
-     * @param v1            テクスチャの終了地点Y
+     * @param ru1           相対テクスチャの終了地点X
+     * @param rv1           相対テクスチャの終了地点Y
      * @param textureWidth  テクスチャの横サイズ
      * @param textureHeight テクスチャの縦サイズ
      */
-    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
+    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float ru1, float rv1, float textureWidth, float textureHeight) {
         setPreDraw(location);
-        blitFloat(poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight);
+        blitFloat(poseStack, x, y, u0, v0, ru1, rv1, textureWidth, textureHeight);
     }
 
     /**
@@ -180,13 +180,13 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param x         X
      * @param y         Y
-     * @param u0        テクスチャの開始地点X
-     * @param v0        テクスチャの開始地点Y
-     * @param u1        テクスチャの終了地点X
-     * @param v1        テクスチャの終了地点Y
+     * @param ru0       相対テクスチャの開始地点X
+     * @param rv0       相対テクスチャの開始地点Y
+     * @param ru1        テクスチャの終了地点X
+     * @param rv1        テクスチャの終了地点Y
      */
-    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
-        drawTexture(location, poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float ru0, float rv0, float ru1, float rv1) {
+        drawTexture(location, poseStack, x, y, ru0, rv0, ru1, rv1, 256, 256);
     }
 
     /**
@@ -223,13 +223,13 @@ public class OERenderUtils {
      * @param y             Y
      * @param u0            テクスチャの開始地点X
      * @param v0            テクスチャの開始地点Y
-     * @param u1            テクスチャの終了地点X
-     * @param v1            テクスチャの終了地点Y
+     * @param ru1           相対テクスチャの終了地点X
+     * @param rv1           相対テクスチャの終了地点Y
      * @param textureWidth  テクスチャの横サイズ
      * @param textureHeight テクスチャの縦サイズ
      */
-    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
-        setAndDrawAlpha(location, () -> blitFloat(poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight));
+    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float ru1, float rv1, float textureWidth, float textureHeight) {
+        setAndDrawAlpha(location, () -> blitFloat(poseStack, x, y, u0, v0, ru1, rv1, textureWidth, textureHeight));
     }
 
     /**
@@ -240,13 +240,13 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param x         X
      * @param y         Y
-     * @param u0        テクスチャの開始地点X
-     * @param v0        テクスチャの開始地点Y
-     * @param u1        テクスチャの終了地点X
-     * @param v1        テクスチャの終了地点Y
+     * @param u0        相対テクスチャの開始地点X
+     * @param v0        相対テクスチャの開始地点Y
+     * @param ru1       テクスチャの終了地点X
+     * @param rv1       テクスチャの終了地点Y
      */
-    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
-        drawTextureAlpha(location, poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    public static void drawTextureAlpha(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float u0, float v0, float ru1, float rv1) {
+        drawTextureAlpha(location, poseStack, x, y, u0, v0, ru1, rv1, 256, 256);
     }
 
     /**
@@ -257,19 +257,19 @@ public class OERenderUtils {
      * @param y             Y
      * @param u0            テクスチャの開始地点X
      * @param v0            テクスチャの開始地点Y
-     * @param u1            テクスチャの終了地点X
-     * @param v1            テクスチャの終了地点Y
+     * @param rvu1          相対テクスチャの終了地点X
+     * @param rvv1          相対テクスチャの終了地点Y
      * @param textureWidth  テクスチャの横サイズ
      * @param textureHeight テクスチャの縦サイズ
      */
-    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1, float textureWidth, float textureHeight) {
+    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float u0, float v0, float rvu1, float rvv1, float textureWidth, float textureHeight) {
         Matrix4f matrix4f = poseStack.last().pose();
-        float ry = x + u1;
-        float rh = y + v1;
+        float ry = x + rvu1;
+        float rh = y + rvv1;
         float ru0 = u0 / textureWidth;
-        float ru1 = (u0 + u1) / textureWidth;
+        float ru1 = (u0 + rvu1) / textureWidth;
         float rv0 = v0 / textureHeight;
-        float rv1 = (v0 + v1) / textureHeight;
+        float rv1 = (v0 + rvv1) / textureHeight;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
@@ -288,13 +288,13 @@ public class OERenderUtils {
      * @param poseStack PoseStack
      * @param x         X
      * @param y         Y
-     * @param u0        テクスチャの開始地点X
-     * @param v0        テクスチャの開始地点Y
-     * @param u1        テクスチャの終了地点X
-     * @param v1        テクスチャの終了地点Y
+     * @param ru0       テクスチャの開始地点X
+     * @param rv0       テクスチャの開始地点Y
+     * @param u1        相対テクスチャの終了地点X
+     * @param v1        相対テクスチャの終了地点Y
      */
-    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float u0, float v0, float u1, float v1) {
-        blitFloat(poseStack, x, y, u0, v0, u1, v1, 256, 256);
+    public static void blitFloat(@NotNull PoseStack poseStack, float x, float y, float ru0, float rv0, float u1, float v1) {
+        blitFloat(poseStack, x, y, ru0, rv0, u1, v1, 256, 256);
     }
 
     /**

@@ -16,15 +16,15 @@ public interface TextureLoadResult {
     Exception getException();
 
     @NotNull
-    default ResourceLocation of(@NotNull ResourceLocation loading, @NotNull ResourceLocation error) {
-        if (isLoading()) return loading;
-        if (isError()) return error;
+    default ResourceLocation of(@NotNull ResourceLocation loadingLocation, @NotNull ResourceLocation errorlLocation) {
+        if (isLoading()) return loadingLocation;
+        if (isError()) return errorlLocation;
         return getLocation();
     }
 
     @NotNull
-    default ResourceLocation of(@NotNull ResourceLocation error) {
-        return of(OETextureUtils.getLoadingIcon(), error);
+    default ResourceLocation of(@NotNull ResourceLocation errorLocation) {
+        return of(OETextureUtils.getLoadingIcon(), errorLocation);
     }
 
     @NotNull

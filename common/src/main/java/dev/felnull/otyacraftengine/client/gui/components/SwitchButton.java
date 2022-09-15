@@ -18,7 +18,7 @@ public class SwitchButton extends OEBaseImageWidget {
     private boolean enable;
 
     public SwitchButton(int x, int y, @NotNull Component message, @Nullable Consumer<SwitchButton> onPress, boolean showLabel) {
-        this(x, y, message, onPress, showLabel, TextureSpecify.create(WIDGETS, 40, 0, 40, 34));
+        this(x, y, message, onPress, showLabel, TextureSpecify.createRelative(WIDGETS, 40, 0, 40, 34));
     }
 
     public SwitchButton(int x, int y, @NotNull Component message, @Nullable Consumer<SwitchButton> onPress, boolean showLabel, @NotNull TextureSpecify texture) {

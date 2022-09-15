@@ -1,5 +1,7 @@
-package dev.felnull.otyacraftengine.client.renderer.texture;
+package dev.felnull.otyacraftengine.client.renderer.texture.impl;
 
+import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadProgress;
+import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadResult;
 import net.minecraft.resources.ResourceLocation;
 
 public class NativeTextureLoadResult implements TextureLoadResult {
@@ -51,7 +53,7 @@ public class NativeTextureLoadResult implements TextureLoadResult {
         return exception != null;
     }
 
-    protected void setProgress(TextureLoadProgress progress) {
+    public void setProgress(TextureLoadProgress progress) {
         this.progress = progress;
     }
 }

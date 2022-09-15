@@ -1,4 +1,6 @@
-package dev.felnull.otyacraftengine.client.renderer.texture;
+package dev.felnull.otyacraftengine.client.renderer.texture.impl;
+
+import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadProgress;
 
 public class TextureLoadProgressImpl implements TextureLoadProgress {
     private String stateName;

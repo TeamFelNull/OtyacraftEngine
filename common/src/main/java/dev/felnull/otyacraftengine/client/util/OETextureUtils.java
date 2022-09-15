@@ -7,6 +7,8 @@ import dev.felnull.fnjl.util.FNMath;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
 import dev.felnull.otyacraftengine.client.renderer.texture.*;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.NativeTextureLoadResult;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.TextureLoadProgressImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -116,8 +118,8 @@ public class OETextureUtils {
      * @return テクスチャ結果
      */
     @NotNull
-    public static URLTextureLoadResult getAndLoadURLTextureAsync(@NotNull String url, boolean cached) {
-        return URLTextureManager.getInstance().getAndLoadUrlTextureAsync(url, cached);
+    public static TextureLoadResult getAndLoadURLTextureAsync(@NotNull String url, boolean cached) {
+        return URLTextureManager.getInstance().getAndAsyncLoad(url, cached);
     }
 
     /**

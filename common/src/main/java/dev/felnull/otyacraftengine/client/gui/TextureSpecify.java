@@ -21,6 +21,14 @@ public interface TextureSpecify {
         return new TextureSpecifyImpl(location, u0, v0, u1, v1, 256, 256, false);
     }
 
+    static TextureSpecify createRelative(@NotNull ResourceLocation location, float u0, float v0, float ru1, float rv1) {
+        return new TextureSpecifyImpl(location, u0, v0, u0 + ru1, v0 + rv1, 256, 256, false);
+    }
+
+    static TextureSpecify createRelative(@NotNull ResourceLocation location, float u0, float v0, float ru1, float rv1, boolean alpha) {
+        return new TextureSpecifyImpl(location, u0, v0, u0 + ru1, v0 + rv1, 256, 256, alpha);
+    }
+
     void draw(@NotNull PoseStack poseStack, float x, float y);
 
     void draw(@NotNull PoseStack poseStack, float x, float y, float width, float height);

@@ -1,30 +1,14 @@
 package dev.felnull.otyacraftengine;
 
-import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.client.debug.HighlightVoxelShapeType;
-import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 
 @Config(name = OtyacraftEngine.MODID)
 @Config.Gui.Background(OtyacraftEngine.MODID + ":textures/gui/config_background.png")
 public class OEConfig extends PartitioningSerializer.GlobalData {
-    public static void clientInit() {
-        Platform.getMod(OtyacraftEngine.MODID).registerConfigurationScreen(parent -> {
-            ConfigScreenProvider<OEConfig> provider = (ConfigScreenProvider<OEConfig>) AutoConfig.getConfigScreen(OEConfig.class, parent);
-
-            provider.setBuildFunction(builder -> {
-                builder.setGlobalized(true);
-                builder.setGlobalizedExpanded(false);
-                return builder.build();
-            });
-
-            return provider.get();
-        });
-    }
 
     @ConfigEntry.Category("client")
     @ConfigEntry.Gui.TransitiveObject

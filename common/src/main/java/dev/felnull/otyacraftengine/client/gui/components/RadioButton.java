@@ -22,7 +22,7 @@ public class RadioButton extends OEBaseImageWidget {
     private boolean selected;
 
     public RadioButton(int x, int y, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel) {
-        this(x, y, 20, 20, message, onPress, group, showLabel, TextureSpecify.create(WIDGETS, 0, 0, 20, 20));
+        this(x, y, 20, 20, message, onPress, group, showLabel, TextureSpecify.createRelative(WIDGETS, 0, 0, 20, 20));
     }
 
     public RadioButton(int x, int y, int width, int height, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel, @NotNull TextureSpecify texture) {
@@ -34,7 +34,7 @@ public class RadioButton extends OEBaseImageWidget {
 
     @Override
     public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f) {
-        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, x, y, texture.getU0() + (this.isHoveredOrFocused() ? 20 : 0), texture.getV0() + (this.selected ? 20 : 0), texture.getU1(), texture.getV1(), texture.getTextureWidth(), texture.getTextureHeight());
+        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, x, y, texture.getU0() + (this.isHoveredOrFocused() ? 20 : 0), texture.getV0() + (this.selected ? 20 : 0), texture.getWidth(), texture.getHeight(), texture.getTextureWidth(), texture.getTextureHeight());
         this.renderBg(poseStack, mc, i, j);
         if (this.showLabel)
             drawTextBase(poseStack, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);

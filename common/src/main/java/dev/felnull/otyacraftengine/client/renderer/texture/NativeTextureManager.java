@@ -1,6 +1,8 @@
 package dev.felnull.otyacraftengine.client.renderer.texture;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.NativeTextureLoadResult;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.TextureLoadProgressImpl;
 import dev.felnull.otyacraftengine.client.util.OETextureUtils;
 import dev.felnull.otyacraftengine.util.FlagThread;
 import net.minecraft.client.Minecraft;

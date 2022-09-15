@@ -38,7 +38,7 @@ public class TestCode1Screen extends Screen {
         OERenderUtils.drawTexture(OETextureUtils.getPlayerTexture(MinecraftProfileTexture.Type.SKIN, morimoriName), poseStack, sizeW, sizeH, 0, 0, sizeW, sizeH, sizeW, sizeH);
         OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL, false).of(), poseStack, sizeW, sizeH * 2, 0, 0, sizeW, sizeH, sizeW, sizeH);
 
-        OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL2, false).of(), poseStack, sizeW * 2, 0, 0, 0, sizeW, sizeH, sizeW, sizeH);
+        OERenderUtils.drawTexture(OETextureUtils.getAndLoadURLTextureAsync(testURL2, true).of(), poseStack, sizeW * 2, 0, 0, 0, sizeW, sizeH, sizeW, sizeH);
 
         super.render(poseStack, i, j, f);
     }

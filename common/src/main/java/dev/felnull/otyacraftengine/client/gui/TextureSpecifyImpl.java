@@ -12,9 +12,9 @@ public record TextureSpecifyImpl(@NotNull ResourceLocation location, float u0, f
     @Override
     public void draw(@NotNull PoseStack poseStack, float x, float y) {
         if (alpha) {
-            OERenderUtils.drawTextureAlpha(location, poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight);
+            OERenderUtils.drawTextureAlpha(location, poseStack, x, y, u0, v0, getWidth(), getHeight(), textureWidth, textureHeight);
         } else {
-            OERenderUtils.drawTexture(location, poseStack, x, y, u0, v0, u1, v1, textureWidth, textureHeight);
+            OERenderUtils.drawTexture(location, poseStack, x, y, u0, v0, getWidth(), getHeight(), textureWidth, textureHeight);
         }
     }
 
@@ -24,9 +24,9 @@ public record TextureSpecifyImpl(@NotNull ResourceLocation location, float u0, f
         float scY = height / (v1 - v0);
 
         if (alpha) {
-            OERenderUtils.drawTextureAlpha(location, poseStack, x, y, u0 * scX, v0 * scY, u1 * scX, v1 * scY, textureWidth * scX, textureHeight * scY);
+            OERenderUtils.drawTextureAlpha(location, poseStack, x, y, u0 * scX, v0 * scY, getWidth() * scX, getHeight() * scY, textureWidth * scX, textureHeight * scY);
         } else {
-            OERenderUtils.drawTexture(location, poseStack, x, y, u0 * scX, v0 * scY, u1 * scX, v1 * scY, textureWidth * scX, textureHeight * scY);
+            OERenderUtils.drawTexture(location, poseStack, x, y, u0 * scX, v0 * scY, getWidth() * scX, getHeight() * scY, textureWidth * scX, textureHeight * scY);
         }
     }
 

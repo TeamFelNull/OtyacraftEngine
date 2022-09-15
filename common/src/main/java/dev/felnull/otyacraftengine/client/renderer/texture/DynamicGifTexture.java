@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.client.renderer.texture;
 import com.madgag.gif.fmsware.GifDecoder;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.felnull.fnjl.util.FNImageUtil;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.TextureLoadProgressImpl;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.Tickable;
 import net.minecraft.util.Mth;
