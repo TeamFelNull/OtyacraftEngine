@@ -2,10 +2,14 @@ accessWidener   v2  named
 accessible field net/minecraft/client/renderer/texture/DynamicTexture pixels Lcom/mojang/blaze3d/platform/NativeImage;
 accessible field net/minecraft/client/renderer/texture/TextureManager byPath Ljava/util/Map;
 accessible field net/minecraft/client/renderer/texture/TextureManager tickableTextures Ljava/util/Set;
+accessible field net/minecraft/world/entity/ai/village/poi/PoiTypes ALL_STATES Ljava/util/Set;
+accessible field net/minecraft/world/entity/ai/village/poi/PoiTypes TYPE_BY_STATE Ljava/util/Map;
 
 accessible method net/minecraft/client/renderer/texture/TextureManager safeClose (Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/client/renderer/texture/AbstractTexture;)V
 accessible method net/minecraft/client/renderer/block/model/ItemTransforms$Deserializer <init> ()V
 accessible method net/minecraft/client/renderer/block/model/ItemTransform$Deserializer <init> ()V
+accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes getBlockStates (Lnet/minecraft/world/level/block/Block;)Ljava/util/Set;
+accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;)V
 
 accessible class net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems
 accessible class net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds

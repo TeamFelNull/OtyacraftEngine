@@ -9,10 +9,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-public class WrappedBlockTagProvider extends BlockTagsProvider {
+public class WrappedBlockTagsProvider extends BlockTagsProvider {
     private final BlockTagProviderWrapper tagProviderWrapper;
 
-    public WrappedBlockTagProvider(DataGenerator arg, String modId, @Nullable ExistingFileHelper existingFileHelper, BlockTagProviderWrapper tagProviderWrapper) {
+    public WrappedBlockTagsProvider(DataGenerator arg, String modId, @Nullable ExistingFileHelper existingFileHelper, BlockTagProviderWrapper tagProviderWrapper) {
         super(arg, modId, existingFileHelper);
         this.tagProviderWrapper = tagProviderWrapper;
     }
@@ -25,7 +25,7 @@ public class WrappedBlockTagProvider extends BlockTagsProvider {
     private class BlockTagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<Block> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Block> tag(TagKey<Block> tagKey) {
-            return new WrappedTagProvider.TagAppenderWrapperImpl<>(WrappedBlockTagProvider.this.tag(tagKey));
+            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(WrappedBlockTagsProvider.this.tag(tagKey));
         }
     }
 }

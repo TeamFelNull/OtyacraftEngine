@@ -4,10 +4,10 @@ import dev.felnull.otyacraftengine.client.callpoint.ModelRegister;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public interface ModelDeferredRegister {
+public interface ModelCollectiveRegister {
     @NotNull
-    static ModelDeferredRegister create() {
-        return new ModelDeferredRegisterImpl();
+    static ModelCollectiveRegister create() {
+        return new ModelCollectiveRegisterImpl();
     }
 
     void registering(@NotNull ModelRegister register);

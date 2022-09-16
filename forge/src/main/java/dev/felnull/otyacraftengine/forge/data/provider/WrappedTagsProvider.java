@@ -10,10 +10,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
-public class WrappedTagProvider<T> extends TagsProvider<T> {
+public class WrappedTagsProvider<T> extends TagsProvider<T> {
     private final TagProviderWrapper<T, TagProviderWrapper.TagProviderAccess<T>> tagProviderWrapper;
 
-    protected WrappedTagProvider(DataGenerator arg, Registry<T> arg2, String modId, @Nullable ExistingFileHelper existingFileHelper, TagProviderWrapper<T, TagProviderWrapper.TagProviderAccess<T>> tagProviderWrapper) {
+    protected WrappedTagsProvider(DataGenerator arg, Registry<T> arg2, String modId, @Nullable ExistingFileHelper existingFileHelper, TagProviderWrapper<T, TagProviderWrapper.TagProviderAccess<T>> tagProviderWrapper) {
         super(arg, arg2, modId, existingFileHelper);
         this.tagProviderWrapper = tagProviderWrapper;
     }
@@ -26,7 +26,7 @@ public class WrappedTagProvider<T> extends TagsProvider<T> {
     private class TagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<T> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<T> tag(TagKey<T> tagKey) {
-            return new TagAppenderWrapperImpl<>(WrappedTagProvider.this.tag(tagKey));
+            return new TagAppenderWrapperImpl<>(WrappedTagsProvider.this.tag(tagKey));
         }
     }
 

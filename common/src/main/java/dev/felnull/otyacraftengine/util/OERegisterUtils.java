@@ -3,19 +3,19 @@ package dev.felnull.otyacraftengine.util;
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.felnull.otyacraftengine.blockentity.BlockEntityCreateSupplier;
 import dev.felnull.otyacraftengine.explatform.OERegisterExpectPlatform;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -40,5 +40,13 @@ public class OERegisterUtils {
 
     public static VillagerTrades.ItemListing createTradeItemsForEmeralds(ItemStack itemStack, int emeraldCost, int numberOfItems, int maxUses, int villagerXp) {
         return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
+    }
+
+    public static Set<BlockState> getPoiTypeBlockStates(Block block) {
+        return PoiTypes.getBlockStates(block);
+    }
+
+    public static void registerPoiTypeBlockStates(@NotNull RegistrySupplier<PoiType> poiTypeRegistrySupplier) {
+        OERegisterExpectPlatform.registerPoiTypeBlockStates(poiTypeRegistrySupplier);
     }
 }

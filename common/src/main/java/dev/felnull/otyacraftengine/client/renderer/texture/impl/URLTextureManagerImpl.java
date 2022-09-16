@@ -310,15 +310,15 @@ public class URLTextureManagerImpl implements URLTextureManager {
 
     private Pair<InputStream, Long> connect(String url) throws IOException {
         var con = FNURLUtil.getConnection(new URL(OEClientEventHooks.onSwapTextureURL(url)));
-        long length = con.getContentLengthLong();
-
-        if (length <= 0) length = 1;
-
         long max = 1024L * 1024L * 10;
 
-        if (length > max) throw new IOException("Size Over: " + max + "byte" + " current: " + length + "byte");
+        try (InputStream in = con.getInputStream(); InputStream bin = new BufferedInputStream(in); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            long size = FNDataUtil.inputToOutputLimit(bin, out, (int) max);
+            if (size <= -1)
+                throw new IOException("Size Over: " + max + "byte");
 
-        return Pair.of(con.getInputStream(), length);
+            return Pair.of(new ByteArrayInputStream(out.toByteArray()), size);
+        }
     }
 
     private void writeCache(URLTextureLoadPipe urlTextureLoadPipe) throws IOException {

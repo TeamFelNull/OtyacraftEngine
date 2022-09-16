@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @ApiStatus.Internal
-public class ModelDeferredRegisterImpl implements ModelDeferredRegister {
+public class ModelCollectiveRegisterImpl implements ModelCollectiveRegister {
     private static final Set<ModelHolder> MODELS = new HashSet<>();
 
     @Override

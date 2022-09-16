@@ -6,15 +6,18 @@ import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.DataGeneratorType;
 import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
+import dev.felnull.otyacraftengine.data.provider.PoiTypeTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedBlockTagProvider;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedItemTagProvider;
+import dev.felnull.otyacraftengine.forge.data.provider.WrappedBlockTagsProvider;
+import dev.felnull.otyacraftengine.forge.data.provider.WrappedItemTagsProvider;
+import dev.felnull.otyacraftengine.forge.data.provider.WrappedPoiTypeTagsProvider;
 import dev.felnull.otyacraftengine.forge.data.provider.WrappedRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -55,12 +58,17 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
         if (!(blockTagProviderWrapper.getProvider() instanceof BlockTagsProvider blockTagsProvider))
             throw new IllegalArgumentException("Not BlockTagsProvider");
 
-        return new WrappedItemTagProvider(getVanillaGenerator(), blockTagsProvider, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemTagProviderWrapper);
+        return new WrappedItemTagsProvider(getVanillaGenerator(), blockTagsProvider, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemTagProviderWrapper);
     }
 
     @Override
     public TagsProvider<Block> createBlockTagProvider(BlockTagProviderWrapper blockTagProviderWrapper) {
-        return new WrappedBlockTagProvider(getVanillaGenerator(), gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), blockTagProviderWrapper);
+        return new WrappedBlockTagsProvider(getVanillaGenerator(), gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), blockTagProviderWrapper);
+    }
+
+    @Override
+    public TagsProvider<PoiType> createPoiTypeTagProvider(PoiTypeTagProviderWrapper poiTypeTagProviderWrapper) {
+        return new WrappedPoiTypeTagsProvider(getVanillaGenerator(), gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), poiTypeTagProviderWrapper);
     }
 
     @Override

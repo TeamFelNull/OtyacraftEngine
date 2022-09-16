@@ -12,12 +12,13 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class WrappedItemTagProvider extends ItemTagsProvider {
+public class WrappedItemTagsProvider extends ItemTagsProvider {
     private final ItemTagProviderWrapper tagProviderWrapper;
 
-    public WrappedItemTagProvider(DataGenerator arg, @NotNull BlockTagsProvider arg2, String modId, @Nullable ExistingFileHelper existingFileHelper, ItemTagProviderWrapper tagProviderWrapper) {
+    public WrappedItemTagsProvider(DataGenerator arg, @NotNull BlockTagsProvider arg2, String modId, @Nullable ExistingFileHelper existingFileHelper, ItemTagProviderWrapper tagProviderWrapper) {
         super(arg, arg2, modId, existingFileHelper);
         this.tagProviderWrapper = tagProviderWrapper;
+
     }
 
     @Override
@@ -28,12 +29,12 @@ public class WrappedItemTagProvider extends ItemTagsProvider {
     private class ItemTagProviderAccessImpl implements ItemTagProviderWrapper.ItemTagProviderAccess {
         @Override
         public void copy(TagKey<Block> blockTag, TagKey<Item> itemTag) {
-            WrappedItemTagProvider.this.copy(blockTag, itemTag);
+            WrappedItemTagsProvider.this.copy(blockTag, itemTag);
         }
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Item> tag(TagKey<Item> tagKey) {
-            return new WrappedTagProvider.TagAppenderWrapperImpl<>(WrappedItemTagProvider.this.tag(tagKey));
+            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(WrappedItemTagsProvider.this.tag(tagKey));
         }
     }
 }
