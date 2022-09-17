@@ -3,27 +3,28 @@ package dev.felnull.otyacraftengine.client.renderer.texture.impl;
 import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadProgress;
 import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadResult;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class URLTextureLoadResult implements TextureLoadResult {
-    private final Exception exception;
+    private final Throwable throwable;
     private final boolean needReload;
     private final long loadedTime;
     private final NativeTextureLoadResult loadResult;
     private final UUID uuid;
     private TextureLoadProgress progress = new TextureLoadProgressImpl();
 
-    public URLTextureLoadResult(Exception exception, boolean needReload, long loadedTime, NativeTextureLoadResult loadResult, UUID uuid) {
-        this.exception = exception;
+    public URLTextureLoadResult(Throwable throwable, boolean needReload, long loadedTime, NativeTextureLoadResult loadResult, UUID uuid) {
+        this.throwable = throwable;
         this.needReload = needReload;
         this.loadedTime = loadedTime;
         this.loadResult = loadResult;
         this.uuid = uuid;
     }
 
-    public URLTextureLoadResult(Exception exception, boolean needReload, NativeTextureLoadResult loadResult, UUID uuid) {
-        this(exception, needReload, System.currentTimeMillis(), loadResult, uuid);
+    public URLTextureLoadResult(Throwable throwable, boolean needReload, NativeTextureLoadResult loadResult, UUID uuid) {
+        this(throwable, needReload, System.currentTimeMillis(), loadResult, uuid);
     }
 
     @Override
@@ -35,12 +36,12 @@ public class URLTextureLoadResult implements TextureLoadResult {
 
     @Override
     public boolean isLoading() {
-        return getLocation() == null && exception == null && loadedTime == -1;
+        return getLocation() == null && throwable == null && loadedTime == -1;
     }
 
     @Override
     public boolean isError() {
-        return exception != null;
+        return throwable != null;
     }
 
     @Override
@@ -49,11 +50,11 @@ public class URLTextureLoadResult implements TextureLoadResult {
     }
 
     @Override
-    public Exception getException() {
-        if (exception != null)
-            return exception;
+    public Throwable getThrowable() {
+        if (throwable != null)
+            return throwable;
         if (loadResult != null)
-            return loadResult.getException();
+            return loadResult.getThrowable();
         return null;
     }
 
@@ -66,6 +67,7 @@ public class URLTextureLoadResult implements TextureLoadResult {
         return loadedTime;
     }
 
+    @Nullable
     public UUID getUUID() {
         return uuid;
     }

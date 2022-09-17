@@ -6,12 +6,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class NativeTextureLoadResult implements TextureLoadResult {
     private final ResourceLocation location;
-    private final Exception exception;
+    private final Throwable throwable;
     private TextureLoadProgress progress;
 
-    public NativeTextureLoadResult(ResourceLocation location, Exception exception, TextureLoadProgress progress) {
+    public NativeTextureLoadResult(ResourceLocation location, Throwable throwable, TextureLoadProgress progress) {
         this.location = location;
-        this.exception = exception;
+        this.throwable = throwable;
         this.progress = progress;
     }
 
@@ -29,8 +29,8 @@ public class NativeTextureLoadResult implements TextureLoadResult {
     }
 
     @Override
-    public Exception getException() {
-        return exception;
+    public Throwable getThrowable() {
+        return throwable;
     }
 
     @Override
@@ -45,12 +45,12 @@ public class NativeTextureLoadResult implements TextureLoadResult {
 
     @Override
     public boolean isLoading() {
-        return location == null && exception == null;
+        return location == null && throwable == null;
     }
 
     @Override
     public boolean isError() {
-        return exception != null;
+        return throwable != null;
     }
 
     public void setProgress(TextureLoadProgress progress) {

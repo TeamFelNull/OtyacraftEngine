@@ -1,32 +1,6 @@
 package dev.felnull.otyacraftengine.client.renderer.texture.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import dev.felnull.fnjl.util.FNDataUtil;
-import dev.felnull.fnjl.util.FNStringUtil;
-import dev.felnull.fnjl.util.FNURLUtil;
-import dev.felnull.otyacraftengine.OtyacraftEngine;
-import dev.felnull.otyacraftengine.client.event.OEClientEventHooks;
-import dev.felnull.otyacraftengine.client.renderer.texture.NativeTextureManager;
-import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadProgress;
-import dev.felnull.otyacraftengine.client.renderer.texture.TextureLoadResult;
-import dev.felnull.otyacraftengine.client.renderer.texture.URLTextureManager;
-import dev.felnull.otyacraftengine.util.FlagThread;
-import dev.felnull.otyacraftengine.util.OEPaths;
-import net.minecraft.client.Minecraft;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-
+/*
 public class URLTextureManagerOldImpl implements URLTextureManager {
     public static final URLTextureManagerOldImpl INSTANCE = new URLTextureManagerOldImpl();
     private static final Minecraft mc = Minecraft.getInstance();
@@ -420,3 +394,4 @@ public class URLTextureManagerOldImpl implements URLTextureManager {
         }
     }
 }
+*/

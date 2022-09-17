@@ -97,13 +97,13 @@ public class TestScreen extends Screen {
             drawString(poseStack, font, r1.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r1.getProgress().getParent()), 200, 110, 0xFFFFFFFF);
 
         if (r1.isError())
-            drawString(poseStack, font, r1.getException().toString(), 200, 110, 0xFFFFFFFF);
+            drawString(poseStack, font, r1.getThrowable().toString(), 200, 110, 0xFFFFFFFF);
 
         if (r2.isLoading())
             drawString(poseStack, font, r2.getProgress().getStateName() + " " + FNStringUtil.getPercentage(r2.getProgress().getParent()), 300, 110, 0xFFFFFFFF);
 
         if (r2.isError())
-            drawString(poseStack, font, r2.getException().toString(), 300, 110, 0xFFFFFFFF);
+            drawString(poseStack, font, r2.getThrowable().toString(), 300, 110, 0xFFFFFFFF);
         /*
         var r1 = OETextureUtils.getAndLoadNativeTextureAsync(uuid, nativeStream);
         var r2 = OETextureUtils.getAndLoadNativeTextureAsync(uuid2, nativeGifStream);

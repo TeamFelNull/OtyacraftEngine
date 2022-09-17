@@ -24,7 +24,7 @@ public class PlayerInfoManager {
     private static final String UUID_BY_NAME_URL = "https://api.mojang.com/users/profiles/minecraft/%s";
     private final Map<UUID, Optional<String>> NAME_BY_UUID_CACHE = new HashMap<>();
     private final Map<String, Optional<UUID>> UUID_BY_NAME_CACHE = new HashMap<>();
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor(new BasicThreadFactory.Builder().namingPattern(OtyacraftEngine.getModName() + "-Player info loader thread").daemon(true).build());
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor(new BasicThreadFactory.Builder().namingPattern(OtyacraftEngine.MODID + "-player-info-loader").daemon(true).build());
 
     public static PlayerInfoManager getInstance() {
         return INSTANCE;
@@ -73,7 +73,7 @@ public class PlayerInfoManager {
     @NotNull
     private synchronized Optional<JsonObject> getJson(@NotNull String url) {
         try {
-            return Optional.ofNullable(OEUtils.getURLJson(new URL(url)));
+            return Optional.ofNullable(OEUtils.readJson(new URL(url), JsonObject.class));
         } catch (IOException e) {
             return Optional.empty();
         }

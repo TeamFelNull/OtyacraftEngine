@@ -14,6 +14,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -52,6 +53,9 @@ public class NativeTextureManager {
     }
 
     public NativeTextureLoadResult getAndLoadTexture(@NotNull UUID uuid, @NotNull InputStream stream, @Nullable Consumer<TextureLoadProgress> progress) {
+        Objects.requireNonNull(uuid);
+        Objects.requireNonNull(stream);
+
         NativeTextureLoadResult r;
         synchronized (NATIVE_TEXTURE_LOADS) {
             r = NATIVE_TEXTURE_LOADS.get(uuid);

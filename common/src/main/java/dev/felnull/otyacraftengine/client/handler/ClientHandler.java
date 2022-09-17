@@ -10,7 +10,7 @@ import dev.felnull.otyacraftengine.client.entity.ClientPlayerInfoManager;
 import dev.felnull.otyacraftengine.client.event.MoreClientLifecycleEvents;
 import dev.felnull.otyacraftengine.client.event.OBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.renderer.shader.OEShaders;
-import dev.felnull.otyacraftengine.client.renderer.texture.impl.URLTextureManagerOldImpl;
+import dev.felnull.otyacraftengine.client.renderer.texture.URLTextureManager;
 import dev.felnull.otyacraftengine.entity.PlayerInfoManager;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
@@ -48,27 +48,27 @@ public class ClientHandler {
     }
 
     private static void onStopping(Minecraft minecraft) {
-        URLTextureManagerOldImpl.INSTANCE.saveIndex();
+        URLTextureManager.getInstance().save();
     }
 
     private static void onLevelLoad(ClientLevel world) {
-        URLTextureManagerOldImpl.INSTANCE.clear();
+        URLTextureManager.getInstance().release();
         PlayerInfoManager.getInstance().clear();
         ClientPlayerInfoManager.getInstance().clear();
     }
 
     private static void onLevelUnload(ClientLevel world) {
-        URLTextureManagerOldImpl.INSTANCE.clear();
+        URLTextureManager.getInstance().release();
         PlayerInfoManager.getInstance().clear();
         ClientPlayerInfoManager.getInstance().clear();
     }
 
     private static void ontClientTick(Minecraft instance) {
-        URLTextureManagerOldImpl.INSTANCE.tick();
+        URLTextureManager.getInstance().tick();
     }
 
     private static InteractionResult onConfigSave(ConfigHolder<OEConfig> configHolder, OEConfig config) {
-        URLTextureManagerOldImpl.INSTANCE.clear();
+        URLTextureManager.getInstance().release();
         return InteractionResult.PASS;
     }
 }

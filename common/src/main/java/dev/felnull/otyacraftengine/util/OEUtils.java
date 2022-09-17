@@ -1,15 +1,13 @@
 package dev.felnull.otyacraftengine.util;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.felnull.fnjl.util.FNURLUtil;
 import dev.felnull.otyacraftengine.explatform.OEExpectPlatform;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,9 +27,9 @@ public class OEUtils {
      * @return Json
      * @throws IOException 例外
      */
-    public static JsonObject getURLJson(URL url) throws IOException {
-        try (Reader reader = new InputStreamReader(new BufferedInputStream(FNURLUtil.getStream(url)))) {
-            return GSON.fromJson(reader, JsonObject.class);
+    public static <T> T readJson(URL url, Class<T> clazz) throws IOException {
+        try (InputStream stream = FNURLUtil.getStream(url); InputStream bufStream = new BufferedInputStream(stream); Reader reader = new InputStreamReader(bufStream)) {
+            return GSON.fromJson(reader, clazz);
         }
     }
 
@@ -64,5 +62,26 @@ public class OEUtils {
      */
     public static <T> List<T> getCallPoints(@NotNull String name, @NotNull Class<?> annotationClass, @NotNull Class<T> interfaceClass) {
         return OEExpectPlatform.getCallPoints(name, annotationClass, interfaceClass);
+    }
+
+    /**
+     * ファイルからJsonを読む
+     *
+     * @param file  ファイル
+     * @param clazz クラス
+     * @param <T>   クラス
+     * @return json
+     * @throws IOException 例外
+     */
+    public static <T> T readJson(File file, Class<T> clazz) throws IOException {
+        try (InputStream stream = new FileInputStream(file); InputStream bufStream = new BufferedInputStream(stream); Reader reader = new InputStreamReader(bufStream)) {
+            return GSON.fromJson(reader, clazz);
+        }
+    }
+
+    public static void writeJson(File file, JsonElement je) throws IOException {
+        try (OutputStream stream = new FileOutputStream(file); OutputStream bufStream = new BufferedOutputStream(stream); Writer writer = new OutputStreamWriter(bufStream)) {
+            GSON.toJson(je, writer);
+        }
     }
 }

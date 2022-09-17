@@ -13,7 +13,7 @@ public interface TextureLoadResult {
 
     boolean isSuccess();
 
-    Exception getException();
+    Throwable getThrowable();
 
     @NotNull
     default ResourceLocation of(@NotNull ResourceLocation loadingLocation, @NotNull ResourceLocation errorlLocation) {
