@@ -5,7 +5,7 @@ import dev.felnull.otyacraftengine.OEConfig;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.handler.ClientDebugHandler;
 import dev.felnull.otyacraftengine.client.handler.ClientHandler;
-import dev.felnull.otyacraftengine.client.renderer.texture.impl.URLTextureManagerImpl;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.URLTextureManagerOldImpl;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.gui.ConfigScreenProvider;
@@ -16,7 +16,7 @@ public class OtyacraftEngineClient {
         configInit();
         ClientDebugHandler.init();
         ClientHandler.init();
-        URLTextureManagerImpl.INSTANCE.init();
+        URLTextureManagerOldImpl.INSTANCE.init();
 
         OEPackets.clientInit();
     }

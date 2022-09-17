@@ -1,14 +1,15 @@
-package dev.felnull.otyacraftengine.client.model;
+package dev.felnull.otyacraftengine.client.model.impl;
 
 import dev.felnull.otyacraftengine.client.callpoint.ModelRegister;
+import dev.felnull.otyacraftengine.client.model.ModelBundle;
+import dev.felnull.otyacraftengine.client.model.ModelCollectiveRegister;
+import dev.felnull.otyacraftengine.client.model.ModelHolder;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@ApiStatus.Internal
 public class ModelCollectiveRegisterImpl implements ModelCollectiveRegister {
     private static final Set<ModelHolder> MODELS = new HashSet<>();
 

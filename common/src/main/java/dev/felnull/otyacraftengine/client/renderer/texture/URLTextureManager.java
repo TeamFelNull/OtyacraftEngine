@@ -1,10 +1,10 @@
 package dev.felnull.otyacraftengine.client.renderer.texture;
 
-import dev.felnull.otyacraftengine.client.renderer.texture.impl.URLTextureManagerImpl;
+import dev.felnull.otyacraftengine.client.renderer.texture.impl.URLTextureManagerOldImpl;
 
 public interface URLTextureManager {
     static URLTextureManager getInstance() {
-        return URLTextureManagerImpl.INSTANCE;
+        return URLTextureManagerOldImpl.INSTANCE;
     }
 
     TextureLoadResult getAndAsyncLoad(String url, boolean cached);

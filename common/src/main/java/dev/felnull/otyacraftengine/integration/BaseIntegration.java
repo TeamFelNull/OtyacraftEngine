@@ -12,7 +12,7 @@ public abstract class BaseIntegration {
         return Platform.isModLoaded(getModId()) && isConfigEnabled();
     }
 
-    public boolean isEnableAddElement() {
+    public boolean isEnableElement() {
         return OEDataGenUtils.isDataGenerating() || isEnable();
     }
 }

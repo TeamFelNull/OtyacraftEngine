@@ -29,7 +29,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-
+/*
 public class URLTextureManagerImpl implements URLTextureManager {
     public static final URLTextureManagerImpl INSTANCE = new URLTextureManagerImpl();
     private static final Minecraft mc = Minecraft.getInstance();
@@ -393,4 +393,4 @@ public class URLTextureManagerImpl implements URLTextureManager {
                                        Pair<String, URLTextureLoadResult> ret) {
 
     }
-}
+}*/

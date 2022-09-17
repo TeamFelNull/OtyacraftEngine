@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.client.model;
 
 import dev.felnull.otyacraftengine.client.callpoint.ModelRegister;
+import dev.felnull.otyacraftengine.client.model.impl.ModelCollectiveRegisterImpl;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
