@@ -17,10 +17,8 @@ import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +66,8 @@ public class OBJLoaderImpl implements OBJLoader {
     @Override
     public @Nullable UnbakedModel loadModel(@NotNull ResourceManager resourceManager, @NotNull ResourceLocation location, @NotNull ItemTransforms transforms, @NotNull OBJOption option) throws IOException {
         return resourceManager.getResource(location).map(res -> {
-            try (InputStream stream = res.open()) {
-                var obj = ObjUtils.convertToRenderable(ObjReader.read(stream));
+            try (InputStream stream = res.open(); Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                var obj = ObjUtils.convertToRenderable(ObjReader.read(reader));
                 return new OBJUnbakedModelModel(obj, loadMTL(resourceManager, location, obj.getMtlFileNames()), transforms, option);
             } catch (IOException e) {
                 throw new RuntimeException(e);

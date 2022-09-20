@@ -1,0 +1,72 @@
+package dev.felnull.otyacraftengine.explatform.forge;
+
+import dev.felnull.otyacraftengine.forge.tag.ForgeItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.common.Tags;
+
+public class OETagsExpectPlatformImpl {
+    public static TagKey<Item> pickaxes() {
+        return Tags.Items.TOOLS_PICKAXES;
+    }
+
+    public static TagKey<Item> shovels() {
+        return Tags.Items.TOOLS_SHOVELS;
+    }
+
+    public static TagKey<Item> hoes() {
+        return Tags.Items.TOOLS_HOES;
+    }
+
+    public static TagKey<Item> axes() {
+        return Tags.Items.TOOLS_AXES;
+    }
+
+    public static TagKey<Item> shears() {
+        return Tags.Items.SHEARS;
+    }
+
+    public static TagKey<Item> swords() {
+        return Tags.Items.TOOLS_SWORDS;
+    }
+
+    public static TagKey<Item> bows() {
+        return Tags.Items.TOOLS_BOWS;
+    }
+
+    public static TagKey<Item> ironIngots() {
+        return Tags.Items.INGOTS_IRON;
+    }
+
+    public static TagKey<Item> goldIngots() {
+        return Tags.Items.INGOTS_GOLD;
+    }
+
+    public static TagKey<Item> copperIngots() {
+        return Tags.Items.INGOTS_COPPER;
+    }
+
+    public static TagKey<Item> netheriteIngots() {
+        return Tags.Items.INGOTS_NETHER_BRICK;
+    }
+
+    public static TagKey<Item> redstoneDusts() {
+        return Tags.Items.DUSTS_REDSTONE;
+    }
+
+    public static TagKey<Item> diamonds() {
+        return Tags.Items.GEMS_DIAMOND;
+    }
+
+    public static TagKey<Item> glassBlocks() {
+        return Tags.Items.GLASS;
+    }
+
+    public static TagKey<Item> glassPanes() {
+        return Tags.Items.GLASS_PANES;
+    }
+
+    public static TagKey<Item> books() {
+        return ForgeItemTags.BOOKS.get();
+    }
+}

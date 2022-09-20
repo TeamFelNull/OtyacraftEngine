@@ -17,6 +17,7 @@ public class TestItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
+
         if (!level.isClientSide) {
             var data = TestSavedData.get(level.getServer());
             if (!player.isCrouching()) {
