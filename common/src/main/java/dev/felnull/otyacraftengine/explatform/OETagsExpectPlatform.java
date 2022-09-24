@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.explatform;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
@@ -83,6 +84,27 @@ public class OETagsExpectPlatform {
 
     @ExpectPlatform
     public static TagKey<Item> books() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> ironNuggets() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> enderPearls() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> stone() {
+        throw new AssertionError();
+
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> redstoneBlocks() {
         throw new AssertionError();
     }
 }

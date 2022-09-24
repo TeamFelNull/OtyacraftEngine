@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.explatform.fabric;
 
-import dev.felnull.otyacraftengine.fabric.tag.FabricItemTags;
+import dev.felnull.otyacraftengine.fabric.tag.OEFabricItemTags;
+import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -67,6 +68,22 @@ public class OETagsExpectPlatformImpl {
     }
 
     public static TagKey<Item> books() {
-        return FabricItemTags.BOOKS.get();
+        return OEFabricItemTags.BOOKS.get();
+    }
+
+    public static ManualTagHolder<Item> ironNuggets() {
+        return OEFabricItemTags.IRON_NUGGETS.get();
+    }
+
+    public static ManualTagHolder<Item> enderPearls() {
+        return OEFabricItemTags.ENDER_PEARLS.get();
+    }
+
+    public static ManualTagHolder<Item> stone() {
+        return OEFabricItemTags.STONE.get();
+    }
+
+    public static ManualTagHolder<Item> redstoneBlocks() {
+        return OEFabricItemTags.REDSTONE_BLOCKS.get();
     }
 }

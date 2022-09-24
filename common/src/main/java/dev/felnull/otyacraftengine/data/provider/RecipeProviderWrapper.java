@@ -38,5 +38,9 @@ public abstract class RecipeProviderWrapper extends DataProviderWrapper<RecipePr
         InventoryChangeTrigger.TriggerInstance has(ItemLike itemLike);
 
         InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tagKey);
+
+        String getHasName(ItemLike itemLike);
+
+        String getItemName(ItemLike itemLike);
     }
 }

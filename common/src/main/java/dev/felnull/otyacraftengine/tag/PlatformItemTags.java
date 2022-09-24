@@ -69,7 +69,20 @@ public class PlatformItemTags {
         return OETagsExpectPlatform.books();
     }
 
-    public static ManualRegistrationTag<Item> ironNuggets() {
-        return null;
+    public static ManualTagHolder<Item> ironNuggets() {
+        return OETagsExpectPlatform.ironNuggets();
     }
+
+    public static ManualTagHolder<Item> enderPearls() {
+        return OETagsExpectPlatform.enderPearls();
+    }
+
+    public static ManualTagHolder<Item> stone() {
+        return OETagsExpectPlatform.stone();
+    }
+
+    public static ManualTagHolder<Item> redstoneBlocks() {
+        return OETagsExpectPlatform.redstoneBlocks();
+    }
+
 }

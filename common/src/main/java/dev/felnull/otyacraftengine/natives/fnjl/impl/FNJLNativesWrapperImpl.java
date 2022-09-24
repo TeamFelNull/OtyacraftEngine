@@ -17,9 +17,13 @@ import java.io.File;
 import java.nio.file.Path;
 
 public class FNJLNativesWrapperImpl implements FNJLNativesWrapper {
-    public static final FNJLNativesWrapper INSTANCE = new FNJLNativesWrapperImpl();
+    public static final FNJLNativesWrapperImpl INSTANCE = new FNJLNativesWrapperImpl();
+    private boolean inited;
 
-    public static void init() {
+    public synchronized void init() {
+        if (inited)
+            return;
+        inited = true;
         var file = new File(OtyacraftEngine.MODID, "fnjln");
         FNDataUtil.wishMkdir(file);
         FelNullJavaLibraryNatives.init(file.toPath());

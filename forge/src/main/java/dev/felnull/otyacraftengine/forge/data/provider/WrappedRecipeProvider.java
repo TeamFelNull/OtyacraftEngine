@@ -42,5 +42,15 @@ public class WrappedRecipeProvider extends RecipeProvider {
         public InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tagKey) {
             return RecipeProvider.has(tagKey);
         }
+
+        @Override
+        public String getHasName(ItemLike itemLike) {
+            return RecipeProvider.getHasName(itemLike);
+        }
+
+        @Override
+        public String getItemName(ItemLike itemLike) {
+            return RecipeProvider.getItemName(itemLike);
+        }
     }
 }

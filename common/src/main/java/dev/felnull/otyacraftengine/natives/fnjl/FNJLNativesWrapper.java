@@ -7,7 +7,9 @@ import java.nio.file.Path;
 
 public interface FNJLNativesWrapper {
     static FNJLNativesWrapper getInstance() {
-        return FNJLNativesWrapperImpl.INSTANCE;
+        var ins = FNJLNativesWrapperImpl.INSTANCE;
+        ins.init();
+        return ins;
     }
 
     Path getFontFolder();

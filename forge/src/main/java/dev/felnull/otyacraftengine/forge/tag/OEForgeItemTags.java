@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 
 import java.util.function.Supplier;
 
-public class ForgeItemTags {
+public class OEForgeItemTags {
     public static final Supplier<TagKey<Item>> BOOKS = reg("books");
 
     private static Supplier<TagKey<Item>> reg(String name) {
