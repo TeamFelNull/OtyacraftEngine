@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.tag;
 import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
 import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -10,17 +11,17 @@ import java.util.function.Consumer;
 public record ManualTagHolderImpl<T>(TagKey<T> tagKey,
                                      Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister) implements ManualTagHolder<T> {
     public ManualTagHolderImpl(TagKey<T> tagKey) {
-        this(tagKey, r -> {
-        });
+        this(tagKey, null);
     }
 
     @Override
-    public TagKey<T> getKey() {
+    public @NotNull TagKey<T> getKey() {
         return tagKey;
     }
 
     @Override
-    public void registering(TagProviderWrapper.TagProviderAccess<T> tagProviderAccess) {
-        tagRegister.accept(tagProviderAccess.tag(getKey()));
+    public void registering(@NotNull TagProviderWrapper.TagProviderAccess<T> tagProviderAccess) {
+        if (tagRegister != null)
+            tagRegister.accept(tagProviderAccess.tag(getKey()));
     }
 }
