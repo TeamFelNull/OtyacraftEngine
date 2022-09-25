@@ -1,17 +1,12 @@
 package dev.felnull.otyacraftengine.forge.data;
 
+import com.google.common.collect.ImmutableList;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.DataGeneratorType;
-import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.PoiTypeTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedBlockTagsProvider;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedItemTagsProvider;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedPoiTypeTagsProvider;
-import dev.felnull.otyacraftengine.forge.data.provider.WrappedRecipeProvider;
+import dev.felnull.otyacraftengine.data.provider.*;
+import dev.felnull.otyacraftengine.forge.data.provider.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -24,8 +19,14 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @ApiStatus.Internal
 public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
+    private final List<Path> resourceInputFolders = new ArrayList<>();
     private final GatherDataEvent gatherDataEvent;
 
     protected CrossDataGeneratorAccessImpl(GatherDataEvent gatherDataEvent) {
@@ -72,6 +73,16 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createDevToolProvider(DevToolProviderWrapper devToolProviderWrapper) {
+        return new WrappedDevToolProvider(devToolProviderWrapper);
+    }
+
+    @Override
+    public DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
+        return new WrappedBlockLootTableProvider(getVanillaGenerator(), blockLootTableProviderWrapper);
+    }
+
+    @Override
     public boolean isInclude(DataGeneratorType type) {
         return switch (type) {
             case CLIENT -> gatherDataEvent.includeClient();
@@ -79,5 +90,15 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
             case DEV -> gatherDataEvent.includeDev();
             case REPORT -> gatherDataEvent.includeReports();
         };
+    }
+
+    @Override
+    public Collection<Path> getResourceInputFolders() {
+        return ImmutableList.copyOf(resourceInputFolders);
+    }
+
+    @Override
+    public void addResourceInputFolders(Path path) {
+        resourceInputFolders.add(path);
     }
 }

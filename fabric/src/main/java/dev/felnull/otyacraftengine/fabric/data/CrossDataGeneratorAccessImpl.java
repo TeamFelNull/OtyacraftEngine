@@ -1,17 +1,12 @@
 package dev.felnull.otyacraftengine.fabric.data;
 
+import com.google.common.collect.ImmutableList;
 import dev.architectury.platform.Mod;
 import dev.architectury.platform.Platform;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.DataGeneratorType;
-import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.PoiTypeTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
-import dev.felnull.otyacraftengine.fabric.data.provider.WrappedFabricBlockTagProvider;
-import dev.felnull.otyacraftengine.fabric.data.provider.WrappedFabricItemTagProvider;
-import dev.felnull.otyacraftengine.fabric.data.provider.WrappedFabricPoiTypeTagProvider;
-import dev.felnull.otyacraftengine.fabric.data.provider.WrappedFabricRecipeProvider;
+import dev.felnull.otyacraftengine.data.provider.*;
+import dev.felnull.otyacraftengine.fabric.data.provider.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.data.DataGenerator;
@@ -24,8 +19,14 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @ApiStatus.Internal
 public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
+    private final List<Path> resourceInputFolders = new ArrayList<>();
     private final FabricDataGenerator fabricDataGenerator;
 
     protected CrossDataGeneratorAccessImpl(FabricDataGenerator fabricDataGenerator) {
@@ -72,7 +73,27 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createDevToolProvider(DevToolProviderWrapper devToolProviderWrapper) {
+        return new WrappedFabricDevToolProvider(devToolProviderWrapper);
+    }
+
+    @Override
+    public DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
+        return new WrappedFabricBlockLootTableProvider(fabricDataGenerator, blockLootTableProviderWrapper);
+    }
+
+    @Override
     public boolean isInclude(DataGeneratorType type) {
         return true;
+    }
+
+    @Override
+    public Collection<Path> getResourceInputFolders() {
+        return ImmutableList.copyOf(resourceInputFolders);
+    }
+
+    @Override
+    public void addResourceInputFolders(Path path) {
+        resourceInputFolders.add(path);
     }
 }
