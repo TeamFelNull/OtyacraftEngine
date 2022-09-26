@@ -10,6 +10,7 @@ public class WrappedFabricBlockLootTableProvider extends FabricBlockLootTablePro
     public WrappedFabricBlockLootTableProvider(FabricDataGenerator dataGenerator, BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
         super(dataGenerator);
         this.blockLootTableProviderWrapper = blockLootTableProviderWrapper;
+
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.mixin;
 
-import dev.felnull.otyacraftengine.advancement.OECriteriaTriggers;
+import dev.felnull.otyacraftengine.advancement.ModInvolvementTrigger;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,6 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class InventoryChangeTriggerMixin {
     @Inject(method = "trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/item/ItemStack;)V", at = @At("HEAD"))
     private void trigger(ServerPlayer serverPlayer, Inventory inventory, ItemStack itemStack, CallbackInfo ci) {
-        OECriteriaTriggers.MOD_ROOT_TRIGGER.trigger(serverPlayer, itemStack);
+        ModInvolvementTrigger.trigger(serverPlayer, itemStack);
     }
 }

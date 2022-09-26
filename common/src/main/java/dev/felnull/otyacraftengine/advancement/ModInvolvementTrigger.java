@@ -8,10 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class ModRootTrigger extends SimpleCriterionTrigger<ModRootTrigger.TriggerInstance> {
-    static final ResourceLocation ID = new ResourceLocation(OtyacraftEngine.MODID, "mod_root");
+public class ModInvolvementTrigger extends SimpleCriterionTrigger<ModInvolvementTrigger.TriggerInstance> {
+    static final ResourceLocation ID = new ResourceLocation(OtyacraftEngine.MODID, "mod_involvement");
 
     @Override
     public ResourceLocation getId() {
@@ -20,34 +19,52 @@ public class ModRootTrigger extends SimpleCriterionTrigger<ModRootTrigger.Trigge
 
     @Override
     protected TriggerInstance createInstance(JsonObject jsonObject, EntityPredicate.@NotNull Composite composite, @NotNull DeserializationContext deserializationContext) {
-        String mid = jsonObject.has("modid") ? jsonObject.get("modid").getAsString() : null;
+        String mid = jsonObject.has("modid") ? jsonObject.get("modid").getAsString() : "";
         return new TriggerInstance(composite, mid);
     }
 
-    public void trigger(ServerPlayer serverPlayer, ItemStack itemStack) {
+    public static void trigger(ServerPlayer serverPlayer, ItemStack itemStack) {
+        OECriteriaTriggers.MOD_INVOLVEMENT_TRIGGER.trigger_(serverPlayer, itemStack);
+    }
+
+    public static void trigger(ServerPlayer serverPlayer, String modId) {
+        OECriteriaTriggers.MOD_INVOLVEMENT_TRIGGER.trigger_(serverPlayer, modId);
+    }
+
+    private void trigger_(ServerPlayer serverPlayer, ItemStack itemStack) {
         this.trigger(serverPlayer, (triggerInstance) -> triggerInstance.matches(itemStack));
     }
 
+    private void trigger_(ServerPlayer serverPlayer, String modId) {
+        this.trigger(serverPlayer, (triggerInstance) -> triggerInstance.matches(modId));
+    }
+
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        @Nullable
+        @NotNull
         private final String modId;
 
-        public TriggerInstance(EntityPredicate.Composite composite, @Nullable String modId) {
+        public TriggerInstance(EntityPredicate.Composite composite, @NotNull String modId) {
             super(ID, composite);
             this.modId = modId;
         }
 
+        public static TriggerInstance involvedMod(String modId) {
+            return new TriggerInstance(EntityPredicate.Composite.ANY, modId);
+        }
+
         private boolean matches(ItemStack stack) {
             var id = OEItemUtils.getCreatorModId(stack);
-            if (id == null) return false;
-            return id.equals(modId);
+            return matches(id);
+        }
+
+        private boolean matches(String modId) {
+            return this.modId.equals(modId);
         }
 
         @Override
         public JsonObject serializeToJson(@NotNull SerializationContext serializationContext) {
             var jo = super.serializeToJson(serializationContext);
-            if (modId != null)
-                jo.addProperty("modid", modId);
+            jo.addProperty("modid", modId);
             return jo;
         }
     }

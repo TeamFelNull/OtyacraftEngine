@@ -37,6 +37,8 @@ public interface CrossDataGeneratorAccess {
 
     DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper);
 
+    DataProvider createAdvancementProvider(AdvancementProviderWrapper advancementProviderWrapper);
+
     boolean isInclude(DataGeneratorType type);
 
     Collection<Path> getResourceInputFolders();

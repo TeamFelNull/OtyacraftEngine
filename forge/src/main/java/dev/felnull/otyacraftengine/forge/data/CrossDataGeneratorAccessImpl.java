@@ -83,6 +83,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createAdvancementProvider(AdvancementProviderWrapper advancementProviderWrapper) {
+        return new WrappedAdvancementProvider(getVanillaGenerator(), gatherDataEvent.getExistingFileHelper(), advancementProviderWrapper);
+    }
+
+    @Override
     public boolean isInclude(DataGeneratorType type) {
         return switch (type) {
             case CLIENT -> gatherDataEvent.includeClient();
