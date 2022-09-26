@@ -23,6 +23,11 @@ public class OEMixinPluginFabric implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.startsWith("dev.felnull.otyacraftengine.fabric.mixin.data"))
             return Platform.isDevelopmentEnvironment();
+
+        if (mixinClassName.startsWith("dev.felnull.otyacraftengine.fabric.mixin.integration.myron"))
+            return false;
+        //      return FabricLoader.getInstance().isModLoaded("myron");
+
         return true;
     }
 

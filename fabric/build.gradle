@@ -21,7 +21,8 @@ configurations {
     shadowCommon.extendsFrom shadowIn
 }
 repositories {
-    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.terraformersmc.com/releases/" }//modmenu
+    maven { url = "https://hephaestus.dev/release" }//myron
 }
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
@@ -40,6 +41,11 @@ dependencies {
     shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
     shadowIn 'de.javagl:obj:0.3.0'
+
+    modCompileOnly("dev.monarkhes:myron:1.6.3+1.18.1") {
+        exclude group: 'net.fabricmc'
+        exclude group: 'net.fabricmc.fabric-api'
+    }
 }
 
 processResources {
