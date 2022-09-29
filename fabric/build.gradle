@@ -157,7 +157,7 @@ curseforge {
             relations {
                 requiredDependency "fabric-api"
                 requiredDependency "cloth-config"
-                requiredDependency "architectury-fabric"
+                requiredDependency "architectury-api"
             }
 
             mainArtifact(file("${project.buildDir}/libs/${rootProject.archives_base_name}-${project.name}-mc${rootProject.minecraft_version}-${project.mod_version}.jar")) {
