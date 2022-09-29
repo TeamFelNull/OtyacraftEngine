@@ -1,5 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/otyacraft-engine",
+  "1.19.2": {
+    "3.0": "First 1.19.2"
+  },
   "1.18.2": {
     "2.4": "First 1.18.2"
   },
@@ -15,6 +18,8 @@
     "1.23": "Last 1.16.5 update..?"
   },
   "promos": {
+    "1.19.2-latest": "3.0",
+    "1.19.2-recommended": "3.0",
     "1.18.2-latest": "2.13",
     "1.18.2-recommended": "2.13",
     "1.18.1-latest": "2.3",
