@@ -11,9 +11,11 @@ include("common")
 include("fabric")
 include("forge")
 
-include("testmod-common")
-include("testmod-fabric")
-include("testmod-forge")
+if (System.getenv('testmod-exclude') == null) {
+    include("testmod-common")
+    include("testmod-fabric")
+    include("testmod-forge")
+}
 
 
 rootProject.name = "OtyacraftEngine"
