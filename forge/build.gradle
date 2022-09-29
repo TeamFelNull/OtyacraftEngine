@@ -145,6 +145,10 @@ curseforge {
             addGameVersion 'Java 17'
             addGameVersion "Forge"
 
+            project.support_versions.split(",").each {
+                String version -> addGameVersion version
+            }
+
             relations {
                 requiredDependency "cloth-config"
                 requiredDependency "architectury-forge"
