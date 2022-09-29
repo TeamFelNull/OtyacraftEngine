@@ -30,7 +30,7 @@ public interface IContainerEntityBlock {
         return level.getBlockEntity(blockPos) instanceof BaseContainerBlockEntity oeBaseContainerBlock;
     }
 
-    default void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult){
+    default void openContainer(BlockState blockState, ServerLevel level, BlockPos blockPos, ServerPlayer player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (level.getBlockEntity(blockPos) instanceof OEBaseContainerBlockEntity oeBaseContainerBlock)
             OEMenuUtil.openBlockMenu(player, oeBaseContainerBlock, blockPos, oeBaseContainerBlock.getContainerSize());
     }

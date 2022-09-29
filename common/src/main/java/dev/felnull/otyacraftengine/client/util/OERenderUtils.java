@@ -182,8 +182,8 @@ public class OERenderUtils {
      * @param y         Y
      * @param ru0       相対テクスチャの開始地点X
      * @param rv0       相対テクスチャの開始地点Y
-     * @param ru1        テクスチャの終了地点X
-     * @param rv1        テクスチャの終了地点Y
+     * @param ru1       テクスチャの終了地点X
+     * @param rv1       テクスチャの終了地点Y
      */
     public static void drawTexture(@NotNull ResourceLocation location, @NotNull PoseStack poseStack, float x, float y, float ru0, float rv0, float ru1, float rv1) {
         drawTexture(location, poseStack, x, y, ru0, rv0, ru1, rv1, 256, 256);

@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 public interface IInstructionItemScreen extends IInstructionScreen {
     public static void instructionItem(IInstructionItemScreen screen, ItemStack itemStack, PlayerItemLocation location, String name, CompoundTag data) {
         if (Minecraft.getInstance().screen == screen && itemStack.getItem() instanceof IInstructionItem && location != null) {
-            NetworkManager.sendToServer(OEPackets.ITEM_INSTRUCTION, new OEPackets.ItemInstructionMessage(screen.getInstructionID(), ItemExistence.getByItemLocation(itemStack, location), name,data).toFBB());
+            NetworkManager.sendToServer(OEPackets.ITEM_INSTRUCTION, new OEPackets.ItemInstructionMessage(screen.getInstructionID(), ItemExistence.getByItemLocation(itemStack, location), name, data).toFBB());
         }
     }
 }

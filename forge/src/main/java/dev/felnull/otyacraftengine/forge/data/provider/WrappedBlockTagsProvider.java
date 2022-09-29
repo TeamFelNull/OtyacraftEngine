@@ -3,7 +3,6 @@ package dev.felnull.otyacraftengine.forge.data.provider;
 import dev.felnull.otyacraftengine.data.provider.BlockTagProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;

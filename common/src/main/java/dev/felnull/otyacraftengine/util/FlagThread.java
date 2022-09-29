@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.util;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class FlagThread extends Thread{
+public class FlagThread extends Thread {
     private final AtomicBoolean running = new AtomicBoolean(true);
 
     public boolean isRunning() {
