@@ -22,7 +22,6 @@ jobs:
           modrinthapikey: ${{secrets.MODRINTH}}
           githubtoken: ${{secrets.GITHUBTOKEN}}
           mavenpassword: ${{secrets.MAVEN_PASSWORD}}
-          testmod-exclude: true
       - name: Zip create
         run: |
           cd build/libs

@@ -11,7 +11,7 @@ include("common")
 include("fabric")
 include("forge")
 
-if (System.getenv('testmod-exclude') == null) {
+if (System.getenv("GITHUB_REF") == null) {
     include("testmod-common")
     include("testmod-fabric")
     include("testmod-forge")
