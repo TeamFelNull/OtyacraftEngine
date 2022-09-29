@@ -21,6 +21,7 @@ jobs:
           curesforgeapikey: ${{secrets.CURESFORGEAPIKEY}}
           modrinthapikey: ${{secrets.MODRINTH}}
           githubtoken: ${{secrets.GITHUBTOKEN}}
+          mavenpassword: ${{secrets.MAVEN_PASSWORD}}
       - name: Zip create
         run: |
           cd build/libs
