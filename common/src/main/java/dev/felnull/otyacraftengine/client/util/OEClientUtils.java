@@ -10,7 +10,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.system.MemoryStack;
 import org.lwjgl.util.tinyfd.TinyFileDialogs;
 
 import java.io.File;
@@ -190,18 +192,50 @@ public class OEClientUtils {
      */
     @Nullable
     public static File[] openFileChooser(@Nullable String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects) {
-        var st = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, null, singleFilter, allowMultipleSelects);
-        if (st == null) return null;
+        return openFilterFileChooser(title, defaultPath, singleFilter, allowMultipleSelects);
+    }
+
+    /**
+     * フィルターを指定してファイル選択を開く
+     *
+     * @param title                タイトル
+     * @param defaultPath          初期パス
+     * @param singleFilter         フィルター
+     * @param allowMultipleSelects 複数選択するかどうか
+     * @param filterPatterns       ファイルパターン (*.jpeg,*.txt)
+     * @return 選択結果
+     */
+    @Nullable
+    public static File[] openFilterFileChooser(@Nullable String title, @Nullable Path defaultPath, @Nullable String singleFilter, boolean allowMultipleSelects, @Nullable String... filterPatterns) {
+        String ret;
+
+        if (filterPatterns == null || filterPatterns.length == 0) {
+            ret = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, null, singleFilter, allowMultipleSelects);
+        } else {
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                PointerBuffer patterns = stack.mallocPointer(filterPatterns.length);
+
+                for (String filterPattern : filterPatterns) {
+                    if (filterPattern != null)
+                        patterns.put(stack.UTF8(filterPattern));
+                }
+
+                patterns.flip();
+                ret = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath != null ? defaultPath.toString() : null, patterns, singleFilter, allowMultipleSelects);
+            }
+        }
+
+        if (ret == null) return null;
         try {
             if (allowMultipleSelects) {
-                String[] sp = st.split("\\|");
+                String[] sp = ret.split("\\|");
                 File[] fl = new File[sp.length];
                 for (int i = 0; i < sp.length; i++) {
                     fl[i] = new File(sp[i]);
                 }
                 return fl;
             } else {
-                return new File[]{new File(st)};
+                return new File[]{new File(ret)};
             }
         } catch (Exception ex) {
             return null;
