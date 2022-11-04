@@ -118,7 +118,7 @@ publishing {
                     developer {
                         id = 'FelNull'
                         name = 'TeamFelNull'
-                        email = 'teamfelnull@m.servg.red'
+                        email = 'teamfelnull@felnull.dev'
                     }
                 }
             }

@@ -10,7 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class IkisugiVoxelShapes {
     private static final IkisugiVoxelShapes INSTANCE = new IkisugiVoxelShapes();
@@ -23,11 +26,9 @@ public class IkisugiVoxelShapes {
         var version = shapeJson.get("version");
 
         if (version != null && version.isJsonPrimitive()) {
-            if (version.getAsInt() == 2)
-                return getShapeFromJsonV2(shapeJson, location);
+            if (version.getAsInt() == 2) return getShapeFromJsonV2(shapeJson, location);
 
-            if (version.getAsInt() == 3)
-                return getShapeFromJsonV3(shapeJson, location);
+            if (version.getAsInt() == 3) return getShapeFromJsonV3(shapeJson, location);
 
             if (version.getAsInt() >= 4)
                 throw new IllegalStateException("Not support ikisugi voxel shape version: " + version.getAsInt());
@@ -59,8 +60,7 @@ public class IkisugiVoxelShapes {
             Set<VoxelEdge> edges = new HashSet<>();
             for (JsonElement jshape : shapeJ.getAsJsonArray("edges")) {
                 var ed = VoxelEdge.parse(jshape.getAsJsonArray());
-                if (ed != null)
-                    edges.add(ed);
+                if (ed != null) edges.add(ed);
             }
             dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager.getInstance().addLegacyShapes(location, edges);
         });
@@ -96,24 +96,26 @@ public class IkisugiVoxelShapes {
     }
 
     public VoxelShape unite(VoxelShape target, VoxelShape... shapes) {
-        List<VoxelEntry> entries = new ArrayList<>();
+        VoxelEntry[] voxelEntries = ((IkisugiVoxelShape) target).getRenderEdges();
+
         for (VoxelShape shape : shapes) {
             var ve = ((IkisugiVoxelShape) shape).getRenderEdges();
-            if (ve != null)
-                entries.addAll(Arrays.asList(ve));
+            if (ve != null) voxelEntries = ArrayUtils.addAll(voxelEntries, ve);
         }
-        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
+
+        ((IkisugiVoxelShape) target).setRenderEdges(voxelEntries);
         return target;
     }
 
     public VoxelShape unite(VoxelShape target, List<IkisugiVoxelShape> shapes) {
-        List<VoxelEntry> entries = new ArrayList<>();
-        shapes.forEach(shape -> {
+        VoxelEntry[] voxelEntries = ((IkisugiVoxelShape) target).getRenderEdges();
+
+        for (IkisugiVoxelShape shape : shapes) {
             var ve = shape.getRenderEdges();
-            if (ve != null)
-                entries.addAll(Arrays.asList(ve));
-        });
-        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
+            if (ve != null) voxelEntries = ArrayUtils.addAll(voxelEntries, ve);
+        }
+
+        ((IkisugiVoxelShape) target).setRenderEdges(voxelEntries);
         return target;
     }
 
@@ -122,26 +124,26 @@ public class IkisugiVoxelShapes {
         x /= 16;
         y /= 16;
         z /= 16;
-        List<VoxelEntry> entries = new ArrayList<>();
+        VoxelEntry[] voxelEntries = null;
 
         for (VoxelEntry renderEdge : source.getRenderEdges()) {
             var pp = renderEdge.getPose();
-            entries.add(new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x() + x, pp.y() + y, pp.z() + z, pp.axis())));
+            voxelEntries = ArrayUtils.addAll(voxelEntries, new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x() + x, pp.y() + y, pp.z() + z, pp.axis())));
         }
 
-        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
+        ((IkisugiVoxelShape) target).setRenderEdges(voxelEntries);
         return target;
     }
 
     public VoxelShape rotate(VoxelShape target, IkisugiVoxelShape source, RotateAngledAxis angledAxis) {
-        List<VoxelEntry> entries = new ArrayList<>();
+        VoxelEntry[] voxelEntries = null;
 
         for (VoxelEntry renderEdge : source.getRenderEdges()) {
             var pp = renderEdge.getPose();
-            entries.add(new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x(), pp.y(), pp.z(), ArrayUtils.add(pp.axis(), angledAxis))));
+            voxelEntries = ArrayUtils.addAll(voxelEntries, new VoxelEntry(renderEdge.getLocation(), new VoxelPose(pp.x(), pp.y(), pp.z(), ArrayUtils.add(pp.axis(), angledAxis))));
         }
 
-        ((IkisugiVoxelShape) target).setRenderEdges(entries.toArray(new VoxelEntry[0]));
+        ((IkisugiVoxelShape) target).setRenderEdges(voxelEntries);
         return target;
     }
 }
