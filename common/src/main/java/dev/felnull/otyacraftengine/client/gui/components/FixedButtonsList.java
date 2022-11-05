@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import java.util.List;
 import java.util.function.Function;
 
+@Deprecated
 public class FixedButtonsList<E> extends AbstractWidget implements IOEBaseComponent {
     private static final Minecraft mc = Minecraft.getInstance();
     private final List<E> list;

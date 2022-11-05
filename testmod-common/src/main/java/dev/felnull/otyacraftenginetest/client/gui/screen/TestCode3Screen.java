@@ -7,10 +7,14 @@ import dev.felnull.otyacraftengine.client.gui.components.IconButton;
 import dev.felnull.otyacraftengine.client.gui.components.RadioButton;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftenginetest.OtyacraftEngineTest;
+import dev.felnull.otyacraftenginetest.client.gui.components.TestFixedListWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestCode3Screen extends Screen {
     public static final ResourceLocation TEST_TEXTURE = new ResourceLocation(OtyacraftEngineTest.MODID, "textures/gui/test.png");
@@ -37,6 +41,15 @@ public class TestCode3Screen extends Screen {
 
         addRenderableWidget(new SwitchButton(3, 85, Component.literal("Test switch"), sw -> {
         }, true));
+
+        List<TestFixedListWidget.TestListEntry> entryList = new ArrayList<>();
+
+        for (int i = 0; i < 50; i++) {
+            entryList.add(new TestFixedListWidget.TestListEntry("Entry-" + i));
+        }
+
+        addRenderableWidget(new TestFixedListWidget(3, 108, 175, 100, Component.literal("Test list"), 10, entryList, (r) -> Component.literal(r.text()), null, true, null));
+
     }
 
     @Override
