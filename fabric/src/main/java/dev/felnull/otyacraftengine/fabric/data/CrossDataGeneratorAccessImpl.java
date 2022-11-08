@@ -88,6 +88,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createItemModelProvider(ItemModelProviderWrapper itemModelProviderWrapper) {
+        return new WrappedFabricItemModelProvider(fabricDataGenerator, itemModelProviderWrapper);
+    }
+
+    @Override
     public boolean isInclude(DataGeneratorType type) {
         return true;
     }

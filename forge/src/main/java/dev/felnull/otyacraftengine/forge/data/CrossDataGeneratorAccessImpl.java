@@ -88,6 +88,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createItemModelProvider(ItemModelProviderWrapper itemModelProviderWrapper) {
+        return new WrappedItemModelProvider(getVanillaGenerator(), gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemModelProviderWrapper);
+    }
+
+    @Override
     public boolean isInclude(DataGeneratorType type) {
         return switch (type) {
             case CLIENT -> gatherDataEvent.includeClient();

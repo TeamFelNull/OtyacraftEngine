@@ -39,6 +39,10 @@ public interface CrossDataGeneratorAccess {
 
     DataProvider createAdvancementProvider(AdvancementProviderWrapper advancementProviderWrapper);
 
+    default DataProvider createItemModelProvider(ItemModelProviderWrapper itemModelProviderWrapper) {
+        return null;
+    }
+
     boolean isInclude(DataGeneratorType type);
 
     Collection<Path> getResourceInputFolders();
