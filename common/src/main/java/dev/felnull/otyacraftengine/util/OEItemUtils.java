@@ -194,4 +194,66 @@ public class OEItemUtils {
     public static String getCreatorModId(@NotNull ItemStack stack) {
         return OEExpectPlatform.getItemCreatorModId(stack);
     }
+
+    /**
+     * スタック数を除いて一致するかどうか
+     *
+     * @param stack1 アイテムスタック
+     * @param stack2 アイテムスタック
+     * @return 一致するかどうか
+     */
+    public static boolean matchesExceptStackCount(@NotNull ItemStack stack1, @NotNull ItemStack stack2) {
+        if (stack1.isEmpty() && stack2.isEmpty())
+            return true;
+
+        if (!stack1.is((stack2.getItem())))
+            return false;
+
+        if (!stack1.isEmpty() && !stack2.isEmpty())
+            return ItemStack.tagMatches(stack1, stack2);
+
+        return false;
+    }
+
+    /**
+     * アイテムスタックのリストを最適化する<br>
+     * スタック可能なアイテムをスタックし、空のアイテムスタックを削除
+     *
+     * @param stacks アイテムスタックリスト
+     * @return 最適化済みアイテムスタックリスト
+     */
+    @NotNull
+    public static List<ItemStack> overlapItemStacks(@NotNull List<ItemStack> stacks) {
+        List<ItemStack> ret = new ArrayList<>();
+
+        for (ItemStack stack : stacks) {
+            if (stack.isEmpty())
+                continue;
+
+            ItemStack match = null;
+            for (ItemStack retstack : ret) {
+                if (retstack.getCount() < retstack.getMaxStackSize() && matchesExceptStackCount(stack, retstack)) {
+                    match = retstack;
+                    break;
+                }
+            }
+
+            if (match == null) {
+                ret.add(stack.copy());
+            } else {
+                int c = match.getCount() + stack.getCount();
+                int mc = match.getMaxStackSize();
+                if (c <= mc) {
+                    match.setCount(c);
+                } else {
+                    match.setCount(mc);
+                    ItemStack ns = stack.copy();
+                    ns.setCount(c - mc);
+                    ret.add(ns);
+                }
+            }
+        }
+
+        return ret;
+    }
 }

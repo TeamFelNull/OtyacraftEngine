@@ -63,6 +63,28 @@ public class UtilTest {
 
         print.accept("Apple mod name:" + OEItemUtils.getCreatorModId(new ItemStack(Items.APPLE)));
         print.accept("Test mod name:" + OEItemUtils.getCreatorModId(new ItemStack(TestItems.TEST_ITEM.get())));
+
+        List<ItemStack> stacks = new ArrayList<>();
+        stacks.add(new ItemStack(Items.APPLE));
+        stacks.add(new ItemStack(Items.IRON_INGOT, 32));
+        stacks.add(new ItemStack(Items.ENDER_PEARL, 10));
+        stacks.add(new ItemStack(Items.APPLE, 30));
+        stacks.add(new ItemStack(Items.IRON_INGOT, 32));
+        stacks.add(new ItemStack(Items.IRON_INGOT));
+        stacks.add(new ItemStack(Items.ENDER_PEARL));
+        stacks.add(new ItemStack(Items.IRON_INGOT, 32));
+        stacks.add(new ItemStack(Items.IRON_INGOT, 32));
+        stacks.add(new ItemStack(Items.APPLE));
+        stacks.add(new ItemStack(Items.ENDER_PEARL, 10));
+        stacks.add(new ItemStack(Items.IRON_INGOT, 32));
+
+        var ret = OEItemUtils.overlapItemStacks(stacks);
+
+        print.accept("-------------------");
+        for (ItemStack itemStack : ret) {
+            print.accept("Stack: " + itemStack);
+        }
+        print.accept("-------------------");
     }
 
     private static void nbtUtils(Consumer<String> print, Player player) {
