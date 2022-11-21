@@ -4,6 +4,8 @@ import dev.felnull.fnjl.util.FNReflectionUtil;
 import dev.felnull.otyacraftengine.forge.mixin.MobBucketItemAccessor;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraftforge.fml.ModList;
@@ -44,5 +46,9 @@ public class OEExpectPlatformImpl {
                 lst.add((T) inst);
         });
         return lst;
+    }
+
+    public static FoodProperties getFoodProperties(ItemStack stack, LivingEntity livingEntity) {
+        return stack.getFoodProperties(livingEntity);
     }
 }

@@ -4,14 +4,17 @@ import com.google.common.collect.ImmutableList;
 import dev.felnull.otyacraftengine.explatform.OEExpectPlatform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -255,5 +258,10 @@ public class OEItemUtils {
         }
 
         return ret;
+    }
+
+    @Nullable
+    public static FoodProperties getFoodProperties(ItemStack stack, @Nullable LivingEntity livingEntity) {
+        return OEExpectPlatform.getFoodProperties(stack, livingEntity);
     }
 }
