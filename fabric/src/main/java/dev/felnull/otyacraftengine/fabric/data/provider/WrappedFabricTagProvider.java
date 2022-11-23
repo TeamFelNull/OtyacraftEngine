@@ -57,6 +57,11 @@ public class WrappedFabricTagProvider<T> extends FabricTagProvider<T> {
         }
 
         @Override
+        public TagProviderWrapper.TagAppenderWrapper<A> addVanillaTag(TagKey<A> tagKey) {
+            return addOptionalTag(tagKey.location());
+        }
+
+        @Override
         public TagProviderWrapper.TagAppenderWrapper<A> addOptionalTag(ResourceLocation resourceLocation) {
             return new TagAppenderWrapperImpl<>(appender.addOptionalTag(resourceLocation));
         }

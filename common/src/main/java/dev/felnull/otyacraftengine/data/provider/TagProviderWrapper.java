@@ -32,6 +32,10 @@ public abstract class TagProviderWrapper<T, A extends TagProviderWrapper.TagProv
 
         TagAppenderWrapper<T> addTag(TagKey<T> tagKey);
 
+        default TagAppenderWrapper<T> addVanillaTag(TagKey<T> tagKey) {
+            return addTag(tagKey);
+        }
+
         TagAppenderWrapper<T> addOptionalTag(ResourceLocation resourceLocation);
 
         TagAppenderWrapper<T> add(T... objects);
