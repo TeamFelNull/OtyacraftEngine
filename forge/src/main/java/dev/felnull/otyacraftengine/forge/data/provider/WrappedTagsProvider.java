@@ -26,47 +26,54 @@ public class WrappedTagsProvider<T> extends TagsProvider<T> {
     private class TagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<T> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<T> tag(TagKey<T> tagKey) {
-            return new TagAppenderWrapperImpl<>(WrappedTagsProvider.this.tag(tagKey));
+            return new TagAppenderWrapperImpl<>(this, WrappedTagsProvider.this.tag(tagKey));
         }
     }
 
     protected static class TagAppenderWrapperImpl<A> implements TagProviderWrapper.TagAppenderWrapper<A> {
+        private final TagProviderWrapper.TagProviderAccess<A> provider;
         private final TagAppender<A> appender;
 
-        protected TagAppenderWrapperImpl(TagAppender<A> appender) {
+        protected TagAppenderWrapperImpl(TagProviderWrapper.TagProviderAccess<A> provider, TagAppender<A> appender) {
+            this.provider = provider;
             this.appender = appender;
         }
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<A> add(A object) {
-            return new TagAppenderWrapperImpl<>(appender.add(object));
+            return new TagAppenderWrapperImpl<>(provider, appender.add(object));
         }
 
         @SafeVarargs
         @Override
         public final TagProviderWrapper.TagAppenderWrapper<A> add(ResourceKey<A>... resourceKeys) {
-            return new TagAppenderWrapperImpl<>(appender.add(resourceKeys));
+            return new TagAppenderWrapperImpl<>(provider, appender.add(resourceKeys));
         }
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<A> addOptional(ResourceLocation resourceLocation) {
-            return new TagAppenderWrapperImpl<>(appender.addOptional(resourceLocation));
+            return new TagAppenderWrapperImpl<>(provider, appender.addOptional(resourceLocation));
         }
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<A> addTag(TagKey<A> tagKey) {
-            return new TagAppenderWrapperImpl<>(appender.addTag(tagKey));
+            return new TagAppenderWrapperImpl<>(provider, appender.addTag(tagKey));
         }
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<A> addOptionalTag(ResourceLocation resourceLocation) {
-            return new TagAppenderWrapperImpl<>(appender.addOptionalTag(resourceLocation));
+            return new TagAppenderWrapperImpl<>(provider, appender.addOptionalTag(resourceLocation));
         }
 
         @SafeVarargs
         @Override
         public final TagProviderWrapper.TagAppenderWrapper<A> add(A... objects) {
-            return new TagAppenderWrapperImpl<>(appender.add(objects));
+            return new TagAppenderWrapperImpl<>(provider, appender.add(objects));
+        }
+
+        @Override
+        public TagProviderWrapper.TagProviderAccess<A> getTagProvider() {
+            return provider;
         }
     }
 }

@@ -5,11 +5,21 @@ import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 @ApiStatus.Internal
-public record ManualTagHolderImpl<T>(TagKey<T> tagKey,
-                                     Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister) implements ManualTagHolder<T> {
+public class ManualTagHolderImpl<T> implements ManualTagHolder<T> {
+    private static final List<ManualTagHolderImpl<?>> GENERATED = new ArrayList<>();
+    private final TagKey<T> tagKey;
+    private final Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister;
+
+    public ManualTagHolderImpl(TagKey<T> tagKey, Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister) {
+        this.tagKey = tagKey;
+        this.tagRegister = tagRegister;
+    }
+
     public ManualTagHolderImpl(TagKey<T> tagKey) {
         this(tagKey, null);
     }
@@ -21,6 +31,9 @@ public record ManualTagHolderImpl<T>(TagKey<T> tagKey,
 
     @Override
     public void registering(@NotNull TagProviderWrapper.TagProviderAccess<T> tagProviderAccess) {
+        if (GENERATED.contains(this)) return;
+        GENERATED.add(this);
+
         if (tagRegister != null)
             tagRegister.accept(tagProviderAccess.tag(getKey()));
     }

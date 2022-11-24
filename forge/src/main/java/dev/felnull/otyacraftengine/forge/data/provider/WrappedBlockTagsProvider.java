@@ -25,7 +25,7 @@ public class WrappedBlockTagsProvider extends BlockTagsProvider {
     private class BlockTagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<Block> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Block> tag(TagKey<Block> tagKey) {
-            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(WrappedBlockTagsProvider.this.tag(tagKey));
+            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(this, WrappedBlockTagsProvider.this.tag(tagKey));
         }
     }
 }

@@ -25,7 +25,7 @@ public class WrappedPoiTypeTagsProvider extends PoiTypeTagsProvider {
     private class PoiTypeTagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<PoiType> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<PoiType> tag(TagKey<PoiType> tagKey) {
-            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(WrappedPoiTypeTagsProvider.this.tag(tagKey));
+            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(this, WrappedPoiTypeTagsProvider.this.tag(tagKey));
         }
     }
 }

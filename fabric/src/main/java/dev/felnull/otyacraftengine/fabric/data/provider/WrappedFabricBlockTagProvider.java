@@ -23,7 +23,7 @@ public class WrappedFabricBlockTagProvider extends FabricTagProvider.BlockTagPro
     private class BlockTagProviderAccessImpl implements TagProviderWrapper.TagProviderAccess<Block> {
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Block> tag(TagKey<Block> tagKey) {
-            return new WrappedFabricTagProvider.TagAppenderWrapperImpl<>(WrappedFabricBlockTagProvider.this.tag(tagKey));
+            return new WrappedFabricTagProvider.TagAppenderWrapperImpl<>(this,WrappedFabricBlockTagProvider.this.tag(tagKey));
         }
     }
 }

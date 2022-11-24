@@ -34,7 +34,7 @@ public class WrappedItemTagsProvider extends ItemTagsProvider {
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Item> tag(TagKey<Item> tagKey) {
-            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(WrappedItemTagsProvider.this.tag(tagKey));
+            return new WrappedTagsProvider.TagAppenderWrapperImpl<>(this,WrappedItemTagsProvider.this.tag(tagKey));
         }
     }
 }

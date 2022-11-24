@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.DataGeneratorType;
+import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +33,13 @@ public abstract class TagProviderWrapper<T, A extends TagProviderWrapper.TagProv
 
         TagAppenderWrapper<T> addTag(TagKey<T> tagKey);
 
+        default TagAppenderWrapper<T> addTag(ManualTagHolder<T> tagHolder) {
+            var tp = getTagProvider();
+            if (tp != null)
+                tagHolder.registering(tp);
+            return addTag(tagHolder.getKey());
+        }
+
         default TagAppenderWrapper<T> addVanillaTag(TagKey<T> tagKey) {
             return addTag(tagKey);
         }
@@ -39,5 +47,27 @@ public abstract class TagProviderWrapper<T, A extends TagProviderWrapper.TagProv
         TagAppenderWrapper<T> addOptionalTag(ResourceLocation resourceLocation);
 
         TagAppenderWrapper<T> add(T... objects);
+
+        default TagAppenderWrapper<T> addTag(TagKey<T>... tagKeys) {
+            TagAppenderWrapper<T> appenderWrapper = this;
+
+            for (TagKey<T> tagKey : tagKeys)
+                appenderWrapper = appenderWrapper.addTag(tagKey);
+
+            return appenderWrapper;
+        }
+
+        default TagAppenderWrapper<T> addTag(ManualTagHolder<T>... tagHolders) {
+            TagAppenderWrapper<T> appenderWrapper = this;
+
+            for (ManualTagHolder<T> tagHolder : tagHolders)
+                appenderWrapper = appenderWrapper.addTag(tagHolder);
+
+            return appenderWrapper;
+        }
+
+        default TagProviderAccess<T> getTagProvider() {
+            return null;
+        }
     }
 }

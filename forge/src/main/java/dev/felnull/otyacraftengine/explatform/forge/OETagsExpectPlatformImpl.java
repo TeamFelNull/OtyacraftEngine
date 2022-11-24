@@ -72,18 +72,58 @@ public class OETagsExpectPlatformImpl {
     }
 
     public static ManualTagHolder<Item> ironNuggets() {
-        return ManualTagHolder.of(Tags.Items.NUGGETS_IRON);
+        return ManualTagHolder.of(() -> Tags.Items.NUGGETS_IRON);
     }
 
     public static ManualTagHolder<Item> enderPearls() {
-        return ManualTagHolder.of(Tags.Items.ENDER_PEARLS);
+        return ManualTagHolder.of(() -> Tags.Items.ENDER_PEARLS);
     }
 
     public static ManualTagHolder<Item> stone() {
-        return ManualTagHolder.of(Tags.Items.STONE);
+        return ManualTagHolder.of(() -> Tags.Items.STONE);
     }
 
     public static ManualTagHolder<Item> redstoneBlocks() {
-        return ManualTagHolder.of(Tags.Items.STORAGE_BLOCKS_REDSTONE);
+        return ManualTagHolder.of(() -> Tags.Items.STORAGE_BLOCKS_REDSTONE);
+    }
+
+    public static ManualTagHolder<Item> rawMeats() {
+        return OEForgeItemTags.RAW_MEATS.get();
+    }
+
+    public static ManualTagHolder<Item> cookedMeats() {
+        return OEForgeItemTags.COOKED_MEATS.get();
+    }
+
+    public static ManualTagHolder<Item> rawFishes() {
+        return OEForgeItemTags.RAW_FISHES.get();
+    }
+
+    public static ManualTagHolder<Item> cookedFishes() {
+        return OEForgeItemTags.COOKED_FISHES.get();
+    }
+
+    public static ManualTagHolder<Item> wheatBreads() {
+        return OEForgeItemTags.BREAD_WHEAT.get();
+    }
+
+    public static ManualTagHolder<Item> breads() {
+        return OEForgeItemTags.BREAD.get();
+    }
+
+    public static ManualTagHolder<Item> vegetables() {
+        return OEForgeItemTags.VEGETABLES.get();
+    }
+
+    public static ManualTagHolder<Item> carrots() {
+        return ManualTagHolder.of(() -> Tags.Items.CROPS_CARROT);
+    }
+
+    public static ManualTagHolder<Item> potatoes() {
+        return ManualTagHolder.of(() -> Tags.Items.CROPS_POTATO);
+    }
+
+    public static ManualTagHolder<Item> beetroots() {
+        return ManualTagHolder.of(() -> Tags.Items.CROPS_BEETROOT);
     }
 }

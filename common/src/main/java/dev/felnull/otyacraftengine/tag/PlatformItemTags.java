@@ -85,4 +85,43 @@ public class PlatformItemTags {
         return OETagsExpectPlatform.redstoneBlocks();
     }
 
+    public static ManualTagHolder<Item> rawMeats() {
+        return OETagsExpectPlatform.rawMeats();
+    }
+
+    public static ManualTagHolder<Item> cookedMeats() {
+        return OETagsExpectPlatform.cookedMeats();
+    }
+
+    public static ManualTagHolder<Item> rawFishes() {
+        return OETagsExpectPlatform.rawFishes();
+    }
+
+    public static ManualTagHolder<Item> cookedFishes() {
+        return OETagsExpectPlatform.cookedFishes();
+    }
+
+    public static ManualTagHolder<Item> wheatBreads() {
+        return OETagsExpectPlatform.wheatBreads();
+    }
+
+    public static ManualTagHolder<Item> breads() {
+        return OETagsExpectPlatform.breads();
+    }
+
+    public static ManualTagHolder<Item> vegetables() {
+        return OETagsExpectPlatform.vegetables();
+    }
+
+    public static ManualTagHolder<Item> carrots() {
+        return OETagsExpectPlatform.carrots();
+    }
+
+    public static ManualTagHolder<Item> potatoes() {
+        return OETagsExpectPlatform.potatoes();
+    }
+
+    public static ManualTagHolder<Item> beetroots() {
+        return OETagsExpectPlatform.beetroots();
+    }
 }

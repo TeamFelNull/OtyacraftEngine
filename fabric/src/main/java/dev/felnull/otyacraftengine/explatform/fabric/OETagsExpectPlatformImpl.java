@@ -86,4 +86,44 @@ public class OETagsExpectPlatformImpl {
     public static ManualTagHolder<Item> redstoneBlocks() {
         return OEFabricItemTags.REDSTONE_BLOCKS.get();
     }
+
+    public static ManualTagHolder<Item> rawMeats() {
+        return OEFabricItemTags.RAW_MEATS.get();
+    }
+
+    public static ManualTagHolder<Item> cookedMeats() {
+        return OEFabricItemTags.COOKED_MEATS.get();
+    }
+
+    public static ManualTagHolder<Item> rawFishes() {
+        return OEFabricItemTags.RAW_FISHES.get();
+    }
+
+    public static ManualTagHolder<Item> cookedFishes() {
+        return OEFabricItemTags.COOKED_FISHES.get();
+    }
+
+    public static ManualTagHolder<Item> wheatBreads() {
+        return OEFabricItemTags.WHEAT_BREADS.get();
+    }
+
+    public static ManualTagHolder<Item> breads() {
+        return OEFabricItemTags.BREADS.get();
+    }
+
+    public static ManualTagHolder<Item> vegetables() {
+        return OEFabricItemTags.VEGETABLES.get();
+    }
+
+    public static ManualTagHolder<Item> carrots() {
+        return OEFabricItemTags.CARROTS.get();
+    }
+
+    public static ManualTagHolder<Item> potatoes() {
+        return OEFabricItemTags.POTATOES.get();
+    }
+
+    public static ManualTagHolder<Item> beetroots() {
+        return OEFabricItemTags.BEETROOTS.get();
+    }
 }

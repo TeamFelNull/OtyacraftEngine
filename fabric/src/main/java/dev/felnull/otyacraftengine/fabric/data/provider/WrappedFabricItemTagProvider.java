@@ -30,7 +30,7 @@ public class WrappedFabricItemTagProvider extends FabricTagProvider.ItemTagProvi
 
         @Override
         public TagProviderWrapper.TagAppenderWrapper<Item> tag(TagKey<Item> tagKey) {
-            return new WrappedFabricTagProvider.TagAppenderWrapperImpl<>(WrappedFabricItemTagProvider.this.tag(tagKey));
+            return new WrappedFabricTagProvider.TagAppenderWrapperImpl<>(this,WrappedFabricItemTagProvider.this.tag(tagKey));
         }
     }
 }
