@@ -126,4 +126,28 @@ public class OETagsExpectPlatformImpl {
     public static ManualTagHolder<Item> beetroots() {
         return OEFabricItemTags.BEETROOTS.get();
     }
+
+    public static ManualTagHolder<Item> wheatGrains() {
+        return OEFabricItemTags.WHEAT_GRAINS.get();
+    }
+
+    public static ManualTagHolder<Item> grains() {
+        return OEFabricItemTags.GRAINS.get();
+    }
+
+    public static ManualTagHolder<Item> seeds() {
+        return OEFabricItemTags.SEEDS.get();
+    }
+
+    public static ManualTagHolder<Item> fruits() {
+        return OEFabricItemTags.FRUITS.get();
+    }
+
+    public static ManualTagHolder<Item> milks() {
+        return OEFabricItemTags.MILKS.get();
+    }
+
+    public static ManualTagHolder<Item> drinks() {
+        return OEFabricItemTags.DRINKS.get();
+    }
 }

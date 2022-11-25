@@ -49,7 +49,8 @@ public class ClientDebugHandler {
 
         if (oed.isShowModNameInTooltip()) {
             var modid = OEItemUtils.getCreatorModId(stack);
-            lines.add(Component.literal(Platform.getMod(modid).getName()).withStyle(ChatFormatting.DARK_GREEN));
+            if (Platform.isModLoaded(modid))
+                Platform.getOptionalMod(modid).ifPresent(mod -> lines.add(Component.literal(mod.getName()).withStyle(ChatFormatting.DARK_GREEN)));
         }
     }
 

@@ -31,7 +31,12 @@ public class OEFabricItemTags {
     public static final Supplier<ManualTagHolder<Item>> CARROTS = bind("carrots", tp -> tp.add(Items.CARROT));
     public static final Supplier<ManualTagHolder<Item>> POTATOES = bind("potatoes", tp -> tp.add(Items.POTATO));
     public static final Supplier<ManualTagHolder<Item>> BEETROOTS = bind("beetroots", tp -> tp.add(Items.BEETROOT));
-
+    public static final Supplier<ManualTagHolder<Item>> WHEAT_GRAINS = bind("wheat_grains", tp -> tp.add(Items.WHEAT).addOptionalTag(cLoc("grain/wheat")));
+    public static final Supplier<ManualTagHolder<Item>> GRAINS = bind("grains", tp -> tp.addTag(WHEAT_GRAINS.get()).addOptionalTag(cLoc("grain")));
+    public static final Supplier<ManualTagHolder<Item>> SEEDS = bind("seeds", tp -> tp.add(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS));
+    public static final Supplier<ManualTagHolder<Item>> FRUITS = bind("fruits", tp -> tp.add(Items.APPLE, Items.MELON, Items.SWEET_BERRIES, Items.GLOW_BERRIES, Items.CHORUS_FRUIT));
+    public static final Supplier<ManualTagHolder<Item>> MILKS = bind("milks", tp -> tp.add(Items.MILK_BUCKET));
+    public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTag(MILKS.get()));
 
     private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<TagProviderWrapper.TagAppenderWrapper<Item>> tagRegister) {
         return Suppliers.memoize(() -> ManualTagHolder.of(TagRegistration.ITEM_TAG_REGISTRATION.registerCommon(id), tagRegister));
@@ -43,5 +48,9 @@ public class OEFabricItemTags {
 
     private static ResourceLocation cLoc(String path) {
         return new ResourceLocation("c", path);
+    }
+
+    private static ResourceLocation[] drinks() {
+        return new ResourceLocation[]{cLoc("juices"), cLoc("banana_smoothies"), cLoc("strawberry_smoothies"), cLoc("coffees"), cLoc("lemonades"), cLoc("limeades"), cLoc("kale_smoothies"), cLoc("fruit_smoothies"), cLoc("chocolate_milkshakes"), cLoc("beers"), cLoc("wines"), cLoc("meads"), cLoc("rums"), cLoc("pumpkin_spice_lattes"), cLoc("water_bottles"), cLoc("milk_bottles"), cLoc("tea")};
     }
 }

@@ -14,7 +14,6 @@ public interface ManualTagHolder<T> {
         return new ManualTagHolderImpl<>(tagKey, tagRegister);
     }
 
-    @Deprecated
     @NotNull
     static <T> ManualTagHolder<T> of(@NotNull TagKey<T> tagKey) {
         return new ManualTagHolderImpl<>(tagKey);

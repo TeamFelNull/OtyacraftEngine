@@ -124,4 +124,28 @@ public class PlatformItemTags {
     public static ManualTagHolder<Item> beetroots() {
         return OETagsExpectPlatform.beetroots();
     }
+
+    public static ManualTagHolder<Item> wheatGrains() {
+        return OETagsExpectPlatform.wheatGrains();
+    }
+
+    public static ManualTagHolder<Item> grains() {
+        return OETagsExpectPlatform.grains();
+    }
+
+    public static ManualTagHolder<Item> seeds() {
+        return OETagsExpectPlatform.seeds();
+    }
+
+    public static ManualTagHolder<Item> fruits() {
+        return OETagsExpectPlatform.fruits();
+    }
+
+    public static ManualTagHolder<Item> milks() {
+        return OETagsExpectPlatform.milks();
+    }
+
+    public static ManualTagHolder<Item> drinks() {
+        return OETagsExpectPlatform.drinks();
+    }
 }

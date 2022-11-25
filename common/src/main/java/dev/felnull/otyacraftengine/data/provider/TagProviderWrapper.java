@@ -66,6 +66,15 @@ public abstract class TagProviderWrapper<T, A extends TagProviderWrapper.TagProv
             return appenderWrapper;
         }
 
+        default TagAppenderWrapper<T> addOptionalTag(ResourceLocation... resourceLocations) {
+            TagAppenderWrapper<T> appenderWrapper = this;
+
+            for (ResourceLocation resourceLocation : resourceLocations)
+                appenderWrapper = appenderWrapper.addOptionalTag(resourceLocation);
+
+            return appenderWrapper;
+        }
+
         default TagProviderAccess<T> getTagProvider() {
             return null;
         }

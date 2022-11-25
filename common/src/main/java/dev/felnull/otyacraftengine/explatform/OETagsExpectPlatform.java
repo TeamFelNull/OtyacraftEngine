@@ -157,4 +157,34 @@ public class OETagsExpectPlatform {
     public static ManualTagHolder<Item> beetroots() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> wheatGrains() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> grains() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> seeds() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> fruits() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> milks() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> drinks() {
+        throw new AssertionError();
+    }
 }
