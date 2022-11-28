@@ -19,13 +19,13 @@ public class OEForgeItemTags {
     public static final Supplier<ManualTagHolder<Item>> RAW_FISHES = bind("raw_fishes", tp -> tp.add(Items.COD, Items.SALMON, Items.TROPICAL_FISH));
     public static final Supplier<ManualTagHolder<Item>> COOKED_FISHES = bind("cooked_fishes", tp -> tp.add(Items.COOKED_COD, Items.COOKED_SALMON));
     public static final Supplier<ManualTagHolder<Item>> BREAD_WHEAT = bind("bread/wheat", tp -> tp.add(Items.BREAD));
-    public static final Supplier<ManualTagHolder<Item>> BREAD = bind("bread", tp -> tp.addTag(BREAD_WHEAT.get()));
+    public static final Supplier<ManualTagHolder<Item>> BREAD = bind("bread", tp -> tp.addTagHolder(BREAD_WHEAT.get()));
     public static final Supplier<ManualTagHolder<Item>> VEGETABLES = bind("vegetables", tp -> tp.add(Items.CARROT, Items.POTATO, Items.BEETROOT));
     public static final Supplier<ManualTagHolder<Item>> GRAINS_WHEAT = bind("grains/wheat", tp -> tp.add(Items.WHEAT).addOptionalTag(fgLoc("grain/wheat")));
-    public static final Supplier<ManualTagHolder<Item>> GRAINS = bind("grain", tp -> tp.addTag(GRAINS_WHEAT.get()).addOptionalTag(fgLoc("grain")));
+    public static final Supplier<ManualTagHolder<Item>> GRAINS = bind("grain", tp -> tp.addTagHolder(GRAINS_WHEAT.get()).addOptionalTag(fgLoc("grain")));
     public static final Supplier<ManualTagHolder<Item>> FRUITS = bind("fruits", tp -> tp.add(Items.APPLE, Items.MELON, Items.SWEET_BERRIES, Items.GLOW_BERRIES, Items.CHORUS_FRUIT));
     public static final Supplier<ManualTagHolder<Item>> MILKS = bind("milks", tp -> tp.add(Items.MILK_BUCKET));
-    public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTag(MILKS.get()));
+    public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTagHolder(MILKS.get()));
 
     private static Supplier<TagKey<Item>> bind(String id) {
         return Suppliers.memoize(() -> ItemTags.create(fgLoc(id)));
@@ -40,6 +40,6 @@ public class OEForgeItemTags {
     }
 
     private static ResourceLocation[] drinks() {
-        return new ResourceLocation[]{fgLoc("juices"), fgLoc("banana_smoothies"), fgLoc("strawberry_smoothies"), fgLoc("coffees"), fgLoc("lemonades"), fgLoc("limeades"), fgLoc("kale_smoothies"), fgLoc("fruit_smoothies"), fgLoc("chocolate_milkshakes"), fgLoc("beers"), fgLoc("wines"), fgLoc("meads"), fgLoc("rums"), fgLoc("pumpkin_spice_lattes"), fgLoc("water_bottles"), fgLoc("milk_bottles"), fgLoc("tea")};
+        return new ResourceLocation[]{fgLoc("juices"), fgLoc("banana_smoothies"), fgLoc("strawberry_smoothies"), fgLoc("coffees"), fgLoc("lemonades"), fgLoc("limeades"), fgLoc("kale_smoothies"), fgLoc("fruit_smoothies"), fgLoc("chocolate_milkshakes"), fgLoc("beers"), fgLoc("wines"), fgLoc("meads"), fgLoc("rums"), fgLoc("pumpkin_spice_lattes"), fgLoc("milk_bottles"), fgLoc("tea")};
     }
 }

@@ -54,7 +54,7 @@ public class WrappedFabricTagProvider<T> extends FabricTagProvider<T> {
         }
 
         @Override
-        public TagProviderWrapper.TagAppenderWrapper<A> addTag(TagKey<A> tagKey) {
+        public TagProviderWrapper.TagAppenderWrapper<A> addTagHolder(TagKey<A> tagKey) {
             return new TagAppenderWrapperImpl<>(provider, appender.addTag(tagKey));
         }
 
