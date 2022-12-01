@@ -27,5 +27,7 @@ public abstract class ItemModelProviderWrapper extends DataProviderWrapper<DataP
 
     public static interface ItemModelProviderAccess {
         void basicFlatItem(Item item);
+
+        void builtinEntity(Item item);
     }
 }

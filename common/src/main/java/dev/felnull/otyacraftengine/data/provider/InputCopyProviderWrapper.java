@@ -65,6 +65,15 @@ public abstract class InputCopyProviderWrapper extends DevToolProviderWrapper {
         return new TaskResult(op, bs, hashCode);
     }
 
+    protected boolean isChildDir(Path inputFolder, Path path, Path targetPath) {
+        var rp = inputFolder.relativize(path);
+
+        var rps = rp.toString().replace("\\", "/");
+        var tps = targetPath.toString().replace("\\", "/");
+
+        return rps.startsWith(tps);
+    }
+
     @Override
     public String getName() {
         return "Input copy";

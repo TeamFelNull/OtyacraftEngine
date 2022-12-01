@@ -14,7 +14,8 @@
   "mixins": [
     "EntityMixin",
     "MobBucketItemAccessor",
-    "data.FabricDataGenHelperMixin"
+    "data.FabricDataGenHelperMixin",
+    "data.ItemModelGeneratorsAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
