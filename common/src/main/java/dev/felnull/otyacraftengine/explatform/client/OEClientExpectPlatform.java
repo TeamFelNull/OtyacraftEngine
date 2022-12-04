@@ -14,12 +14,6 @@ public class OEClientExpectPlatform {
     public static InputConstants.Key getKey(KeyMapping key) {
         throw new AssertionError();
     }
-
-    @ExpectPlatform
-    public static ClientIVShapeManager createCIVSManagerInstance() {
-        throw new AssertionError();
-    }
-
     @ExpectPlatform
     public static BakedModel getModel(ResourceLocation location) {
         throw new AssertionError();

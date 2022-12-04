@@ -17,10 +17,6 @@ public class OEClientExpectPlatformImpl {
         return key.getKey();
     }
 
-    public static ClientIVShapeManager createCIVSManagerInstance() {
-        return new ClientIVShapeManager();
-    }
-
     public static BakedModel getModel(ResourceLocation location) {
         return mc.getModelManager().getModel(location);
     }

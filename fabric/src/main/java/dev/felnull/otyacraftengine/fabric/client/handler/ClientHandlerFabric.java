@@ -2,10 +2,9 @@ package dev.felnull.otyacraftengine.fabric.client.handler;
 
 import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import dev.felnull.otyacraftengine.client.callpoint.LayerRegister;
-import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
-import dev.felnull.otyacraftengine.fabric.client.shape.ClientIVShapeManagerFabric;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.SimpleResourceReloadListener;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -22,7 +21,7 @@ public class ClientHandlerFabric {
     private static List<LayerEntry<? extends LivingEntity>> LAYERS;
 
     public static void init() {
-        ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener((ClientIVShapeManagerFabric) ClientIVShapeManager.getInstance());
+        ClientCallPointManager.getInstance().call().onResourceListenerRegistry(reloadListener -> ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener((SimpleResourceReloadListener<?>) reloadListener));
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register(ClientHandlerFabric::registerRenderers);
     }
 

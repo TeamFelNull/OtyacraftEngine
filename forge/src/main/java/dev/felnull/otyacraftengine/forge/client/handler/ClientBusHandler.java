@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.forge.client.handler;
 
 import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import dev.felnull.otyacraftengine.client.callpoint.LayerRegister;
-import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -21,7 +20,7 @@ import java.util.function.Function;
 public class ClientBusHandler {
     @SubscribeEvent
     public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e) {
-        e.registerReloadListener(ClientIVShapeManager.getInstance());
+        ClientCallPointManager.getInstance().call().onResourceListenerRegistry(e::registerReloadListener);
     }
 
     @SubscribeEvent

@@ -73,7 +73,8 @@ public abstract class ModelDivisionProviderWrapper extends DevToolProviderWrappe
 
         return divModel(FNStringUtil.removeExtension(op.toFile().getName()), model).entrySet().stream().map(ret -> {
             var name = ret.getKey();
-            var divModel = ret.getValue();
+            var divOutPath = op.getParent().resolve(FNStringUtil.escapeFileName(name, "_") + ".json");
+            var divModel = processModel(path, divOutPath, name, ret.getValue());
 
             byte[] bs;
             HashCode hashCode;
@@ -85,15 +86,18 @@ public abstract class ModelDivisionProviderWrapper extends DevToolProviderWrappe
                 throw new RuntimeException(e);
             }
 
-            return new EntryResult(op.getParent().resolve(FNStringUtil.escapeFileName(name, "_") + ".json"), bs, hashCode);
+            return new EntryResult(divOutPath, bs, hashCode);
         }).toList();
+    }
+
+    protected JsonObject processModel(Path orizinalPath, Path divOutPath, String groupName, JsonObject model) {
+        return model;
     }
 
     protected Map<String, JsonObject> divModel(String name, JsonObject original) {
         var groups = original.getAsJsonArray("groups");
 
-        if (groups == null)
-            return ImmutableMap.of(name, original);
+        if (groups == null) return ImmutableMap.of(name, original);
 
         Map<String, List<JsonElement>> divGroups = new HashMap<>();
 
@@ -110,20 +114,17 @@ public abstract class ModelDivisionProviderWrapper extends DevToolProviderWrappe
 
         var orelement = original.getAsJsonArray("elements");
 
-        return divGroups.entrySet().stream()
-                .map(ent -> Pair.of(ent.getKey(), ent.getValue().stream().flatMap(r -> getAllChildren(r).stream()).toList()))
-                .map(ent -> {
-                    JsonObject oriCopy = original.deepCopy();
-                    oriCopy.remove("elements");
-                    oriCopy.remove("groups");
-                    JsonArray nelements = new JsonArray();
-                    for (Integer integer : ent.getRight()) {
-                        nelements.add(orelement.get(integer));
-                    }
-                    oriCopy.add("elements", nelements);
-                    return Pair.of(ent.getLeft(), oriCopy);
-                })
-                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        return divGroups.entrySet().stream().map(ent -> Pair.of(ent.getKey(), ent.getValue().stream().flatMap(r -> getAllChildren(r).stream()).toList())).map(ent -> {
+            JsonObject oriCopy = original.deepCopy();
+            oriCopy.remove("elements");
+            oriCopy.remove("groups");
+            JsonArray nelements = new JsonArray();
+            for (Integer integer : ent.getRight()) {
+                nelements.add(orelement.get(integer));
+            }
+            oriCopy.add("elements", nelements);
+            return Pair.of(ent.getLeft(), oriCopy);
+        }).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
     }
 
     protected boolean isChildDir(Path inputFolder, Path path, Path targetPath) {

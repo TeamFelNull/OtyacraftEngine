@@ -1,10 +1,10 @@
 package dev.felnull.otyacraftengine.client.shape;
 
-import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
+import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.resources.PlatformResourceReloadListener;
 import dev.felnull.otyacraftengine.shape.VoxelEdge;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class ClientIVShapeManager extends SimplePreparableReloadListener<ClientIVShapeLoader> {
-    private static final ClientIVShapeManager INSTANCE = OEClientExpectPlatform.createCIVSManagerInstance();
+public class ClientIVShapeManager extends PlatformResourceReloadListener<ClientIVShapeLoader> {
+    private static final ClientIVShapeManager INSTANCE = new ClientIVShapeManager();
+    private static final ResourceLocation VOXEL_SHAPE = new ResourceLocation(OtyacraftEngine.MODID, "voxel_shape");
     private Map<ResourceLocation, VoxelClientShape> voxelClientShapes;
     private Map<ResourceLocation, VoxelClientShape> legacyVoxelClientShapes = new HashMap<>();
 
@@ -42,5 +43,10 @@ public class ClientIVShapeManager extends SimplePreparableReloadListener<ClientI
 
     public void addLegacyShapes(ResourceLocation location, Set<VoxelEdge> edges) {
         legacyVoxelClientShapes.put(location, new VoxelClientShape(null, null, edges));
+    }
+
+    @Override
+    public @NotNull ResourceLocation getId() {
+        return VOXEL_SHAPE;
     }
 }

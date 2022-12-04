@@ -2,9 +2,7 @@ package dev.felnull.otyacraftengine.explatform.client.fabric;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
-import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
-import dev.felnull.otyacraftengine.fabric.client.shape.ClientIVShapeManagerFabric;
 import dev.felnull.otyacraftengine.fabric.mixin.client.MinecraftAccessor;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.model.BakedModelManagerHelper;
@@ -20,10 +18,6 @@ public class OEClientExpectPlatformImpl {
 
     public static InputConstants.Key getKey(KeyMapping key) {
         return KeyBindingHelper.getBoundKeyOf(key);
-    }
-
-    public static ClientIVShapeManager createCIVSManagerInstance() {
-        return new ClientIVShapeManagerFabric();
     }
 
     public static BakedModel getModel(ResourceLocation location) {

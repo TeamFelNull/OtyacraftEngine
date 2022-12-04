@@ -22,6 +22,11 @@ public class ClientCallPointManager {
         public void onLayerRegistry(LayerRegister register) {
             consumer(n -> n.onLayerRegistry(register));
         }
+
+        @Override
+        public void onResourceListenerRegistry(ClientResourceListenerRegister register) {
+            consumer(n -> n.onResourceListenerRegistry(register));
+        }
     };
 
     public static ClientCallPointManager getInstance() {

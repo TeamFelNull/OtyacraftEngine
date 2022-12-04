@@ -15,7 +15,8 @@
     "EntityMixin",
     "MobBucketItemAccessor",
     "data.FabricDataGenHelperMixin",
-    "data.ItemModelGeneratorsAccessor"
+    "data.ItemModelGeneratorsAccessor",
+    "self.PlatformResourceReloadListenerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
