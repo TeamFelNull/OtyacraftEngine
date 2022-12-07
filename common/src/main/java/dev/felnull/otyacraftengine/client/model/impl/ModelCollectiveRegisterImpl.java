@@ -11,24 +11,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ModelCollectiveRegisterImpl implements ModelCollectiveRegister {
-    private static final Set<ModelHolder> MODELS = new HashSet<>();
+    private final Set<ModelHolder> models = new HashSet<>();
 
     @Override
     public @NotNull ModelHolder register(@NotNull ResourceLocation location) {
         var holder = ModelHolder.create(location);
-        MODELS.add(holder);
+        models.add(holder);
         return holder;
     }
 
     @Override
     public <T extends ModelBundle> @NotNull T register(@NotNull T bundle) {
-        MODELS.addAll(bundle.getAllHolders());
+        models.addAll(bundle.getAllHolders());
         return bundle;
     }
 
     @Override
     public void registering(@NotNull ModelRegister register) {
-        for (ModelHolder model : MODELS) {
+        for (ModelHolder model : models) {
             model.registering(register);
         }
     }
