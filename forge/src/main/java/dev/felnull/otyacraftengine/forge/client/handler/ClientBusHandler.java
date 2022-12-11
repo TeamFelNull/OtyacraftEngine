@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine.forge.client.handler;
 
+import dev.felnull.otyacraftengine.OtyacraftEngine;
+import dev.felnull.otyacraftengine.client.OtyacraftEngineClient;
 import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import dev.felnull.otyacraftengine.client.callpoint.LayerRegister;
 import net.minecraft.client.model.EntityModel;
@@ -11,13 +13,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.util.function.Function;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = OtyacraftEngine.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientBusHandler {
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.register(ClientHandlerForge.class);
+        MinecraftForge.EVENT_BUS.register(RenderHandlerForge.class);
+        OtyacraftEngineClient.init();
+    }
+
     @SubscribeEvent
     public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e) {
         ClientCallPointManager.getInstance().call().onResourceListenerRegistry(e::registerReloadListener);
