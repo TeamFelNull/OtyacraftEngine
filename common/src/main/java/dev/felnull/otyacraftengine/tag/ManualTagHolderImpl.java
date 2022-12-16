@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.tag;
 
-import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
+import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
 import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -13,9 +13,9 @@ import java.util.function.Consumer;
 public class ManualTagHolderImpl<T> implements ManualTagHolder<T> {
     private static final List<ManualTagHolderImpl<?>> GENERATED = new ArrayList<>();
     private final TagKey<T> tagKey;
-    private final Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister;
+    private final Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T>> tagRegister;
 
-    public ManualTagHolderImpl(TagKey<T> tagKey, Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister) {
+    public ManualTagHolderImpl(TagKey<T> tagKey, Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T>> tagRegister) {
         this.tagKey = tagKey;
         this.tagRegister = tagRegister;
     }
@@ -30,7 +30,7 @@ public class ManualTagHolderImpl<T> implements ManualTagHolder<T> {
     }
 
     @Override
-    public void registering(@NotNull TagProviderWrapper.TagProviderAccess<T> tagProviderAccess) {
+    public void registering(@NotNull IntrinsicHolderTagsProviderWrapper.IntrinsicTagProviderAccess<T> tagProviderAccess) {
         if (GENERATED.contains(this)) return;
         GENERATED.add(this);
 

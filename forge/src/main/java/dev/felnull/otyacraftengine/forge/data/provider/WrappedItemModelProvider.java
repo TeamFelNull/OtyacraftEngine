@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.forge.data.provider;
 
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -13,8 +13,8 @@ import java.util.Objects;
 public class WrappedItemModelProvider extends ItemModelProvider {
     private final ItemModelProviderWrapper itemModelProviderWrapper;
 
-    public WrappedItemModelProvider(DataGenerator generator, String modid, ExistingFileHelper existingFileHelper, ItemModelProviderWrapper itemModelProviderWrapper) {
-        super(generator, modid, existingFileHelper);
+    public WrappedItemModelProvider(PackOutput output, String modid, ExistingFileHelper existingFileHelper, ItemModelProviderWrapper itemModelProviderWrapper) {
+        super(output, modid, existingFileHelper);
         this.itemModelProviderWrapper = itemModelProviderWrapper;
     }
 

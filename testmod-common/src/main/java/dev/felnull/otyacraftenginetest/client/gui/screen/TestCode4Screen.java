@@ -7,7 +7,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+
 public class TestCode4Screen extends Screen {
+    private static final Component OPEN_FILE = Component.literal("File Open");
+
     protected TestCode4Screen() {
         super(Component.literal("Test code4"));
     }
@@ -15,10 +18,9 @@ public class TestCode4Screen extends Screen {
     @Override
     protected void init() {
         super.init();
-
-        addRenderableWidget(new Button(0, 0, 200, 20, Component.literal("File Open"), button -> {
+        addRenderableWidget(Button.builder(OPEN_FILE, button -> {
             OEClientUtils.openFileChooser("fcoh", null, null, false);
-        }));
+        }).bounds(0, 0, 200, 20).build());
     }
 
     @Override
@@ -28,3 +30,4 @@ public class TestCode4Screen extends Screen {
         super.render(poseStack, i, j, f);
     }
 }
+

@@ -2,8 +2,10 @@ package dev.felnull.otyacraftengine.data;
 
 import dev.architectury.platform.Mod;
 import dev.felnull.otyacraftengine.data.provider.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -13,37 +15,65 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 
 public interface CrossDataGeneratorAccess {
     @NotNull DataGenerator getVanillaGenerator();
 
-    void addProvider(@NotNull DataGeneratorType dataGeneratorType, @NotNull DataProvider dataProvider);
+    <T extends DataProvider> T addProvider(@NotNull DataProvider.Factory<T> factory);
 
-    default void addProvider(@NotNull DataProviderWrapper<?> dataProviderWrapper) {
-        addProvider(dataProviderWrapper.getGeneratorType(), dataProviderWrapper.getProvider());
+    <T extends DataProvider> T addProvider(@NotNull BiFunction<PackOutput, CompletableFuture<HolderLookup.Provider>, T> dataProviderSupplier);
+
+    default <T extends DataProviderWrapper<?>> T addProviderWrapper(@NotNull DataProviderWrapper.GeneratorAccessedFactory<T> factory) {
+        return addProviderWrapper(packOutput -> factory.create(packOutput, CrossDataGeneratorAccess.this));
+    }
+
+    default <T extends DataProviderWrapper<?>> T addProviderWrapper(@NotNull DataProviderWrapper.Factory<T> factory) {
+        AtomicReference<T> providerWrapper = new AtomicReference<>();
+
+        addProvider(packOutput -> {
+            providerWrapper.set(factory.create(packOutput));
+            return providerWrapper.get().getProvider();
+        });
+
+        return providerWrapper.get();
+    }
+
+    default <T extends DataProviderWrapper<?>> T addProviderWrapper(@NotNull DataProviderWrapper.LookupGeneratorAccessedFactory<T> factory) {
+        return addProviderWrapper((DataProviderWrapper.LookupFactory<T>) (packOutput, lookup) -> factory.create(packOutput, lookup, CrossDataGeneratorAccess.this));
+    }
+
+    default <T extends DataProviderWrapper<?>> T addProviderWrapper(@NotNull DataProviderWrapper.LookupFactory<T> factory) {
+        AtomicReference<T> providerWrapper = new AtomicReference<>();
+
+        addProvider((packOutput, lookup) -> {
+            providerWrapper.set(factory.create(packOutput, lookup));
+            return providerWrapper.get().getProvider();
+        });
+
+        return providerWrapper.get();
     }
 
     Mod getMod();
 
-    RecipeProvider createRecipeProvider(RecipeProviderWrapper recipeProviderWrapper);
+    RecipeProvider createRecipeProvider(PackOutput packOutput, RecipeProviderWrapper recipeProviderWrapper);
 
-    TagsProvider<Item> createItemTagProvider(ItemTagProviderWrapper itemTagProviderWrapper, @NotNull BlockTagProviderWrapper blockTagProviderWrapper);
+    TagsProvider<Item> createItemTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, ItemTagProviderWrapper itemTagProviderWrapper, @NotNull BlockTagProviderWrapper blockTagProviderWrapper);
 
-    TagsProvider<Block> createBlockTagProvider(BlockTagProviderWrapper blockTagProviderWrapper);
+    TagsProvider<Block> createBlockTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, BlockTagProviderWrapper blockTagProviderWrapper);
 
-    TagsProvider<PoiType> createPoiTypeTagProvider(PoiTypeTagProviderWrapper poiTypeTagProviderWrapper);
+    TagsProvider<PoiType> createPoiTypeTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, PoiTypeTagProviderWrapper poiTypeTagProviderWrapper);
 
-    DataProvider createDevToolProvider(DevToolProviderWrapper devToolProviderWrapper);
+    DataProvider createBasicProvider(BasicProviderWrapper basicProviderWrapper);
 
     DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper);
 
-    DataProvider createAdvancementProvider(AdvancementProviderWrapper advancementProviderWrapper);
+    DataProvider createAdvancementProvider(PackOutput packOutput, AdvancementProviderWrapper advancementProviderWrapper, List<AdvancementSubProviderWrapper> subProviderWrappers);
 
-    default DataProvider createItemModelProvider(ItemModelProviderWrapper itemModelProviderWrapper) {
-        return null;
-    }
-
-    boolean isInclude(DataGeneratorType type);
+    DataProvider createItemModelProvider(PackOutput packOutput, ItemModelProviderWrapper itemModelProviderWrapper);
 
     Collection<Path> getResourceInputFolders();
 

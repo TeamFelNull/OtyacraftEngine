@@ -6,8 +6,9 @@ import dev.felnull.otyacraftenginetest.client.renderer.item.TestItemRenderers;
 
 public class OtyacraftEngineTestClient {
     public static void init() {
-        TestBlockEntityRenderers.init();
         TestItemRenderers.init();
+        TestBlockEntityRenderers.init();
+
         ClientHandler.init();
     }
 }

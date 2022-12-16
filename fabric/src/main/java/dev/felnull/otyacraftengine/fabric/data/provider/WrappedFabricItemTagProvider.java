@@ -1,26 +1,31 @@
 package dev.felnull.otyacraftengine.fabric.data.provider;
 
+import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.ItemTagProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
+
 
 public class WrappedFabricItemTagProvider extends FabricTagProvider.ItemTagProvider {
     private final ItemTagProviderWrapper tagProviderWrapper;
 
-    public WrappedFabricItemTagProvider(FabricDataGenerator dataGenerator, @NotNull BlockTagProvider blockTagProvider, ItemTagProviderWrapper tagProviderWrapper) {
-        super(dataGenerator, blockTagProvider);
+    public WrappedFabricItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable BlockTagProvider blockTagProvider, ItemTagProviderWrapper tagProviderWrapper) {
+        super(output, completableFuture, blockTagProvider);
         this.tagProviderWrapper = tagProviderWrapper;
     }
 
     @Override
-    protected void generateTags() {
+    protected void addTags(HolderLookup.Provider arg) {
         this.tagProviderWrapper.generateTag(new ItemTagProviderAccessImpl());
     }
+
 
     private class ItemTagProviderAccessImpl implements ItemTagProviderWrapper.ItemTagProviderAccess {
         @Override
@@ -29,8 +34,9 @@ public class WrappedFabricItemTagProvider extends FabricTagProvider.ItemTagProvi
         }
 
         @Override
-        public TagProviderWrapper.TagAppenderWrapper<Item> tag(TagKey<Item> tagKey) {
-            return new WrappedFabricTagProvider.TagAppenderWrapperImpl<>(this,WrappedFabricItemTagProvider.this.tag(tagKey));
+        public IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<Item> tag(TagKey<Item> tagKey) {
+            return new WrappedFabricIntrinsicHolderTagsProvider.IntrinsicHolderTagAppenderWrapperImpl<>(WrappedFabricItemTagProvider.this.tag(tagKey), tagProviderWrapper);
         }
     }
 }
+

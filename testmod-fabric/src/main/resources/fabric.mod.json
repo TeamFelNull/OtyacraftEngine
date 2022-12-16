@@ -23,6 +23,9 @@
     ],
     "otyacraftengine_client": [
       "dev.felnull.otyacraftenginetest.client.callpoint.TestOECallPoint"
+    ],
+    "fabric-datagen": [
+      "dev.felnull.otyacraftenginetest.fabric.data.OtyacraftEngineTestDataGeneratorsFabric"
     ]
   },
   "mixins": [

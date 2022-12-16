@@ -13,7 +13,7 @@ public class ItemRendererRegisterForge {
     private static final Map<Item, BEWLItemRenderer> RENDERERS = new HashMap<>();
 
     public static void register(ItemLike item, BEWLItemRenderer renderer) {
-        Objects.requireNonNull(item, "item is null");
+        Objects.requireNonNull(item, "item like is null");
         Objects.requireNonNull(item.asItem(), "item is null");
         Objects.requireNonNull(renderer, "renderer is null");
 

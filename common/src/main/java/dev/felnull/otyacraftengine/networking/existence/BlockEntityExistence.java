@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.networking.existence;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ public record BlockEntityExistence(ResourceLocation dimension, BlockPos blockPos
 
     @NotNull
     public static BlockEntityExistence getByBlockEntity(@NotNull BlockEntity blockEntity) {
-        var bereg = Registry.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
+        var bereg = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
         return new BlockEntityExistence(blockEntity.getLevel().dimension().location(), blockEntity.getBlockPos(), bereg);
     }
 
@@ -26,7 +26,9 @@ public record BlockEntityExistence(ResourceLocation dimension, BlockPos blockPos
         if (!level.dimension().location().equals(dimension))
             return false;
         var be = level.getBlockEntity(blockPos);
-        return be != null && blockEntityName.equals(Registry.BLOCK_ENTITY_TYPE.getKey(be.getType()));
+        //return be != null && blockEntityName.equals(Registry.BLOCK_ENTITY_TYPE.getKey(be.getType()));
+
+        return false;
     }
 
     public void write(FriendlyByteBuf buf) {

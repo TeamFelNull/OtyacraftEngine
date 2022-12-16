@@ -1,18 +1,29 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ItemTagProviderWrapper extends TagProviderWrapper<Item, ItemTagProviderWrapper.ItemTagProviderAccess> {
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+
+public abstract class ItemTagProviderWrapper extends IntrinsicHolderTagsProviderWrapper<Item, ItemTagProviderWrapper.ItemTagProviderAccess> {
     private final TagsProvider<Item> itemTagsProvider;
 
-    public ItemTagProviderWrapper(CrossDataGeneratorAccess crossDataGeneratorAccess, @NotNull BlockTagProviderWrapper blockTagProviderWrapper) {
-        super(crossDataGeneratorAccess);
-        this.itemTagsProvider = crossDataGeneratorAccess.createItemTagProvider(this, blockTagProviderWrapper);
+    public ItemTagProviderWrapper(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, CrossDataGeneratorAccess crossDataGeneratorAccess, @NotNull BlockTagProviderWrapper blockTagProviderWrapper) {
+        super(packOutput, lookup, crossDataGeneratorAccess);
+        this.itemTagsProvider = crossDataGeneratorAccess.createItemTagProvider(packOutput, lookup, this, blockTagProviderWrapper);
+    }
+
+    @Override
+    public Function<Item, ResourceKey<Item>> getKeyExtractor() {
+        return (item) -> item.builtInRegistryHolder().key();
     }
 
     @Override
@@ -20,7 +31,7 @@ public abstract class ItemTagProviderWrapper extends TagProviderWrapper<Item, It
         return this.itemTagsProvider;
     }
 
-    public static interface ItemTagProviderAccess extends TagProviderAccess<Item> {
+    public static interface ItemTagProviderAccess extends IntrinsicTagProviderAccess<Item> {
         void copy(TagKey<Block> blockTag, TagKey<Item> itemTag);
     }
 }

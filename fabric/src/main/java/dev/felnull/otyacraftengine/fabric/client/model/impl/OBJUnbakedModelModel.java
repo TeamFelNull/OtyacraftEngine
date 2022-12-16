@@ -1,8 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.client.model.impl;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
 import de.javagl.obj.*;
 import dev.felnull.otyacraftengine.fabric.client.model.OBJOption;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -18,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Function;
@@ -46,15 +45,12 @@ public class OBJUnbakedModelModel implements UnbakedModel {
     }
 
     @Override
-    public Collection<Material> getMaterials(Function<ResourceLocation, UnbakedModel> function, Set<Pair<String, String>> set) {
-        List<Material> sprites = new ArrayList<>();
-        mtls.values().forEach(mtl -> sprites.add(new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(mtl.getMapKd()))));
-        return sprites;
+    public void resolveParents(Function<ResourceLocation, UnbakedModel> function) {
     }
 
     @Nullable
     @Override
-    public BakedModel bake(ModelBakery modelBakery, Function<Material, TextureAtlasSprite> function, ModelState modelState, ResourceLocation resourceLocation) {
+    public BakedModel bake(ModelBaker modelBaker, Function<Material, TextureAtlasSprite> function, ModelState modelState, ResourceLocation resourceLocation) {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer == null)
             renderer = IndigoRenderer.INSTANCE;
@@ -115,7 +111,7 @@ public class OBJUnbakedModelModel implements UnbakedModel {
 
             if (modelState.getRotation() != Transformation.identity() && !degenerate) {
                 vertex.add(-0.5F, -0.5F, -0.5F);
-                vertex.transform(modelState.getRotation().getLeftRotation());
+                vertex.rotate(modelState.getRotation().getLeftRotation());
                 vertex.add(0.5f, 0.5f, 0.5f);
             }
 

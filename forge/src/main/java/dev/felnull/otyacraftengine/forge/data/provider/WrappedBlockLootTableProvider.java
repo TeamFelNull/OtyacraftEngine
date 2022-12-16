@@ -1,50 +1,49 @@
 package dev.felnull.otyacraftengine.forge.data.provider;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
+import com.google.common.collect.ImmutableSet;
 import dev.felnull.otyacraftengine.data.provider.BlockLootTableProviderWrapper;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
-import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.Set;
 
 public class WrappedBlockLootTableProvider extends LootTableProvider {
     private final BlockLootTableProviderWrapper blockLootTableProviderWrapper;
-    private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> subProviders = ImmutableList.of(Pair.of(WrappedBlockLoot::new, LootContextParamSets.BLOCK));
 
-    public WrappedBlockLootTableProvider(DataGenerator arg, BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
-        super(arg);
+    public WrappedBlockLootTableProvider(PackOutput arg, BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
+        super(arg, Set.of(), ImmutableList.of(new LootTableProvider.SubProviderEntry(() -> new WrappedBlockLootSubProvider(blockLootTableProviderWrapper), LootContextParamSets.BLOCK)));
         this.blockLootTableProviderWrapper = blockLootTableProviderWrapper;
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        return subProviders;
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationcontext) {
+
     }
 
-    @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-    }
+    private static class WrappedBlockLootSubProvider extends BlockLootSubProvider {
+        private final BlockLootTableProviderWrapper blockLootTableProviderWrapper;
 
-    private class WrappedBlockLoot extends BlockLoot {
+        protected WrappedBlockLootSubProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
+            super(ImmutableSet.of(), FeatureFlags.REGISTRY.allFlags());
+            this.blockLootTableProviderWrapper = blockLootTableProviderWrapper;
+        }
+
         @Override
         protected Iterable<Block> getKnownBlocks() {
             return blockLootTableProviderWrapper.getKnownBlocks();
         }
 
         @Override
-        protected void addTables() {
+        protected void generate() {
             blockLootTableProviderWrapper.generateBlockLootTables(this, (b) -> {
             });
         }

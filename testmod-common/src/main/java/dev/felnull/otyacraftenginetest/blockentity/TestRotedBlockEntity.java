@@ -7,6 +7,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+
 public class TestRotedBlockEntity extends OEBaseBlockEntity {
     private int roted;
     private int rotedOld;
@@ -39,7 +40,7 @@ public class TestRotedBlockEntity extends OEBaseBlockEntity {
 
     public void addSpeed(int num) {
         speed += num;
-       setChanged();
+        setChanged();
     }
 
     @Override
@@ -63,3 +64,4 @@ public class TestRotedBlockEntity extends OEBaseBlockEntity {
         this.speed = tag.getInt("Speed");
     }
 }
+

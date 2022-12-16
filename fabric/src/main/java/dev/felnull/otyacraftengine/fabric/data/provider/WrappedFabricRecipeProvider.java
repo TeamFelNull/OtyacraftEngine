@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.data.provider;
 
 import dev.felnull.otyacraftengine.data.provider.RecipeProviderWrapper;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -10,21 +10,19 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Consumer;
 
-@ApiStatus.Internal
 public class WrappedFabricRecipeProvider extends FabricRecipeProvider {
     private final RecipeProviderWrapper recipeProviderWrapper;
 
-    public WrappedFabricRecipeProvider(FabricDataGenerator dataGenerator, RecipeProviderWrapper recipeProviderWrapper) {
-        super(dataGenerator);
+    public WrappedFabricRecipeProvider(FabricDataOutput output, RecipeProviderWrapper recipeProviderWrapper) {
+        super(output);
         this.recipeProviderWrapper = recipeProviderWrapper;
     }
 
     @Override
-    protected void generateRecipes(Consumer<FinishedRecipe> exporter) {
+    public void buildRecipes(Consumer<FinishedRecipe> exporter) {
         recipeProviderWrapper.generateRecipe(exporter, new RecipeProviderAccessImpl());
     }
 

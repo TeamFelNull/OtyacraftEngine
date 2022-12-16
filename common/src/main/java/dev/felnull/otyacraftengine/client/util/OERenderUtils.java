@@ -2,8 +2,7 @@ package dev.felnull.otyacraftengine.client.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import dev.felnull.otyacraftengine.client.renderer.OERenderTypes;
 import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.Minecraft;
@@ -21,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -80,7 +80,7 @@ public class OERenderUtils {
      * @param angle     角度
      */
     public static void poseRotateX(@NotNull PoseStack poseStack, float angle) {
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(angle));
+        poseStack.mulPose(Axis.XP.rotationDegrees(angle));
     }
 
     /**
@@ -90,7 +90,7 @@ public class OERenderUtils {
      * @param angle     角度
      */
     public static void poseRotateY(@NotNull PoseStack poseStack, float angle) {
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(angle));
+        poseStack.mulPose(Axis.YP.rotationDegrees(angle));
     }
 
     /**
@@ -100,7 +100,7 @@ public class OERenderUtils {
      * @param angle     角度
      */
     public static void poseRotateZ(@NotNull PoseStack poseStack, float angle) {
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(angle));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(angle));
     }
 
     /**
@@ -435,15 +435,15 @@ public class OERenderUtils {
         float m = -0.4F * Mth.sin(swingProgress * Mth.PI);
 
         poseStack.translate(h * (k + 0.64000005F), l + -0.6F + equipProgress * -0.6F, m + -0.71999997F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * 45.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(h * 45.0F));
         float n = Mth.sin(swingProgress * swingProgress * Mth.PI);
         float o = Mth.sin(j * Mth.PI);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * o * 70.0F));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(h * n * -20.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(h * o * 70.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(h * n * -20.0F));
         poseStack.translate(h * -1.0F, 3.5999999046325684D, 3.5D);
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(h * 120.0F));
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(200.0F));
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(h * -135.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(h * 120.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(200.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(h * -135.0F));
         poseStack.translate(h * 5.6F, 0.0D, 0.0D);
     }
 

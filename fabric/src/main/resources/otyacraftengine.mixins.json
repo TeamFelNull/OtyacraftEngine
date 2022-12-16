@@ -8,8 +8,7 @@
     "client.ClientPacketListenerMixin",
     "client.ItemInHandRendererMixin",
     "client.MinecraftAccessor",
-    "client.MinecraftMixin",
-    "integration.myron.AbstractObjLoaderMixin"
+    "client.MinecraftMixin"
   ],
   "mixins": [
     "EntityMixin",

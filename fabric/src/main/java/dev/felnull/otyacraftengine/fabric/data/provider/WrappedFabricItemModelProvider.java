@@ -2,7 +2,7 @@ package dev.felnull.otyacraftengine.fabric.data.provider;
 
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
 import dev.felnull.otyacraftengine.fabric.mixin.data.ItemModelGeneratorsAccessor;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
@@ -15,14 +15,16 @@ import net.minecraft.world.item.Item;
 
 import java.util.Optional;
 
+
 public class WrappedFabricItemModelProvider extends FabricModelProvider {
     public static final ModelTemplate BUILTIN_ENTITY = new ModelTemplate(Optional.of(new ResourceLocation("minecraft", "builtin/entity")), Optional.empty());
     private final ItemModelProviderWrapper itemModelProviderWrapper;
 
-    public WrappedFabricItemModelProvider(FabricDataGenerator dataGenerator, ItemModelProviderWrapper itemModelProviderWrapper) {
-        super(dataGenerator);
+    public WrappedFabricItemModelProvider(FabricDataOutput output, ItemModelProviderWrapper itemModelProviderWrapper) {
+        super(output);
         this.itemModelProviderWrapper = itemModelProviderWrapper;
     }
+
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
@@ -52,3 +54,4 @@ public class WrappedFabricItemModelProvider extends FabricModelProvider {
         }
     }
 }
+

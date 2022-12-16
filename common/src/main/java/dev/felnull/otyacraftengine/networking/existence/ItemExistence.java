@@ -3,7 +3,7 @@ package dev.felnull.otyacraftengine.networking.existence;
 import dev.felnull.otyacraftengine.item.IInstructionItem;
 import dev.felnull.otyacraftengine.item.location.PlayerItemLocation;
 import dev.felnull.otyacraftengine.item.location.PlayerItemLocations;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +15,7 @@ public record ItemExistence(PlayerItemLocation location, ResourceLocation itemRe
     }
 
     public static ItemExistence getByItemLocation(ItemStack stack, PlayerItemLocation location) {
-        var itm = Registry.ITEM.getKey(stack.getItem());
+        var itm = BuiltInRegistries.ITEM.getKey(stack.getItem());
         return new ItemExistence(location, itm);
     }
 
@@ -23,7 +23,7 @@ public record ItemExistence(PlayerItemLocation location, ResourceLocation itemRe
         if (location == null) return false;
         var litm = location.getItem(player);
         if (litm.isEmpty()) return false;
-        var itm = Registry.ITEM.get(itemRegistryName);
+        var itm = BuiltInRegistries.ITEM.get(itemRegistryName);
         return litm.getItem() == itm && itm instanceof IInstructionItem;
     }
 

@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.tag;
 
 import com.google.common.base.Suppliers;
+import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
 import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.fabricmc.fabric.impl.tag.convention.TagRegistration;
@@ -38,7 +39,7 @@ public class OEFabricItemTags {
     public static final Supplier<ManualTagHolder<Item>> MILKS = bind("milks", tp -> tp.add(Items.MILK_BUCKET));
     public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTagHolder(MILKS.get()));
 
-    private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<TagProviderWrapper.TagAppenderWrapper<Item>> tagRegister) {
+    private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<Item>> tagRegister) {
         return Suppliers.memoize(() -> ManualTagHolder.of(TagRegistration.ITEM_TAG_REGISTRATION.registerCommon(id), tagRegister));
     }
 

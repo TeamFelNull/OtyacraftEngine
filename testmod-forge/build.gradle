@@ -18,6 +18,16 @@ loom {
                 it.add(project(":forge").sourceSets.main)
             }
         }
+
+        dataGen {
+            mod 'otyacraftenginetest'
+        }
+    }
+
+    launches {
+        data {
+            arg "--existing", file("src/main/resources").absolutePath, "--existing", file("../testmod-common/src/main/resources").absolutePath
+        }
     }
 }
 

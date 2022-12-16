@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftenginetest.block;
 
+
 import dev.felnull.otyacraftengine.block.OEBaseEntityBlock;
 import dev.felnull.otyacraftenginetest.blockentity.TestContainerBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,7 @@ public class TestContainerBlock extends OEBaseEntityBlock {
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
+
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {

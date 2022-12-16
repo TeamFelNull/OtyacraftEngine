@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.client.gui.components;
 
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.gui.TextureSpecify;
 import dev.felnull.otyacraftengine.client.gui.components.base.OEBaseImageWidget;
@@ -29,11 +30,11 @@ public class SwitchButton extends OEBaseImageWidget {
 
     @Override
     public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f) {
-        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, x, y, texture.getU0() + (this.isHoveredOrFocused() ? 20 : 0), texture.getV0() + (this.enable ? 10 : 0), 20, 10, texture.getTextureWidth(), texture.getTextureHeight());
-        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, x + (this.enable ? (width - 8) : 0), y - 2, texture.getU0() + (this.isHoveredOrFocused() ? 8 : 0), texture.getV0() + 20, 8, 14, texture.getTextureWidth(), texture.getTextureHeight());
+        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, getX(), getY(), texture.getU0() + (this.isHoveredOrFocused() ? 20 : 0), texture.getV0() + (this.enable ? 10 : 0), 20, 10, texture.getTextureWidth(), texture.getTextureHeight());
+        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, getX() + (this.enable ? (width - 8) : 0), getY() - 2, texture.getU0() + (this.isHoveredOrFocused() ? 8 : 0), texture.getV0() + 20, 8, 14, texture.getTextureWidth(), texture.getTextureHeight());
         this.renderBg(poseStack, mc, i, j);
         if (this.showLabel)
-            drawTextBase(poseStack, this.getMessage(), this.x + 24, this.y + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+            drawTextBase(poseStack, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override

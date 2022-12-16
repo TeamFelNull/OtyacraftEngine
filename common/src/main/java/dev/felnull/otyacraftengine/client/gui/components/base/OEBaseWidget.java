@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.client.gui.components.base;
 
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
@@ -23,7 +24,7 @@ public abstract class OEBaseWidget extends AbstractWidget implements IOEBaseComp
     }
 
     @Override
-    public void updateNarration(@NotNull NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
         this.defaultButtonNarrationText(narrationElementOutput);
     }
 
@@ -41,8 +42,7 @@ public abstract class OEBaseWidget extends AbstractWidget implements IOEBaseComp
 
     @Override
     protected MutableComponent createNarrationMessage() {
-        if (widgetTypeName == null)
-            return Component.translatable("gui.narrate.widget", getMessage());
+        if (widgetTypeName == null) return Component.translatable("gui.narrate.widget", getMessage());
         return Component.translatable("gui.narrate." + widgetTypeName, getMessage());
     }
 
@@ -64,8 +64,7 @@ public abstract class OEBaseWidget extends AbstractWidget implements IOEBaseComp
 
     public abstract void onPress();
 
-    public @Nullable
-    String getWidgetTypeName() {
+    public @Nullable String getWidgetTypeName() {
         return widgetTypeName;
     }
 }

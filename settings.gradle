@@ -17,5 +17,4 @@ if (System.getenv("GITHUB_REF") == null) {
     include("testmod-forge")
 }
 
-
-rootProject.name = "OtyacraftEngine"
+rootProject.name = "otyacraft-engine"

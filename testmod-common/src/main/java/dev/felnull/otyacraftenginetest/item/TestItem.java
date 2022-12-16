@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftenginetest.item;
 
-import dev.felnull.otyacraftenginetest.server.saveddata.TestSavedData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,13 +18,14 @@ public class TestItem extends Item {
         ItemStack itemStack = player.getItemInHand(interactionHand);
 
         if (!level.isClientSide) {
-            var data = TestSavedData.get(level.getServer());
+           /* var data = TestSavedData.get(level.getServer());
             if (!player.isCrouching()) {
                 player.displayClientMessage(Component.literal(data.getName()), false);
             } else {
                 data.setName(itemStack.getHoverName().getString());
                 player.displayClientMessage(Component.literal("nna"), false);
-            }
+            }*/
+            player.displayClientMessage(Component.literal("FCOH"), false);
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
     }

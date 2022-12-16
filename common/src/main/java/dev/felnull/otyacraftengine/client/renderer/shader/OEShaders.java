@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.architectury.event.events.client.ClientReloadShadersEvent;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceProvider;
 
 import java.io.IOException;
 
@@ -13,14 +13,15 @@ public class OEShaders {
     private static ShaderInstance RENDERTYPE_SIMPLE_SPRITE_CUTOUT_SHADER;
     private static ShaderInstance RENDERTYPE_WAVE;
 
-    public static void reload(ResourceManager manager, ClientReloadShadersEvent.ShadersSink sink) throws IOException {
-        sink.registerShader(new ShaderInstance(manager, OtyacraftEngine.MODID + "_rendertype_simple_sprite_solid", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+    public static void reload(ResourceProvider provider, ClientReloadShadersEvent.ShadersSink sink) throws IOException {
+
+        sink.registerShader(new ShaderInstance(provider, OtyacraftEngine.MODID + "_rendertype_simple_sprite_solid", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
             RENDERTYPE_SIMPLE_SPRITE_SOLID_SHADER = shaderInstance;
         });
-        sink.registerShader(new ShaderInstance(manager, OtyacraftEngine.MODID + "_rendertype_simple_sprite_cutout", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+        sink.registerShader(new ShaderInstance(provider, OtyacraftEngine.MODID + "_rendertype_simple_sprite_cutout", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
             RENDERTYPE_SIMPLE_SPRITE_CUTOUT_SHADER = shaderInstance;
         });
-        sink.registerShader(new ShaderInstance(manager, OtyacraftEngine.MODID + "_rendertype_wave", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+        sink.registerShader(new ShaderInstance(provider, OtyacraftEngine.MODID + "_rendertype_wave", DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
             RENDERTYPE_WAVE = shaderInstance;
         });
     }

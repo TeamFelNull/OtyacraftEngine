@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftenginetest.client.renderer.blockentity;
 
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.renderer.blockentity.AbstractBlockEntityRenderer;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
@@ -60,3 +61,4 @@ public class TestRotedRenderer extends AbstractBlockEntityRenderer<TestRotedBloc
         OERenderUtils.renderPlayerFaceSprite(poseStack, multiBufferSource, "MoriMori_0317_jp", 1, light, overlay);
     }
 }
+

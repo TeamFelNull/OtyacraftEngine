@@ -1,6 +1,6 @@
 package dev.felnull.otyacraftengine.tag;
 
-import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
+import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
 import net.minecraft.tags.TagKey;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 public interface ManualTagHolder<T> {
     @NotNull
-    static <T> ManualTagHolder<T> of(@NotNull TagKey<T> tagKey, @Nullable Consumer<TagProviderWrapper.TagAppenderWrapper<T>> tagRegister) {
+    static <T> ManualTagHolder<T> of(@NotNull TagKey<T> tagKey, @Nullable Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T>> tagRegister) {
         return new ManualTagHolderImpl<>(tagKey, tagRegister);
     }
 
@@ -28,7 +28,7 @@ public interface ManualTagHolder<T> {
             }
 
             @Override
-            public void registering(TagProviderWrapper.@NotNull TagProviderAccess<T> tagProviderAccess) {
+            public void registering(IntrinsicHolderTagsProviderWrapper.IntrinsicTagProviderAccess<T> tagProviderAccess) {
             }
         };
     }
@@ -36,5 +36,5 @@ public interface ManualTagHolder<T> {
     @NotNull
     TagKey<T> getKey();
 
-    void registering(@NotNull TagProviderWrapper.TagProviderAccess<T> tagProviderAccess);
+    void registering(@NotNull IntrinsicHolderTagsProviderWrapper.IntrinsicTagProviderAccess<T> tagProviderAccess);
 }

@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.forge.tag;
 
 import com.google.common.base.Suppliers;
-import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
+import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
 import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -31,7 +31,7 @@ public class OEForgeItemTags {
         return Suppliers.memoize(() -> ItemTags.create(fgLoc(id)));
     }
 
-    private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<TagProviderWrapper.TagAppenderWrapper<Item>> tagRegister) {
+    private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<Item>> tagRegister) {
         return Suppliers.memoize(() -> ManualTagHolder.of(ItemTags.create(fgLoc(id)), tagRegister));
     }
 

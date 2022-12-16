@@ -17,7 +17,7 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.InteractionResult;
 
 import java.io.IOException;
@@ -39,9 +39,9 @@ public class ClientHandler {
         return EventResult.pass();
     }
 
-    private static void onShaderReload(ResourceManager manager, ClientReloadShadersEvent.ShadersSink sink) {
+    private static void onShaderReload(ResourceProvider provider, ClientReloadShadersEvent.ShadersSink sink) {
         try {
-            OEShaders.reload(manager, sink);
+            OEShaders.reload(provider, sink);
         } catch (IOException e) {
             throw new RuntimeException("could not reload test shaders", e);
         }

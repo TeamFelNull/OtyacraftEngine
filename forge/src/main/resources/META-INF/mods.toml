@@ -23,27 +23,27 @@ catalogueImageIcon = "icon.png"
 [[dependencies.otyacraftengine]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[44,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[1.19.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "architectury"
 mandatory = true
-versionRange = "[6.2.43,)"
+versionRange = "[7.0.64,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "cloth_config"
 mandatory = true
-versionRange = "[8.0.75,)"
+versionRange = "[9.0.94,)"
 ordering = "NONE"
 side = "BOTH"

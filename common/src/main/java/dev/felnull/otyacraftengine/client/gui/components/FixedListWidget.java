@@ -88,8 +88,8 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
     @Override
     public void render(@NotNull PoseStack poseStack, int mx, int my, float parTick) {
         if (this.visible) {
-            this.hoveredNumber = (my - y) / getIndividualHeight();
-            this.isHoveredScrollBar = mx >= this.x + getIndividualWidth() && my >= this.y && mx < this.x + this.width && my < this.y + this.height;
+            this.hoveredNumber = (my - getY()) / getIndividualHeight();
+            this.isHoveredScrollBar = mx >= this.getX() + getIndividualWidth() && my >= this.getY() && mx < this.getX() + this.width && my < this.getY() + this.height;
         }
         super.render(poseStack, mx, my, parTick);
     }
@@ -101,9 +101,9 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
             if (cn >= entryList.size() || cn < 0)
                 break;
             var e = entryList.get(cn);
-            renderOneButton(poseStack, e, cn, i, x, y + getIndividualHeight() * i, mx, my, parTick, selectedEntry == entryList.get(cn));
+            renderOneButton(poseStack, e, cn, i, getX(), getY() + getIndividualHeight() * i, mx, my, parTick, selectedEntry == entryList.get(cn));
         }
-        renderScrollbar(poseStack, this.x + getIndividualWidth(), this.y, 9, height);
+        renderScrollbar(poseStack, this.getX() + getIndividualWidth(), this.getY(), 9, height);
     }
 
     protected void renderScrollbar(PoseStack poseStack, int x, int y, int w, int h) {
@@ -145,7 +145,7 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
         this.renderBg(poseStack, mc, mx, my);
 
         int l = this.active ? 16777215 : 10526880;
-        drawCenteredString(poseStack, mc.font, this.getMessage(lnum), this.x + getIndividualWidth() / 2, bY + (getIndividualHeight() - 8) / 2, l | Mth.ceil(this.alpha * 255.0F) << 24);
+        drawCenteredString(poseStack, mc.font, this.getMessage(lnum), this.getX() + getIndividualWidth() / 2, bY + (getIndividualHeight() - 8) / 2, l | Mth.ceil(this.alpha * 255.0F) << 24);
         // drawCenteredString(poseStack, mc.font, this.getMessage(lnum), this.x + getIndividualWidth() / 2, y + (getIndividualHeight() - 8) / 2, l | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
@@ -164,7 +164,7 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
 
     @Override
     public void onClick(double mx, double my) {
-        onPress((int) ((my - y) / getIndividualHeight()));
+        onPress((int) ((my - getY()) / getIndividualHeight()));
         super.onClick(mx, my);
     }
 
@@ -266,7 +266,7 @@ public abstract class FixedListWidget<E> extends OEBaseImageWidget {
 
     public void scroll(double mouseY) {
         if (canScroll) {
-            int cy = (int) (mouseY - this.y - 1 - getBarHeight() / 2);
+            int cy = (int) (mouseY - this.getY() - 1 - getBarHeight() / 2);
             int sa = getActualHeight() - getBarHeight();
             if (sa > 0) {
                 setScrollAmount((float) cy / (float) sa);

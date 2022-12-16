@@ -1,14 +1,18 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
-import dev.felnull.otyacraftengine.data.DataGeneratorType;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 
-public abstract class DataProviderWrapper<T extends DataProvider> {
+import java.util.concurrent.CompletableFuture;
+
+public abstract class DataProviderWrapper<T extends DataProvider> implements DataProviderWrapperBase {
     private final CrossDataGeneratorAccess crossDataGeneratorAccess;
+    public final PackOutput packOutput;
 
-    public DataProviderWrapper(CrossDataGeneratorAccess crossDataGeneratorAccess) {
+    public DataProviderWrapper(PackOutput packOutput, CrossDataGeneratorAccess crossDataGeneratorAccess) {
+        this.packOutput = packOutput;
         this.crossDataGeneratorAccess = crossDataGeneratorAccess;
     }
 
@@ -18,9 +22,19 @@ public abstract class DataProviderWrapper<T extends DataProvider> {
 
     public abstract T getProvider();
 
-    public abstract DataGeneratorType getGeneratorType();
+    public static interface Factory<T extends DataProviderWrapper<?>> {
+        T create(PackOutput packOutput);
+    }
 
-    protected DataGenerator getGenerator() {
-        return getCrossGeneratorAccess().getVanillaGenerator();
+    public static interface LookupFactory<T extends DataProviderWrapper<?>> {
+        T create(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup);
+    }
+
+    public static interface GeneratorAccessedFactory<T extends DataProviderWrapper<?>> {
+        T create(PackOutput packOutput, CrossDataGeneratorAccess generatorAccess);
+    }
+
+    public static interface LookupGeneratorAccessedFactory<T extends DataProviderWrapper<?>> {
+        T create(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, CrossDataGeneratorAccess generatorAccess);
     }
 }

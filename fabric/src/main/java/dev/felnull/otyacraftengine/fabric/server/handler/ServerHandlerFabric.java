@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftengine.fabric.server.handler;
 
-import dev.felnull.otyacraftengine.server.event.OEServerEventHooks;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableSource;
 import net.minecraft.resources.ResourceLocation;
@@ -15,10 +14,11 @@ public class ServerHandlerFabric {
     }
 
     private static void onLootTableModify(ResourceManager resourceManager, LootTables lootManager, ResourceLocation id, LootTable.Builder tableBuilder, LootTableSource source) {
-        OEServerEventHooks.onLootTableModify(lootManager, id, (name, poolBuilder) -> tableBuilder.withPool(poolBuilder));
+        //  OEServerEventHooks.onLootTableModify(lootManager, id, (name, poolBuilder) -> tableBuilder.withPool(poolBuilder));
     }
 
     private static LootTable onReplaceLootTable(ResourceManager resourceManager, LootTables lootManager, ResourceLocation id, LootTable original, LootTableSource source) {
-        return OEServerEventHooks.onLootTableReplace(lootManager, id, original);
+//        return OEServerEventHooks.onLootTableReplace(lootManager, id, original);
+        return null;
     }
 }

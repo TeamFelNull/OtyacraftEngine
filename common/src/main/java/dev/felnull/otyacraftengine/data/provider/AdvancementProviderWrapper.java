@@ -1,29 +1,21 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
-import dev.felnull.otyacraftengine.data.DataGeneratorType;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 
-import java.util.function.Consumer;
+import java.util.List;
 
-public abstract class AdvancementProviderWrapper extends DataProviderWrapper<DataProvider> {
+public class AdvancementProviderWrapper extends DataProviderWrapper<DataProvider> {
     private final DataProvider advancementProvider;
 
-    public AdvancementProviderWrapper(CrossDataGeneratorAccess crossDataGeneratorAccess) {
-        super(crossDataGeneratorAccess);
-        this.advancementProvider = crossDataGeneratorAccess.createAdvancementProvider(this);
+    public AdvancementProviderWrapper(PackOutput packOutput, CrossDataGeneratorAccess crossDataGeneratorAccess, List<AdvancementSubProviderWrapper> subProviderWrappers) {
+        super(packOutput, crossDataGeneratorAccess);
+        this.advancementProvider = crossDataGeneratorAccess.createAdvancementProvider(packOutput, this, subProviderWrappers);
     }
 
     @Override
     public DataProvider getProvider() {
         return advancementProvider;
     }
-
-    @Override
-    public DataGeneratorType getGeneratorType() {
-        return DataGeneratorType.SERVER;
-    }
-
-    public abstract void generateAdvancement(Consumer<Advancement> consumer);
 }

@@ -2,7 +2,7 @@ package dev.felnull.otyacraftenginetest;
 
 import dev.felnull.otyacraftengine.util.*;
 import dev.felnull.otyacraftenginetest.item.TestItems;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -37,7 +37,7 @@ public class UtilTest {
     }
 
     private static void itemUtils(Consumer<String> print, Player player) {
-        for (Item item : Registry.ITEM) {
+        for (Item item : BuiltInRegistries.ITEM) {
             if (item instanceof MobBucketItem mobBucketItem)
                 print.accept("MobBucketItem entity:" + OEItemUtils.getMobBucketEntity(mobBucketItem));
         }

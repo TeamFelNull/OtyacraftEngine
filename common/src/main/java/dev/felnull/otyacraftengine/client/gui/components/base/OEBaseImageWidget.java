@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+
 public abstract class OEBaseImageWidget extends OEBaseWidget {
     @NotNull
     protected TextureSpecify texture;

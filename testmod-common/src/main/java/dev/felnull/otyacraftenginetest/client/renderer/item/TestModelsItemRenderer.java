@@ -1,13 +1,8 @@
 package dev.felnull.otyacraftenginetest.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.client.model.ModelHolder;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
-import dev.felnull.otyacraftengine.client.util.OEClientUtils;
-import dev.felnull.otyacraftengine.client.util.OERenderUtils;
-import dev.felnull.otyacraftenginetest.client.model.TestModels;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +13,7 @@ public class TestModelsItemRenderer implements BEWLItemRenderer {
         poseStack.pushPose();
         var rnd = RandomSource.create(114514);
 
-        for (ModelHolder model : TestModels.TEST_MODELS.getAllHolders()) {
+        /*for (ModelHolder model : TestModels.TEST_MODELS.getAllHolders()) {
 
             float rot = OEClientUtils.getParSecond((long) (rnd.nextFloat() * 30000)) * 360f;
 
@@ -30,7 +25,7 @@ public class TestModelsItemRenderer implements BEWLItemRenderer {
             });
             OERenderUtils.renderModel(poseStack, multiBufferSource.getBuffer(Sheets.solidBlockSheet()), model.get(), light, overlay);
             poseStack.popPose();
-        }
+        }*/
 
         poseStack.popPose();
     }
