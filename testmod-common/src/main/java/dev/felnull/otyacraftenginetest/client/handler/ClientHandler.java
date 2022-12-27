@@ -5,10 +5,8 @@ import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
-import dev.felnull.otyacraftengine.client.event.OBJLoaderEvent;
 import dev.felnull.otyacraftengine.client.util.OEClientUtils;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
-import dev.felnull.otyacraftenginetest.OtyacraftEngineTest;
 import dev.felnull.otyacraftenginetest.client.gui.screen.TestSelectScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -19,7 +17,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -34,18 +31,11 @@ public class ClientHandler {
     public static final KeyMapping TEST_KEY = new KeyMapping("key.test.test", GLFW.GLFW_KEY_J, "key.categories.test");
 
     public static void init() {
-        OBJLoaderEvent.LOAD_CHECK.register(ClientHandler::onObjLoadCheck);
         ClientRawInputEvent.KEY_PRESSED.register(ClientHandler::onKeyPressed);
         MoreRenderEvent.RENDER_ITEM_IN_HAND.register(ClientHandler::onRenderItemInHand);
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(ClientHandler::renderArmWithItem);
 
         KeyMappingRegistry.register(TEST_KEY);
-    }
-
-    private static EventResult onObjLoadCheck(ResourceLocation location) {
-        if (OtyacraftEngineTest.MODID.equals(location.getNamespace()))
-            return EventResult.interruptTrue();
-        return EventResult.pass();
     }
 
     private static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {

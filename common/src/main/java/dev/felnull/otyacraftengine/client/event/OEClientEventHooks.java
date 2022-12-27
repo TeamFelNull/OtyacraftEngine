@@ -8,7 +8,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,10 +18,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OEClientEventHooks {
     public static void onLevelUnload(ClientLevel level) {
         MoreClientLifecycleEvents.CLIENT_LEVEL_UNLOAD.invoker().act(level);
-    }
-
-    public static boolean onOBJLoaderCheck(ResourceLocation resourceId) {
-        return OBJLoaderEvent.LOAD_CHECK.invoker().loadCheck(resourceId).isTrue();
     }
 
     public static boolean onRenderHand(PoseStack poseStack, MultiBufferSource multiBufferSource, InteractionHand hand, int packedLight, float partialTicks, float interpolatedPitch, float swingProgress, float equipProgress, ItemStack stack) {
