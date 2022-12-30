@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author MORIMORI0317
  */
-public class OEItemUtils {
+public final class OEItemUtils {
     /**
      * MOBバケツから中身のエンティティタイプを取得
      *

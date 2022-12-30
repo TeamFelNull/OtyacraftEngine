@@ -44,8 +44,19 @@ public class WrappedBlockLootTableProvider extends LootTableProvider {
 
         @Override
         protected void generate() {
-            blockLootTableProviderWrapper.generateBlockLootTables(this, (b) -> {
-            });
+            blockLootTableProviderWrapper.generateBlockLootTables(this, new BlockLootTableProviderAccessImpl());
+        }
+
+        private class BlockLootTableProviderAccessImpl implements BlockLootTableProviderWrapper.BlockLootTableProviderAccess {
+            @Override
+            public void excludeFromStrictValidation(Block block) {
+
+            }
+
+            @Override
+            public void dropSelf(Block block) {
+                WrappedBlockLootSubProvider.this.dropSelf(block);
+            }
         }
     }
 }

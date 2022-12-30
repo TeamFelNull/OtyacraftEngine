@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * @author MORIMORI031c
  */
-public class OEModelUtils {
+public final class OEModelUtils {
     private static final Minecraft mc = Minecraft.getInstance();
 
     /**

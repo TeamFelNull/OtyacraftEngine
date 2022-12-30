@@ -12,7 +12,7 @@ import java.nio.file.Paths;
  *
  * @author MORIMORI0317
  */
-public class OEPaths {
+public final class OEPaths {
     /**
      * クライアント側のOtyacraftEngineフォルダのパス
      *

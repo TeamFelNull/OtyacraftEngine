@@ -12,6 +12,7 @@
   ],
   "mixins": [
     "EntityMixin",
+    "LivingEntityMixin",
     "MobBucketItemAccessor",
     "data.FabricDataGenHelperMixin",
     "data.ItemModelGeneratorsAccessor",

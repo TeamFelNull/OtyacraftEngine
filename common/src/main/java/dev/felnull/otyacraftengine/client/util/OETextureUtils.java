@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author MORIMORI0317
  */
-public class OETextureUtils {
+public final class OETextureUtils {
     private static final Minecraft mc = Minecraft.getInstance();
     private static final ResourceLocation ERROR_ICON = new ResourceLocation(OtyacraftEngine.MODID, "textures/gui/error_icon.png");
     private static ResourceLocation LOADING_ICON;

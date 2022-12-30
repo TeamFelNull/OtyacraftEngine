@@ -40,9 +40,8 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:10.0.578"
 
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
-    shadowIn "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'
-    shadowIn 'de.javagl:obj:0.3.0'
+    //shadowIn 'de.javagl:obj:0.3.0'
 }
 
 processResources {
@@ -55,11 +54,8 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowIn]
-    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl') {
-        exclude 'dev.felnull.fnjln.**'
-    }
+    relocate('dev.felnull.fnjl', 'dev.felnull.otyacraftengine.include.dev.felnull.fnjl')
     relocate 'com.madgag', 'dev.felnull.otyacraftengine.include.com.madgag'
-    relocate 'de.javagl', 'dev.felnull.otyacraftengine.include.de.javagl'
 }
 
 shadowJar {
@@ -98,11 +94,37 @@ publishing {
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
+            pom {
+                name = 'OtyacraftEngine'
+                description = 'My mod integration library.'
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'MORIMORI0317'
+                        name = 'MORIMORI0317'
+                    }
+                    developer {
+                        id = 'FelNull'
+                        name = 'TeamFelNull'
+                        email = 'teamfelnull@felnull.dev'
+                    }
+                }
+            }
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
+        maven {
+            url "https://maven.felnull.dev/"
+            credentials {
+                username = "felnull"
+                password = "${project.maven_put_pass}" != '' ? "${project.maven_put_pass}" : System.getenv('mavenpassword')
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author MORIMORI0317
  */
-public class OEClientUtils {
+public final class OEClientUtils {
     private static final Minecraft mc = Minecraft.getInstance();
 
     /**

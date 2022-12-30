@@ -1,6 +1,6 @@
-package dev.felnull.otyacraftengine.mixin;
+package dev.felnull.otyacraftengine.fabric.mixin;
 
-import dev.felnull.otyacraftengine.item.IEquipmentItem;
+import dev.felnull.otyacraftengine.item.EquipmentItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class LivingEntityMixin {
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
     private static void getEquipmentSlotForItem(ItemStack itemStack, CallbackInfoReturnable<EquipmentSlot> cir) {
-        if (itemStack.getItem() instanceof IEquipmentItem equipmentItem) {
+        if (itemStack.getItem() instanceof EquipmentItem equipmentItem) {
             var slot = equipmentItem.getEquipmentSlotType(itemStack);
             if (slot != null)
                 cir.setReturnValue(slot);

@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  *
  * @author MORIMORI0317
  */
-public class OERenderUtils {
+public final class OERenderUtils {
     private static final Minecraft mc = Minecraft.getInstance();
     public static boolean SKIP_TRANSANDROT_MODELPART;
     public static final float MIN_BREADTH = 1.0E-3F;

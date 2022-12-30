@@ -1,4 +1,4 @@
-package dev.felnull.otyacraftengine.forge.mixin;
+package dev.felnull.otyacraftengine.forge.mixin.self;
 
 import dev.felnull.otyacraftengine.blockentity.IClientSyncableBlockEntity;
 import dev.felnull.otyacraftengine.blockentity.OEBaseContainerBlockEntity;

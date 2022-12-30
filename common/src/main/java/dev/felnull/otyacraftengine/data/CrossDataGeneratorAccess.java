@@ -69,7 +69,7 @@ public interface CrossDataGeneratorAccess {
 
     DataProvider createBasicProvider(BasicProviderWrapper basicProviderWrapper);
 
-    DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper);
+    DataProvider createBlockLootTableProvider(PackOutput packOutput, BlockLootTableProviderWrapper blockLootTableProviderWrapper);
 
     DataProvider createAdvancementProvider(PackOutput packOutput, AdvancementProviderWrapper advancementProviderWrapper, List<AdvancementSubProviderWrapper> subProviderWrappers);
 

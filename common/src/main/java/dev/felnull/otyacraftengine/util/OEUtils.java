@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author MORIMORI0317
  */
-public class OEUtils {
+public final class OEUtils {
     private static final Gson GSON = new Gson();
 
     /**

@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
 
 public class WrappedFabricIntrinsicHolderTagsProvider<T> extends WrappedFabricTagProvider<T> {
     private final IntrinsicHolderTagsProviderWrapper<T, IntrinsicHolderTagsProviderWrapper.IntrinsicTagProviderAccess<T>> intrinsicHolderTagsProvider;
@@ -49,9 +48,16 @@ public class WrappedFabricIntrinsicHolderTagsProvider<T> extends WrappedFabricTa
             return of(tagAppender.add(tagProviderWrapper.getKeyExtractor().apply(object)));
         }
 
+        @SafeVarargs
         @Override
-        public IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T> add(T... objects) {
-            return Stream.of(objects).map(this::add).findFirst().orElseGet(() -> of(tagAppender));
+        public final IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T> add(T... objects) {
+            IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<T> ret = null;
+
+            for (T object : objects) {
+                ret = this.add(object);
+            }
+
+            return ret == null ? of(tagAppender) : ret;
         }
     }
 }

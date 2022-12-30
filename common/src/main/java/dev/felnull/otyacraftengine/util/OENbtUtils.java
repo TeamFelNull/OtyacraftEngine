@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  *
  * @author MORIMORI0317
  */
-public class OENbtUtils {
+public final class OENbtUtils {
     /**
      * UUIDのTAG番号
      */

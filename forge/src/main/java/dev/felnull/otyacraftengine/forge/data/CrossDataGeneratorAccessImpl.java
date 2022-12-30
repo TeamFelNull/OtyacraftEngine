@@ -86,8 +86,8 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
-    public DataProvider createBlockLootTableProvider(BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
-        return new WrappedBlockLootTableProvider(getVanillaGenerator().getPackOutput(), blockLootTableProviderWrapper);
+    public DataProvider createBlockLootTableProvider(PackOutput packOutput, BlockLootTableProviderWrapper blockLootTableProviderWrapper) {
+        return new WrappedBlockLootTableProvider(packOutput, blockLootTableProviderWrapper);
     }
 
     @Override

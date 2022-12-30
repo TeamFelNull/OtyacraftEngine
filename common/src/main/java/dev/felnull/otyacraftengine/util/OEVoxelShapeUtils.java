@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author MORIMORI0317
  */
-public class OEVoxelShapeUtils {
+public final class OEVoxelShapeUtils {
     private static final Gson GSON = new Gson();
 
     /**

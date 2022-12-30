@@ -9,9 +9,10 @@
   ],
   "mixins": [
     "MobBucketItemAccessor",
-    "OEBaseBlockEntityMixin",
-    "OEBaseContainerBlockEntityMixin",
-    "data.DataMainMixin"
+    "data.DataMainMixin",
+    "self.EquipmentItemExtender",
+    "self.OEBaseBlockEntityMixin",
+    "self.OEBaseContainerBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

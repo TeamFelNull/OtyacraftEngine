@@ -23,7 +23,7 @@ import java.util.function.Supplier;
  *
  * @author MORIMORI0317
  */
-public class OERegisterUtils {
+public final class OERegisterUtils {
     @NotNull
     public static <T extends BlockEntity> BlockEntityType<T> createBlockEntity(@NotNull BlockEntityCreateSupplier<? extends T> supplier, RegistrySupplier<Block>... blocks) {
         return createBlockEntity(supplier, Arrays.stream(blocks).map(Supplier::get).toList().toArray(new Block[0]));
@@ -42,9 +42,9 @@ public class OERegisterUtils {
         return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
     }
 
-    public static Set<BlockState> getPoiTypeBlockStates(Block block) {
+   /* public static Set<BlockState> getPoiTypeBlockStates(Block block) {
         return PoiTypes.getBlockStates(block);
-    }
+    }*/
 
     public static void registerPoiTypeBlockStates(@NotNull RegistrySupplier<PoiType> poiTypeRegistrySupplier) {
         OERegisterExpectPlatform.registerPoiTypeBlockStates(poiTypeRegistrySupplier);

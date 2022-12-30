@@ -13,7 +13,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-public class OEMenuUtil {
+public final class OEMenuUtil {
     public static void openItemMenu(ServerPlayer player, MenuProvider provider, PlayerItemLocation location, ItemStack stack, int inventorySize) {
         if (player.isSpectator()) return;
         MenuRegistry.openExtendedMenu(player, provider, n -> {

@@ -54,5 +54,4 @@ dependencies {
     runtimeOnly "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     runtimeOnly "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     runtimeOnly 'com.madgag:animated-gif-lib:1.4'
-    runtimeOnly 'de.javagl:obj:0.3.0'
 }

@@ -17,7 +17,7 @@ import java.nio.file.Path;
  *
  * @author MORIMORI0317
  */
-public class OEDataGenUtils {
+public final class OEDataGenUtils {
     /**
      * Data生成中かどうか
      *

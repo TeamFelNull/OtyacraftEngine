@@ -15,14 +15,13 @@ public abstract class BlockLootTableProviderWrapper extends DataProviderWrapper<
 
     public BlockLootTableProviderWrapper(PackOutput packOutput, CrossDataGeneratorAccess crossDataGeneratorAccess) {
         super(packOutput, crossDataGeneratorAccess);
-        this.blockLootTableProvider = crossDataGeneratorAccess.createBlockLootTableProvider(this);
+        this.blockLootTableProvider = crossDataGeneratorAccess.createBlockLootTableProvider(packOutput, this);
     }
 
     @Override
     public DataProvider getProvider() {
         return blockLootTableProvider;
     }
-
 
     public abstract void generateBlockLootTables(BlockLootSubProvider blockLoot, BlockLootTableProviderAccess providerAccess);
 
@@ -36,5 +35,7 @@ public abstract class BlockLootTableProviderWrapper extends DataProviderWrapper<
 
     public static interface BlockLootTableProviderAccess {
         void excludeFromStrictValidation(Block block);
+
+        void dropSelf(Block block);
     }
 }

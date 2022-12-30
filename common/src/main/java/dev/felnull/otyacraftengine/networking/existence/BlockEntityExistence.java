@@ -26,9 +26,7 @@ public record BlockEntityExistence(ResourceLocation dimension, BlockPos blockPos
         if (!level.dimension().location().equals(dimension))
             return false;
         var be = level.getBlockEntity(blockPos);
-        //return be != null && blockEntityName.equals(Registry.BLOCK_ENTITY_TYPE.getKey(be.getType()));
-
-        return false;
+        return be != null && blockEntityName.equals(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(be.getType()));
     }
 
     public void write(FriendlyByteBuf buf) {
