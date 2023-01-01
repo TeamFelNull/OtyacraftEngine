@@ -42,9 +42,9 @@ public final class OERegisterUtils {
         return new VillagerTrades.ItemsForEmeralds(itemStack, emeraldCost, numberOfItems, maxUses, villagerXp);
     }
 
-   /* public static Set<BlockState> getPoiTypeBlockStates(Block block) {
+    public static Set<BlockState> getPoiTypeBlockStates(Block block) {
         return PoiTypes.getBlockStates(block);
-    }*/
+    }
 
     public static void registerPoiTypeBlockStates(@NotNull RegistrySupplier<PoiType> poiTypeRegistrySupplier) {
         OERegisterExpectPlatform.registerPoiTypeBlockStates(poiTypeRegistrySupplier);

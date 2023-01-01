@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(MobBucketItem.class)
-public interface MobBucketItemAccessor {
+public interface MobBucketItemInvoker {
     @Invoker(value = "getFishType", remap = false)
-    EntityType<?> getFishTypeInvoker();
+    EntityType<?> invokeGetFishTypeInvoker();
 }

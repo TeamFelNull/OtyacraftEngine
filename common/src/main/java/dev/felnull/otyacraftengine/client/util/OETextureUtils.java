@@ -135,12 +135,14 @@ public final class OETextureUtils {
             if (r.isPresent()) {
                 try (var st = r.get().open()) {
                     var ret = getAndLoadNativeTexture(UUID.randomUUID(), st);
-                    if (ret.isSuccess()) LOADING_ICON = ret.getLocation();
+                    if (ret.isSuccess())
+                        LOADING_ICON = ret.getLocation();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (LOADING_ICON == null) throw new IllegalStateException("Failed to loading icon being loaded.");
+            if (LOADING_ICON == null)
+                throw new IllegalStateException("Failed to loading icon being loaded.");
         }
 
         return LOADING_ICON;

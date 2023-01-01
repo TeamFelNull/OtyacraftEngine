@@ -1,7 +1,7 @@
 package dev.felnull.otyacraftengine.explatform.forge;
 
 import dev.felnull.fnjl.util.FNReflectionUtil;
-import dev.felnull.otyacraftengine.forge.mixin.MobBucketItemAccessor;
+import dev.felnull.otyacraftengine.forge.mixin.MobBucketItemInvoker;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public class OEExpectPlatformImpl {
     public static EntityType<?> getMobBucketEntity(MobBucketItem mobBucketItem) {
-        return ((MobBucketItemAccessor) mobBucketItem).getFishTypeInvoker();
+        return ((MobBucketItemInvoker) mobBucketItem).invokeGetFishTypeInvoker();
     }
 
     public static Stream<TagKey<EntityType<?>>> getTags(EntityType<?> entityType) {

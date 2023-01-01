@@ -14,5 +14,6 @@ public class OERegisterExpectPlatformImpl {
     }
 
     public static void registerPoiTypeBlockStates(RegistrySupplier<PoiType> poiTypeRegistrySupplier) {
+
     }
 }

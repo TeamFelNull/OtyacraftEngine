@@ -8,7 +8,7 @@
     "client.BlockEntityWithoutLevelRendererMixin"
   ],
   "mixins": [
-    "MobBucketItemAccessor",
+    "MobBucketItemInvoker",
     "data.DataMainMixin",
     "self.EquipmentItemExtender",
     "self.OEBaseBlockEntityMixin",
