@@ -34,7 +34,7 @@ jobs:
       - name: Build And Release
         shell: bash
         run: |
-          ./gradlew build
+          ./gradlew build publish curseforge modrinth --stacktrace --no-daemon
         env:
           curesforgeapikey: ${{ secrets.CURSEFORGE_TOKEN }}
           modrinthapikey:  ${{ secrets.MODRINTH_TOKEN }}
