@@ -1,6 +1,5 @@
 package dev.felnull.otyacraftengine.forge.client.handler;
 
-import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,6 +10,6 @@ public class ModelHandler {
 
     @SubscribeEvent
     public static void onModelRegistry(ModelEvent.RegisterAdditional e) {
-        ClientCallPointManager.getInstance().call().onModelRegistry(e::register);
+        ClientCallPointManagerOld.getInstance().call().onModelRegistry(e::register);
     }
 }

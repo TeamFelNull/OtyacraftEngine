@@ -1,9 +1,11 @@
 package dev.felnull.otyacraftengine.client.shape;
 
+import dev.architectury.registry.ReloadListenerRegistry;
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.resources.PlatformResourceReloadListener;
 import dev.felnull.otyacraftengine.shape.VoxelEdge;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +23,10 @@ public class ClientIVShapeManager extends PlatformResourceReloadListener<ClientI
 
     public static ClientIVShapeManager getInstance() {
         return INSTANCE;
+    }
+
+    public void init() {
+        ReloadListenerRegistry.register(PackType.CLIENT_RESOURCES, this);
     }
 
     @Override

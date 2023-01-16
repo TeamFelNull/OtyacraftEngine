@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.fabric.tag;
 
 import com.google.common.base.Suppliers;
 import dev.felnull.otyacraftengine.data.provider.IntrinsicHolderTagsProviderWrapper;
-import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
 import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.fabricmc.fabric.impl.tag.convention.TagRegistration;
 import net.minecraft.resources.ResourceLocation;

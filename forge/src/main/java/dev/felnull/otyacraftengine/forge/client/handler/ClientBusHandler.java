@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.forge.client.handler;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.OtyacraftEngineClient;
-import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import dev.felnull.otyacraftengine.client.callpoint.LayerRegister;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,13 +28,8 @@ public class ClientBusHandler {
     }
 
     @SubscribeEvent
-    public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent e) {
-        ClientCallPointManager.getInstance().call().onResourceListenerRegistry(e::registerReloadListener);
-    }
-
-    @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers e) {
-        ClientCallPointManager.getInstance().call().onLayerRegistry(new LayerRegister() {
+        ClientCallPointManagerOld.getInstance().call().onLayerRegistry(new LayerRegister() {
             @Override
             public <T extends LivingEntity> void addLayer(EntityType<T> entityType, Function<LivingEntityRenderer<T, ? extends EntityModel<T>>, RenderLayer<T, ? extends EntityModel<T>>> layer) {
                 if (entityType == EntityType.PLAYER) {

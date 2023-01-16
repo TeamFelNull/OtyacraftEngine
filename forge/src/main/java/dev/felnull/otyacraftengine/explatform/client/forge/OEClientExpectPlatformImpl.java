@@ -2,7 +2,6 @@ package dev.felnull.otyacraftengine.explatform.client.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
-import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import dev.felnull.otyacraftengine.forge.client.renderer.item.ItemRendererRegisterForge;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

@@ -12,9 +12,6 @@ public interface ClientCallPoint {
     default void onLayerRegistry(LayerRegister register) {
     }
 
-    default void onResourceListenerRegistry(ClientResourceListenerRegister register) {
-    }
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     @interface Sign {

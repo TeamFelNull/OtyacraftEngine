@@ -12,7 +12,6 @@
     "client.ModelPartMixin"
   ],
   "mixins": [
-    "EntityMixin",
     "InventoryChangeTriggerMixin",
     "MinecraftServerMixin",
     "ShapesMixin",

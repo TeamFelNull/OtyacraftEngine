@@ -3,7 +3,6 @@ package dev.felnull.otyacraftengine.explatform.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
-import dev.felnull.otyacraftengine.client.shape.ClientIVShapeManager;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
