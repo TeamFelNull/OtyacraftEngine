@@ -25,9 +25,6 @@
     ],
     "client": [
       "dev.felnull.otyacraftengine.fabric.client.OtyacraftEngineClientFabric"
-    ],
-    "otyacraftengine_client": [
-      "dev.felnull.otyacraftengine.client.callpoint.impl.MyOEClientCallPoint"
     ]
   },
   "mixins": [

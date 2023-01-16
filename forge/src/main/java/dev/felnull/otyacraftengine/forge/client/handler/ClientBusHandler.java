@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.forge.client.handler;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.client.OtyacraftEngineClient;
+import dev.felnull.otyacraftengine.client.callpoint.ClientCallPointManager;
 import dev.felnull.otyacraftengine.client.callpoint.LayerRegister;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -29,7 +30,7 @@ public class ClientBusHandler {
 
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers e) {
-        ClientCallPointManagerOld.getInstance().call().onLayerRegistry(new LayerRegister() {
+        ClientCallPointManager.getInstance().call().onLayerRegistry(new LayerRegister() {
             @Override
             public <T extends LivingEntity> void addLayer(EntityType<T> entityType, Function<LivingEntityRenderer<T, ? extends EntityModel<T>>, RenderLayer<T, ? extends EntityModel<T>>> layer) {
                 if (entityType == EntityType.PLAYER) {

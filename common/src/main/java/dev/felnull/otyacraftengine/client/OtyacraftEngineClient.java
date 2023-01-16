@@ -18,9 +18,12 @@ public class OtyacraftEngineClient {
         ClientDebugHandler.init();
         ClientHandler.init();
         URLTextureManager.getInstance().init();
-        ClientIVShapeManager.getInstance().init();
 
         OEPackets.clientInit();
+    }
+
+    public static void preInit() {
+        ClientIVShapeManager.getInstance().init();
     }
 
     private static void configInit() {
