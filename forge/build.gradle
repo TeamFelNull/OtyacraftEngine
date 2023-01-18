@@ -138,7 +138,8 @@ curseforge {
         project {
             id = "${rootProject.curesforge_id}"
 
-            changelog = '';
+            changelogType = 'markdown'
+            changelog = file('../LATEST_CHANGELOG.md')
 
             releaseType = "${rootProject.release_type}"
             addGameVersion "${rootProject.minecraft_version}"
@@ -179,5 +180,6 @@ if (System.getenv('modrinthapikey') != null && "${modrinth_id}" != '') {
             required.project("9s6osm5g")//Cloth Config API
             required.project("lhGA9TYQ")//Architectury API
         }
+        changelog = file('../LATEST_CHANGELOG.md').text
     }
 }

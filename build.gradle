@@ -11,7 +11,7 @@ architectury {
 }
 
 changelog {
-    repositoryUrl = "https://github.com/TeamFelnull/OtyacraftEngine"
+    repositoryUrl = rootProject.repository_url
     introduction = """
     Changelog to track updates for this mod.  
     Add your changes to Unreleased if you want to commit.  

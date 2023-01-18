@@ -16,7 +16,7 @@ Please write according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 
 ### Removed
 
-- Separated Fabric's built-in OBJ loader([Special Model Loader](https://github.com/TeamFelnull/SpecialModelLoader))
+- Separated Fabric's built-in OBJ loader ([Special Model Loader](https://github.com/TeamFelnull/SpecialModelLoader))
 
 ### Fixed
 
