@@ -24,10 +24,6 @@ public class OEMixinPluginFabric implements IMixinConfigPlugin {
         if (mixinClassName.startsWith("dev.felnull.otyacraftengine.fabric.mixin.data"))
             return Platform.isDevelopmentEnvironment();
 
-        if (mixinClassName.startsWith("dev.felnull.otyacraftengine.fabric.mixin.integration.myron"))
-            return false;
-        //      return FabricLoader.getInstance().isModLoaded("myron");
-
         return true;
     }
 
