@@ -2,6 +2,7 @@ package dev.felnull.otyacraftenginetest;
 
 import dev.felnull.otyacraftenginetest.block.TestBlocks;
 import dev.felnull.otyacraftenginetest.blockentity.TestBlockEntitys;
+import dev.felnull.otyacraftenginetest.handler.CommonHandler;
 import dev.felnull.otyacraftenginetest.item.TestItems;
 import dev.felnull.otyacraftenginetest.server.handler.ServerHandler;
 
@@ -13,6 +14,7 @@ public class OtyacraftEngineTest {
         TestBlocks.init();
         TestBlockEntitys.init();
 
+        CommonHandler.init();
         ServerHandler.init();
     }
 }
