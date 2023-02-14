@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "otyacraftenginetest:block/test_block"
+    }
+  }
+}

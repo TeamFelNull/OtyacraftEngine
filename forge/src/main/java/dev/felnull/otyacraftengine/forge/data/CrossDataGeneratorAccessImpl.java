@@ -101,6 +101,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     }
 
     @Override
+    public DataProvider createBlockStateAndModelProvider(PackOutput packOutput, BlockStateAndModelProviderWrapper blockStateAndModelProviderWrapper) {
+        return new WrappedBlockStateProvider(packOutput, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), blockStateAndModelProviderWrapper);
+    }
+
+    @Override
     public Collection<Path> getResourceInputFolders() {
         return ImmutableList.copyOf(resourceInputFolders);
     }

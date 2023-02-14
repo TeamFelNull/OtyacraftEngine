@@ -18,5 +18,6 @@ public class OtyacraftEngineTestDataGenerators {
 
         access.addProviderWrapper(packOutput -> new DirectCopyProviderWrapper(packOutput, PackOutput.Target.RESOURCE_PACK, "copy_test", access));
         access.addProviderWrapper(OETestModelConvertProviderWrapper::new);
+        access.addProviderWrapper(OEBlockStateAndModelProviderWrapper::new);
     }
 }

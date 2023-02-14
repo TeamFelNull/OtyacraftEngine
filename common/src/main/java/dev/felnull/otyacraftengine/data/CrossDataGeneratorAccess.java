@@ -75,6 +75,10 @@ public interface CrossDataGeneratorAccess {
 
     DataProvider createItemModelProvider(PackOutput packOutput, ItemModelProviderWrapper itemModelProviderWrapper);
 
+    default DataProvider createBlockStateAndModelProvider(PackOutput packOutput, BlockStateAndModelProviderWrapper blockStateAndModelProviderWrapper) {
+        return null;
+    }
+
     Collection<Path> getResourceInputFolders();
 
     void addResourceInputFolders(Path path);

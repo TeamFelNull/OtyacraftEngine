@@ -35,6 +35,11 @@ public class WrappedFabricItemModelProvider extends FabricModelProvider {
         this.itemModelProviderWrapper.generateItemModels(new ItemModelProviderAccessImpl(itemModelGenerator));
     }
 
+    @Override
+    public String getName() {
+        return "Model Definitions (Item)";
+    }
+
     private static class ItemModelProviderAccessImpl implements ItemModelProviderWrapper.ItemModelProviderAccess {
         private final ItemModelGenerators itemModelGenerators;
 
