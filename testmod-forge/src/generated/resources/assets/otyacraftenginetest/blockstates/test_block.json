@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "otyacraftenginetest:block/test_block"
+      "model": "otyacraftenginetest:block/test_block_2"
     }
   }
 }

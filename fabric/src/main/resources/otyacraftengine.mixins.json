@@ -16,7 +16,6 @@
     "MobBucketItemAccessor",
     "PoiTypesInvoker",
     "data.FabricDataGenHelperMixin",
-    "data.ItemModelGeneratorsAccessor",
     "self.PlatformResourceReloadListenerMixin"
   ],
   "injectors": {

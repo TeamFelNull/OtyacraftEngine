@@ -104,7 +104,7 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
 
     @Override
     public DataProvider createBlockStateAndModelProvider(PackOutput packOutput, BlockStateAndModelProviderWrapper blockStateAndModelProviderWrapper) {
-        return new WrappedFabricBlockModelProvider((FabricDataOutput) packOutput, blockStateAndModelProviderWrapper);
+        return new WrappedFabricBlockModelProvider((FabricDataOutput) packOutput, this, blockStateAndModelProviderWrapper);
     }
 
     @Override

@@ -24,8 +24,10 @@ public class TestBlocks {
     public static final RegistrySupplier<Block> TEST_SHAPE_DIRECTION_BLOCK = register("test_shape_direction_block", () -> new TestShapeDirectionBlock(BlockBehaviour.Properties.of(Material.METAL)));
     public static final RegistrySupplier<Block> TEST_CONTAINER_BLOCK = register("test_container_block", () -> new TestContainerBlock(BlockBehaviour.Properties.of(Material.METAL)));
     public static final RegistrySupplier<Block> TEST_ROTED_BLOCK = register("test_roted_block", () -> new TestRotedBlock(BlockBehaviour.Properties.of(Material.METAL)));
+    public static final RegistrySupplier<Block> TEST_HORIZONTAL_DIRECTIONAL_BLOCK = register("test_horizontal_directional_block", () -> new TestHorizontalDirectionalBlock(BlockBehaviour.Properties.of(Material.METAL)));
 
     private static RegistrySupplier<Block> register(String name, Supplier<Block> block) {
+
         return register(name, block, n -> new BlockItem(n, tabWrap(new Item.Properties())));
     }
 

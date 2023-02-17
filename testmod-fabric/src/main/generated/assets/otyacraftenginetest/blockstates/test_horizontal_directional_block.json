@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "otyacraftenginetest:block/horizontal_block",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "otyacraftenginetest:block/horizontal_block"
+    },
+    "facing=south": {
+      "model": "otyacraftenginetest:block/horizontal_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "otyacraftenginetest:block/horizontal_block",
+      "y": 270
+    }
+  }
+}

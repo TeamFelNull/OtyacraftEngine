@@ -1,7 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.data.provider;
 
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
-import dev.felnull.otyacraftengine.fabric.mixin.data.ItemModelGeneratorsAccessor;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
@@ -54,8 +53,7 @@ public class WrappedFabricItemModelProvider extends FabricModelProvider {
 
         @Override
         public void builtinEntity(Item item) {
-            var access = (ItemModelGeneratorsAccessor) itemModelGenerators;
-            BUILTIN_ENTITY.create(ModelLocationUtils.getModelLocation(item), new TextureMapping(), access.getOutput());
+            BUILTIN_ENTITY.create(ModelLocationUtils.getModelLocation(item), new TextureMapping(), itemModelGenerators.output);
         }
     }
 }
