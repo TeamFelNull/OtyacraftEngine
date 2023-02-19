@@ -1,7 +1,9 @@
 package dev.felnull.otyacraftengine.fabric.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.provider.BlockStateAndModelProviderWrapper;
+import dev.felnull.otyacraftengine.fabric.data.model.FileModelImpl;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
@@ -54,17 +56,17 @@ public class WrappedFabricBlockModelProvider extends FabricModelProvider {
             this.blockModelGenerators.createTrivialCube(block);
         }
 
-        private BlockStateAndModelProviderWrapper.FileModel of(ResourceLocation location) {
+        private FileModel of(ResourceLocation location) {
             return new FileModelImpl(location);
         }
 
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel genCubeAllBlockModel(String fileName, ResourceLocation texture) {
+        public FileModel genCubeAllBlockModel(String fileName, ResourceLocation texture) {
             return of(ModelTemplates.CUBE_ALL.create(new ResourceLocation(crossDataGeneratorAccess.getMod().getModId(), "block/" + fileName), TextureMapping.cube(texture), blockModelGenerators.modelOutput));
         }
 
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel genCubeBlockModel(String fileName, ResourceLocation down, ResourceLocation up, ResourceLocation north, ResourceLocation south, ResourceLocation east, ResourceLocation west) {
+        public FileModel genCubeBlockModel(String fileName, ResourceLocation down, ResourceLocation up, ResourceLocation north, ResourceLocation south, ResourceLocation east, ResourceLocation west) {
             TextureMapping mapping = new TextureMapping();
             mapping.put(TextureSlot.DOWN, down);
             mapping.put(TextureSlot.UP, up);
@@ -78,22 +80,22 @@ public class WrappedFabricBlockModelProvider extends FabricModelProvider {
         }
 
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel getExistingModel(ResourceLocation location) {
+        public FileModel getExistingModel(ResourceLocation location) {
             return of(location);
         }
 
         @Override
-        public void genSimpleBlockState(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
+        public void genSimpleBlockState(Block block, FileModel model) {
             this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model.getLocation()));
         }
 
         @Override
-        public void genSimpleBlockItemModel(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
+        public void genSimpleBlockItemModel(Block block, FileModel model) {
             this.blockModelGenerators.delegateItemModel(block, model.getLocation());
         }
 
         @Override
-        public void genHorizontalBlockState(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
+        public void genHorizontalBlockState(Block block, FileModel model) {
             this.blockModelGenerators.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, model.getLocation()))
                     .with(BlockModelGenerators.createHorizontalFacingDispatch()));
         }
@@ -111,13 +113,6 @@ public class WrappedFabricBlockModelProvider extends FabricModelProvider {
         @Override
         public void addBlockStateGenerator(BlockStateGenerator blockStateGenerator) {
             this.blockModelGenerators.blockStateOutput.accept(blockStateGenerator);
-        }
-    }
-
-    private record FileModelImpl(ResourceLocation location) implements BlockStateAndModelProviderWrapper.FileModel {
-        @Override
-        public ResourceLocation getLocation() {
-            return location;
         }
     }
 }

@@ -2,6 +2,7 @@ package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.OtyacraftEngine;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -81,9 +82,5 @@ public abstract class BlockStateAndModelProviderWrapper extends DataProviderWrap
         void genParentedBlockItemModel(Block block, ResourceLocation parentLocation);
 
         void addBlockStateGenerator(BlockStateGenerator blockStateGenerator);
-    }
-
-    public static interface FileModel {
-        ResourceLocation getLocation();
     }
 }

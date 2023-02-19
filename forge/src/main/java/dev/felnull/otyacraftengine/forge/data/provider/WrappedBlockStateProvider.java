@@ -1,7 +1,9 @@
 package dev.felnull.otyacraftengine.forge.data.provider;
 
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.provider.BlockStateAndModelProviderWrapper;
 import dev.felnull.otyacraftengine.forge.data.WrappedBlockStateBuilder;
+import dev.felnull.otyacraftengine.forge.data.model.FileModelImpl;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -34,45 +36,38 @@ public class WrappedBlockStateProvider extends BlockStateProvider {
             simpleBlockItem(block, model);
         }
 
-        private BlockStateAndModelProviderWrapper.FileModel of(ModelFile modelFile) {
+        private FileModel of(ModelFile modelFile) {
             return new FileModelImpl(modelFile);
         }
 
-        private ModelFile getModelFile(BlockStateAndModelProviderWrapper.FileModel fileModel) {
-            if (fileModel instanceof FileModelImpl fmi)
-                return fmi.modelFile();
-
-            throw new IllegalStateException("Not forge impl model file");
-        }
-
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel genCubeAllBlockModel(String fileName, ResourceLocation texture) {
+        public FileModel genCubeAllBlockModel(String fileName, ResourceLocation texture) {
             return of(models().cubeAll(fileName, texture));
         }
 
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel genCubeBlockModel(String fileName, ResourceLocation down, ResourceLocation up, ResourceLocation north, ResourceLocation south, ResourceLocation east, ResourceLocation west) {
+        public FileModel genCubeBlockModel(String fileName, ResourceLocation down, ResourceLocation up, ResourceLocation north, ResourceLocation south, ResourceLocation east, ResourceLocation west) {
             return of(models().cube(fileName, down, up, north, south, east, west));
         }
 
         @Override
-        public BlockStateAndModelProviderWrapper.FileModel getExistingModel(ResourceLocation location) {
+        public FileModel getExistingModel(ResourceLocation location) {
             return of(models().getExistingFile(location));
         }
 
         @Override
-        public void genSimpleBlockState(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
-            simpleBlock(block, getModelFile(model));
+        public void genSimpleBlockState(Block block, FileModel model) {
+            simpleBlock(block, FileModelImpl.getModelFile(model));
         }
 
         @Override
-        public void genSimpleBlockItemModel(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
-            simpleBlockItem(block, getModelFile(model));
+        public void genSimpleBlockItemModel(Block block, FileModel model) {
+            simpleBlockItem(block, FileModelImpl.getModelFile(model));
         }
 
         @Override
-        public void genHorizontalBlockState(Block block, BlockStateAndModelProviderWrapper.FileModel model) {
-            horizontalBlock(block, getModelFile(model));
+        public void genHorizontalBlockState(Block block, FileModel model) {
+            horizontalBlock(block, FileModelImpl.getModelFile(model));
         }
 
         @Override
@@ -93,13 +88,6 @@ public class WrappedBlockStateProvider extends BlockStateProvider {
                 throw new IllegalStateException("Duplicate registration");
 
             registeredBlocks.put(block, new WrappedBlockStateBuilder(blockStateGenerator));
-        }
-    }
-
-    private record FileModelImpl(ModelFile modelFile) implements BlockStateAndModelProviderWrapper.FileModel {
-        @Override
-        public ResourceLocation getLocation() {
-            return modelFile.getLocation();
         }
     }
 }

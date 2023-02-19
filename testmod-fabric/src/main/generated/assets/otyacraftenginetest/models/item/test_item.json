@@ -1,5 +1,13 @@
 {
   "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "otyacraftenginetest:item/test_item",
+      "predicate": {
+        "otyacraftenginetest:test": 0.3
+      }
+    }
+  ],
   "textures": {
     "layer0": "otyacraftenginetest:item/test_item"
   }
