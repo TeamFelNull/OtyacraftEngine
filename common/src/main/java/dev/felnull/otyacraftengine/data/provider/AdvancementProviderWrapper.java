@@ -1,8 +1,10 @@
 package dev.felnull.otyacraftengine.data.provider;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.registries.RegistriesDatapackGenerator;
 
 import java.util.List;
 

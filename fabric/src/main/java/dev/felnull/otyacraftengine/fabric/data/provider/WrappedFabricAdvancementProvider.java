@@ -5,6 +5,7 @@ import dev.felnull.otyacraftengine.data.provider.AdvancementSubProviderWrapper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.data.registries.RegistriesDatapackGenerator;
 
 import java.util.List;
 import java.util.function.Consumer;

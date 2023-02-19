@@ -10,10 +10,12 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.registries.RegistriesDatapackGenerator;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
@@ -105,6 +107,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     @Override
     public DataProvider createBlockStateAndModelProvider(PackOutput packOutput, BlockStateAndModelProviderWrapper blockStateAndModelProviderWrapper) {
         return new WrappedFabricBlockModelProvider((FabricDataOutput) packOutput, this, blockStateAndModelProviderWrapper);
+    }
+
+    @Override
+    public RegistriesDatapackGenerator createRegistriesDatapackGenerator(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, RegistrySetBuilder registrySetBuilder) {
+        return new WrappedRegistriesDatapackGenerator(packOutput, lookup, registrySetBuilder);
     }
 
     @Override
