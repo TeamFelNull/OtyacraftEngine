@@ -6,16 +6,16 @@ import com.google.gson.JsonObject;
 import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.model.OverridePredicate;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class JsonModelInjector {
     private final BiConsumer<ResourceLocation, Supplier<JsonElement>> originalModelOutput;
-    private final Map<FileModel, List<OverridePredicate>> overrides = new HashMap<>();
+    private final List<Pair<FileModel, List<OverridePredicate>>> overrides = new ArrayList<>();
 
     public JsonModelInjector(BiConsumer<ResourceLocation, Supplier<JsonElement>> originalModelOutput) {
         this.originalModelOutput = originalModelOutput;
@@ -33,7 +33,10 @@ public class JsonModelInjector {
             var jo = jsonElement.getAsJsonObject();
             var ja = new JsonArray();
 
-            this.overrides.forEach((fileModel, predicates) -> {
+            this.overrides.forEach(it -> {
+                var fileModel = it.getLeft();
+                var predicates = it.getRight();
+
                 var apjso = new JsonObject();
                 apjso.addProperty("model", fileModel.getLocation().toString());
 
@@ -54,7 +57,7 @@ public class JsonModelInjector {
     }
 
     public void addOverride(FileModel model, List<OverridePredicate> predicates) {
-        this.overrides.put(model, predicates);
+        this.overrides.add(Pair.of(model, predicates));
     }
 
 }
