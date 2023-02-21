@@ -18,7 +18,8 @@
     "data.FabricDataGenHelperMixin",
     "data.RegistriesDatapackGeneratorMixin",
     "data.RegistrySetBuilderAccessor",
-    "self.PlatformResourceReloadListenerMixin"
+    "self.PlatformResourceReloadListenerMixin",
+    "self.StackAttributeModifierItemExtender"
   ],
   "injectors": {
     "defaultRequire": 1

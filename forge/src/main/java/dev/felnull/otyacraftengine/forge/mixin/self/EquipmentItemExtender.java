@@ -7,7 +7,7 @@ import net.minecraftforge.common.extensions.IForgeItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(EquipmentItem.class)
+@Mixin(value = EquipmentItem.class, remap = false)
 public interface EquipmentItemExtender extends IForgeItem {
     @Override
     default @Nullable EquipmentSlot getEquipmentSlot(ItemStack stack) {
