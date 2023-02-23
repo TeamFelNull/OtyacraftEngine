@@ -65,6 +65,8 @@ public abstract class BlockStateAndModelProviderWrapper extends DataProviderWrap
 
         FileModel getExistingModel(ResourceLocation location);
 
+        FileModel genParticleOnlyModel(Block block, ResourceLocation particleLocation);
+
         void genSimpleBlockState(Block block, FileModel model);
 
         /**

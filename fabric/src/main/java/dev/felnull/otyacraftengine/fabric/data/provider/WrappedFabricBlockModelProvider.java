@@ -85,6 +85,12 @@ public class WrappedFabricBlockModelProvider extends FabricModelProvider {
         }
 
         @Override
+        public FileModel genParticleOnlyModel(Block block, ResourceLocation particleLocation) {
+            TextureMapping textureMapping = TextureMapping.particle(particleLocation);
+            return of(ModelTemplates.PARTICLE_ONLY.create(block, textureMapping, blockModelGenerators.modelOutput));
+        }
+
+        @Override
         public void genSimpleBlockState(Block block, FileModel model) {
             this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model.getLocation()));
         }

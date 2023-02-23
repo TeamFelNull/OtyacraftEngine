@@ -56,6 +56,11 @@ public class WrappedBlockStateProvider extends BlockStateProvider {
         }
 
         @Override
+        public FileModel genParticleOnlyModel(Block block, ResourceLocation particleLocation) {
+            return of(models().getBuilder(ForgeRegistries.BLOCKS.getKey(block).toString()).texture("particle", particleLocation));
+        }
+
+        @Override
         public void genSimpleBlockState(Block block, FileModel model) {
             simpleBlock(block, FileModelImpl.getModelFile(model));
         }
