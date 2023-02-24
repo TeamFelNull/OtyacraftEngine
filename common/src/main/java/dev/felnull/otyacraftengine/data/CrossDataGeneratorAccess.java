@@ -13,6 +13,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -64,6 +65,8 @@ public interface CrossDataGeneratorAccess {
     RecipeProvider createRecipeProvider(PackOutput packOutput, RecipeProviderWrapper recipeProviderWrapper);
 
     TagsProvider<Item> createItemTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, ItemTagProviderWrapper itemTagProviderWrapper, @NotNull BlockTagProviderWrapper blockTagProviderWrapper);
+
+    TagsProvider<Fluid> createFluidTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, FluidTagProviderWrapper fluidTagProviderWrapper);
 
     TagsProvider<Block> createBlockTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, BlockTagProviderWrapper blockTagProviderWrapper);
 

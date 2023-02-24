@@ -18,6 +18,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -72,6 +73,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
             throw new IllegalArgumentException("Not BlockTagsProvider");
 
         return new WrappedItemTagsProvider(packOutput, lookup, blockTagsProvider, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemTagProviderWrapper);
+    }
+
+    @Override
+    public TagsProvider<Fluid> createFluidTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, FluidTagProviderWrapper fluidTagProviderWrapper) {
+        return new WrappedFluidTagsProvider(packOutput, lookup, fluidTagProviderWrapper, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper());
     }
 
     @Override

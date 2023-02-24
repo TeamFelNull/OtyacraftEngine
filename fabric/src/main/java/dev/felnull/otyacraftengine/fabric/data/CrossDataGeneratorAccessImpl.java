@@ -20,6 +20,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +73,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
         if (!(blockTagsProvider instanceof FabricTagProvider.BlockTagProvider blockTagProvider))
             throw new IllegalArgumentException("Not FabricTagProvider.BlockTagProvider");
         return new WrappedFabricItemTagProvider((FabricDataOutput) packOutput, lookup, blockTagProvider, itemTagProviderWrapper);
+    }
+
+    @Override
+    public TagsProvider<Fluid> createFluidTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, FluidTagProviderWrapper fluidTagProviderWrapper) {
+        return new WrappedFabricFluidTagProvider((FabricDataOutput) packOutput, lookup, fluidTagProviderWrapper);
     }
 
     @Override
