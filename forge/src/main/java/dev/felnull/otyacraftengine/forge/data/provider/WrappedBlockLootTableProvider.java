@@ -8,6 +8,7 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
@@ -56,6 +57,16 @@ public class WrappedBlockLootTableProvider extends LootTableProvider {
             @Override
             public void dropSelf(Block block) {
                 WrappedBlockLootSubProvider.this.dropSelf(block);
+            }
+
+            @Override
+            public void dropOther(Block block, ItemLike itemLike) {
+                WrappedBlockLootSubProvider.this.dropOther(block, itemLike);
+            }
+
+            @Override
+            public void add(Block block, LootTable.Builder builder) {
+                WrappedBlockLootSubProvider.this.add(block, builder);
             }
         }
     }

@@ -5,7 +5,9 @@ import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +39,9 @@ public abstract class BlockLootTableProviderWrapper extends DataProviderWrapper<
         void excludeFromStrictValidation(Block block);
 
         void dropSelf(Block block);
+
+        void dropOther(Block block, ItemLike itemLike);
+
+        void add(Block block, LootTable.Builder builder);
     }
 }

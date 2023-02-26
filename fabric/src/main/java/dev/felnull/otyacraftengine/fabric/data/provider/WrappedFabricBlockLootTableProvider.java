@@ -4,6 +4,7 @@ import dev.felnull.otyacraftengine.data.provider.BlockLootTableProviderWrapper;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootTable;
 
@@ -31,6 +32,16 @@ public class WrappedFabricBlockLootTableProvider extends FabricBlockLootTablePro
         @Override
         public void dropSelf(Block block) {
             WrappedFabricBlockLootTableProvider.this.dropSelf(block);
+        }
+
+        @Override
+        public void dropOther(Block block, ItemLike itemLike) {
+            WrappedFabricBlockLootTableProvider.this.dropOther(block, itemLike);
+        }
+
+        @Override
+        public void add(Block block, LootTable.Builder builder) {
+            WrappedFabricBlockLootTableProvider.this.add(block, builder);
         }
     }
 
