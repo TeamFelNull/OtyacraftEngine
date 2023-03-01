@@ -1,42 +1,39 @@
 package dev.felnull.otyacraftengine.fabric.data.model;
 
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.model.OverridePredicate;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class JsonModelInjector {
     private final BiConsumer<ResourceLocation, Supplier<JsonElement>> originalModelOutput;
-    private final List<Pair<FileModel, List<OverridePredicate>>> overrides = new ArrayList<>();
+    private final Multimap<FileModel, OverridePredicate> overrides = LinkedHashMultimap.create();
+    private final Map<String, ResourceLocation> textures = new LinkedHashMap<>();
 
     public JsonModelInjector(BiConsumer<ResourceLocation, Supplier<JsonElement>> originalModelOutput) {
         this.originalModelOutput = originalModelOutput;
     }
 
     public BiConsumer<ResourceLocation, Supplier<JsonElement>> injectedModelOutput() {
-        BiConsumer<ResourceLocation, Supplier<JsonElement>> ret = (location, jsonElementSupplier) -> {
-            originalModelOutput.accept(location, () -> injectJsonModel(jsonElementSupplier.get()));
-        };
-        return ret;
+        return (location, jsonElementSupplier) -> originalModelOutput.accept(location, () -> injectJsonModel(jsonElementSupplier.get()));
     }
 
     private JsonElement injectJsonModel(JsonElement jsonElement) {
         if (jsonElement.isJsonObject()) {
             var jo = jsonElement.getAsJsonObject();
-            var ja = new JsonArray();
+            var oja = new JsonArray();
 
-            this.overrides.forEach(it -> {
-                var fileModel = it.getLeft();
-                var predicates = it.getRight();
-
+            overrides.asMap().forEach((fileModel, predicates) -> {
                 var apjso = new JsonObject();
                 apjso.addProperty("model", fileModel.getLocation().toString());
 
@@ -48,16 +45,25 @@ public class JsonModelInjector {
 
                 apjso.add("predicate", pjso);
 
-                ja.add(apjso);
+                oja.add(apjso);
             });
 
-            jo.add("overrides", ja);
+            jo.add("overrides", oja);
+
+
+            var tjo = new JsonObject();
+            textures.forEach((id, loc) -> tjo.addProperty(id, loc.toString()));
+
+            jo.add("textures", tjo);
         }
         return jsonElement;
     }
 
-    public void addOverride(FileModel model, List<OverridePredicate> predicates) {
-        this.overrides.add(Pair.of(model, predicates));
+    public void putOverride(FileModel model, List<OverridePredicate> predicates) {
+        this.overrides.putAll(model, predicates);
     }
 
+    public void putTexture(String id, ResourceLocation location) {
+        this.textures.put(id, location);
+    }
 }

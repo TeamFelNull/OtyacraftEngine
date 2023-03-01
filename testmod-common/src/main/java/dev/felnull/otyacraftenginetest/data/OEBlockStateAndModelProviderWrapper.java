@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftenginetest.data;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.model.BlockStateAndModelProviderAccess;
 import dev.felnull.otyacraftengine.data.provider.BlockStateAndModelProviderWrapper;
 import dev.felnull.otyacraftenginetest.block.TestBlocks;
 import net.minecraft.data.PackOutput;
@@ -14,9 +15,9 @@ public class OEBlockStateAndModelProviderWrapper extends BlockStateAndModelProvi
     public void generateStatesAndModels(BlockStateAndModelProviderAccess providerAccess) {
         // providerAccess.genSimpleCubeBlockStateModelAndItemModel(TestBlocks.TEST_BLOCK.get());
 
-        var testModel2 = providerAccess.genCubeAllBlockModel("test_block_2", modLoc("block/test_block_2"));
-        providerAccess.genSimpleBlockState(TestBlocks.TEST_BLOCK.get(), testModel2);
-        providerAccess.genSimpleBlockItemModel(TestBlocks.TEST_BLOCK.get(), testModel2);
+        var testModel2 = providerAccess.cubeAllBlockModel("test_block_2", modLoc("block/test_block_2"));
+        providerAccess.simpleBlockState(TestBlocks.TEST_BLOCK.get(), testModel2);
+        providerAccess.simpleBlockItemModel(TestBlocks.TEST_BLOCK.get(), testModel2);
 
       /*  var horizontalModel = providerAccess.genCubeBlockModel("horizontal_block",
                 modLoc("block/horizontal/down"),
@@ -31,6 +32,6 @@ public class OEBlockStateAndModelProviderWrapper extends BlockStateAndModelProvi
                 Variant.variant().with(VariantProperties.MODEL, horizontalModel.getLocation())).with(createHorizontalFacingDispatch()));
   */   //   providerAccess.genSimpleBlockItemModel(TestBlocks.TEST_HORIZONTAL_DIRECTIONAL_BLOCK.get(), horizontalModel);
 
-     //   providerAccess.genParticleOnlyModel(TestBlocks.TEST_HORIZONTAL_DIRECTIONAL_BLOCK.get(), modLoc("particleonlymodel_tex"));
+        //   providerAccess.genParticleOnlyModel(TestBlocks.TEST_HORIZONTAL_DIRECTIONAL_BLOCK.get(), modLoc("particleonlymodel_tex"));
     }
 }

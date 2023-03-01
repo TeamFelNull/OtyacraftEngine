@@ -2,6 +2,7 @@ package dev.felnull.otyacraftenginetest.data;
 
 import com.google.common.collect.ImmutableList;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
+import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.OverridePredicate;
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
 import dev.felnull.otyacraftenginetest.item.TestItems;
@@ -16,6 +17,6 @@ public class OETestItemModelProviderWrapper extends ItemModelProviderWrapper {
     public void generateItemModels(ItemModelProviderAccess providerAccess) {
         var model = providerAccess.basicFlatItem(TestItems.TEST_ITEM.get());
 
-        model.addOverride(model, ImmutableList.of(new OverridePredicate(modLoc("test"), 0.3f)));
+        model.override(model, ImmutableList.of(new OverridePredicate(modLoc("test"), 0.3f)));
     }
 }

@@ -1,7 +1,4 @@
-// 1.19.3	2023-02-24T01:09:58.595341	Otyacraft Engine Test/Model Definitions (Block)
+// 1.19.3	2023-03-01T17:02:58.3661787	Otyacraft Engine Test/Model Definitions (Block)
 8485bbaffe8521f1d4e573a63caf7a75a92427d8 assets\otyacraftenginetest\blockstates\test_block.json
-cca772f195f98fdd788a85c4b96461004d555e9a assets\otyacraftenginetest\models\block\horizontal_block.json
-668dbd3df1adc4a8bdd9261e346071c56cc50148 assets\otyacraftenginetest\models\item\test_horizontal_directional_block.json
-3a1931c17df1823f4cdd25074d83d2a5558ff68f assets\otyacraftenginetest\blockstates\test_horizontal_directional_block.json
 cce7745f829730f141cc14861e138712b1106e6a assets\otyacraftenginetest\models\block\test_block_2.json
 81905599f38d704f38663494d077917837c90e91 assets\otyacraftenginetest\models\item\test_block.json

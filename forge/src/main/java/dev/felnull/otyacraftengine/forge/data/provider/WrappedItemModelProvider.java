@@ -1,8 +1,9 @@
 package dev.felnull.otyacraftengine.forge.data.provider;
 
+import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.MutableFileModel;
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
-import dev.felnull.otyacraftengine.forge.data.model.MutableFileModelImpl;
+import dev.felnull.otyacraftengine.forge.data.model.ItemMutableFileModelImpl;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -11,6 +12,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -27,43 +29,54 @@ public class WrappedItemModelProvider extends ItemModelProvider {
         this.itemModelProviderWrapper.generateItemModels(new ItemModelProviderAccessImpl());
     }
 
-    private class ItemModelProviderAccessImpl implements ItemModelProviderWrapper.ItemModelProviderAccess {
+    private class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
 
         private MutableFileModel of(ItemModelBuilder itemModelBuilder) {
-            return new MutableFileModelImpl(itemModelBuilder);
+            return new ItemMutableFileModelImpl(itemModelBuilder);
         }
 
         @Override
-        public MutableFileModel basicFlatItem(Item item) {
+        public @NotNull MutableFileModel basicFlatItem(@NotNull Item item) {
             return of(basicItem(item));
         }
 
         @Override
-        public MutableFileModel basicFlatItem(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel basicFlatItem(@NotNull ResourceLocation itemLocation) {
             return of(basicItem(itemLocation));
         }
 
         @Override
-        public MutableFileModel handheldFlatItem(Item item) {
+        public @NotNull MutableFileModel handheldFlatItem(@NotNull Item item) {
             return handheldFlatItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
         }
 
         @Override
-        public MutableFileModel handheldFlatItem(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel handheldFlatItem(@NotNull ResourceLocation itemLocation) {
             return of(getBuilder(itemLocation.toString())
                     .parent(new ModelFile.UncheckedModelFile("item/handheld"))
                     .texture("layer0", new ResourceLocation(itemLocation.getNamespace(), "item/" + itemLocation.getPath())));
         }
 
         @Override
-        public MutableFileModel builtinEntity(Item item) {
-            return builtinEntity(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+        public @NotNull MutableFileModel builtinEntityItem(@NotNull Item item) {
+            return builtinEntityItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
         }
 
         @Override
-        public MutableFileModel builtinEntity(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel builtinEntityItem(@NotNull ResourceLocation itemLocation) {
             return of(getBuilder(itemLocation.toString())
                     .parent(new ModelFile.UncheckedModelFile("builtin/entity")));
+        }
+
+        @Override
+        public @NotNull MutableFileModel parentedItem(@NotNull Item item, @NotNull ResourceLocation parentLocation) {
+            return parentedItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), parentLocation);
+        }
+
+        @Override
+        public @NotNull MutableFileModel parentedItem(@NotNull ResourceLocation itemLocation, @NotNull ResourceLocation parentLocation) {
+            return of(getBuilder(itemLocation.toString())
+                    .parent(new ModelFile.UncheckedModelFile(parentLocation)));
         }
     }
 }

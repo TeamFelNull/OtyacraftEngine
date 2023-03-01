@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.data.provider;
 
+import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.MutableFileModel;
 import dev.felnull.otyacraftengine.data.provider.ItemModelProviderWrapper;
 import dev.felnull.otyacraftengine.fabric.data.model.JsonModelInjector;
@@ -8,12 +9,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -41,7 +40,7 @@ public class WrappedFabricItemModelProvider extends FabricModelProvider {
         return "Model Definitions (Item)";
     }
 
-    private static class ItemModelProviderAccessImpl implements ItemModelProviderWrapper.ItemModelProviderAccess {
+    private static class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
         private final ItemModelGenerators itemModelGenerators;
 
         private ItemModelProviderAccessImpl(ItemModelGenerators itemModelGenerator) {
@@ -49,33 +48,49 @@ public class WrappedFabricItemModelProvider extends FabricModelProvider {
         }
 
         @Override
-        public MutableFileModel basicFlatItem(Item item) {
+        public @NotNull MutableFileModel basicFlatItem(@NotNull Item item) {
             return createLayer0Model(ModelTemplates.FLAT_ITEM, item);
         }
 
         @Override
-        public MutableFileModel basicFlatItem(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel basicFlatItem(@NotNull ResourceLocation itemLocation) {
             return createLayer0Model(ModelTemplates.FLAT_ITEM, itemLocation);
         }
 
         @Override
-        public MutableFileModel handheldFlatItem(Item item) {
+        public @NotNull MutableFileModel handheldFlatItem(@NotNull Item item) {
             return createLayer0Model(ModelTemplates.FLAT_HANDHELD_ITEM, item);
         }
 
         @Override
-        public MutableFileModel handheldFlatItem(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel handheldFlatItem(@NotNull ResourceLocation itemLocation) {
             return createLayer0Model(ModelTemplates.FLAT_HANDHELD_ITEM, itemLocation);
         }
 
         @Override
-        public MutableFileModel builtinEntity(Item item) {
+        public @NotNull MutableFileModel builtinEntityItem(@NotNull Item item) {
             return createModel(BUILTIN_ENTITY, new TextureMapping(), item);
         }
 
         @Override
-        public MutableFileModel builtinEntity(ResourceLocation itemLocation) {
+        public @NotNull MutableFileModel builtinEntityItem(@NotNull ResourceLocation itemLocation) {
             return createModel(BUILTIN_ENTITY, new TextureMapping(), itemLocation);
+        }
+
+        @Override
+        public @NotNull MutableFileModel parentedItem(@NotNull Item item, @NotNull ResourceLocation parentLocation) {
+            var ji = new JsonModelInjector(this.itemModelGenerators.output);
+            var loc = ModelLocationUtils.getModelLocation(item);
+            ji.injectedModelOutput().accept(loc, new DelegatedModel(parentLocation));
+            return new MutableFileModelImpl(loc, ji);
+        }
+
+        @Override
+        public @NotNull MutableFileModel parentedItem(@NotNull ResourceLocation itemLocation, @NotNull ResourceLocation parentLocation) {
+            var ji = new JsonModelInjector(this.itemModelGenerators.output);
+            var loc = decorateItemModelLocation(itemLocation);
+            ji.injectedModelOutput().accept(loc, new DelegatedModel(parentLocation));
+            return new MutableFileModelImpl(loc, ji);
         }
 
         private MutableFileModelImpl createLayer0Model(ModelTemplate modelTemplate, ResourceLocation itemLocation) {
