@@ -43,4 +43,6 @@ public interface BlockStateAndModelProviderAccess {
     void parentedBlockItemModel(@NotNull Block block, @NotNull ResourceLocation parentLocation);
 
     void addBlockStateGenerator(@NotNull BlockStateGenerator blockStateGenerator);
+
+    ItemModelProviderAccess itemModelProviderAccess();
 }

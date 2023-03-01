@@ -9,11 +9,12 @@
   ],
   "mixins": [
     "MobBucketItemInvoker",
+    "data.BlockStateProviderAccessor",
     "data.DataMainMixin",
-    "self.StackAttributeModifierItemExtender",
     "self.EquipmentItemExtender",
     "self.OEBaseBlockEntityMixin",
-    "self.OEBaseContainerBlockEntityMixin"
+    "self.OEBaseContainerBlockEntityMixin",
+    "self.StackAttributeModifierItemExtender"
   ],
   "injectors": {
     "defaultRequire": 1
