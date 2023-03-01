@@ -31,30 +31,35 @@ public class JsonModelInjector {
     private JsonElement injectJsonModel(JsonElement jsonElement) {
         if (jsonElement.isJsonObject()) {
             var jo = jsonElement.getAsJsonObject();
-            var oja = new JsonArray();
 
-            overrides.asMap().forEach((fileModel, predicates) -> {
-                var apjso = new JsonObject();
-                apjso.addProperty("model", fileModel.getLocation().toString());
+            if (!overrides.isEmpty()) {
+                var oja = new JsonArray();
 
-                var pjso = new JsonObject();
+                overrides.asMap().forEach((fileModel, predicates) -> {
+                    var apjso = new JsonObject();
+                    apjso.addProperty("model", fileModel.getLocation().toString());
 
-                for (OverridePredicate predicate : predicates) {
-                    pjso.addProperty(predicate.key().toString(), predicate.value());
-                }
+                    var pjso = new JsonObject();
 
-                apjso.add("predicate", pjso);
+                    for (OverridePredicate predicate : predicates) {
+                        pjso.addProperty(predicate.key().toString(), predicate.value());
+                    }
 
-                oja.add(apjso);
-            });
+                    apjso.add("predicate", pjso);
 
-            jo.add("overrides", oja);
+                    oja.add(apjso);
+                });
 
+                jo.add("overrides", oja);
+            }
 
-            var tjo = new JsonObject();
-            textures.forEach((id, loc) -> tjo.addProperty(id, loc.toString()));
+            if (!textures.isEmpty()) {
+                var tjo = new JsonObject();
 
-            jo.add("textures", tjo);
+                textures.forEach((id, loc) -> tjo.addProperty(id, loc.toString()));
+
+                jo.add("textures", tjo);
+            }
         }
         return jsonElement;
     }
