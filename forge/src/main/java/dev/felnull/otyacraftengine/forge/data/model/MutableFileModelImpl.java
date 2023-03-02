@@ -14,7 +14,8 @@ public abstract class MutableFileModelImpl extends FileModelImpl implements Muta
     }
 
     @Override
-    public void texture(@NotNull String id, @NotNull ResourceLocation location) {
+    public MutableFileModel texture(@NotNull String id, @NotNull ResourceLocation location) {
         this.modelBuilder.texture(id, location);
+        return this;
     }
 }

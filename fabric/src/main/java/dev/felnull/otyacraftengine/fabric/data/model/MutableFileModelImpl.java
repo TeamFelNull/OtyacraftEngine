@@ -17,12 +17,14 @@ public class MutableFileModelImpl extends FileModelImpl implements MutableFileMo
     }
 
     @Override
-    public void override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
+    public MutableFileModel override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
         this.jsonModelInjector.putOverride(model, predicates);
+        return this;
     }
 
     @Override
-    public void texture(@NotNull String id, @NotNull ResourceLocation location) {
+    public MutableFileModel texture(@NotNull String id, @NotNull ResourceLocation location) {
         this.jsonModelInjector.putTexture(id, location);
+        return this;
     }
 }

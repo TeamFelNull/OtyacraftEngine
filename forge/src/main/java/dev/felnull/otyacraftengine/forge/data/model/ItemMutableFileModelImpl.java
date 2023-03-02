@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.forge.data.model;
 
 import dev.felnull.otyacraftengine.data.model.FileModel;
+import dev.felnull.otyacraftengine.data.model.MutableFileModel;
 import dev.felnull.otyacraftengine.data.model.OverridePredicate;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public class ItemMutableFileModelImpl extends MutableFileModelImpl {
     }
 
     @Override
-    public void override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
+    public MutableFileModel override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
         var mf = FileModelImpl.getModelFile(model);
         var ovs = itemModelBuilder.override().model(mf);
 
@@ -25,5 +26,6 @@ public class ItemMutableFileModelImpl extends MutableFileModelImpl {
         }
 
         ovs.end();
+        return this;
     }
 }

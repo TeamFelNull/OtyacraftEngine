@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.forge.data.model;
 
 import dev.felnull.otyacraftengine.data.model.FileModel;
+import dev.felnull.otyacraftengine.data.model.MutableFileModel;
 import dev.felnull.otyacraftengine.data.model.OverridePredicate;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public class BlockMutableFileModelImpl extends MutableFileModelImpl {
     }
 
     @Override
-    public void override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
+    public MutableFileModel override(@NotNull FileModel model, @NotNull List<OverridePredicate> predicates) {
         throw new RuntimeException("Block model is not use override.");
     }
 }
