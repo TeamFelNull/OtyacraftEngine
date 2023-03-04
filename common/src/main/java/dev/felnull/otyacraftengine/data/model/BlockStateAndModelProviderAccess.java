@@ -12,7 +12,19 @@ public interface BlockStateAndModelProviderAccess {
     FileModel cubeAllBlockModel(@NotNull String fileName, @NotNull ResourceLocation texture);
 
     @NotNull
+    FileModel cubeAllBlockModel(@NotNull Block block, @NotNull ResourceLocation texture);
+
+    @NotNull
     FileModel cubeBlockModel(@NotNull String fileName, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west);
+
+    @NotNull
+    FileModel cubeBlockModel(@NotNull Block block, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west);
+
+    @NotNull
+    FileModel cubeBottomTopBlockModel(@NotNull String fileName, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top);
+
+    @NotNull
+    FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top);
 
     @NotNull
     MutableFileModel parentedBlockModel(@NotNull Block block, @NotNull ResourceLocation parentLocation);

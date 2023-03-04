@@ -47,8 +47,28 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
+    public @NotNull FileModel cubeAllBlockModel(@NotNull Block block, @NotNull ResourceLocation texture) {
+        return of(this.blockStateProvider.models().cubeAll(name(block), texture));
+    }
+
+    @Override
     public @NotNull FileModel cubeBlockModel(@NotNull String fileName, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
         return of(this.blockStateProvider.models().cube(fileName, down, up, north, south, east, west));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBlockModel(@NotNull Block block, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
+        return of(this.blockStateProvider.models().cube(name(block), down, up, north, south, east, west));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull String fileName, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
+        return of(this.blockStateProvider.models().cubeBottomTop(fileName, side, bottom, top));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
+        return of(this.blockStateProvider.models().cubeBottomTop(name(block), side, bottom, top));
     }
 
     @Override
