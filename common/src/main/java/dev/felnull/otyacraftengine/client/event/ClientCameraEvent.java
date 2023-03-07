@@ -16,7 +16,7 @@ public interface ClientCameraEvent {
     Event<ComputeFogColor> COMPUTE_FOG_COLOR = EventFactory.createEventResult();
 
     interface RenderFog {
-        EventResult onRenderFog(FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, RenderFogSetter setter);
+        EventResult onRenderFog(Camera camera, FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, RenderFogSetter setter);
     }
 
     interface ComputeFogColor {

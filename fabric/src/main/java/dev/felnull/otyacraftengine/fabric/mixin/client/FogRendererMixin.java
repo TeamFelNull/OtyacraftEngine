@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FogType;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,31 +16,23 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(FogRenderer.class)
 public class FogRendererMixin {
-    @Shadow
-    private static float fogRed;
-
-    @Shadow
-    private static float fogGreen;
-
-    @Shadow
-    private static float fogBlue;
 
     @Inject(method = "setupColor", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clearColor(FFFF)V", remap = false, ordinal = 1))
     private static void setupColor(Camera camera, float f, ClientLevel clientLevel, int i, float g, CallbackInfo ci) {
-        OEClientEventHooks.onComputeFogColor(camera, fogRed, fogGreen, fogBlue, f, new ClientCameraEvent.FogColorSetter() {
+        OEClientEventHooks.onComputeFogColor(camera, FogRendererAccessor.getFogRed(), FogRendererAccessor.getFogGreen(), FogRendererAccessor.getFogBlue(), f, new ClientCameraEvent.FogColorSetter() {
             @Override
             public void setRed(float red) {
-                fogRed = red;
+                FogRendererAccessor.setFogRed(red);
             }
 
             @Override
             public void setGreen(float green) {
-                fogGreen = green;
+                FogRendererAccessor.setFogGreen(green);
             }
 
             @Override
             public void setBlue(float blue) {
-                fogBlue = blue;
+                FogRendererAccessor.setFogBlue(blue);
             }
         });
     }
@@ -51,7 +42,7 @@ public class FogRendererMixin {
         float[] distance = {fogData.start, fogData.end};
         FogShape[] shapes = {fogData.shape};
 
-        if (!OEClientEventHooks.onRenderFog(fogMode, fogType, fogData.start, fogData.end, fogData.shape, g, new ClientCameraEvent.RenderFogSetter() {
+        if (!OEClientEventHooks.onRenderFog(camera, fogMode, fogType, fogData.start, fogData.end, fogData.shape, g, new ClientCameraEvent.RenderFogSetter() {
             @Override
             public void setStartDistance(float startDistance) {
                 distance[0] = startDistance;
@@ -67,9 +58,9 @@ public class FogRendererMixin {
                 shapes[0] = fogShape;
             }
         })) {
-            fogData.start = distance[0];
-            fogData.end = distance[1];
-            fogData.shape = shapes[0];
+            ((FogRendererFogDataAccessor) fogData).setStart(distance[0]);
+            ((FogRendererFogDataAccessor) fogData).setEnd(distance[1]);
+            ((FogRendererFogDataAccessor) fogData).setShape(shapes[0]);
         }
     }
 

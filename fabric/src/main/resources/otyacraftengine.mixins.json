@@ -5,8 +5,10 @@
   "minVersion": "0.8",
   "plugin": "dev.felnull.otyacraftengine.fabric.mixin.OEMixinPluginFabric",
   "client": [
-    "client.FogRendererMixin",
     "client.ClientPacketListenerMixin",
+    "client.FogRendererAccessor",
+    "client.FogRendererFogDataAccessor",
+    "client.FogRendererMixin",
     "client.ItemInHandRendererMixin",
     "client.MinecraftAccessor",
     "client.MinecraftMixin"

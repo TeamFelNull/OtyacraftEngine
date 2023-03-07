@@ -83,8 +83,8 @@ public class OEClientEventHooks {
         return nurl[0];
     }
 
-    public static boolean onRenderFog(FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
-        var event = ClientCameraEvent.RENDER_FOG.invoker().onRenderFog(fogMode, fogType, startDistance, endDistance, fogShape, delta, setter);
+    public static boolean onRenderFog(Camera camera, FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
+        var event = ClientCameraEvent.RENDER_FOG.invoker().onRenderFog(camera, fogMode, fogType, startDistance, endDistance, fogShape, delta, setter);
         return event.isEmpty() || event.isTrue();
     }
 

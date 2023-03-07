@@ -30,7 +30,7 @@ public class ClientHandlerForge {
 
     @SubscribeEvent
     public static void onRenderFog(ViewportEvent.RenderFog e) {
-        if (!OEClientEventHooks.onRenderFog(e.getMode(), e.getType(), e.getNearPlaneDistance(), e.getFarPlaneDistance(), e.getFogShape(), e.getPartialTick(), new ClientCameraEvent.RenderFogSetter() {
+        if (!OEClientEventHooks.onRenderFog(e.getCamera(), e.getMode(), e.getType(), e.getNearPlaneDistance(), e.getFarPlaneDistance(), e.getFogShape(), e.getPartialTick(), new ClientCameraEvent.RenderFogSetter() {
             @Override
             public void setStartDistance(float startDistance) {
                 e.setNearPlaneDistance(startDistance);

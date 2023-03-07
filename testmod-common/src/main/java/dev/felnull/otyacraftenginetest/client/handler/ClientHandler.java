@@ -55,7 +55,7 @@ public class ClientHandler {
         return EventResult.pass();
     }
 
-    private static EventResult onRenderFog(FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
+    private static EventResult onRenderFog(Camera camera, FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
 
         if (Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.INK_SAC)) {
 
