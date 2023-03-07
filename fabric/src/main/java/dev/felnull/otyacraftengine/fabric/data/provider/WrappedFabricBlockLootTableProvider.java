@@ -40,6 +40,16 @@ public class WrappedFabricBlockLootTableProvider extends FabricBlockLootTablePro
         }
 
         @Override
+        public void dropWhenSilkTouch(Block block) {
+            WrappedFabricBlockLootTableProvider.this.dropWhenSilkTouch(block);
+        }
+
+        @Override
+        public void otherWhenSilkTouch(Block block, Block drop) {
+            WrappedFabricBlockLootTableProvider.this.otherWhenSilkTouch(block, drop);
+        }
+
+        @Override
         public void add(Block block, LootTable.Builder builder) {
             WrappedFabricBlockLootTableProvider.this.add(block, builder);
         }

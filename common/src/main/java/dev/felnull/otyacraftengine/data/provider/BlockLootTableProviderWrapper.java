@@ -42,6 +42,10 @@ public abstract class BlockLootTableProviderWrapper extends DataProviderWrapper<
 
         void dropOther(Block block, ItemLike itemLike);
 
+        void dropWhenSilkTouch(Block block);
+
+        void otherWhenSilkTouch(Block block, Block drop);
+
         void add(Block block, LootTable.Builder builder);
     }
 }

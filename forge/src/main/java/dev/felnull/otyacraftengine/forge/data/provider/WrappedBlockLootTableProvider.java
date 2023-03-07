@@ -65,6 +65,16 @@ public class WrappedBlockLootTableProvider extends LootTableProvider {
             }
 
             @Override
+            public void dropWhenSilkTouch(Block block) {
+                WrappedBlockLootSubProvider.this.dropWhenSilkTouch(block);
+            }
+
+            @Override
+            public void otherWhenSilkTouch(Block block, Block drop) {
+                WrappedBlockLootSubProvider.this.otherWhenSilkTouch(block, drop);
+            }
+
+            @Override
             public void add(Block block, LootTable.Builder builder) {
                 WrappedBlockLootSubProvider.this.add(block, builder);
             }
