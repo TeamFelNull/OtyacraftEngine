@@ -1,10 +1,13 @@
 package dev.felnull.otyacraftengine.client.event;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Camera;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
@@ -12,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.FogType;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -77,5 +81,14 @@ public class OEClientEventHooks {
             }
         });
         return nurl[0];
+    }
+
+    public static boolean onRenderFog(FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
+        var event = ClientCameraEvent.RENDER_FOG.invoker().onRenderFog(fogMode, fogType, startDistance, endDistance, fogShape, delta, setter);
+        return event.isEmpty() || event.isTrue();
+    }
+
+    public static void onComputeFogColor(Camera camera, float red, float green, float blue, double delta, ClientCameraEvent.FogColorSetter fogColorSetter) {
+        ClientCameraEvent.COMPUTE_FOG_COLOR.invoker().onComputeFogColor(camera, red, green, blue, delta, fogColorSetter);
     }
 }

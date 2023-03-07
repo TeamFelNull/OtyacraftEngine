@@ -1,18 +1,22 @@
 package dev.felnull.otyacraftenginetest.client.handler;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import dev.felnull.otyacraftengine.client.event.ClientCameraEvent;
 import dev.felnull.otyacraftengine.client.event.MoreRenderEvent;
 import dev.felnull.otyacraftengine.client.util.OEClientUtils;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import dev.felnull.otyacraftenginetest.client.gui.screen.TestSelectScreen;
+import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
@@ -24,6 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.EnderEyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.FogType;
 import org.lwjgl.glfw.GLFW;
 
 public class ClientHandler {
@@ -35,7 +40,34 @@ public class ClientHandler {
         MoreRenderEvent.RENDER_ITEM_IN_HAND.register(ClientHandler::onRenderItemInHand);
         MoreRenderEvent.RENDER_ARM_WITH_ITEM.register(ClientHandler::renderArmWithItem);
 
+        ClientCameraEvent.RENDER_FOG.register(ClientHandler::onRenderFog);
+        ClientCameraEvent.COMPUTE_FOG_COLOR.register(ClientHandler::onComputeFogColor);
+
         KeyMappingRegistry.register(TEST_KEY);
+    }
+
+    private static EventResult onComputeFogColor(Camera camera, float red, float green, float blue, double delta, ClientCameraEvent.FogColorSetter fogColorSetter) {
+        if (Minecraft.getInstance().player.getItemInHand(InteractionHand.OFF_HAND).is(Items.BOOK)) {
+            fogColorSetter.setRed(0f);
+            fogColorSetter.setGreen(0f);
+            fogColorSetter.setBlue(1f);
+        }
+        return EventResult.pass();
+    }
+
+    private static EventResult onRenderFog(FogRenderer.FogMode fogMode, FogType fogType, float startDistance, float endDistance, FogShape fogShape, double delta, ClientCameraEvent.RenderFogSetter setter) {
+
+        if (Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.INK_SAC)) {
+
+            System.out.println(startDistance + ":" + endDistance + ":" + fogShape);
+
+            setter.setStartDistance(0.25F);
+            setter.setEndDistance(1.0F);
+            setter.setFogShape(FogShape.SPHERE);
+            return EventResult.interruptFalse();
+        }
+
+        return EventResult.pass();
     }
 
     private static EventResult onKeyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
