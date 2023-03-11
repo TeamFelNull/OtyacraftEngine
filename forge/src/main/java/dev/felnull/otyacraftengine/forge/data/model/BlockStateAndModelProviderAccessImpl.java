@@ -1,9 +1,6 @@
 package dev.felnull.otyacraftengine.forge.data.model;
 
-import dev.felnull.otyacraftengine.data.model.BlockStateAndModelProviderAccess;
-import dev.felnull.otyacraftengine.data.model.FileModel;
-import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
-import dev.felnull.otyacraftengine.data.model.MutableFileModel;
+import dev.felnull.otyacraftengine.data.model.*;
 import dev.felnull.otyacraftengine.forge.data.WrappedBlockStateBuilder;
 import dev.felnull.otyacraftengine.forge.mixin.data.BlockStateProviderAccessor;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
@@ -42,8 +39,16 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
-    public @NotNull FileModel cubeAllBlockModel(@NotNull String fileName, @NotNull ResourceLocation texture) {
-        return of(this.blockStateProvider.models().cubeAll(fileName, texture));
+    public @NotNull FileModel cubeAllBlockModel(@NotNull ResourceLocation blockLocation, @NotNull ResourceLocation textureLocation) {
+        return of(this.blockStateProvider.models().cubeAll(blockLocation.toString(), textureLocation));
+    }
+
+    @Override
+    public @NotNull FileModel cubeAllBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture fileTexture) {
+        var bm = this.blockStateProvider.models()
+                .withExistingParent(blockLocation.toString(), "block/cube_all");
+
+        return of(setTexture(bm, "all", fileTexture));
     }
 
     @Override
@@ -52,8 +57,30 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
-    public @NotNull FileModel cubeBlockModel(@NotNull String fileName, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
-        return of(this.blockStateProvider.models().cube(fileName, down, up, north, south, east, west));
+    public @NotNull FileModel cubeAllBlockModel(@NotNull Block block, @NotNull FileTexture fileTexture) {
+        var bm = this.blockStateProvider.models()
+                .withExistingParent(name(block), "block/cube_all");
+
+        return of(setTexture(bm, "all", fileTexture));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBlockModel(@NotNull ResourceLocation blockLocation, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
+        return of(this.blockStateProvider.models().cube(blockLocation.toString(), down, up, north, south, east, west));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture down, @NotNull FileTexture up, @NotNull FileTexture north, @NotNull FileTexture south, @NotNull FileTexture east, @NotNull FileTexture west) {
+        var bm = this.blockStateProvider.models().withExistingParent(blockLocation.toString(), "cube");
+
+        setTexture(bm, "down", down);
+        setTexture(bm, "up", up);
+        setTexture(bm, "north", north);
+        setTexture(bm, "south", south);
+        setTexture(bm, "east", east);
+        setTexture(bm, "west", west);
+
+        return of(bm);
     }
 
     @Override
@@ -62,13 +89,49 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
-    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull String fileName, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
-        return of(this.blockStateProvider.models().cubeBottomTop(fileName, side, bottom, top));
+    public @NotNull FileModel cubeBlockModel(@NotNull Block block, @NotNull FileTexture down, @NotNull FileTexture up, @NotNull FileTexture north, @NotNull FileTexture south, @NotNull FileTexture east, @NotNull FileTexture west) {
+        var bm = this.blockStateProvider.models().withExistingParent(name(block), "cube");
+
+        setTexture(bm, "down", down);
+        setTexture(bm, "up", up);
+        setTexture(bm, "north", north);
+        setTexture(bm, "south", south);
+        setTexture(bm, "east", east);
+        setTexture(bm, "west", west);
+
+        return of(bm);
+    }
+
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull ResourceLocation blockLocation, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
+        return of(this.blockStateProvider.models().cubeBottomTop(blockLocation.toString(), side, bottom, top));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture bottom, @NotNull FileTexture side, @NotNull FileTexture top) {
+        var bm = this.blockStateProvider.models().withExistingParent(blockLocation.toString(), "block/cube_bottom_top");
+
+        setTexture(bm, "side", side);
+        setTexture(bm, "bottom", bottom);
+        setTexture(bm, "top", top);
+
+        return of(bm);
     }
 
     @Override
     public @NotNull FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
         return of(this.blockStateProvider.models().cubeBottomTop(name(block), side, bottom, top));
+    }
+
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull FileTexture bottom, @NotNull FileTexture side, @NotNull FileTexture top) {
+        var bm = this.blockStateProvider.models().withExistingParent(name(block), "block/cube_bottom_top");
+
+        setTexture(bm, "side", side);
+        setTexture(bm, "bottom", bottom);
+        setTexture(bm, "top", top);
+
+        return of(bm);
     }
 
     @Override
@@ -84,6 +147,13 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     @Override
     public @NotNull FileModel particleOnlyModel(@NotNull Block block, @NotNull ResourceLocation particleLocation) {
         return of(this.blockStateProvider.models().getBuilder(name(block)).texture("particle", particleLocation));
+    }
+
+    @Override
+    public @NotNull FileModel particleOnlyModel(@NotNull Block block, @NotNull FileTexture particleLocation) {
+        var bm = this.blockStateProvider.models().getBuilder(name(block));
+        setTexture(bm, "particle", particleLocation);
+        return of(bm);
     }
 
     @Override
@@ -127,5 +197,14 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
 
     private ResourceLocation key(Block block) {
         return ForgeRegistries.BLOCKS.getKey(block);
+    }
+
+    private BlockModelBuilder setTexture(BlockModelBuilder blockModelBuilder, String key, FileTexture fileTexture) {
+        if (fileTexture.isExistingCheck()) {
+            blockModelBuilder.texture(key, fileTexture.getLocation());
+        } else {
+            ((UncheckedTextureModelBuilder) blockModelBuilder).uncheckedTexture(key, fileTexture.getLocation());
+        }
+        return blockModelBuilder;
     }
 }

@@ -1,10 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.data.model;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
-import dev.felnull.otyacraftengine.data.model.BlockStateAndModelProviderAccess;
-import dev.felnull.otyacraftengine.data.model.FileModel;
-import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
-import dev.felnull.otyacraftengine.data.model.MutableFileModel;
+import dev.felnull.otyacraftengine.data.model.*;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
@@ -36,61 +33,66 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
-    public @NotNull FileModel cubeAllBlockModel(@NotNull String fileName, @NotNull ResourceLocation texture) {
-        return of(ModelTemplates.CUBE_ALL.create(blockLoc(fileName), TextureMapping.cube(texture), blockModelGenerators.modelOutput));
+    public @NotNull FileModel cubeAllBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture fileTexture) {
+        return of(ModelTemplates.CUBE_ALL.create(blockLoc(blockLocation), TextureMapping.cube(fileTexture.getLocation()), blockModelGenerators.modelOutput));
     }
 
     @Override
-    public @NotNull FileModel cubeAllBlockModel(@NotNull Block block, @NotNull ResourceLocation texture) {
-        return of(ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(texture), blockModelGenerators.modelOutput));
+    public @NotNull FileModel cubeAllBlockModel(@NotNull Block block, @NotNull FileTexture fileTexture) {
+        return of(ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(fileTexture.getLocation()), blockModelGenerators.modelOutput));
     }
 
     @Override
-    public @NotNull FileModel cubeBlockModel(@NotNull String fileName, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
+    public @NotNull FileModel cubeBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture down, @NotNull FileTexture up, @NotNull FileTexture north, @NotNull FileTexture south, @NotNull FileTexture east, @NotNull FileTexture west) {
         TextureMapping mapping = new TextureMapping();
-        mapping.put(TextureSlot.DOWN, down);
-        mapping.put(TextureSlot.UP, up);
-        mapping.put(TextureSlot.NORTH, north);
-        mapping.put(TextureSlot.SOUTH, south);
-        mapping.put(TextureSlot.EAST, east);
-        mapping.put(TextureSlot.WEST, west);
-        mapping.put(TextureSlot.PARTICLE, north);
+        mapping.put(TextureSlot.DOWN, down.getLocation());
+        mapping.put(TextureSlot.UP, up.getLocation());
+        mapping.put(TextureSlot.NORTH, north.getLocation());
+        mapping.put(TextureSlot.SOUTH, south.getLocation());
+        mapping.put(TextureSlot.EAST, east.getLocation());
+        mapping.put(TextureSlot.WEST, west.getLocation());
+        mapping.put(TextureSlot.PARTICLE, north.getLocation());
 
-        return of(ModelTemplates.CUBE.create(blockLoc(fileName), mapping, blockModelGenerators.modelOutput));
+        return of(ModelTemplates.CUBE.create(blockLoc(blockLocation), mapping, blockModelGenerators.modelOutput));
     }
 
     @Override
-    public @NotNull FileModel cubeBlockModel(@NotNull Block block, @NotNull ResourceLocation down, @NotNull ResourceLocation up, @NotNull ResourceLocation north, @NotNull ResourceLocation south, @NotNull ResourceLocation east, @NotNull ResourceLocation west) {
+    public @NotNull FileModel cubeBlockModel(@NotNull Block block, @NotNull FileTexture down, @NotNull FileTexture up, @NotNull FileTexture north, @NotNull FileTexture south, @NotNull FileTexture east, @NotNull FileTexture west) {
         TextureMapping mapping = new TextureMapping();
-        mapping.put(TextureSlot.DOWN, down);
-        mapping.put(TextureSlot.UP, up);
-        mapping.put(TextureSlot.NORTH, north);
-        mapping.put(TextureSlot.SOUTH, south);
-        mapping.put(TextureSlot.EAST, east);
-        mapping.put(TextureSlot.WEST, west);
-        mapping.put(TextureSlot.PARTICLE, north);
+        mapping.put(TextureSlot.DOWN, down.getLocation());
+        mapping.put(TextureSlot.UP, up.getLocation());
+        mapping.put(TextureSlot.NORTH, north.getLocation());
+        mapping.put(TextureSlot.SOUTH, south.getLocation());
+        mapping.put(TextureSlot.EAST, east.getLocation());
+        mapping.put(TextureSlot.WEST, west.getLocation());
+        mapping.put(TextureSlot.PARTICLE, north.getLocation());
 
         return of(ModelTemplates.CUBE.create(block, mapping, blockModelGenerators.modelOutput));
     }
 
-    @Override
-    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull String fileName, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
-        TextureMapping mapping = new TextureMapping();
-        mapping.put(TextureSlot.TOP, top);
-        mapping.put(TextureSlot.BOTTOM, bottom);
-        mapping.put(TextureSlot.SIDE, side);
 
-        return of(ModelTemplates.CUBE_BOTTOM_TOP.create(blockLoc(fileName), mapping, blockModelGenerators.modelOutput));
+    @Override
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull ResourceLocation blockLocation, @NotNull FileTexture bottom, @NotNull FileTexture side, @NotNull FileTexture top) {
+        TextureMapping mapping = new TextureMapping();
+        mapping.put(TextureSlot.TOP, top.getLocation());
+        mapping.put(TextureSlot.BOTTOM, bottom.getLocation());
+        mapping.put(TextureSlot.SIDE, side.getLocation());
+
+        return of(ModelTemplates.CUBE_BOTTOM_TOP.create(blockLoc(blockLocation), mapping, blockModelGenerators.modelOutput));
     }
 
     @Override
-    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull ResourceLocation bottom, @NotNull ResourceLocation side, @NotNull ResourceLocation top) {
+    public @NotNull FileModel cubeBottomTopBlockModel(@NotNull Block block, @NotNull FileTexture bottom, @NotNull FileTexture side, @NotNull FileTexture top) {
         TextureMapping mapping = new TextureMapping();
-        mapping.put(TextureSlot.TOP, top);
-        mapping.put(TextureSlot.BOTTOM, bottom);
-        mapping.put(TextureSlot.SIDE, side);
+        mapping.put(TextureSlot.TOP, top.getLocation());
+        mapping.put(TextureSlot.BOTTOM, bottom.getLocation());
+        mapping.put(TextureSlot.SIDE, side.getLocation());
 
         return of(ModelTemplates.CUBE_BOTTOM_TOP.create(block, mapping, blockModelGenerators.modelOutput));
+    }
+
+    private ResourceLocation blockLoc(ResourceLocation loc) {
+        return new ResourceLocation(loc.getNamespace(), "block/" + loc.getPath());
     }
 
     private ResourceLocation blockLoc(String name) {
@@ -110,9 +112,10 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         return of(location);
     }
 
+
     @Override
-    public @NotNull FileModel particleOnlyModel(@NotNull Block block, @NotNull ResourceLocation particleLocation) {
-        TextureMapping textureMapping = TextureMapping.particle(particleLocation);
+    public @NotNull FileModel particleOnlyModel(@NotNull Block block, @NotNull FileTexture particleLocation) {
+        TextureMapping textureMapping = TextureMapping.particle(particleLocation.getLocation());
         return of(ModelTemplates.PARTICLE_ONLY.create(block, textureMapping, blockModelGenerators.modelOutput));
     }
 

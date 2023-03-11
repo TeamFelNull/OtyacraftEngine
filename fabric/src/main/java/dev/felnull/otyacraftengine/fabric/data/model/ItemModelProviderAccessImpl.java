@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.data.model;
 
 import com.google.gson.JsonElement;
+import dev.felnull.otyacraftengine.data.model.FileTexture;
 import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.MutableFileModel;
 import net.minecraft.data.models.model.*;
@@ -25,18 +26,18 @@ public class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
     }
 
     @Override
-    public @NotNull MutableFileModel basicFlatItem(@NotNull ResourceLocation itemLocation) {
-        return createLayer0Model(ModelTemplates.FLAT_ITEM, itemLocation);
+    public @NotNull MutableFileModel basicFlatItem(@NotNull FileTexture itemTexture) {
+        return createLayer0Model(ModelTemplates.FLAT_ITEM, itemTexture.getLocation());
     }
 
     @Override
-    public @NotNull MutableFileModel basicFlatItem(@NotNull Item item, ResourceLocation texture) {
-        return createModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(texture), item);
+    public @NotNull MutableFileModel basicFlatItem(@NotNull Item item, @NotNull FileTexture itemTexture) {
+        return createModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(itemTexture.getLocation()), item);
     }
 
     @Override
-    public @NotNull MutableFileModel basicFlatItem(@NotNull ResourceLocation itemLocation, ResourceLocation texture) {
-        return createModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(texture), itemLocation);
+    public @NotNull MutableFileModel basicFlatItem(@NotNull ResourceLocation itemLocation, @NotNull FileTexture itemTexture) {
+        return createModel(ModelTemplates.FLAT_ITEM, TextureMapping.layer0(itemTexture.getLocation()), itemLocation);
     }
 
     @Override
@@ -45,8 +46,8 @@ public class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
     }
 
     @Override
-    public @NotNull MutableFileModel handheldFlatItem(@NotNull ResourceLocation itemLocation) {
-        return createLayer0Model(ModelTemplates.FLAT_HANDHELD_ITEM, itemLocation);
+    public @NotNull MutableFileModel handheldFlatItem(@NotNull FileTexture itemTexture) {
+        return createLayer0Model(ModelTemplates.FLAT_HANDHELD_ITEM, itemTexture.getLocation());
     }
 
     @Override

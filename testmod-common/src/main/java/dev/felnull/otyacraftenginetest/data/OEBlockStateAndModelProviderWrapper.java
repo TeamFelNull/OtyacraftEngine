@@ -15,9 +15,11 @@ public class OEBlockStateAndModelProviderWrapper extends BlockStateAndModelProvi
     public void generateStatesAndModels(BlockStateAndModelProviderAccess providerAccess) {
         // providerAccess.genSimpleCubeBlockStateModelAndItemModel(TestBlocks.TEST_BLOCK.get());
 
-        var testModel2 = providerAccess.cubeAllBlockModel("test_block_2", modLoc("block/test_block_2"));
+        var testModel2 = providerAccess.cubeAllBlockModel(modLoc("test_block_2"), modLoc("block/test_block_2"));
         providerAccess.simpleBlockState(TestBlocks.TEST_BLOCK.get(), testModel2);
         providerAccess.simpleBlockItemModel(TestBlocks.TEST_BLOCK.get(), testModel2);
+
+        //providerAccess.cubeAllBlockModel(modLoc("test_block_4").toString(), modLoc("block/test_block_2"));
 
       /*  var horizontalModel = providerAccess.genCubeBlockModel("horizontal_block",
                 modLoc("block/horizontal/down"),

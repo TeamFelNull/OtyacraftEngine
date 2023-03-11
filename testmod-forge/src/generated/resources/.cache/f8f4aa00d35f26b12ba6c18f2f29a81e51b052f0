@@ -1,7 +1,4 @@
-// 1.19.3	2023-02-16T10:44:10.0515482	Block States: otyacraftenginetest
+// 1.19.3	2023-03-11T09:27:44.7768854	Block States: otyacraftenginetest
 8485bbaffe8521f1d4e573a63caf7a75a92427d8 assets/otyacraftenginetest/blockstates/test_block.json
-3a1931c17df1823f4cdd25074d83d2a5558ff68f assets/otyacraftenginetest/blockstates/test_horizontal_directional_block.json
-981007bed5e1afba9156896cb782592288d58f65 assets/otyacraftenginetest/models/block/horizontal_block.json
 cce7745f829730f141cc14861e138712b1106e6a assets/otyacraftenginetest/models/block/test_block_2.json
 81905599f38d704f38663494d077917837c90e91 assets/otyacraftenginetest/models/item/test_block.json
-668dbd3df1adc4a8bdd9261e346071c56cc50148 assets/otyacraftenginetest/models/item/test_horizontal_directional_block.json

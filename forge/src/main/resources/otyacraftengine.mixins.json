@@ -11,6 +11,7 @@
     "MobBucketItemInvoker",
     "data.BlockStateProviderAccessor",
     "data.DataMainMixin",
+    "data.ModelBuilderMixin",
     "self.EquipmentItemExtender",
     "self.OEBaseBlockEntityMixin",
     "self.OEBaseContainerBlockEntityMixin",
