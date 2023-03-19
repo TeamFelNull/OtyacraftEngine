@@ -33,7 +33,9 @@ import java.util.function.Consumer;
  */
 public final class OERenderUtils {
     private static final Minecraft mc = Minecraft.getInstance();
-    public static ThreadLocal<Boolean> SKIP_TRANSANDROT_MODELPART = ThreadLocal.withInitial(() -> false);
+    @Deprecated(forRemoval = true)
+    public static boolean SKIP_TRANSANDROT_MODELPART;
+    public static ThreadLocal<Boolean> SKIP_TRANSANDROT_MODELPART_V2 = ThreadLocal.withInitial(() -> false);
     public static final float MIN_BREADTH = 1.0E-3F;
 
     /**
@@ -841,9 +843,9 @@ public final class OERenderUtils {
     }
 
     public static void noTransAndRotModelPart(Runnable runnable) {
-        SKIP_TRANSANDROT_MODELPART.set(true);
+        SKIP_TRANSANDROT_MODELPART_V2.set(true);
         runnable.run();
-        SKIP_TRANSANDROT_MODELPART.set(false);
+        SKIP_TRANSANDROT_MODELPART_V2.set(false);
     }
 
     public static void renderPlayerArmNoTransAndRot(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {

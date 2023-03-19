@@ -8,9 +8,10 @@ Please write according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 
 ### Added
 
-- Add cross block state provider
-
 ### Changed
+
+- Update CrossDataGenerator
+- Changes to rendering processing
 
 ### Deprecated
 

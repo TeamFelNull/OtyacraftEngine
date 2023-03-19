@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ModelPartMixin {
     @Inject(method = "translateAndRotate", at = @At("HEAD"), cancellable = true)
     private void translateAndRotate(PoseStack poseStack, CallbackInfo ci) {
-        if (OERenderUtils.SKIP_TRANSANDROT_MODELPART.get())
+        if (OERenderUtils.SKIP_TRANSANDROT_MODELPART_V2.get())
             ci.cancel();
     }
 }
