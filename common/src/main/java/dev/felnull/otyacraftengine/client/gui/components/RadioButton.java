@@ -1,10 +1,12 @@
 package dev.felnull.otyacraftengine.client.gui.components;
 
-
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.felnull.otyacraftengine.client.gui.TextureSpecify;
-import dev.felnull.otyacraftengine.client.gui.components.base.OEBaseImageWidget;
+import dev.felnull.otyacraftengine.client.gui.TextureRegion;
+import dev.felnull.otyacraftengine.client.gui.components.base.OEBasedButton;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -14,31 +16,23 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class RadioButton extends OEBaseImageWidget {
+public class RadioButton extends OEBasedButton {
     @Nullable
-    private final Consumer<RadioButton> onPress;
+    private final Consumer<RadioButton> onToggle;
     @NotNull
     private final Supplier<Set<RadioButton>> group;
     private boolean showLabel;
     private boolean selected;
 
     public RadioButton(int x, int y, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel) {
-        this(x, y, 20, 20, message, onPress, group, showLabel, TextureSpecify.createRelative(WIDGETS, 0, 0, 20, 20));
+        this(x, y, 20, 20, message, onPress, group, showLabel, TextureRegion.relative(OE_WIDGETS, 0, 0, 20, 20));
     }
 
-    public RadioButton(int x, int y, int width, int height, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel, @NotNull TextureSpecify texture) {
-        super(x, y, width, height, "radioButton", message, texture);
-        this.onPress = onPress;
+    public RadioButton(int x, int y, int width, int height, @NotNull Component message, @Nullable Consumer<RadioButton> onPress, @NotNull Supplier<Set<RadioButton>> group, boolean showLabel, @NotNull TextureRegion texture) {
+        super(x, y, width, height, message, "radioButton", texture);
+        this.onToggle = onPress;
         this.group = group;
         this.showLabel = showLabel;
-    }
-
-    @Override
-    public void renderButton(@NotNull PoseStack poseStack, int i, int j, float f) {
-        OERenderUtils.drawTexture(texture.getTextureLocation(), poseStack, getX(), getY(), texture.getU0() + (this.isHoveredOrFocused() ? 20 : 0), texture.getV0() + (this.selected ? 20 : 0), texture.getWidth(), texture.getHeight(), texture.getTextureWidth(), texture.getTextureHeight());
-        this.renderBg(poseStack, mc, i, j);
-        if (this.showLabel)
-            drawTextBase(poseStack, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
     @Override
@@ -47,15 +41,7 @@ public class RadioButton extends OEBaseImageWidget {
         for (RadioButton rdo : group.get()) {
             if (this != rdo) rdo.selected = false;
         }
-        if (onPress != null) this.onPress.accept(this);
-    }
-
-    public boolean isShowLabel() {
-        return showLabel;
-    }
-
-    public void setShowLabel(boolean showLabel) {
-        this.showLabel = showLabel;
+        if (onToggle != null) this.onToggle.accept(this);
     }
 
     public boolean isSelected() {
@@ -64,5 +50,19 @@ public class RadioButton extends OEBaseImageWidget {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    @Override
+    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
+        Minecraft minecraft = Minecraft.getInstance();
+        RenderSystem.setShaderTexture(0, getTexture().location());
+        RenderSystem.enableDepthTest();
+        Font font = minecraft.font;
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+        OERenderUtils.blitFloat(poseStack, getX(), getY(), getTexture().u0() + (this.isHoveredOrFocused() ? 20 : 0), getTexture().v0() + (this.selected ? 20 : 0), getTexture().uvWidth(), getTexture().uvHeight(), getTexture().width(), getTexture().height());
+
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        if (this.showLabel)
+            drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 }

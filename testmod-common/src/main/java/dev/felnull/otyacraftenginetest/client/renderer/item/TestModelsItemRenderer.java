@@ -3,13 +3,13 @@ package dev.felnull.otyacraftenginetest.client.renderer.item;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.client.renderer.item.BEWLItemRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class TestModelsItemRenderer implements BEWLItemRenderer {
     @Override
-    public void render(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource multiBufferSource, float delta, int light, int overlay) {
+    public void render(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource multiBufferSource, float delta, int light, int overlay) {
         poseStack.pushPose();
         var rnd = RandomSource.create(114514);
 

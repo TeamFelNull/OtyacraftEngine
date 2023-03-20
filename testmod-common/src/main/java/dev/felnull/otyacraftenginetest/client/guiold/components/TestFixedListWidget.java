@@ -1,7 +1,8 @@
+/*
 package dev.felnull.otyacraftenginetest.client.gui.components;
 
 
-import dev.felnull.otyacraftengine.client.gui.components.FixedListWidget;
+import dev.felnull.otyacraftengine.client.guiold.components.FixedListWidget;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,4 +20,4 @@ public class TestFixedListWidget extends FixedListWidget<TestFixedListWidget.Tes
     }
 }
 
-
+*/

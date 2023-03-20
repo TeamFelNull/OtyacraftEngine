@@ -1,9 +1,11 @@
+/*
 package dev.felnull.otyacraftenginetest.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+
 
 public class TestSelectScreen extends Screen {
     public TestSelectScreen() {
@@ -12,17 +14,14 @@ public class TestSelectScreen extends Screen {
 
     @Override
     protected void init() {
-        super.init();
-
-        this.addRenderableWidget(createButton(3, 3, 100, 20, Component.literal("Components Test"), (buttonx) -> {
-            minecraft.setScreen(new ComponentsTestScreen());
+        this.addRenderableWidget(createButton(3, 3, 40, 20, Component.literal("Test"), (buttonx) -> {
+            minecraft.setScreen(new TestScreen());
+        }));
+        this.addRenderableWidget(createButton(3, 26, 40, 20, Component.literal("Test1"), (buttonx) -> {
+            minecraft.setScreen(new TestCode1Screen());
         }));
 
-        this.addRenderableWidget(createButton(3, 26, 100, 20, Component.literal("Draw Test"), (buttonx) -> {
-            minecraft.setScreen(new DrawTestScreen(this));
-        }));
-
-       /* this.addRenderableWidget(createButton(3, 49, 40, 20, Component.literal("Test2"), (buttonx) -> {
+        this.addRenderableWidget(createButton(3, 49, 40, 20, Component.literal("Test2"), (buttonx) -> {
             minecraft.setScreen(new TestCode2Screen());
         }));
 
@@ -32,7 +31,7 @@ public class TestSelectScreen extends Screen {
 
         this.addRenderableWidget(createButton(3, 95, 40, 20, Component.literal("Test4"), (buttonx) -> {
             minecraft.setScreen(new TestCode4Screen());
-        }));*/
+        }));
     }
 
     private Button createButton(int x, int y, int width, int height, Component message, Button.OnPress onPress) {
@@ -45,3 +44,5 @@ public class TestSelectScreen extends Screen {
         super.render(poseStack, i, j, f);
     }
 }
+
+*/

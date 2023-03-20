@@ -72,7 +72,8 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
         if (!(blockTagProviderWrapper.getProvider() instanceof BlockTagsProvider blockTagsProvider))
             throw new IllegalArgumentException("Not BlockTagsProvider");
 
-        return new WrappedItemTagsProvider(packOutput, lookup, blockTagsProvider, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemTagProviderWrapper);
+
+        return new WrappedItemTagsProvider(packOutput, lookup, null, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), itemTagProviderWrapper);
     }
 
     @Override

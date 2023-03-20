@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterLists;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -65,8 +66,10 @@ public class OETestDimensions {
         var noiseSettings = context.lookup(Registries.NOISE_SETTINGS);
         Holder<NoiseGeneratorSettings> holder1 = noiseSettings.getOrThrow(IKISUGI_NOISE_GENERATOR_SETTINGS);
 
+        var biomeList = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).get(MultiNoiseBiomeSourceParameterLists.OVERWORLD).get();
+
         return new LevelStem(dimTypes.getOrThrow(IKISUGI_DIM_TYPE),
-                new NoiseBasedChunkGenerator(MultiNoiseBiomeSource.Preset.OVERWORLD.biomeSource(biomes), holder1));
+                new NoiseBasedChunkGenerator(MultiNoiseBiomeSource.createFromPreset(biomeList), holder1));
     }
 
     public static void bootstrapStem(BootstapContext<LevelStem> context) {

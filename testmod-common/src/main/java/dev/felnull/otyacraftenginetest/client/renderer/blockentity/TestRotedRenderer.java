@@ -8,6 +8,7 @@ import dev.felnull.otyacraftenginetest.OtyacraftEngineTest;
 import dev.felnull.otyacraftenginetest.blockentity.TestRotedBlockEntity;
 import dev.felnull.otyacraftenginetest.client.model.TestModels;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -54,7 +55,7 @@ public class TestRotedRenderer extends AbstractBlockEntityRenderer<TestRotedBloc
     }
 
     private static void testRenderFont(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {
-        OERenderUtils.renderFontSprite(Component.literal("ikisugi"), 0, 0, 0xFFFFFFFF, false, poseStack, multiBufferSource, false, 0, light);
+        OERenderUtils.renderFontSprite(Component.literal("ikisugi"), 0, 0, 0xFFFFFFFF, false, poseStack, multiBufferSource, Font.DisplayMode.NORMAL, 0, light);
     }
 
     private static void testPlayerFace(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, int overlay) {

@@ -39,8 +39,8 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    modApi "me.shedaniel.cloth:cloth-config-forge:9.0.94"
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:10.0.578"
+    modApi "me.shedaniel.cloth:cloth-config-forge:10.0.96"
+    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:11.0.597"
 
     shadowIn "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     shadowIn 'com.madgag:animated-gif-lib:1.4'

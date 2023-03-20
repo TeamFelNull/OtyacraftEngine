@@ -3,19 +3,22 @@ package dev.felnull.otyacraftengine.client.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import dev.felnull.otyacraftengine.client.ClientMixinTemp;
 import dev.felnull.otyacraftengine.client.renderer.OERenderTypes;
 import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -33,9 +36,6 @@ import java.util.function.Consumer;
  */
 public final class OERenderUtils {
     private static final Minecraft mc = Minecraft.getInstance();
-    @Deprecated(forRemoval = true)
-    public static boolean SKIP_TRANSANDROT_MODELPART;
-    public static ThreadLocal<Boolean> SKIP_TRANSANDROT_MODELPART_V2 = ThreadLocal.withInitial(() -> false);
     public static final float MIN_BREADTH = 1.0E-3F;
 
     /**
@@ -314,37 +314,33 @@ public final class OERenderUtils {
         innerFill(poseStack.last().pose(), x, y, width, height, color);
     }
 
-    private static void innerFill(Matrix4f matrix4f, float x, float y, float w, float h, int coler) {
-        float n;
+    private static void innerFill(Matrix4f matrix4f, float x, float y, float w, float h, int color) {
+        float o;
         if (x < w) {
-            n = x;
+            o = x;
             x = w;
-            w = n;
+            w = o;
         }
 
         if (y < h) {
-            n = y;
+            o = y;
             y = h;
-            h = n;
+            h = o;
         }
 
-        float a = (float) (coler >> 24 & 255) / 255.0F;
-        float r = (float) (coler >> 16 & 255) / 255.0F;
-        float g = (float) (coler >> 8 & 255) / 255.0F;
-        float b = (float) (coler & 255) / 255.0F;
-
+        float f = (float) FastColor.ARGB32.alpha(color) / 255.0F;
+        float g = (float) FastColor.ARGB32.red(color) / 255.0F;
+        float h2 = (float) FastColor.ARGB32.green(color) / 255.0F;
+        float p = (float) FastColor.ARGB32.blue(color) / 255.0F;
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
-        RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        bufferBuilder.vertex(matrix4f, x, h, 0.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix4f, w, h, 0.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix4f, w, y, 0.0F).color(r, g, b, a).endVertex();
-        bufferBuilder.vertex(matrix4f, x, y, 0.0F).color(r, g, b, a).endVertex();
+        bufferBuilder.vertex(matrix4f, x, y, 0).color(g, h2, p, f).endVertex();
+        bufferBuilder.vertex(matrix4f, x, h, 0).color(g, h2, p, f).endVertex();
+        bufferBuilder.vertex(matrix4f, w, h, 0).color(g, h2, p, f).endVertex();
+        bufferBuilder.vertex(matrix4f, w, y, 0).color(g, h2, p, f).endVertex();
         BufferUploader.drawWithShader(bufferBuilder.end());
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 
@@ -479,7 +475,7 @@ public final class OERenderUtils {
 
     public static void renderHandItem(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, ItemStack stack, int light) {
         boolean handFlg = arm == HumanoidArm.RIGHT;
-        mc.gameRenderer.itemInHandRenderer.renderItem(mc.player, stack, handFlg ? ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND : ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !handFlg, poseStack, multiBufferSource, light);
+        mc.gameRenderer.itemInHandRenderer.renderItem(mc.player, stack, handFlg ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, !handFlg, poseStack, multiBufferSource, light);
     }
 
     /**
@@ -520,13 +516,13 @@ public final class OERenderUtils {
      * @param shadow            影をつけるかどうか
      * @param lastPose          pose
      * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
+     * @param displayMode       表示モード
      * @param bakedGlyphColor   背景色
      * @param packedLightCoords light
      * @return size?
      */
-    public static int fontDrawInBatch(Component text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
-        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+    public static int fontDrawInBatch(Component text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
+        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
     }
 
     /**
@@ -539,13 +535,13 @@ public final class OERenderUtils {
      * @param shadow            影をつけるかどうか
      * @param lastPose          pose
      * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
+     * @param displayMode       表示モード
      * @param bakedGlyphColor   背景色
      * @param packedLightCoords light
      * @return size?
      */
-    public static int fontDrawInBatch(String text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
-        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+    public static int fontDrawInBatch(String text, float x, float y, int color, boolean shadow, Matrix4f lastPose, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
+        return mc.font.drawInBatch(text, x, y, color, shadow, lastPose, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
     }
 
     @Deprecated
@@ -553,7 +549,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        // mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -562,7 +558,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        //  mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -571,7 +567,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        //  mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -580,7 +576,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        // mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -594,15 +590,15 @@ public final class OERenderUtils {
      * @param shadow            影をつけるかどうか
      * @param poseStack         pose
      * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
+     * @param displayMode       表示モード
      * @param bakedGlyphColor   背景色
      * @param packedLightCoords light
      */
-    public static void renderFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+    public static void renderFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
         poseStack.pushPose();
         poseStack.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = poseStack.last().pose();
-        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
         poseStack.popPose();
     }
 
@@ -616,15 +612,15 @@ public final class OERenderUtils {
      * @param shadow            影をつけるかどうか
      * @param poseStack         pose
      * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
+     * @param displayMode       表示モード
      * @param bakedGlyphColor   背景色
      * @param packedLightCoords light
      */
-    public static void renderFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+    public static void renderFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
         poseStack.pushPose();
         poseStack.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = poseStack.last().pose();
-        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
         poseStack.popPose();
     }
 
@@ -638,40 +634,40 @@ public final class OERenderUtils {
      * @param shadow            影をつけるかどうか
      * @param poseStack         pose
      * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
+     * @param displayMode       表示モード
      * @param bakedGlyphColor   背景色
      * @param packedLightCoords light
      */
-    public static void renderCenterFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
-        poseStack.pushPose();
-        poseStack.scale(-0.025F, -0.025F, 0.025F);
-        Matrix4f matrix4f = poseStack.last().pose();
-        x += (float) (-mc.font.width(text) / 2);
-        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
-        poseStack.popPose();
-    }
-
-
-    /**
-     * 文字のスプライトを描画する
-     *
-     * @param text              テキスト
-     * @param x                 X
-     * @param y                 Y
-     * @param color             色
-     * @param shadow            影をつけるかどうか
-     * @param poseStack         pose
-     * @param multiBufferSource multiBufferSource
-     * @param seeThrough        透けて見えるかどうか
-     * @param bakedGlyphColor   背景色
-     * @param packedLightCoords light
-     */
-    public static void renderCenterFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, boolean seeThrough, int bakedGlyphColor, int packedLightCoords) {
+    public static void renderCenterFontSprite(Component text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
         poseStack.pushPose();
         poseStack.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = poseStack.last().pose();
         x += (float) (-mc.font.width(text) / 2);
-        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, seeThrough, bakedGlyphColor, packedLightCoords);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
+        poseStack.popPose();
+    }
+
+
+    /**
+     * 文字のスプライトを描画する
+     *
+     * @param text              テキスト
+     * @param x                 X
+     * @param y                 Y
+     * @param color             色
+     * @param shadow            影をつけるかどうか
+     * @param poseStack         pose
+     * @param multiBufferSource multiBufferSource
+     * @param displayMode       表示モード
+     * @param bakedGlyphColor   背景色
+     * @param packedLightCoords light
+     */
+    public static void renderCenterFontSprite(String text, int x, int y, int color, boolean shadow, PoseStack poseStack, MultiBufferSource multiBufferSource, Font.DisplayMode displayMode, int bakedGlyphColor, int packedLightCoords) {
+        poseStack.pushPose();
+        poseStack.scale(-0.025F, -0.025F, 0.025F);
+        Matrix4f matrix4f = poseStack.last().pose();
+        x += (float) (-mc.font.width(text) / 2);
+        fontDrawInBatch(text, x, y, color, shadow, matrix4f, multiBufferSource, displayMode, bakedGlyphColor, packedLightCoords);
         poseStack.popPose();
     }
 
@@ -843,9 +839,9 @@ public final class OERenderUtils {
     }
 
     public static void noTransAndRotModelPart(Runnable runnable) {
-        SKIP_TRANSANDROT_MODELPART_V2.set(true);
+        ClientMixinTemp.SKIP_TRANSANDROT_MODELPART.set(true);
         runnable.run();
-        SKIP_TRANSANDROT_MODELPART_V2.set(false);
+        ClientMixinTemp.SKIP_TRANSANDROT_MODELPART.set(false);
     }
 
     public static void renderPlayerArmNoTransAndRot(PoseStack poseStack, MultiBufferSource multiBufferSource, HumanoidArm arm, int light) {

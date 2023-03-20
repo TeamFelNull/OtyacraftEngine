@@ -1,8 +1,8 @@
 package dev.felnull.otyacraftengine.client.handler;
 
 import dev.architectury.networking.NetworkManager;
-import dev.felnull.otyacraftengine.client.gui.screen.IInstructionBEScreen;
-import dev.felnull.otyacraftengine.client.gui.screen.IInstructionItemScreen;
+import dev.felnull.otyacraftengine.client.gui.screen.InstructionBEScreen;
+import dev.felnull.otyacraftengine.client.gui.screen.InstructionItemScreen;
 import dev.felnull.otyacraftengine.networking.OEPackets;
 import net.minecraft.client.Minecraft;
 
@@ -13,7 +13,7 @@ public class ClientMessageHandler {
         packetContext.queue(() -> {
             if (!message.blockEntityExistence().check(mc.level))
                 return;
-            if (mc.screen instanceof IInstructionBEScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
+            if (mc.screen instanceof InstructionBEScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
                 insScreen.onInstructionReturn(message.name(), message.data());
         });
     }
@@ -22,7 +22,7 @@ public class ClientMessageHandler {
         packetContext.queue(() -> {
             if (!message.itemExistence().check(mc.player))
                 return;
-            if (mc.screen instanceof IInstructionItemScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
+            if (mc.screen instanceof InstructionItemScreen insScreen && insScreen.getInstructionID().equals(message.instructionScreenID()))
                 insScreen.onInstructionReturn(message.name(), message.data());
         });
     }

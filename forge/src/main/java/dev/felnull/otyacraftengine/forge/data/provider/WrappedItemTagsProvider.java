@@ -17,8 +17,8 @@ import java.util.concurrent.CompletableFuture;
 public class WrappedItemTagsProvider extends ItemTagsProvider {
     private final ItemTagProviderWrapper tagProviderWrapper;
 
-    public WrappedItemTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, TagsProvider<Block> arg2, String modId, @Nullable ExistingFileHelper existingFileHelper, ItemTagProviderWrapper tagProviderWrapper) {
-        super(arg, completableFuture, arg2, modId, existingFileHelper);
+    public WrappedItemTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagLookup, String modId, @Nullable ExistingFileHelper existingFileHelper, ItemTagProviderWrapper tagProviderWrapper) {
+        super(arg, completableFuture, blockTagLookup, modId, existingFileHelper);
         this.tagProviderWrapper = tagProviderWrapper;
     }
 
