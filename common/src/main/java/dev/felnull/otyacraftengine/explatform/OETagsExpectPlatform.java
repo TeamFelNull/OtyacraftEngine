@@ -5,24 +5,26 @@ import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
+import java.util.Optional;
+
 public class OETagsExpectPlatform {
     @ExpectPlatform
-    public static TagKey<Item> pickaxes() {
+    public static Optional<TagKey<Item>> pickaxes() {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static TagKey<Item> shovels() {
+    public static Optional<TagKey<Item>> shovels() {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static TagKey<Item> hoes() {
+    public static Optional<TagKey<Item>> hoes() {
         throw new AssertionError();
     }
 
     @ExpectPlatform
-    public static TagKey<Item> axes() {
+    public static Optional<TagKey<Item>> axes() {
         throw new AssertionError();
     }
 
@@ -32,7 +34,7 @@ public class OETagsExpectPlatform {
     }
 
     @ExpectPlatform
-    public static TagKey<Item> swords() {
+    public static Optional<TagKey<Item>> swords() {
         throw new AssertionError();
     }
 

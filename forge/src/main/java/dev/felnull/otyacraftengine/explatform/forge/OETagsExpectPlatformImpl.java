@@ -6,29 +6,31 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 
+import java.util.Optional;
+
 public class OETagsExpectPlatformImpl {
-    public static TagKey<Item> pickaxes() {
-        return Tags.Items.TOOLS_PICKAXES;
+    public static Optional<TagKey<Item>> pickaxes() {
+        return Optional.of(Tags.Items.TOOLS_PICKAXES);
     }
 
-    public static TagKey<Item> shovels() {
-        return Tags.Items.TOOLS_SHOVELS;
+    public static Optional<TagKey<Item>> shovels() {
+        return Optional.of(Tags.Items.TOOLS_SHOVELS);
     }
 
-    public static TagKey<Item> hoes() {
-        return Tags.Items.TOOLS_HOES;
+    public static Optional<TagKey<Item>> hoes() {
+        return Optional.of(Tags.Items.TOOLS_HOES);
     }
 
-    public static TagKey<Item> axes() {
-        return Tags.Items.TOOLS_AXES;
+    public static Optional<TagKey<Item>> axes() {
+        return Optional.of(Tags.Items.TOOLS_AXES);
     }
 
     public static TagKey<Item> shears() {
         return Tags.Items.SHEARS;
     }
 
-    public static TagKey<Item> swords() {
-        return Tags.Items.TOOLS_SWORDS;
+    public static Optional<TagKey<Item>> swords() {
+        return Optional.of(Tags.Items.TOOLS_SWORDS);
     }
 
     public static TagKey<Item> bows() {

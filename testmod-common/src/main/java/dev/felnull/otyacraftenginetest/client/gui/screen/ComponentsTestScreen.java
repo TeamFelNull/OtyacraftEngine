@@ -38,7 +38,7 @@ public class ComponentsTestScreen extends Screen {
         radio2 = addRenderableWidget(new RadioButton(3, 65, Component.literal("Test radio2"), r -> {
         }, () -> ImmutableSet.of(radio1, radio2), true));
 
-        addRenderableWidget(new IconButton(3, 85, 150, 20, Component.literal("Test icon button"), it -> System.out.println("Icon button pressed!"), ICON));
+        addRenderableWidget(new IconButton(this.width - 27, this.height - 27, 20, 20, Component.literal("Test icon button"), it -> System.out.println("Icon button pressed!"), ICON));
 
         List<TestFixedListWidget.TestListEntry> entryList = new ArrayList<>();
 

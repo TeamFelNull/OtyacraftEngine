@@ -3,6 +3,7 @@ package dev.felnull.otyacraftengine.data.provider;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;

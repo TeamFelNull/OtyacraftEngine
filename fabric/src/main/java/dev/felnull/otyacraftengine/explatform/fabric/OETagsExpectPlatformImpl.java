@@ -6,29 +6,31 @@ import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
+import java.util.Optional;
+
 public class OETagsExpectPlatformImpl {
-    public static TagKey<Item> pickaxes() {
-        return ConventionalItemTags.PICKAXES;
+    public static Optional<TagKey<Item>> pickaxes() {
+        return Optional.empty();
     }
 
-    public static TagKey<Item> shovels() {
-        return ConventionalItemTags.SHOVELS;
+    public static Optional<TagKey<Item>> shovels() {
+        return Optional.empty();
     }
 
-    public static TagKey<Item> hoes() {
-        return ConventionalItemTags.HOES;
+    public static Optional<TagKey<Item>> hoes() {
+        return Optional.empty();
     }
 
-    public static TagKey<Item> axes() {
-        return ConventionalItemTags.AXES;
+    public static Optional<TagKey<Item>> axes() {
+        return Optional.empty();
     }
 
     public static TagKey<Item> shears() {
         return ConventionalItemTags.SHEARS;
     }
 
-    public static TagKey<Item> swords() {
-        return ConventionalItemTags.SWORDS;
+    public static Optional<TagKey<Item>> swords() {
+        return Optional.empty();
     }
 
     public static TagKey<Item> bows() {

@@ -49,4 +49,14 @@ public final class OERegisterUtils {
     public static void registerPoiTypeBlockStates(@NotNull RegistrySupplier<PoiType> poiTypeRegistrySupplier) {
         OERegisterExpectPlatform.registerPoiTypeBlockStates(poiTypeRegistrySupplier);
     }
+
+    //Wip...
+   /* @NotNull
+    public static Tier createTier(int level, int uses, float speed, float attackDamageBonus, int enchantmentValue, @NotNull TagKey<Block> tag, @NotNull Supplier<Ingredient> repairIngredient) {
+        return OERegisterExpectPlatform.createTier(level, uses, speed, attackDamageBonus, enchantmentValue, tag, repairIngredient);
+    }
+
+    public static ArmorMaterial createArmorMaterial() {
+         return null;
+    }*/
 }

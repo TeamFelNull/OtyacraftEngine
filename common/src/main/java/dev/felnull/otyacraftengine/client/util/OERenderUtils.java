@@ -549,7 +549,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        // mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -558,7 +558,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        //  mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        mc.font.drawInBatch(text, textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -567,7 +567,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        //  mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, color, false, poseStack.last().pose(), multiBufferSource, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         poseStack.popPose();
     }
 
@@ -576,7 +576,7 @@ public final class OERenderUtils {
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.010416667F * size, -0.010416667F * size, 0.010416667F * size);
-        // mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, false, 0, combinedLightIn);
+        mc.font.drawInBatch(text, ((float) -mc.font.width(text) / 2f) + textX, -mc.font.lineHeight + textY, 0, false, poseStack.last().pose(), multiBufferSource, Font.DisplayMode.NORMAL, 0, combinedLightIn);
         poseStack.popPose();
     }
 

@@ -1,23 +1,43 @@
 package dev.felnull.otyacraftengine.tag;
 
 import dev.felnull.otyacraftengine.explatform.OETagsExpectPlatform;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
+import java.util.Optional;
+
 public class PlatformItemTags {
-    public static TagKey<Item> pickaxes() {
+
+    /**
+     * Fabricではこのタグは廃止される予定<br>
+     * バニラの{@link ItemTags#PICKAXES}も利用してください
+     */
+    public static Optional<TagKey<Item>> pickaxes() {
         return OETagsExpectPlatform.pickaxes();
     }
 
-    public static TagKey<Item> shovels() {
+    /**
+     * Fabricではこのタグは廃止される予定<br>
+     * バニラの{@link ItemTags#SHOVELS}も利用してください
+     */
+    public static Optional<TagKey<Item>> shovels() {
         return OETagsExpectPlatform.shovels();
     }
 
-    public static TagKey<Item> hoes() {
+    /**
+     * Fabricではこのタグは廃止される予定<br>
+     * バニラの{@link ItemTags#HOES}も利用してください
+     */
+    public static Optional<TagKey<Item>> hoes() {
         return OETagsExpectPlatform.hoes();
     }
 
-    public static TagKey<Item> axes() {
+    /**
+     * Fabricではこのタグは廃止される予定<br>
+     * バニラの{@link ItemTags#AXES}も利用してください
+     */
+    public static Optional<TagKey<Item>> axes() {
         return OETagsExpectPlatform.axes();
     }
 
@@ -25,7 +45,11 @@ public class PlatformItemTags {
         return OETagsExpectPlatform.shears();
     }
 
-    public static TagKey<Item> swords() {
+    /**
+     * Fabricではこのタグは廃止される予定<br>
+     * バニラの{@link ItemTags#SWORDS}も利用してください
+     */
+    public static Optional<TagKey<Item>> swords() {
         return OETagsExpectPlatform.swords();
     }
 

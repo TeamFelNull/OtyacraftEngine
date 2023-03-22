@@ -16,7 +16,12 @@ public class OETestItemModelProviderWrapper extends ItemModelProviderWrapper {
     @Override
     public void generateItemModels(ItemModelProviderAccess providerAccess) {
         var model = providerAccess.basicFlatItem(TestItems.TEST_ITEM.get());
-
         model.override(model, ImmutableList.of(new OverridePredicate(modLoc("test"), 0.3f)));
+
+        providerAccess.handheldFlatItem(TestItems.TEST_SWORD.get());
+        providerAccess.basicFlatItem(TestItems.TEST_HELMET.get());
+        providerAccess.basicFlatItem(TestItems.TEST_CHESTPLATE.get());
+        providerAccess.basicFlatItem(TestItems.TEST_LEGGINGS.get());
+        providerAccess.basicFlatItem(TestItems.TEST_BOOTS.get());
     }
 }
