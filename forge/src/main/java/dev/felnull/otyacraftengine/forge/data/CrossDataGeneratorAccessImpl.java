@@ -94,7 +94,7 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
 
     @Override
     public TagsProvider<DamageType> createDamageTypeTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, DamageTypeTagsProviderWrapper damageTypeTagsProviderWrapper) {
-        return new WrappedDamageTypeTagsProvider(packOutput, lookup, damageTypeTagsProviderWrapper);
+        return new WrappedDamageTypeTagsProvider(packOutput, lookup, gatherDataEvent.getModContainer().getModId(), gatherDataEvent.getExistingFileHelper(), damageTypeTagsProviderWrapper);
     }
 
     @Override

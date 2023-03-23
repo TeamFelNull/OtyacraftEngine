@@ -3,18 +3,20 @@ package dev.felnull.otyacraftengine.forge.data.provider;
 import dev.felnull.otyacraftengine.data.provider.DamageTypeTagsProviderWrapper;
 import dev.felnull.otyacraftengine.data.provider.TagProviderWrapper;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.DamageTypeTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class WrappedDamageTypeTagsProvider extends DamageTypeTagsProvider {
+public class WrappedDamageTypeTagsProvider extends TagsProvider<DamageType> {
     private final DamageTypeTagsProviderWrapper tagProviderWrapper;
 
-    public WrappedDamageTypeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, DamageTypeTagsProviderWrapper tagProviderWrapper) {
-        super(arg, completableFuture);
+    public WrappedDamageTypeTagsProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, String modid, ExistingFileHelper existingFileHelper, DamageTypeTagsProviderWrapper tagProviderWrapper) {
+        super(arg, Registries.DAMAGE_TYPE, completableFuture, modid, existingFileHelper);
         this.tagProviderWrapper = tagProviderWrapper;
     }
 
