@@ -30,8 +30,8 @@
     "1.16.5-recommended": "1.23",
     "1.19.3-latest": "3.5.0",
     "1.19.3-recommended": "3.5.0",
-    "1.19.4-latest": "3.6.0-alpha.1",
-    "1.19.4-recommended": "3.6.0-alpha.1"
+    "1.19.4-latest": "3.6.0",
+    "1.19.4-recommended": "3.6.0"
   },
   "1.19.3": {
     "3.3.0-alpha.1": "Changed\n- Port MC1.19.3\nRemoved\n- Separated Fabric\u0027s built-in OBJ loader ([Special Model Loader](https://github.com/TeamFelnull/SpecialModelLoader))\n",
@@ -41,6 +41,7 @@
     "3.5.0": "Changed\n- Update CrossDataGenerator\n- Changes to rendering processing\n"
   },
   "1.19.4": {
-    "3.6.0-alpha.1": "Changed\n- Port 1.19.4\n"
+    "3.6.0-alpha.1": "Changed\n- Port 1.19.4\n",
+    "3.6.0": "Changed\n- Fixed a bug in the URL texture loader\n"
   }
 }
