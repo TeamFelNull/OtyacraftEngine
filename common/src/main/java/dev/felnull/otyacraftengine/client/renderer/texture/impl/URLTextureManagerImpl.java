@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.client.renderer.texture.impl;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import dev.felnull.fnjl.util.FNDataUtil;
 import dev.felnull.fnjl.util.FNStringUtil;
 import dev.felnull.fnjl.util.FNURLUtil;
@@ -52,7 +53,14 @@ public class URLTextureManagerImpl implements URLTextureManager {
         JsonObject index;
 
         try {
-            index = OEUtils.readJson(urlIndex, JsonObject.class);
+            if (urlIndex.exists()) {
+                index = OEUtils.readJson(urlIndex, JsonObject.class);
+            } else {
+                index = new JsonObject();
+            }
+        } catch (JsonParseException e) {
+            OtyacraftEngine.LOGGER.error("url texture cache index file is corrupt and will be removed", e);
+            index = new JsonObject();
         } catch (IOException e) {
             OtyacraftEngine.LOGGER.error("Failed to load url texture cache indexes", e);
             return;
@@ -112,6 +120,9 @@ public class URLTextureManagerImpl implements URLTextureManager {
 
     @Override
     public synchronized void save() {
+        if (caches.isEmpty())
+            return;
+
         long st = System.currentTimeMillis();
         var fol = getCacheFolderPath().toFile();
 
