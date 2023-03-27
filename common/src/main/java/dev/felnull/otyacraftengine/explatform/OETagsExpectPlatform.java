@@ -5,6 +5,7 @@ import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
+import java.util.List;
 import java.util.Optional;
 
 public class OETagsExpectPlatform {
@@ -187,6 +188,21 @@ public class OETagsExpectPlatform {
 
     @ExpectPlatform
     public static ManualTagHolder<Item> drinks() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> ironBlocks() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static List<ManualTagHolder<Item>> slimeBalls() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static ManualTagHolder<Item> clay() {
         throw new AssertionError();
     }
 }

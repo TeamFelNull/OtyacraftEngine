@@ -26,6 +26,7 @@ public class OEForgeItemTags {
     public static final Supplier<ManualTagHolder<Item>> FRUITS = bind("fruits", tp -> tp.add(Items.APPLE, Items.MELON, Items.SWEET_BERRIES, Items.GLOW_BERRIES, Items.CHORUS_FRUIT));
     public static final Supplier<ManualTagHolder<Item>> MILKS = bind("milks", tp -> tp.add(Items.MILK_BUCKET));
     public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTagHolder(MILKS.get()));
+    public static final Supplier<ManualTagHolder<Item>> CLAY = bind("clay", tp -> tp.add(Items.CLAY));
 
     private static Supplier<TagKey<Item>> bind(String id) {
         return Suppliers.memoize(() -> ItemTags.create(fgLoc(id)));

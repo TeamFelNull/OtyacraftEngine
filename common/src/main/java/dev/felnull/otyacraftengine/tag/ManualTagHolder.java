@@ -28,7 +28,7 @@ public interface ManualTagHolder<T> {
             }
 
             @Override
-            public void registering(IntrinsicHolderTagsProviderWrapper.IntrinsicTagProviderAccess<T> tagProviderAccess) {
+            public void registering(IntrinsicHolderTagsProviderWrapper.@NotNull IntrinsicTagProviderAccess<T> tagProviderAccess) {
             }
         };
     }

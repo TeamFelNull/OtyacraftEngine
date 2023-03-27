@@ -4,7 +4,9 @@ import dev.felnull.otyacraftengine.explatform.OETagsExpectPlatform;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.Unmodifiable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PlatformItemTags {
@@ -171,5 +173,18 @@ public class PlatformItemTags {
 
     public static ManualTagHolder<Item> drinks() {
         return OETagsExpectPlatform.drinks();
+    }
+
+    public static ManualTagHolder<Item> ironBlocks() {
+        return OETagsExpectPlatform.ironBlocks();
+    }
+
+    @Unmodifiable
+    public static List<ManualTagHolder<Item>> slimeBalls() {
+        return OETagsExpectPlatform.slimeBalls();
+    }
+
+    public static ManualTagHolder<Item> clay() {
+        return OETagsExpectPlatform.clay();
     }
 }

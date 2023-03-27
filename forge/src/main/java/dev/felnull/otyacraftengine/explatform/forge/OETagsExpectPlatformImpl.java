@@ -1,11 +1,13 @@
 package dev.felnull.otyacraftengine.explatform.forge;
 
+import com.google.common.collect.ImmutableList;
 import dev.felnull.otyacraftengine.forge.tag.OEForgeItemTags;
 import dev.felnull.otyacraftengine.tag.ManualTagHolder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 
+import java.util.List;
 import java.util.Optional;
 
 public class OETagsExpectPlatformImpl {
@@ -151,5 +153,17 @@ public class OETagsExpectPlatformImpl {
 
     public static ManualTagHolder<Item> drinks() {
         return OEForgeItemTags.DRINKS.get();
+    }
+
+    public static ManualTagHolder<Item> ironBlocks() {
+        return ManualTagHolder.of(() -> Tags.Items.STORAGE_BLOCKS_IRON);
+    }
+
+    public static List<ManualTagHolder<Item>> slimeBalls() {
+        return ImmutableList.of(ManualTagHolder.of(() -> Tags.Items.SLIMEBALLS));
+    }
+
+    public static ManualTagHolder<Item> clay() {
+        return OEForgeItemTags.CLAY.get();
     }
 }

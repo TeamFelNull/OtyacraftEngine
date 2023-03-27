@@ -20,6 +20,7 @@ public class OEFabricItemTags {
         tp.add(Items.POLISHED_ANDESITE, Items.POLISHED_DIORITE, Items.POLISHED_GRANITE, Items.POLISHED_DEEPSLATE);
     });
     public static final Supplier<ManualTagHolder<Item>> REDSTONE_BLOCKS = bind("redstone_blocks", tp -> tp.add(Items.REDSTONE_BLOCK));
+    public static final Supplier<ManualTagHolder<Item>> IRON_BLOCKS = bind("iron_blocks", tp -> tp.add(Items.IRON_BLOCK));
     public static final Supplier<TagKey<Item>> BOOKS = bind("books");
     public static final Supplier<ManualTagHolder<Item>> RAW_MEATS = bind("raw_meats", tp -> tp.add(Items.BEEF, Items.PORKCHOP, Items.CHICKEN, Items.MUTTON, Items.RABBIT).addOptionalTag(cLoc("raw_meat")));
     public static final Supplier<ManualTagHolder<Item>> COOKED_MEATS = bind("cooked_meats", tp -> tp.add(Items.COOKED_BEEF, Items.COOKED_PORKCHOP, Items.COOKED_CHICKEN, Items.COOKED_MUTTON, Items.COOKED_RABBIT).addOptionalTag(cLoc("cooked_meat")));
@@ -37,6 +38,9 @@ public class OEFabricItemTags {
     public static final Supplier<ManualTagHolder<Item>> FRUITS = bind("fruits", tp -> tp.add(Items.APPLE, Items.MELON, Items.SWEET_BERRIES, Items.GLOW_BERRIES, Items.CHORUS_FRUIT));
     public static final Supplier<ManualTagHolder<Item>> MILKS = bind("milks", tp -> tp.add(Items.MILK_BUCKET));
     public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTagHolder(MILKS.get()));
+    public static final Supplier<ManualTagHolder<Item>> SLIMEBALLS = bind("slimeballs", tp -> tp.add(Items.SLIME_BALL));
+    public static final Supplier<ManualTagHolder<Item>> SLIME_BALLS = bind("slime_balls", tp -> tp.add(Items.SLIME_BALL));
+    public static final Supplier<ManualTagHolder<Item>> CLAY = bind("clay", tp -> tp.add(Items.CLAY));
 
     private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<Item>> tagRegister) {
         return Suppliers.memoize(() -> ManualTagHolder.of(TagRegistration.ITEM_TAG_REGISTRATION.registerCommon(id), tagRegister));
