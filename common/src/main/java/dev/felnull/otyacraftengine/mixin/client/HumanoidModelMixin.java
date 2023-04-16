@@ -38,5 +38,10 @@ public class HumanoidModelMixin<T extends LivingEntity> {
         var hand = livingEntity.getMainArm() == HumanoidArm.LEFT ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         OEClientEventHooks.onPoseHumanoidArmPost(HumanoidArm.LEFT, hand, (HumanoidModel<T>) (Object) this, livingEntity);
     }
+
+    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
+    private void setupAnim(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        OEClientEventHooks.onSetupHumanoidAnimPost((HumanoidModel<T>) (Object) this, livingEntity, f, g, h, i, j);
+    }
 }
 

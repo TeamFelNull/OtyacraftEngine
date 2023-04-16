@@ -202,7 +202,7 @@ public class OETagsExpectPlatform {
     }
 
     @ExpectPlatform
-    public static ManualTagHolder<Item> clay() {
+    public static ManualTagHolder<Item> clayBalls() {
         throw new AssertionError();
     }
 }

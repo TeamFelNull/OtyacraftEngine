@@ -91,4 +91,8 @@ public class OEClientEventHooks {
     public static void onComputeFogColor(Camera camera, float red, float green, float blue, double delta, ClientCameraEvent.FogColorSetter fogColorSetter) {
         ClientCameraEvent.COMPUTE_FOG_COLOR.invoker().onComputeFogColor(camera, red, green, blue, delta, fogColorSetter);
     }
+
+    public static void onSetupHumanoidAnimPost(HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity, float walkAnimationPosition, float walkAnimationSpeed, float deltaTick, float headYRot, float xRot) {
+        ClientEvent.SETUP_HUMANOID_ANIM_POST.invoker().setupHumanoidAnimPost(model, livingEntity, walkAnimationPosition, walkAnimationSpeed, deltaTick, headYRot, xRot);
+    }
 }

@@ -18,6 +18,7 @@ public interface ClientEvent {
     Event<PauseChange> INTEGRATED_SERVER_PAUSE = EventFactory.createLoop();
     Event<HandAttack> HAND_ATTACK = EventFactory.createEventResult();
     Event<EvaluateRenderHands> EVALUATE_RENDER_HANDS = EventFactory.createLoop();
+    Event<SetupHumanoidAnimPost> SETUP_HUMANOID_ANIM_POST = EventFactory.createLoop();
 
     interface ChangeHandHeight {
         EventResult changeHandHeight(InteractionHand hand, ItemStack oldStack, ItemStack newStack);
@@ -53,5 +54,9 @@ public interface ClientEvent {
         public static HandRenderSelectionWrapper onlyForHand(InteractionHand interactionHand) {
             return interactionHand == InteractionHand.MAIN_HAND ? RENDER_MAIN_HAND_ONLY : RENDER_OFF_HAND_ONLY;
         }
+    }
+
+    interface SetupHumanoidAnimPost {
+        void setupHumanoidAnimPost(HumanoidModel<? extends LivingEntity> model, LivingEntity livingEntity, float walkAnimationPosition, float walkAnimationSpeed, float deltaTick, float headYRot, float xRot);
     }
 }

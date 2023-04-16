@@ -40,7 +40,7 @@ public class OEFabricItemTags {
     public static final Supplier<ManualTagHolder<Item>> DRINKS = bind("drinks", tp -> tp.addOptionalTag(drinks()).addTagHolder(MILKS.get()));
     public static final Supplier<ManualTagHolder<Item>> SLIMEBALLS = bind("slimeballs", tp -> tp.add(Items.SLIME_BALL));
     public static final Supplier<ManualTagHolder<Item>> SLIME_BALLS = bind("slime_balls", tp -> tp.add(Items.SLIME_BALL));
-    public static final Supplier<ManualTagHolder<Item>> CLAY = bind("clay", tp -> tp.add(Items.CLAY));
+    public static final Supplier<ManualTagHolder<Item>> CLAY = bind("clay", tp -> tp.add(Items.CLAY_BALL));
 
     private static Supplier<ManualTagHolder<Item>> bind(String id, Consumer<IntrinsicHolderTagsProviderWrapper.IntrinsicTagAppenderWrapper<Item>> tagRegister) {
         return Suppliers.memoize(() -> ManualTagHolder.of(TagRegistration.ITEM_TAG_REGISTRATION.registerCommon(id), tagRegister));

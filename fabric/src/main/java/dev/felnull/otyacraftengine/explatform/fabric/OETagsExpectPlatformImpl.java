@@ -163,7 +163,7 @@ public class OETagsExpectPlatformImpl {
         return ImmutableList.of(OEFabricItemTags.SLIMEBALLS.get(), OEFabricItemTags.SLIME_BALLS.get());
     }
 
-    public static ManualTagHolder<Item> clay() {
+    public static ManualTagHolder<Item> clayBalls() {
         return OEFabricItemTags.CLAY.get();
     }
 }

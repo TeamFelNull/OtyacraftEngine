@@ -184,7 +184,7 @@ public class PlatformItemTags {
         return OETagsExpectPlatform.slimeBalls();
     }
 
-    public static ManualTagHolder<Item> clay() {
-        return OETagsExpectPlatform.clay();
+    public static ManualTagHolder<Item> clayBalls() {
+        return OETagsExpectPlatform.clayBalls();
     }
 }
