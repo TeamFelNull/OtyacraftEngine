@@ -213,7 +213,7 @@ public final class OEItemUtils {
             return false;
 
         if (!stack1.isEmpty() && !stack2.isEmpty())
-            return ItemStack.tagMatches(stack1, stack2);
+            return ItemStack.isSameItemSameTags(stack1, stack2);
 
         return false;
     }

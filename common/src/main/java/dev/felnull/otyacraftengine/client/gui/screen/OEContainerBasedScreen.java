@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.felnull.otyacraftengine.inventory.OEBaseMenu;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -28,19 +29,20 @@ public abstract class OEContainerBasedScreen<T extends OEBaseMenu> extends Abstr
 
 
     @Override
-    public void render(PoseStack poseStack, int i, int j, float f) {
-        this.renderBackground(poseStack);
-        super.render(poseStack, i, j, f);
-        this.renderTooltip(poseStack, i, j);
+    public void render(GuiGraphics guiGraphics, int i, int j, float f) {
+        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, i, j, f);
+        this.renderTooltip(guiGraphics, i, j);
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float f, int i, int j) {
+    protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {
         if (getBackGrandTexture() != null) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+           /* RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, getBackGrandTexture());
-            blit(poseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight, bgTextureWidth, bgTextureHeight);
+          blit(poseStack, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight, bgTextureWidth, bgTextureHeight);*/
+            guiGraphics.blit(getBackGrandTexture(), leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight, bgTextureWidth, bgTextureHeight);
         }
     }
 

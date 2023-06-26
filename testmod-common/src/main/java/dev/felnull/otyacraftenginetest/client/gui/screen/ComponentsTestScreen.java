@@ -8,6 +8,7 @@ import dev.felnull.otyacraftengine.client.gui.components.RadioButton;
 import dev.felnull.otyacraftengine.client.gui.components.SwitchButton;
 import dev.felnull.otyacraftenginetest.OtyacraftEngineTest;
 import dev.felnull.otyacraftenginetest.client.gui.components.TestFixedListWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -51,8 +52,8 @@ public class ComponentsTestScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int i, int j, float f) {
-        this.renderBackground(poseStack);
-        super.render(poseStack, i, j, f);
+    public void render(GuiGraphics guiGraphics, int i, int j, float f) {
+        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, i, j, f);
     }
 }

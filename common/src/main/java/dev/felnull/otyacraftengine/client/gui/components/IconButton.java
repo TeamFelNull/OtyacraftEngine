@@ -6,6 +6,7 @@ import dev.felnull.otyacraftengine.client.gui.TextureRegion;
 import dev.felnull.otyacraftengine.client.gui.components.base.OEBaseComponent;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -42,15 +43,19 @@ public class IconButton extends Button implements OEBaseComponent {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
-        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+    public void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
+       /* RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         blitNineSliced(poseStack, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTextureY());
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);*/
 
-        renderIcon(poseStack, i, j, f);
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+        guiGraphics.blitNineSliced(WIDGETS_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getTextureY());
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        renderIcon(guiGraphics, i, j, f);
     }
 
     private int getTextureY() {
@@ -64,11 +69,11 @@ public class IconButton extends Button implements OEBaseComponent {
         return 46 + i * 20;
     }
 
-    protected void renderIcon(@NotNull PoseStack poseStack, int i, int j, float f) {
+    protected void renderIcon(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
         RenderSystem.setShaderTexture(0, getTexture().location());
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        OERenderUtils.blitFloat(poseStack, getX() + (width - texture.uvWidth()) / 2f, getY() + (height - texture.uvHeight()) / 2f, getTexture().u0(), getTexture().v0(), getTexture().uvWidth(), getTexture().uvHeight(), getTexture().width(), getTexture().height());
+        OERenderUtils.blitFloat(guiGraphics.pose(), getX() + (width - texture.uvWidth()) / 2f, getY() + (height - texture.uvHeight()) / 2f, getTexture().u0(), getTexture().v0(), getTexture().uvWidth(), getTexture().uvHeight(), getTexture().width(), getTexture().height());
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

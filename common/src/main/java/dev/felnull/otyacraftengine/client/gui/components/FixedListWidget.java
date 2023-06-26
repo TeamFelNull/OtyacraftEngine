@@ -6,6 +6,7 @@ import dev.felnull.otyacraftengine.client.gui.TextureRegion;
 import dev.felnull.otyacraftengine.client.gui.components.base.OEBasedWidget;
 import dev.felnull.otyacraftengine.client.util.OEClientUtils;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -80,27 +81,28 @@ public abstract class FixedListWidget<E> extends OEBasedWidget {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mx, int my, float parTick) {
+    public void render(GuiGraphics guiGraphics, int mx, int my, float parTick) {
         if (this.visible) {
             this.hoveredNumber = (my - getY()) / getIndividualHeight();
             this.isHoveredScrollBar = mx >= this.getX() + getIndividualWidth() && my >= this.getY() && mx < this.getX() + this.width && my < this.getY() + this.height;
         }
-        super.render(poseStack, mx, my, parTick);
+        super.render(guiGraphics, mx, my, parTick);
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int mx, int my, float parTick) {
+    public void renderWidget(GuiGraphics guiGraphics, int mx, int my, float parTick) {
         for (int i = 0; i < entryShowCount; i++) {
             int cn = getCurrentFirstEntryIndex() + i;
             if (cn >= entryList.size() || cn < 0)
                 break;
             var e = entryList.get(cn);
-            renderOneButton(poseStack, e, cn, i, getX(), getY() + getIndividualHeight() * i, mx, my, parTick, selectedEntry == entryList.get(cn));
+            renderOneButton(guiGraphics, e, cn, i, getX(), getY() + getIndividualHeight() * i, mx, my, parTick, selectedEntry == entryList.get(cn));
         }
-        renderScrollbar(poseStack, this.getX() + getIndividualWidth(), this.getY(), 9, height);
+        renderScrollbar(guiGraphics, this.getX() + getIndividualWidth(), this.getY(), 9, height);
     }
 
-    protected void renderScrollbar(PoseStack poseStack, int x, int y, int w, int h) {
+    protected void renderScrollbar(GuiGraphics guiGraphics, int x, int y, int w, int h) {
+        PoseStack poseStack = guiGraphics.pose();
         boolean hv = isScrollBarHovered() || isFocused();
 
         OERenderUtils.drawTexture(getTexture().location(), poseStack, x, y, getTexture().u0() + (hv ? 9 : 0), getTexture().v0(), 9, 3, getTexture().width(), getTexture().height());
@@ -125,16 +127,20 @@ public abstract class FixedListWidget<E> extends OEBasedWidget {
         OERenderUtils.drawTexture(getTexture().location(), poseStack, x + 1, y + 1 + barHeight - 3 + barY, getTexture().u0() + (hv ? 7 : 0), getTexture().v0() + 39, 7, 3, getTexture().width(), getTexture().height());
     }
 
-    protected void renderOneButton(PoseStack poseStack, E item, int lnum, int bnum, int bX, int bY, int mx, int my, float parTick, boolean selected) {
-        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+    protected void renderOneButton(GuiGraphics guiGraphics, E item, int lnum, int bnum, int bX, int bY, int mx, int my, float parTick, boolean selected) {
+      /*  RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        blitNineSliced(poseStack, bX, bY, this.getIndividualWidth(), this.getIndividualHeight(), 20, 4, 200, 20, 0, this.getTextureY(this.isEntryHovered(bnum)));
+        blitNineSliced(poseStack, bX, bY, this.getIndividualWidth(), this.getIndividualHeight(), 20, 4, 200, 20, 0, this.getTextureY(this.isEntryHovered(bnum)));*/
 
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+        guiGraphics.blitNineSliced(WIDGETS_LOCATION, bX, bY, this.getIndividualWidth(), this.getIndividualHeight(), 20, 4, 200, 20, 0, this.getTextureY(this.isEntryHovered(bnum)));
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        /* RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);*/
         int k = this.active ? 16777215 : 10526880;
-        this.renderString(poseStack, this.getMessage(lnum), k | Mth.ceil(this.alpha * 255.0F) << 24, bX, bY);
+        this.renderString(guiGraphics, this.getMessage(lnum), k | Mth.ceil(this.alpha * 255.0F) << 24, bX, bY);
 
         //  RenderSystem.setShader(GameRenderer::getPositionTexShader);
      /*   RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
@@ -153,14 +159,14 @@ public abstract class FixedListWidget<E> extends OEBasedWidget {
         // drawCenteredString(poseStack, mc.font, this.getMessage(lnum), this.x + getIndividualWidth() / 2, y + (getIndividualHeight() - 8) / 2, l | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
-    public void renderString(PoseStack poseStack, Component message, int i, int x, int y) {
-        this.renderScrollingString(poseStack, message, 2, i, x, y);
+    public void renderString(GuiGraphics guiGraphics, Component message, int i, int x, int y) {
+        this.renderScrollingString(guiGraphics, message, 2, i, x, y);
     }
 
-    protected void renderScrollingString(PoseStack poseStack, Component message, int i, int j, int x, int y) {
+    protected void renderScrollingString(GuiGraphics guiGraphics, Component message, int i, int j, int x, int y) {
         int k = x + i;
         int l = x + this.getIndividualWidth() - i;
-        renderScrollingString(poseStack, mc.font, message, k, y, l, y + this.getIndividualHeight(), j);
+        renderScrollingString(guiGraphics, mc.font, message, k, y, l, y + this.getIndividualHeight(), j);
     }
 
     private int getTextureY(boolean hoverd) {

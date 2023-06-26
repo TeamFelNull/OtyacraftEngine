@@ -12,6 +12,7 @@ import dev.felnull.otyacraftengine.util.OEDataGenUtils;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
+import net.minecraft.world.item.CreativeModeTabs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +26,7 @@ public class OtyacraftEngine {
         OEPackets.init();
         OECriteriaTriggers.init();
         PlayerItemLocations.init();
-
+        
         if (!OEDataGenUtils.isDataGenerating())
             EnvExecutor.runInEnv(Env.CLIENT, () -> OtyacraftEngineClient::preInit);
     }

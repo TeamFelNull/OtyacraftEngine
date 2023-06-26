@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.client.gui.components.base.OEBasedButton;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +30,11 @@ public class SwitchButton extends OEBasedButton {
         this.enable = !this.enable;
     }
 
+
     @Override
-    public void renderWidget(PoseStack poseStack, int mx, int my, float delta) {
+    public void renderWidget(GuiGraphics guiGraphics, int mx, int my, float delta) {
+        PoseStack poseStack = guiGraphics.pose();
+
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.setShaderTexture(0, getTexture().location());
         RenderSystem.enableDepthTest();
@@ -40,8 +44,10 @@ public class SwitchButton extends OEBasedButton {
         OERenderUtils.blitFloat(poseStack, getX() + (this.enable ? (width - 8) : 0), getY() - 2, getTexture().u0() + (this.isHoveredOrFocused() ? 8 : 0), getTexture().v0() + 20, 8, 14, getTexture().width(), getTexture().height());
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (this.showLabel)
-            drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+        if (this.showLabel) {
+            //   drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+            guiGraphics.drawString(font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+        }
     }
 
     public boolean isEnable() {

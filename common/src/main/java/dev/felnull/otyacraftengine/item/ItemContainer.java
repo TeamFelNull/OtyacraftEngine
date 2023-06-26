@@ -63,13 +63,13 @@ public class ItemContainer implements Container {
     @Override
     public void setItem(int i, ItemStack stack) {
         ItemStack itemstack = items.get(i);
-        boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);
+        /* boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);*/
         items.set(i, stack);
         if (stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
-        if (flag)
-            this.setChanged();
+//        if (flag)
+        this.setChanged();
     }
 
     public Function<Player, Boolean> getValid() {

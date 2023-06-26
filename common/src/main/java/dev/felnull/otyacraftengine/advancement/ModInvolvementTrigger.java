@@ -18,9 +18,9 @@ public class ModInvolvementTrigger extends SimpleCriterionTrigger<ModInvolvement
     }
 
     @Override
-    protected TriggerInstance createInstance(JsonObject jsonObject, EntityPredicate.@NotNull Composite composite, @NotNull DeserializationContext deserializationContext) {
+    protected @NotNull TriggerInstance createInstance(JsonObject jsonObject, ContextAwarePredicate contextAwarePredicate, @NotNull DeserializationContext deserializationContext) {
         String mid = jsonObject.has("modid") ? jsonObject.get("modid").getAsString() : "";
-        return new TriggerInstance(composite, mid);
+        return new TriggerInstance(contextAwarePredicate, mid);
     }
 
     public static void trigger(ServerPlayer serverPlayer, ItemStack itemStack) {
@@ -43,13 +43,13 @@ public class ModInvolvementTrigger extends SimpleCriterionTrigger<ModInvolvement
         @NotNull
         private final String modId;
 
-        public TriggerInstance(EntityPredicate.Composite composite, @NotNull String modId) {
-            super(ID, composite);
+        public TriggerInstance(ContextAwarePredicate contextAwarePredicate, @NotNull String modId) {
+            super(ID, contextAwarePredicate);
             this.modId = modId;
         }
 
         public static TriggerInstance involvedMod(String modId) {
-            return new TriggerInstance(EntityPredicate.Composite.ANY, modId);
+            return new TriggerInstance(ContextAwarePredicate.ANY, modId);
         }
 
         private boolean matches(ItemStack stack) {

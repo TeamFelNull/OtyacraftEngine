@@ -36,6 +36,7 @@ public class TestItems {
     }
 
     private static Item.Properties tabWrap(Item.Properties properties) {
-        return ((InjectedItemPropertiesExtension) properties).arch$tab(TestCreativeTab.TEST_TAB);
+        return properties;
+        /*  return ((InjectedItemPropertiesExtension) properties).arch$tab(TestCreativeTab.TEST_TAB);*/
     }
 }

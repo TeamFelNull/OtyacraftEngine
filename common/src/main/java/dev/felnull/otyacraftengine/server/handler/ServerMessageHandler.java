@@ -11,9 +11,9 @@ public class ServerMessageHandler {
     public static void onBlockEntityInstructionMessage(OEPackets.BlockEntityInstructionMessage message, NetworkManager.PacketContext packetContext) {
         packetContext.queue(() -> {
             var player = (ServerPlayer) packetContext.getPlayer();
-            if (!message.blockEntityExistence().check(player.getLevel()))
+            if (!message.blockEntityExistence().check(player.level()))
                 return;
-            var ibe = (IInstructionBlockEntity) player.getLevel().getBlockEntity(message.blockEntityExistence().blockPos());
+            var ibe = (IInstructionBlockEntity) player.level().getBlockEntity(message.blockEntityExistence().blockPos());
             if (ibe != null && ibe.canInstructionWith(player, message.name(), message.data())) {
                 CompoundTag retag = ibe.onInstruction(player, message.name(), message.data());
                 if (retag != null)

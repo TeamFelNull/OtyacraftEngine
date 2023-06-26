@@ -10,7 +10,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -19,12 +18,12 @@ public class TestBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(OtyacraftEngineTest.MODID, Registries.BLOCK);
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(OtyacraftEngineTest.MODID, Registries.ITEM);
 
-    public static final RegistrySupplier<Block> TEST_BLOCK = register("test_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL)));
-    public static final RegistrySupplier<Block> TEST_SHAPE_BLOCK = register("test_shape_block", () -> new TestShapeBlock(BlockBehaviour.Properties.of(Material.METAL)));
-    public static final RegistrySupplier<Block> TEST_SHAPE_DIRECTION_BLOCK = register("test_shape_direction_block", () -> new TestShapeDirectionBlock(BlockBehaviour.Properties.of(Material.METAL)));
-    public static final RegistrySupplier<Block> TEST_CONTAINER_BLOCK = register("test_container_block", () -> new TestContainerBlock(BlockBehaviour.Properties.of(Material.METAL)));
-    public static final RegistrySupplier<Block> TEST_ROTED_BLOCK = register("test_roted_block", () -> new TestRotedBlock(BlockBehaviour.Properties.of(Material.METAL)));
-    public static final RegistrySupplier<Block> TEST_HORIZONTAL_DIRECTIONAL_BLOCK = register("test_horizontal_directional_block", () -> new TestHorizontalDirectionalBlock(BlockBehaviour.Properties.of(Material.METAL)));
+    public static final RegistrySupplier<Block> TEST_BLOCK = register("test_block", () -> new Block(BlockBehaviour.Properties.of()));
+    public static final RegistrySupplier<Block> TEST_SHAPE_BLOCK = register("test_shape_block", () -> new TestShapeBlock(BlockBehaviour.Properties.of()));
+    public static final RegistrySupplier<Block> TEST_SHAPE_DIRECTION_BLOCK = register("test_shape_direction_block", () -> new TestShapeDirectionBlock(BlockBehaviour.Properties.of()));
+    public static final RegistrySupplier<Block> TEST_CONTAINER_BLOCK = register("test_container_block", () -> new TestContainerBlock(BlockBehaviour.Properties.of()));
+    public static final RegistrySupplier<Block> TEST_ROTED_BLOCK = register("test_roted_block", () -> new TestRotedBlock(BlockBehaviour.Properties.of()));
+    public static final RegistrySupplier<Block> TEST_HORIZONTAL_DIRECTIONAL_BLOCK = register("test_horizontal_directional_block", () -> new TestHorizontalDirectionalBlock(BlockBehaviour.Properties.of()));
 
     private static RegistrySupplier<Block> register(String name, Supplier<Block> block) {
 
@@ -43,6 +42,7 @@ public class TestBlocks {
     }
 
     private static Item.Properties tabWrap(Item.Properties properties) {
-        return ((InjectedItemPropertiesExtension) properties).arch$tab(TestCreativeTab.TEST_TAB);
+        return properties;
+        //return ((InjectedItemPropertiesExtension) properties).arch$tab(TestCreativeTab.TEST_TAB);
     }
 }

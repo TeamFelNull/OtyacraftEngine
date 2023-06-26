@@ -13,9 +13,9 @@ loom {
     forge {
         mixinConfig "otyacraftengine.mixins.json"
 
-        localMods {
+        mods {
             forge {
-                it.add(project(":forge").sourceSets.main)
+                sourceSet project(":forge").sourceSets.main
             }
         }
 
@@ -24,11 +24,11 @@ loom {
         }
     }
 
-    launches {
+    /*launches {
         data {
             arg "--existing", file("src/main/resources").absolutePath, "--existing", file("../testmod-common/src/main/resources").absolutePath
         }
-    }
+    }*/
 }
 
 configurations {
@@ -45,9 +45,9 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
 
-    runtimeClasspath "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
-    runtimeClasspath "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
-    runtimeClasspath 'com.madgag:animated-gif-lib:1.4'
+    runtimeOnly "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
+    runtimeOnly "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
+    runtimeOnly 'com.madgag:animated-gif-lib:1.4'
     forgeDependencies "dev.felnull:felnull-java-library:${rootProject.felnull_version}"
     forgeDependencies "dev.felnull:felnull-java-library-natives:${rootProject.felnull_version}"
     forgeDependencies 'com.madgag:animated-gif-lib:1.4'

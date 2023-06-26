@@ -12,19 +12,19 @@ import java.util.Optional;
 
 public class OETagsExpectPlatformImpl {
     public static Optional<TagKey<Item>> pickaxes() {
-        return Optional.of(Tags.Items.TOOLS_PICKAXES);
+        return Optional.empty();
     }
 
     public static Optional<TagKey<Item>> shovels() {
-        return Optional.of(Tags.Items.TOOLS_SHOVELS);
+        return Optional.empty();
     }
 
     public static Optional<TagKey<Item>> hoes() {
-        return Optional.of(Tags.Items.TOOLS_HOES);
+        return Optional.empty();
     }
 
     public static Optional<TagKey<Item>> axes() {
-        return Optional.of(Tags.Items.TOOLS_AXES);
+        return Optional.empty();
     }
 
     public static TagKey<Item> shears() {
@@ -32,7 +32,7 @@ public class OETagsExpectPlatformImpl {
     }
 
     public static Optional<TagKey<Item>> swords() {
-        return Optional.of(Tags.Items.TOOLS_SWORDS);
+        return Optional.empty();
     }
 
     public static TagKey<Item> bows() {

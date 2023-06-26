@@ -8,6 +8,7 @@ import dev.felnull.otyacraftengine.client.renderer.OERenderTypes;
 import dev.felnull.otyacraftengine.explatform.client.OEClientExpectPlatform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
@@ -481,29 +482,31 @@ public final class OERenderUtils {
     /**
      * 中央ぞろえで文字描画
      *
-     * @param poseStack PoseStack
-     * @param text      文字
-     * @param x         中央X
-     * @param y         Y
-     * @param color     色(ARGB)
+     * @param guiGraphics guiGraphics
+     * @param text        文字
+     * @param x           中央X
+     * @param y           Y
+     * @param color       色(ARGB)
      * @since 2.0
      */
-    public static void drawCenterFont(PoseStack poseStack, Component text, float x, float y, int color) {
-        mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
+    public static void drawCenterFont(GuiGraphics guiGraphics, Component text, float x, float y, int color) {
+        //  mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
+        guiGraphics.drawString(mc.font, text, (int) (x - ((float) mc.font.width(text) / 2f)), (int) y, color);
     }
 
     /**
      * 中央ぞろえ文字描画
      *
-     * @param poseStack PoseStack
-     * @param str       文字
-     * @param x         中央X
-     * @param y         Y
-     * @param color     色(ARGB)
+     * @param guiGraphics GuiGraphics
+     * @param str         文字
+     * @param x           中央X
+     * @param y           Y
+     * @param color       色(ARGB)
      * @since 2.0
      */
-    public static void drawCenterFont(PoseStack poseStack, String str, float x, float y, int color) {
-        mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+    public static void drawCenterFont(GuiGraphics guiGraphics, String str, float x, float y, int color) {
+        //mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
+        guiGraphics.drawString(mc.font, str, (int) (x - ((float) mc.font.width(str) / 2f)), (int) y, color);
     }
 
     /**
@@ -675,14 +678,16 @@ public final class OERenderUtils {
      * 幅を固定して文字を描画
      * 幅に入りきらないと縮小し描画される
      *
-     * @param poseStack PoseStack
-     * @param text      文字
-     * @param x         中央X
-     * @param y         Y
-     * @param color     色(ARGB)
-     * @param width     幅
+     * @param guiGraphics GuiGraphics
+     * @param text        文字
+     * @param x           中央X
+     * @param y           Y
+     * @param color       色(ARGB)
+     * @param width       幅
      */
-    public static void drawFixedWidthFont(PoseStack poseStack, Component text, float x, float y, int color, float width) {
+    public static void drawFixedWidthFont(GuiGraphics guiGraphics, Component text, float x, float y, int color, float width) {
+        PoseStack poseStack = guiGraphics.pose();
+
         int size = mc.font.width(text);
         poseStack.pushPose();
         if (size > width) {
@@ -691,7 +696,10 @@ public final class OERenderUtils {
             y /= scale;
             poseScaleAll(poseStack, scale);
         }
-        mc.font.draw(poseStack, text, x, y, color);
+
+        // mc.font.draw(poseStack, text, x, y, color);
+        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color);
+
         poseStack.popPose();
     }
 
@@ -699,14 +707,16 @@ public final class OERenderUtils {
      * 幅を固定して文字を描画
      * 幅に入りきらないと縮小し描画される
      *
-     * @param poseStack PoseStack
-     * @param text      文字
-     * @param x         中央X
-     * @param y         Y
-     * @param color     色(ARGB)
-     * @param width     幅
+     * @param guiGraphics GuiGraphics
+     * @param text        文字
+     * @param x           中央X
+     * @param y           Y
+     * @param color       色(ARGB)
+     * @param width       幅
      */
-    public static void drawFixedWidthFont(PoseStack poseStack, String text, float x, float y, int color, float width) {
+    public static void drawFixedWidthFont(GuiGraphics guiGraphics, String text, float x, float y, int color, float width) {
+        PoseStack poseStack = guiGraphics.pose();
+
         int size = mc.font.width(text);
         poseStack.pushPose();
         if (size > width) {
@@ -715,7 +725,10 @@ public final class OERenderUtils {
             y /= scale;
             poseScaleAll(poseStack, scale);
         }
-        mc.font.draw(poseStack, text, x, y, color);
+        //mc.font.draw(poseStack, text, x, y, color);
+
+        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color);
+
         poseStack.popPose();
     }
 

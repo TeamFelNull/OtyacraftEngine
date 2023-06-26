@@ -57,8 +57,8 @@ public class UtilTest {
             OEPlayerUtils.giveItem(serverPlayer, OEItemUtils.createPlayerHead(player));
             OEPlayerUtils.giveItem(serverPlayer, OEItemUtils.createPlayerHead("ikisugi"));
 
-            var itemEntity = OEItemUtils.createItemEntity(new ItemStack(Items.APPLE), serverPlayer.level, serverPlayer.position());
-            serverPlayer.level.addFreshEntity(itemEntity);
+            var itemEntity = OEItemUtils.createItemEntity(new ItemStack(Items.APPLE), serverPlayer.level(), serverPlayer.position());
+            serverPlayer.level().addFreshEntity(itemEntity);
         }
 
         print.accept("Apple mod name:" + OEItemUtils.getCreatorModId(new ItemStack(Items.APPLE)));
@@ -122,13 +122,13 @@ public class UtilTest {
 
     private static void paths(Consumer<String> print, Player player) {
         print.accept("Client otyacraft engine folder path" + OEPaths.getClientOEFolderPath());
-        if (!player.level.isClientSide())
-            print.accept("World save data path" + OEPaths.getWorldSaveDataPath(player.level.getServer()));
+        if (!player.level().isClientSide())
+            print.accept("World save data path" + OEPaths.getWorldSaveDataPath(player.level().getServer()));
     }
 
     private static void playerUtils(Consumer<String> print, Player player) {
         if (player instanceof ServerPlayer) {
-            OEPlayerUtils.doPlayers(player.level, player.blockPosition(), p -> {
+            OEPlayerUtils.doPlayers(player.level(), player.blockPosition(), p -> {
                 OEPlayerUtils.giveItem(p, new ItemStack(Items.DIAMOND));
             });
         }

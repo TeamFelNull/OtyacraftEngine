@@ -7,6 +7,7 @@ import dev.felnull.otyacraftengine.client.gui.components.base.OEBasedButton;
 import dev.felnull.otyacraftengine.client.util.OERenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -53,16 +54,19 @@ public class RadioButton extends OEBasedButton {
     }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int i, int j, float f) {
+    public void renderWidget(GuiGraphics guiGraphics, int i, int j, float f) {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.setShaderTexture(0, getTexture().location());
         RenderSystem.enableDepthTest();
         Font font = minecraft.font;
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        OERenderUtils.blitFloat(poseStack, getX(), getY(), getTexture().u0() + (this.isHoveredOrFocused() ? 20 : 0), getTexture().v0() + (this.selected ? 20 : 0), getTexture().uvWidth(), getTexture().uvHeight(), getTexture().width(), getTexture().height());
+        OERenderUtils.blitFloat(guiGraphics.pose(), getX(), getY(), getTexture().u0() + (this.isHoveredOrFocused() ? 20 : 0), getTexture().v0() + (this.selected ? 20 : 0), getTexture().uvWidth(), getTexture().uvHeight(), getTexture().width(), getTexture().height());
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        if (this.showLabel)
-            drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+        if (this.showLabel) {
+//            drawString(poseStack, font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+            guiGraphics.drawString(font, this.getMessage(), this.getX() + 24, this.getY() + (this.height - 8) / 2, 14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
+        }
+
     }
 }

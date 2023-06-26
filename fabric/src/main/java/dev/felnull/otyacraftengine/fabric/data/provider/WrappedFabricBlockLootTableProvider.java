@@ -55,8 +55,8 @@ public class WrappedFabricBlockLootTableProvider extends FabricBlockLootTablePro
         }
     }
 
-    @Override
+   /* @Override
     public void accept(BiConsumer<ResourceLocation, LootTable.Builder> resourceLocationBuilderBiConsumer) {
         generate(resourceLocationBuilderBiConsumer);
-    }
+    }*/
 }
