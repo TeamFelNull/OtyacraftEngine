@@ -491,7 +491,7 @@ public final class OERenderUtils {
      */
     public static void drawCenterFont(GuiGraphics guiGraphics, Component text, float x, float y, int color) {
         //  mc.font.draw(poseStack, text, x - ((float) mc.font.width(text) / 2f), y, color);
-        guiGraphics.drawString(mc.font, text, (int) (x - ((float) mc.font.width(text) / 2f)), (int) y, color);
+        guiGraphics.drawString(mc.font, text, (int) (x - ((float) mc.font.width(text) / 2f)), (int) y, color, false);
     }
 
     /**
@@ -506,7 +506,7 @@ public final class OERenderUtils {
      */
     public static void drawCenterFont(GuiGraphics guiGraphics, String str, float x, float y, int color) {
         //mc.font.draw(poseStack, str, x - ((float) mc.font.width(str) / 2f), y, color);
-        guiGraphics.drawString(mc.font, str, (int) (x - ((float) mc.font.width(str) / 2f)), (int) y, color);
+        guiGraphics.drawString(mc.font, str, (int) (x - ((float) mc.font.width(str) / 2f)), (int) y, color, false);
     }
 
     /**
@@ -698,7 +698,7 @@ public final class OERenderUtils {
         }
 
         // mc.font.draw(poseStack, text, x, y, color);
-        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color);
+        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color,false);
 
         poseStack.popPose();
     }
@@ -727,7 +727,7 @@ public final class OERenderUtils {
         }
         //mc.font.draw(poseStack, text, x, y, color);
 
-        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color);
+        guiGraphics.drawString(mc.font, text, (int) x, (int) y, color,false);
 
         poseStack.popPose();
     }
