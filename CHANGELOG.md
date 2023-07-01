@@ -8,7 +8,6 @@ Changelog to track updates for this mod.
 ### Added
 
 ### Changed
-- Port MC1.20
 
 ### Deprecated
 
@@ -17,6 +16,11 @@ Changelog to track updates for this mod.
 ### Fixed
 
 ### Security
+
+## [3.7.0-alpha.1] - 2023-07-01
+
+### Changed
+- Port MC1.20
 
 ## [3.6.0] - 2023-03-27
 
@@ -63,11 +67,12 @@ Changelog to track updates for this mod.
 ### Removed
 - Separated Fabric's built-in OBJ loader ([Special Model Loader](https://github.com/TeamFelnull/SpecialModelLoader))
 
-[Unreleased]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.6.0...HEAD
+[Unreleased]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.7.0-alpha.1...HEAD
+[3.7.0-alpha.1]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.6.0...v3.7.0-alpha.1
 [3.6.0]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.6.0-alpha.1...v3.6.0
 [3.6.0-alpha.1]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.5.0...v3.6.0-alpha.1
 [3.5.0]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.3.0-beta.1...v3.3.0
-[3.3.0-beta.1]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.3.0-alpha.1...v3.3.0-beta.1
 [3.3.0-alpha.1]: https://github.com/TeamFelnull/OtyacraftEngine/commits/v3.3.0-alpha.1
+[3.3.0-beta.1]: https://github.com/TeamFelnull/OtyacraftEngine/compare/v3.3.0-alpha.1...v3.3.0-beta.1
