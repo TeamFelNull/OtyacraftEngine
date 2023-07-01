@@ -14,7 +14,7 @@ Changelog to track updates for this mod.
 ### Removed
 
 ### Fixed
-
+- Fixed wrong premise mod version
 ### Security
 
 ## [3.7.0-alpha.1] - 2023-07-01

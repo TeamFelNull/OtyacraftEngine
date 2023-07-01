@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[46,)"
 issueTrackerURL = "https://github.com/TeamFelnull/OtyacraftEngine/issues"
 license = "GNU LGPLv3"
 
@@ -23,27 +23,27 @@ catalogueImageIcon = "icon.png"
 [[dependencies.otyacraftengine]]
 modId = "forge"
 mandatory = true
-versionRange = "[44,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.4,)"
+versionRange = "[1.20,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "architectury"
 mandatory = true
-versionRange = "[8.1.73,)"
+versionRange = "[9.0.8,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.otyacraftengine]]
 modId = "cloth_config"
 mandatory = true
-versionRange = "[10.0.96,)"
+versionRange = "[11.0.99,)"
 ordering = "NONE"
 side = "BOTH"
