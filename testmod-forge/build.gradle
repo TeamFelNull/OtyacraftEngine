@@ -7,6 +7,14 @@ architectury {
     forge()
 }
 
+def generatedResources = file("src/generated")
+
+sourceSets {
+    main {
+        resources.srcDir generatedResources
+    }
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -18,17 +26,18 @@ loom {
                 sourceSet project(":forge").sourceSets.main
             }
         }
-
-        dataGen {
-            mod 'otyacraftenginetest'
-        }
     }
 
-    /*launches {
+    runs {
         data {
-            arg "--existing", file("src/main/resources").absolutePath, "--existing", file("../testmod-common/src/main/resources").absolutePath
+            data()
+
+            programArgs "--all", "--mod", "otyacraftenginetest"
+            programArgs "--output", generatedResources.absolutePath
+            programArgs "--existing", file("src/main/resources").absolutePath
+            programArgs "--existing", file("../testmod-common/src/main/resources").absolutePath
         }
-    }*/
+    }
 }
 
 configurations {
