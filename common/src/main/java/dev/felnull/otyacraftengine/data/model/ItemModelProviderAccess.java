@@ -151,4 +151,13 @@ public interface ItemModelProviderAccess {
      */
     @NotNull
     MutableFileModel parentedItem(@NotNull ResourceLocation itemLocation, @NotNull ResourceLocation parentLocation);
+
+    /**
+     * 既存のモデル
+     *
+     * @param location ロケーション
+     * @return モデル
+     */
+    @NotNull
+    FileModel existingModel(@NotNull ResourceLocation location);
 }

@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.forge.data.model;
 
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.model.FileTexture;
 import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.MutableFileModel;
@@ -98,6 +99,11 @@ public class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
     public @NotNull MutableFileModel parentedItem(@NotNull ResourceLocation itemLocation, @NotNull ResourceLocation parentLocation) {
         return of(this.itemModelProvider.getBuilder(itemLocation.toString())
                 .parent(new ModelFile.UncheckedModelFile(parentLocation)));
+    }
+
+    @Override
+    public @NotNull FileModel existingModel(@NotNull ResourceLocation location) {
+        return new FileModelImpl(this.itemModelProvider.getExistingFile(location));
     }
 
     private ItemModelBuilder setTexture(ItemModelBuilder itemModelBuilder, String key, FileTexture fileTexture) {

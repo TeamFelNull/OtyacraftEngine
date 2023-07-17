@@ -1,6 +1,7 @@
 package dev.felnull.otyacraftengine.fabric.data.model;
 
 import com.google.gson.JsonElement;
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.model.FileTexture;
 import dev.felnull.otyacraftengine.data.model.ItemModelProviderAccess;
 import dev.felnull.otyacraftengine.data.model.MutableFileModel;
@@ -64,6 +65,11 @@ public class ItemModelProviderAccessImpl implements ItemModelProviderAccess {
         var loc = decorateItemModelLocation(itemLocation);
         ji.injectedModelOutput().accept(loc, new DelegatedModel(parentLocation));
         return new MutableFileModelImpl(loc, ji);
+    }
+
+    @Override
+    public @NotNull FileModel existingModel(@NotNull ResourceLocation location) {
+        return new FileModelImpl(location);
     }
 
     private MutableFileModelImpl createLayer0Model(ModelTemplate modelTemplate, ResourceLocation itemLocation) {
