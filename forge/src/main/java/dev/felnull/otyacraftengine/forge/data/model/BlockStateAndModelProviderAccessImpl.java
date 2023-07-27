@@ -1,5 +1,7 @@
 package dev.felnull.otyacraftengine.forge.data.model;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dev.felnull.otyacraftengine.data.model.*;
 import dev.felnull.otyacraftengine.forge.data.WrappedBlockStateBuilder;
 import dev.felnull.otyacraftengine.forge.mixin.data.BlockStateProviderAccessor;
@@ -8,11 +10,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelProviderAccess {
     private final BlockStateProvider blockStateProvider;
@@ -21,6 +27,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     public BlockStateAndModelProviderAccessImpl(BlockStateProvider blockStateProvider) {
         this.blockStateProvider = blockStateProvider;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockStateProvider.itemModels());
+    }
+
+    @Override
+    public @NotNull BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput() {
+        return (loc, jsonSupplier) -> this.blockStateProvider.models().generatedModels.put(loc, new SimpleJsonModelBuilder(loc, this.blockStateProvider.models().existingFileHelper, (JsonObject) jsonSupplier.get()));
     }
 
     @Override
@@ -206,5 +217,19 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
             ((UncheckedTextureModelBuilder) blockModelBuilder).uncheckedTexture(key, fileTexture.getLocation());
         }
         return blockModelBuilder;
+    }
+
+    private static class SimpleJsonModelBuilder extends BlockModelBuilder {
+        private final JsonObject jsonObject;
+
+        protected SimpleJsonModelBuilder(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper, JsonObject jsonObject) {
+            super(outputLocation, existingFileHelper);
+            this.jsonObject = jsonObject;
+        }
+
+        @Override
+        public JsonObject toJson() {
+            return jsonObject;
+        }
     }
 }

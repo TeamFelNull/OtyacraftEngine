@@ -1,14 +1,27 @@
 package dev.felnull.otyacraftengine.data.model;
 
+import com.google.gson.JsonElement;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
 /**
  * それぞれのプラットフォームで同じ動作をするブロックステータスとブロックモデル生成
  */
 public interface BlockStateAndModelProviderAccess {
+
+    /**
+     * モデル出力を取得
+     *
+     * @return モデル出力
+     */
+    @NotNull
+    BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput();
+
     /**
      * 簡素な立方体ブロックのステート、ブロックモデル、アイテムモデルを生成する
      *

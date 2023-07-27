@@ -1,5 +1,6 @@
 package dev.felnull.otyacraftengine.fabric.data.model;
 
+import com.google.gson.JsonElement;
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.model.*;
 import net.minecraft.data.models.BlockModelGenerators;
@@ -12,6 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
 public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelProviderAccess {
     private final CrossDataGeneratorAccess crossDataGeneratorAccess;
     private final BlockModelGenerators blockModelGenerators;
@@ -21,6 +25,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         this.crossDataGeneratorAccess = crossDataGeneratorAccess;
         this.blockModelGenerators = blockModelGenerators;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockModelGenerators.modelOutput);
+    }
+
+    @Override
+    public @NotNull BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput() {
+        return this.blockModelGenerators.modelOutput;
     }
 
     @Override
