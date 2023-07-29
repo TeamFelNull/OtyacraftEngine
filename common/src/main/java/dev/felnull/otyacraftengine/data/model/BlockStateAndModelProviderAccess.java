@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -13,6 +14,13 @@ import java.util.function.Supplier;
  * それぞれのプラットフォームで同じ動作をするブロックステータスとブロックモデル生成
  */
 public interface BlockStateAndModelProviderAccess {
+
+    /**
+     * 原木のモデルとブロックステータスの生成
+     *
+     * @param block 原木ブロック
+     */
+    void logBlock(RotatedPillarBlock block);
 
     /**
      * モデル出力を取得

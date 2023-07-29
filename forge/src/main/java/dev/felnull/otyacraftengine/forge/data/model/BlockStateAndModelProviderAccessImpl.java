@@ -8,6 +8,7 @@ import dev.felnull.otyacraftengine.forge.mixin.data.BlockStateProviderAccessor;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -27,6 +28,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     public BlockStateAndModelProviderAccessImpl(BlockStateProvider blockStateProvider) {
         this.blockStateProvider = blockStateProvider;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockStateProvider.itemModels());
+    }
+
+    @Override
+    public void logBlock(RotatedPillarBlock block) {
+        this.blockStateProvider.logBlock(block);
     }
 
     @Override

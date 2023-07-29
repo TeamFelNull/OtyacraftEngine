@@ -11,6 +11,7 @@ import net.minecraft.data.models.blockstates.VariantProperties;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -25,6 +26,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         this.crossDataGeneratorAccess = crossDataGeneratorAccess;
         this.blockModelGenerators = blockModelGenerators;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockModelGenerators.modelOutput);
+    }
+
+    @Override
+    public void logBlock(RotatedPillarBlock block) {
+        this.blockModelGenerators.woodProvider(block).logWithHorizontal(block);
     }
 
     @Override
