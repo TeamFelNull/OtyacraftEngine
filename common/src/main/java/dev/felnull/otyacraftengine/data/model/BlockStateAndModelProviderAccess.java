@@ -5,6 +5,8 @@ import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -14,6 +16,23 @@ import java.util.function.Supplier;
  * それぞれのプラットフォームで同じ動作をするブロックステータスとブロックモデル生成
  */
 public interface BlockStateAndModelProviderAccess {
+    /**
+     * 階段ブロックのモデルとブロックステータスの生成
+     *
+     * @param stairBlock 階段ブロック
+     */
+    void stairsBlock(StairBlock stairBlock);
+
+    /**
+     * ハーフブロックのモデルとブロックステータスの生成
+     *
+     * @param slabBlock       ハーフブロック
+     * @param doubleSlabModel フルブロック時のモデル
+     * @param side            サイドのテクスチャ
+     * @param bottom          下側のテクスチャ
+     * @param top             上側のテクスチャ
+     */
+    void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top);
 
     /**
      * 原木のモデルとブロックステータスの生成

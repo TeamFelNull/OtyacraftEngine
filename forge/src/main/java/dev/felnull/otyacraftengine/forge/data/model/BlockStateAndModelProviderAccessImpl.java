@@ -6,9 +6,12 @@ import dev.felnull.otyacraftengine.data.model.*;
 import dev.felnull.otyacraftengine.forge.data.WrappedBlockStateBuilder;
 import dev.felnull.otyacraftengine.forge.mixin.data.BlockStateProviderAccessor;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -28,6 +31,16 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     public BlockStateAndModelProviderAccessImpl(BlockStateProvider blockStateProvider) {
         this.blockStateProvider = blockStateProvider;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockStateProvider.itemModels());
+    }
+
+    @Override
+    public void stairsBlock(StairBlock stairBlock) {
+        this.blockStateProvider.stairsBlock(stairBlock, this.blockStateProvider.blockTexture(stairBlock));
+    }
+
+    @Override
+    public void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+        this.blockStateProvider.slabBlock(slabBlock, doubleSlabModel.getLocation(), side, bottom, top);
     }
 
     @Override

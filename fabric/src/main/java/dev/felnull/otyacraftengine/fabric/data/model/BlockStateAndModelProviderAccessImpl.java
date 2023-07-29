@@ -12,6 +12,8 @@ import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
@@ -26,6 +28,26 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         this.crossDataGeneratorAccess = crossDataGeneratorAccess;
         this.blockModelGenerators = blockModelGenerators;
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockModelGenerators.modelOutput);
+    }
+
+    @Override
+    public void stairsBlock(StairBlock stairBlock) {
+        TextureMapping mapping = TextureMapping.cube(stairBlock);
+        ResourceLocation innerModel = ModelTemplates.STAIRS_INNER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
+        ResourceLocation straightModel = ModelTemplates.STAIRS_INNER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
+        ResourceLocation outerModel = ModelTemplates.STAIRS_OUTER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
+
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createStairs(stairBlock, innerModel, straightModel, outerModel));
+        this.blockModelGenerators.delegateItemModel(stairBlock, straightModel);
+    }
+
+    @Override
+    public void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+        TextureMapping mapping = TextureMapping.cube(slabBlock);
+        ResourceLocation slabBottomModel = ModelTemplates.SLAB_BOTTOM.create(slabBlock, mapping, this.blockModelGenerators.modelOutput);
+        ResourceLocation slabTop = ModelTemplates.SLAB_TOP.create(slabBlock, mapping, this.blockModelGenerators.modelOutput);
+
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSlab(slabBlock, slabBottomModel, slabTop, doubleSlabModel.getLocation()));
     }
 
     @Override
