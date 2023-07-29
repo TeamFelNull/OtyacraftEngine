@@ -34,7 +34,7 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     public void stairsBlock(StairBlock stairBlock) {
         TextureMapping mapping = TextureMapping.cube(stairBlock);
         ResourceLocation innerModel = ModelTemplates.STAIRS_INNER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
-        ResourceLocation straightModel = ModelTemplates.STAIRS_INNER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
+        ResourceLocation straightModel = ModelTemplates.STAIRS_STRAIGHT.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
         ResourceLocation outerModel = ModelTemplates.STAIRS_OUTER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);
 
         this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createStairs(stairBlock, innerModel, straightModel, outerModel));
@@ -42,13 +42,22 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
+    public void slabBlock(SlabBlock slabBlock) {
+        ResourceLocation fullBlockModel = ModelLocationUtils.getModelLocation(slabBlock);
+        TexturedModel texturedModel = TexturedModel.CUBE.get(slabBlock);
+
+        ResourceLocation slabBottomModel = ModelTemplates.SLAB_BOTTOM.create(slabBlock, texturedModel.getMapping(), this.blockModelGenerators.modelOutput);
+        ResourceLocation slabTop = ModelTemplates.SLAB_TOP.create(slabBlock, texturedModel.getMapping(), this.blockModelGenerators.modelOutput);
+        this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSlab(slabBlock, slabBottomModel, slabTop, fullBlockModel));
+    }
+
+   /* @Override
     public void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
-        TextureMapping mapping = TextureMapping.cube(slabBlock);
-        ResourceLocation slabBottomModel = ModelTemplates.SLAB_BOTTOM.create(slabBlock, mapping, this.blockModelGenerators.modelOutput);
-        ResourceLocation slabTop = ModelTemplates.SLAB_TOP.create(slabBlock, mapping, this.blockModelGenerators.modelOutput);
+        ResourceLocation slabBottomModel = ModelTemplates.SLAB_BOTTOM.create(slabBlock, TextureMapping.cube(side), this.blockModelGenerators.modelOutput);
+        ResourceLocation slabTop = ModelTemplates.SLAB_TOP.create(slabBlock, TextureMapping.cube(top), this.blockModelGenerators.modelOutput);
 
         this.blockModelGenerators.blockStateOutput.accept(BlockModelGenerators.createSlab(slabBlock, slabBottomModel, slabTop, doubleSlabModel.getLocation()));
-    }
+    }*/
 
     @Override
     public void logBlock(RotatedPillarBlock block) {

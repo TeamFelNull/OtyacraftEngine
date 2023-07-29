@@ -39,8 +39,9 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
-    public void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
-        this.blockStateProvider.slabBlock(slabBlock, doubleSlabModel.getLocation(), side, bottom, top);
+    public void slabBlock(SlabBlock slabBlock) {
+        ResourceLocation tex = this.blockStateProvider.blockTexture(slabBlock);
+        this.blockStateProvider.slabBlock(slabBlock, ModelLocationUtils.getModelLocation(slabBlock), tex, tex, tex);
     }
 
     @Override

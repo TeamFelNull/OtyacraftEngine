@@ -26,13 +26,9 @@ public interface BlockStateAndModelProviderAccess {
     /**
      * ハーフブロックのモデルとブロックステータスの生成
      *
-     * @param slabBlock       ハーフブロック
-     * @param doubleSlabModel フルブロック時のモデル
-     * @param side            サイドのテクスチャ
-     * @param bottom          下側のテクスチャ
-     * @param top             上側のテクスチャ
+     * @param slabBlock ハーフブロック
      */
-    void slabBlock(SlabBlock slabBlock, FileModel doubleSlabModel, ResourceLocation side, ResourceLocation bottom, ResourceLocation top);
+    void slabBlock(SlabBlock slabBlock);
 
     /**
      * 原木のモデルとブロックステータスの生成
