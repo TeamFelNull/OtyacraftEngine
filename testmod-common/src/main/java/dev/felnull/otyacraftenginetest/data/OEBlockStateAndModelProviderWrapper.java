@@ -2,6 +2,7 @@ package dev.felnull.otyacraftenginetest.data;
 
 import dev.felnull.otyacraftengine.data.CrossDataGeneratorAccess;
 import dev.felnull.otyacraftengine.data.model.BlockStateAndModelProviderAccess;
+import dev.felnull.otyacraftengine.data.model.FileModel;
 import dev.felnull.otyacraftengine.data.provider.BlockStateAndModelProviderWrapper;
 import dev.felnull.otyacraftenginetest.block.TestBlocks;
 import net.minecraft.data.PackOutput;
@@ -15,9 +16,12 @@ public class OEBlockStateAndModelProviderWrapper extends BlockStateAndModelProvi
     public void generateStatesAndModels(BlockStateAndModelProviderAccess providerAccess) {
         // providerAccess.genSimpleCubeBlockStateModelAndItemModel(TestBlocks.TEST_BLOCK.get());
 
-        var testModel2 = providerAccess.cubeAllBlockModel(modLoc("test_block_2"), modLoc("block/test_block_2"));
+        FileModel testModel2 = providerAccess.cubeAllBlockModel(modLoc("test_block_2"), modLoc("block/test_block_2"));
         providerAccess.simpleBlockState(TestBlocks.TEST_BLOCK.get(), testModel2);
         providerAccess.simpleBlockItemModel(TestBlocks.TEST_BLOCK.get(), testModel2);
+
+        providerAccess.slabBlockItemModel(TestBlocks.TEST_SLAB_BLOCK.get(), testModel2);
+        providerAccess.stairsBlockItemModel(TestBlocks.TEST_STAIRS_BLOCK.get(), testModel2);
 
         //providerAccess.cubeAllBlockModel(modLoc("test_block_4").toString(), modLoc("block/test_block_2"));
 

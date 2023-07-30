@@ -17,25 +17,26 @@ import java.util.function.Supplier;
  */
 public interface BlockStateAndModelProviderAccess {
     /**
-     * 階段ブロックのモデルとブロックステータスの生成
+     * 階段ブロックのモデルとブロックステータスの生成、アイテムモデルの生成
      *
      * @param stairBlock 階段ブロック
      */
-    void stairsBlock(StairBlock stairBlock);
+    void stairsBlockItemModel(@NotNull StairBlock stairBlock, @NotNull FileModel baseBlockModel);
 
     /**
-     * ハーフブロックのモデルとブロックステータスの生成
+     * ハーフブロックのモデルとブロックステータスの生成、アイテムモデルの生成
      *
-     * @param slabBlock ハーフブロック
+     * @param slabBlock      ハーフブロック
+     * @param baseBlockModel ベースとなるブロックのモデル
      */
-    void slabBlock(SlabBlock slabBlock);
+    void slabBlockItemModel(@NotNull SlabBlock slabBlock, @NotNull FileModel baseBlockModel);
 
     /**
-     * 原木のモデルとブロックステータスの生成
+     * 原木のモデルとブロックステータスの生成、アイテムモデルの生成
      *
      * @param block 原木ブロック
      */
-    void logBlock(RotatedPillarBlock block);
+    void logBlockItemModel(@NotNull RotatedPillarBlock block);
 
     /**
      * モデル出力を取得

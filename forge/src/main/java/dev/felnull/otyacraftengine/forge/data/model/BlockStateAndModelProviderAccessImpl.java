@@ -12,10 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -33,19 +30,26 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockStateProvider.itemModels());
     }
 
-    @Override
-    public void stairsBlock(StairBlock stairBlock) {
+    /*@Override
+    public void stairsBlockItemModel(StairBlock stairBlock) {
         this.blockStateProvider.stairsBlock(stairBlock, this.blockStateProvider.blockTexture(stairBlock));
+    }*/
+
+    @Override
+    public void stairsBlockItemModel(@NotNull StairBlock stairBlock, @NotNull FileModel baseBlockModel) {
+        this.blockStateProvider.stairsBlock(stairBlock, baseBlockModel.getLocation());
+        simpleBlockItemModel(stairBlock, existingModel(key(stairBlock)));
     }
 
     @Override
-    public void slabBlock(SlabBlock slabBlock) {
-        ResourceLocation tex = this.blockStateProvider.blockTexture(slabBlock);
-        this.blockStateProvider.slabBlock(slabBlock, ModelLocationUtils.getModelLocation(slabBlock), tex, tex, tex);
+    public void slabBlockItemModel(@NotNull SlabBlock slabBlock, @NotNull FileModel baseBlockModel) {
+        ResourceLocation loc = baseBlockModel.getLocation();
+        this.blockStateProvider.slabBlock(slabBlock, loc, loc, loc, loc);
+        simpleBlockItemModel(slabBlock, existingModel(key(slabBlock)));
     }
 
     @Override
-    public void logBlock(RotatedPillarBlock block) {
+    public void logBlockItemModel(@NotNull RotatedPillarBlock block) {
         this.blockStateProvider.logBlock(block);
     }
 
