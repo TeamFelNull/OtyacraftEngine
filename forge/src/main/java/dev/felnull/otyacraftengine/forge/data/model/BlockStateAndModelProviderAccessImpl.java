@@ -8,6 +8,7 @@ import dev.felnull.otyacraftengine.forge.mixin.data.BlockStateProviderAccessor;
 import net.minecraft.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -32,7 +33,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
 
     @Override
     public void simpleFlatBlockItemModel(@NotNull Block block) {
-        this.blockStateProvider.itemModels().basicItem(this.blockStateProvider.blockTexture(block));
+        ResourceLocation loc = this.blockStateProvider.blockTexture(block);
+
+        this.blockStateProvider.itemModels().getBuilder(loc.toString())
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", loc);
     }
 
     @Override
