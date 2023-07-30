@@ -30,10 +30,10 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
         this.itemModelProviderAccess = new ItemModelProviderAccessImpl(blockStateProvider.itemModels());
     }
 
-    /*@Override
-    public void stairsBlockItemModel(StairBlock stairBlock) {
-        this.blockStateProvider.stairsBlock(stairBlock, this.blockStateProvider.blockTexture(stairBlock));
-    }*/
+    @Override
+    public @NotNull FileModel uncheckedModel(@NotNull ResourceLocation modelLocation) {
+        return of(new ModelFile.UncheckedModelFile(modelLocation));
+    }
 
     @Override
     public void stairsBlockItemModel(@NotNull StairBlock stairBlock, @NotNull FileModel baseBlockModel) {

@@ -31,6 +31,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
+    public @NotNull FileModel uncheckedModel(@NotNull ResourceLocation modelLocation) {
+        return of(modelLocation);
+    }
+
+    @Override
     public void stairsBlockItemModel(@NotNull StairBlock stairBlock, @NotNull FileModel baseBlockModel) {
         TextureMapping mapping = TextureMapping.cube(baseBlockModel.getLocation());
         ResourceLocation innerModel = ModelTemplates.STAIRS_INNER.create(stairBlock, mapping, this.blockModelGenerators.modelOutput);

@@ -16,6 +16,16 @@ import java.util.function.Supplier;
  * それぞれのプラットフォームで同じ動作をするブロックステータスとブロックモデル生成
  */
 public interface BlockStateAndModelProviderAccess {
+
+    /**
+     * 存在を未確認のファイルモデルを取得
+     *
+     * @param modelLocation モデルロケーション
+     * @return モデル
+     */
+    @NotNull
+    FileModel uncheckedModel(@NotNull ResourceLocation modelLocation);
+
     /**
      * 階段ブロックのモデルとブロックステータスの生成、アイテムモデルの生成
      *
