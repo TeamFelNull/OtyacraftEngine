@@ -31,6 +31,11 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
     }
 
     @Override
+    public void simpleFlatBlockItemModel(@NotNull Block block) {
+        this.blockModelGenerators.createSimpleFlatItemModel(block);
+    }
+
+    @Override
     public @NotNull FileModel uncheckedModel(@NotNull ResourceLocation modelLocation) {
         return of(modelLocation);
     }

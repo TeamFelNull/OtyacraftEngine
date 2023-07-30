@@ -18,6 +18,13 @@ import java.util.function.Supplier;
 public interface BlockStateAndModelProviderAccess {
 
     /**
+     * 板状のブロックのアイテムモデルを生成
+     *
+     * @param block ブロック
+     */
+    void simpleFlatBlockItemModel(@NotNull Block block);
+
+    /**
      * 存在を未確認のファイルモデルを取得
      *
      * @param modelLocation モデルロケーション
