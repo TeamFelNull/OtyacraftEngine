@@ -33,11 +33,12 @@ public class BlockStateAndModelProviderAccessImpl implements BlockStateAndModelP
 
     @Override
     public void simpleFlatBlockItemModel(@NotNull Block block) {
-        ResourceLocation loc = this.blockStateProvider.blockTexture(block);
+        ResourceLocation itemLoc = ModelLocationUtils.getModelLocation(block.asItem());
+        ResourceLocation blockLoc = this.blockStateProvider.blockTexture(block);
 
-        this.blockStateProvider.itemModels().getBuilder(loc.toString())
+        this.blockStateProvider.itemModels().getBuilder(itemLoc.toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", loc);
+                .texture("layer0", blockLoc);
     }
 
     @Override
