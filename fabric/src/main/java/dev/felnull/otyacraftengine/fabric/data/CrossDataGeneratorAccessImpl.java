@@ -20,6 +20,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.ApiStatus;
@@ -94,6 +95,11 @@ public class CrossDataGeneratorAccessImpl implements CrossDataGeneratorAccess {
     @Override
     public TagsProvider<DamageType> createDamageTypeTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, DamageTypeTagsProviderWrapper damageTypeTagsProviderWrapper) {
         return new WrappedFabricDamageTypeTagProvider((FabricDataOutput) packOutput, lookup, damageTypeTagsProviderWrapper);
+    }
+
+    @Override
+    public TagsProvider<Biome> createBiomeTagProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookup, BiomeTagsProviderWrapper biomeTagsProviderWrapper) {
+        return new WrappedFabricBiomeTagProvider((FabricDataOutput) packOutput, lookup, biomeTagsProviderWrapper);
     }
 
     @Override
